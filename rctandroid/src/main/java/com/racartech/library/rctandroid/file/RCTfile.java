@@ -58,6 +58,42 @@ public class RCTfile extends AppCompatActivity {
     }
 
 
+    public static String getDeviceName(Context context, String device_root_path){
+        String device_name = null;
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
+            StorageManager storageManager = (StorageManager) context.getSystemService(Context.STORAGE_SERVICE);
+            List<StorageVolume> storageVolumes = storageManager.getStorageVolumes();
+            for (StorageVolume storageVolume : storageVolumes) {
+                String mountPath = storageVolume.getDirectory().getAbsolutePath();
+                if (mountPath.equals(device_root_path)) {
+                    String label = storageVolume.getDescription(context);
+                    device_name = label;
+                    break;
+                }
+            }
+        }else{
+            File[] volumes = new File("/storage").listFiles();
+            for (File volume : volumes) {
+                String mountPath = volume.getAbsolutePath();
+                if (mountPath.equals(device_root_path)) {
+                    File[] files = volume.listFiles();
+                    for (File file : files) {
+                        if (file.getName().equals("Android")) {
+                            continue;
+                        }
+                        device_name = file.getName();
+                        break;
+                    }
+                    break;
+                }
+            }
+        }
+
+        return device_name;
+    }
+
+
 
     public static ArrayList<String> getMountedDevices(Context context,boolean exclude_device_storage,boolean exclude_sd_card) {
 
