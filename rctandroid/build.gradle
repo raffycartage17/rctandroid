@@ -7,7 +7,7 @@ android {
     namespace 'com.racartech.library.rctandroid'
     compileSdk 33
     group 'com.racartech.library'
-    version '0.1.0'
+    version '0.2.2'
 
     defaultConfig {
         minSdk 19
@@ -48,7 +48,7 @@ afterEvaluate{
             from components.findByName(variant.name)
             groupId = 'com.racartech.library'
             artifactId = 'rctandroid'
-            version = '0.1.0'
+            version = '0.2.2'
         }
     }
 }

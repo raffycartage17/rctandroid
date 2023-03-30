@@ -4,6 +4,8 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.os.storage.StorageManager;
+import android.os.storage.StorageVolume;
 import android.webkit.MimeTypeMap;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,6 +29,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UncheckedIOException;
+import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -53,6 +56,119 @@ public class RCTfile extends AppCompatActivity {
     public static void sort(List<File> file_list, Comparator<File> comparator) {
         Collections.sort(file_list, comparator);
     }
+
+
+
+    public static ArrayList<String> getMountedDevices(Context context,boolean exclude_device_storage,boolean exclude_sd_card) {
+
+        ArrayList<String> mountPaths = new ArrayList<>();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
+            BufferedReader bufferedReader = null;
+            try {
+                bufferedReader = new BufferedReader(new FileReader("/proc/mounts"));
+                String line;
+                while ((line = bufferedReader.readLine()) != null) {
+                    if (line.contains("vfat") || line.contains("/mnt")) {
+                        String[] parts = line.split(" ");
+                        String mountPath = parts[1];
+                        if (mountPath != null) {
+                            if (mountPath.startsWith("/mnt/media_rw") || mountPath.startsWith("/storage") ||
+                                    mountPath.startsWith("/mnt/external_sd") || mountPath.startsWith("/mnt/sdcard") ||
+                                    mountPath.startsWith("/mnt/ext_sd")) {
+                                mountPaths.add(mountPath);
+                            }
+                        }
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (bufferedReader != null) {
+                    try {
+                        bufferedReader.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        } else {
+            StorageManager storageManager = (StorageManager) context.getSystemService(Context.STORAGE_SERVICE);
+            StorageVolume[] volumes;
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                volumes = storageManager.getStorageVolumes().toArray(new StorageVolume[0]);
+            } else {
+                try {
+                    Method getVolumeList = storageManager.getClass().getMethod("getVolumeList");
+                    volumes = (StorageVolume[]) getVolumeList.invoke(storageManager);
+                } catch (Exception e) {
+                    volumes = new StorageVolume[0];
+                }
+            }
+
+            for (StorageVolume volume : volumes) {
+                String mountPath = null;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    File path = volume.getDirectory();
+                    if (path != null) {
+                        mountPath = path.getAbsolutePath();
+                    }
+                } else {
+                    try {
+                        Method getPath = volume.getClass().getMethod("getPath");
+                        mountPath = (String) getPath.invoke(volume);
+                    } catch (Exception e) {
+                        mountPath = null;
+                    }
+                }
+                if (mountPath != null) {
+                    if (mountPath.startsWith("/mnt/media_rw") || mountPath.startsWith("/storage") ||
+                            mountPath.startsWith("/mnt/external_sd") || mountPath.startsWith("/mnt/sdcard") ||
+                            mountPath.startsWith("/mnt/ext_sd")) {
+                        mountPaths.add(mountPath);
+                    }
+                }
+            }
+        }
+        
+        if(exclude_device_storage){
+            mountPaths.remove(getDir_ExternalStorageRoot());
+        }
+        if(exclude_sd_card){
+            mountPaths.remove(getExternalSdCardPath(context));
+        }
+        return mountPaths;
+    }
+
+
+
+
+    public static ArrayList<File> getOTGDirectories(Context context){
+        String my_otg = "0D020BC30D020BC3";
+        String mount_dir = "/mnt/media_rw/0D020BC30D020BC3";
+        File[] otgDirectories = new File(mount_dir).listFiles();
+        ArrayList<File> list_files = new ArrayList<>(Arrays.asList(otgDirectories));
+
+
+        return list_files;
+    }
+
+    public static ArrayList<String> getOTGDirectories_Test(Context context) {
+        File mediaStorageDir = new File("/mnt/media_rw");
+        File[] mediaDirs = mediaStorageDir.listFiles();
+        ArrayList<String> devicePaths = new ArrayList<String>();
+
+        for (File dir : mediaDirs) {
+            if (dir.isDirectory()) {
+                String path = dir.getAbsolutePath();
+                devicePaths.add(path);
+            }
+        }
+        return devicePaths;
+
+    }
+
+
 
 
 
