@@ -12,6 +12,7 @@ import androidx.core.content.FileProvider;
 
 import com.racartech.library.rctandroid.array.RCTarray;
 import com.racartech.library.rctandroid.math.RCTdataSizeConverter;
+import com.racartech.library.rctandroid.util.RCTcomparator;
 
 import org.apache.commons.io.FileUtils;
 
@@ -34,6 +35,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -45,6 +47,14 @@ public class RCTfile extends AppCompatActivity {
 
 
     public static ArrayList<String> PHYSICAL_DISKS_ROOT_DIR = new ArrayList<>();
+
+
+
+    public static void sort(List<File> file_list, Comparator<File> comparator) {
+        Collections.sort(file_list, comparator);
+    }
+
+
 
 
 
