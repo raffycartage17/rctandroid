@@ -44,5 +44,30 @@ View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.produc
      */
 
 
+    /*
+new Thread(new Runnable() {
+        @Override
+        public void run() {
+
+        }
+    }).start();
+
+
+new Thread(new Runnable() {
+        @Override
+        public void run() {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run(){
+                }
+            });
+        }
+    }).start();
+
+
+
+*/
+
+
 
 }
