@@ -13,6 +13,14 @@ import java.util.concurrent.TimeUnit;
 public class RCTcalendar{
 
 
+    public final static SimpleDateFormat YYYY_MM_DD = new SimpleDateFormat("yyyy-MM-dd");
+    public final static SimpleDateFormat MM_DD_YYYY = new SimpleDateFormat("MM-dd-yyyy");
+    public final static SimpleDateFormat DD_MM_YYYY = new SimpleDateFormat("dd-MM-yyyy");
+    public final static SimpleDateFormat YYYY_MM_DD_HH_MM_SS_SSS = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+
+
+
+
     public static int getWeekDay(Date date) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
@@ -82,26 +90,18 @@ public class RCTcalendar{
         return dates.toArray(new Date[0]);
     }
 
-
-
-
-
-
-
-
-    public static String[] getNextDates(int no_of_days,String pattern){
+    public static Date[] getDate(Date from, Date to) {
+        List<Date> dates = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat(pattern, Locale.getDefault());
-        String[] dates = new String[no_of_days];
-        dates[0] = sdf.format(calendar.getTime());
-
-
-        for (int i = 1; i < no_of_days; i++) {
-            calendar.add(Calendar.DAY_OF_MONTH, 1);
-            dates[i] = sdf.format(calendar.getTime());
+        calendar.setTime(from);
+        while (calendar.getTime().before(to) || calendar.getTime().equals(to)) {
+            dates.add(calendar.getTime());
+            calendar.add(Calendar.DATE, 1);
         }
-        return dates;
+        return dates.toArray(new Date[dates.size()]);
     }
+
+
 
 
     public static Date getCurrentDate(){
