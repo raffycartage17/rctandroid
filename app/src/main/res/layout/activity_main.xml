@@ -41,7 +41,7 @@
             <View
                 android:id="@+id/mm_verticaldivider_center"
                 android:layout_width="1dp"
-                android:layout_height="729dp"
+                android:layout_height="1000dp"
                 android:background="?android:attr/listDivider"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
