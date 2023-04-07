@@ -15,6 +15,8 @@ import android.widget.Toast;
 import com.racartech.app.rctandroidlts.window1.Window1;
 import com.racartech.library.rctandroid.calendar.RCTcalendar;
 import com.racartech.library.rctandroid.file.RCTfile;
+import com.racartech.library.rctandroid.hardware.RCTdiskInformation;
+import com.racartech.library.rctandroid.math.RCTdataSizeConverter;
 
 import java.io.File;
 import java.io.IOException;
@@ -64,9 +66,19 @@ public class MainActivity extends AppCompatActivity {
         f1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Date date = RCTcalendar.getCurrentDate();
+                ArrayList<String> mount_paths = RCTfile.getMountedDevices(getApplicationContext(),true,true);
+                String disk_path = mount_paths.get(0);
+                double total_disk_space = RCTdataSizeConverter.bytesToGigabytes(RCTdiskInformation.getDisk_TotalDiskSpace(disk_path));
+                double used_disk_space = RCTdataSizeConverter.bytesToGigabytes(RCTdiskInformation.getDisk_UsedDiskSpace(disk_path));
+                Toast.makeText(MainActivity.this, "Total Disk GB : ".concat(String.valueOf(total_disk_space)), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Used  Disk GB : ".concat(String.valueOf(used_disk_space)), Toast.LENGTH_SHORT).show();
             }
         });
+
+
+
+
+
 
         window_1_btn.setOnClickListener(new View.OnClickListener() {
             @Override
