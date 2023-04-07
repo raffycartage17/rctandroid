@@ -1,20 +1,27 @@
 package com.racartech.library.rctandroid.file;
 
+import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.storage.StorageManager;
 import android.os.storage.StorageVolume;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.webkit.MimeTypeMap;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+import androidx.documentfile.provider.DocumentFile;
 
 import com.racartech.library.rctandroid.array.RCTarray;
 import com.racartech.library.rctandroid.math.RCTdataSizeConverter;
-import com.racartech.library.rctandroid.util.RCTcomparator;
 
 import org.apache.commons.io.FileUtils;
 
@@ -46,10 +53,41 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public class RCTfile extends AppCompatActivity {
+public class RCTfile{
+
+    public final static int RELATIVE_DEVICE_STORAGE = 0;
+    public final static int RELATIVE_SDCARD_STORAGE = 1;
 
 
     public static ArrayList<String> PHYSICAL_DISKS_ROOT_DIR = new ArrayList<>();
+
+
+
+    public static Bitmap loadAsBitmap(String file_path){
+        return BitmapFactory.decodeFile(file_path);
+    }
+
+    public static Bitmap loadAsBitmap(File file){
+        return BitmapFactory.decodeFile(file.getAbsolutePath());
+    }
+
+    public static Bitmap loadAsBitmap(Context context,String relative_file_path, int relative){
+        String relative_dir = null;
+        switch(relative){
+            case RELATIVE_SDCARD_STORAGE:
+                relative_dir = getExternalSdCardPath(context).concat("/");
+                break;
+            default:
+                relative_dir = getDir_ExternalStorageRoot().concat("/");
+                break;
+        }
+        return loadAsBitmap(relative_dir.concat(relative_file_path));
+    }
+
+
+
+
+
 
 
 

@@ -3,6 +3,7 @@ package com.racartech.app.rctandroidlts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,12 +12,14 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.racartech.app.rctandroidlts.window1.Window1;
 import com.racartech.library.rctandroid.calendar.RCTcalendar;
 import com.racartech.library.rctandroid.file.RCTfile;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         f1 = findViewById(R.id.mm_f1_button);
         f2 = findViewById(R.id.mm_f2_button);
@@ -60,31 +64,15 @@ public class MainActivity extends AppCompatActivity {
         f1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<String> aaa= RCTfile.getMountedDevices(getApplicationContext(),true,true);
+                Date date = RCTcalendar.getCurrentDate();
+            }
+        });
 
-                if(aaa.size() > 0){
-                    Toast.makeText(MainActivity.this, "OTG : ".concat(String.valueOf(aaa.size())), Toast.LENGTH_SHORT).show();
-
-
-                    String[] dirs = new String[aaa.size()];
-                    for(int index = 0; index<dirs.length; index++){
-                        dirs[index] = aaa.get(index);
-                    }
-
-                    String debug_file = RCTfile.getDir_ExternalStorageRoot().concat("/apath/lts_test_file.txt");
-                    Toast.makeText(MainActivity.this, debug_file, Toast.LENGTH_SHORT).show();
-                    if(!RCTfile.doesFileExist(debug_file)){
-                        RCTfile.createFile(debug_file);
-                    }
-
-                    try{
-                        RCTfile.overrideFile(debug_file,dirs);
-                    }catch (IOException ignored) {}
-
-
-                }else{
-                    Toast.makeText(MainActivity.this, "Null", Toast.LENGTH_SHORT).show();
-                }
+        window_1_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, Window1.class);
+                startActivity(intent);
             }
         });
 
