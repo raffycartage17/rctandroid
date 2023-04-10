@@ -14,6 +14,19 @@ import androidx.core.content.ContextCompat;
 public class RCTpermission{
 
 
+
+    public static void allowPermissions(Activity activity,String[] permissions,int request_code){
+        if (ContextCompat.checkSelfPermission(activity,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Permission is not granted, prompt the user
+            ActivityCompat.requestPermissions(activity,permissions,
+                    request_code);
+        }
+    }
+
+
     public static void allowPermission_MANAGE_EXTERNAL_STORAGE(Activity activity, int requestCode) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             if (ContextCompat.checkSelfPermission(activity,
