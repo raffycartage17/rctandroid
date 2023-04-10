@@ -27,4 +27,14 @@
         app:layout_constraintEnd_toEndOf="@+id/window1_imageview"
         app:layout_constraintStart_toStartOf="@+id/window1_imageview"
         app:layout_constraintTop_toBottomOf="@+id/window1_imageview" />
+
+    <Button
+        android:id="@+id/window1_open_dialog_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Test Dialog"
+        app:layout_constraintEnd_toEndOf="@+id/window1_filepicker_btn"
+        app:layout_constraintStart_toStartOf="@+id/window1_filepicker_btn"
+        app:layout_constraintTop_toBottomOf="@+id/window1_filepicker_btn" />
 </androidx.constraintlayout.widget.ConstraintLayout>
