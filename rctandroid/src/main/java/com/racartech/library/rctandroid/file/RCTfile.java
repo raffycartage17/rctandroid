@@ -1,6 +1,7 @@
 package com.racartech.library.rctandroid.file;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -22,6 +23,7 @@ import androidx.documentfile.provider.DocumentFile;
 
 import com.racartech.library.rctandroid.array.RCTarray;
 import com.racartech.library.rctandroid.math.RCTdataSizeConverter;
+import com.racartech.library.rctandroid.notifications.RCTnotifications;
 
 import org.apache.commons.io.FileUtils;
 
@@ -57,6 +59,25 @@ public class RCTfile{
 
     public final static int RELATIVE_DEVICE_STORAGE = 0;
     public final static int RELATIVE_SDCARD_STORAGE = 1;
+
+
+
+    public static void openFile(Context app_context,String title,File the_file){
+        //TODO - View multiple files instead of 1 only
+        Intent file_intent = new Intent(Intent.ACTION_VIEW);
+        file_intent.setAction(Intent.ACTION_VIEW);
+        file_intent.setDataAndType(RCTfile.getUriForFile(app_context,the_file), RCTfile.getMimeType(the_file));
+        file_intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        file_intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        file_intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        Intent open_file_intent = Intent.createChooser(file_intent,title);
+        open_file_intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        try{
+            app_context.startActivity(open_file_intent);
+        } catch (ActivityNotFoundException e) {
+            RCTnotifications.makeToast_SHORT(app_context,"No app can open this type of file");
+        }
+    }
 
 
 
