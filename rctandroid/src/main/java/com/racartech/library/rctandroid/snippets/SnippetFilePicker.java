@@ -1,6 +1,23 @@
-package com.racartech.app.rctandroidlts.window1;
+package com.racartech.library.rctandroid.snippets;
 
-import android.content.Intent;
+import android.content.Context;
+import android.widget.Toast;
+
+public class SnippetFilePicker {
+
+
+    public static void test(Context context){
+        Toast.makeText(context, "Android Basic", Toast.LENGTH_SHORT).show();
+        /*
+    NOTE : this is a snippet class intended to help developers to fasten there production
+           by providing them easy to use code common code snippets
+        */
+    }
+
+
+    //File Picker Code
+    /* Activity Code
+    import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -30,27 +47,25 @@ public class Window1 extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("*/*");
-                startActivityForResult(intent, FILE_PICKER_REQUEST_CODE);
-            }
+                intent.setType("*/ /*");    //Remove the second / in intent.setType("*/ /*");
+    startActivityForResult(intent, FILE_PICKER_REQUEST_CODE);
+}
         });
 
-    }
+                }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+@Override
+protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
 
         if (requestCode == FILE_PICKER_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
-            Uri fileUri = data.getData();
-            String picked_file_path = RCTfile.getAbsolutePathFromURI(getApplicationContext(),fileUri);
+        Uri fileUri = data.getData();
+        String picked_file_path = RCTfile.getAbsolutePathFromURI(getApplicationContext(),fileUri);
         }
-    }
+        }
 
-
-
-
+     */
 
 
 

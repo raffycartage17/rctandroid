@@ -59,6 +59,57 @@ public class RCTfile{
     public final static int RELATIVE_SDCARD_STORAGE = 1;
 
 
+
+    public static String getAbsolutePathFromURI(Context context, Uri uri) {
+        String filePath = "";
+        if (DocumentsContract.isDocumentUri(context, uri)) {
+            // For Android 4.4 and above
+            String documentId = DocumentsContract.getDocumentId(uri);
+            String[] split = documentId.split(":");
+            String type = split[0];
+
+            if ("image".equals(type)) {
+                Uri contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                String selection = MediaStore.Images.Media._ID + "=?";
+                String[] selectionArgs = new String[] { split[1] };
+
+                filePath = getDataColumn(context, contentUri, selection, selectionArgs);
+            }
+        } else {
+            // For older versions of Android
+            String[] projection = { MediaStore.Images.Media.DATA };
+            Cursor cursor = context.getContentResolver().query(uri, projection, null, null, null);
+            if (cursor != null) {
+                int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                if (cursor.moveToFirst()) {
+                    filePath = cursor.getString(columnIndex);
+                }
+                cursor.close();
+            }
+        }
+
+        return filePath;
+    }
+
+    private static String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
+        Cursor cursor = null;
+        final String column = "_data";
+        final String[] projection = { column };
+        try {
+            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                final int index = cursor.getColumnIndexOrThrow(column);
+                return cursor.getString(index);
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return null;
+    }
+
+
     public static ArrayList<String> PHYSICAL_DISKS_ROOT_DIR = new ArrayList<>();
 
 
