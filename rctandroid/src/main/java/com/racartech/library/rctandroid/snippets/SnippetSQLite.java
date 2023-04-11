@@ -3,7 +3,7 @@ package com.racartech.library.rctandroid.snippets;
 import android.content.Context;
 import android.widget.Toast;
 
-public class SnipSQLite {
+public class SnippetSQLite {
 
 
     public static void test(Context context){

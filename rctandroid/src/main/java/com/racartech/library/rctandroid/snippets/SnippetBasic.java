@@ -3,7 +3,7 @@ package com.racartech.library.rctandroid.snippets;
 import android.content.Context;
 import android.widget.Toast;
 
-public class SnipBasic {
+public class SnippetBasic {
 
     public static void test(Context context){
         Toast.makeText(context, "Android Basic", Toast.LENGTH_SHORT).show();
