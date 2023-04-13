@@ -8,6 +8,125 @@ import java.util.Comparator;
 public class RCTcomparator{
 
 
+
+    public static Comparator<File> getFileComparator_OldestFirst_FileFirst() {
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            return new Comparator<File>() {
+                @Override
+                public int compare(File f1, File f2) {
+                    if (f1.isDirectory() && !f2.isDirectory()) {
+                        return -1;
+                    } else if (!f1.isDirectory() && f2.isDirectory()) {
+                        return 1;
+                    } else {
+                        long lastModified1 = f1.lastModified();
+                        long lastModified2 = f2.lastModified();
+                        int cmp = Long.compare(lastModified1, lastModified2);
+                        if (cmp == 0) {
+                            cmp = f1.getName().compareToIgnoreCase(f2.getName());
+                        }
+                        return cmp;
+                    }
+                }
+            };
+        } else {
+            return Comparator.comparing(File::isDirectory)
+                    .thenComparing(File::lastModified)
+                    .thenComparing(File::getName, String.CASE_INSENSITIVE_ORDER);
+        }
+
+    }
+
+    public static Comparator<File> getFileComparator_OldestFirst_DirFirst() {
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            return new Comparator<File>() {
+                @Override
+                public int compare(File f1, File f2) {
+                    if (f1.isDirectory() && !f2.isDirectory()) {
+                        return 1;
+                    } else if (!f1.isDirectory() && f2.isDirectory()) {
+                        return -1;
+                    } else {
+                        long lastModified1 = f1.lastModified();
+                        long lastModified2 = f2.lastModified();
+                        int cmp = Long.compare(lastModified1, lastModified2);
+                        if (cmp == 0) {
+                            cmp = f1.getName().compareToIgnoreCase(f2.getName());
+                        }
+                        return cmp;
+                    }
+                }
+            };
+        } else {
+            return Comparator.comparing(File::isDirectory, Comparator.reverseOrder())
+                    .thenComparing(File::lastModified)
+                    .thenComparing(File::getName, String.CASE_INSENSITIVE_ORDER);
+        }
+
+    }
+
+
+    public static Comparator<File> getFileComparator_NewestFirst_FileFirst() {
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            return new Comparator<File>() {
+                @Override
+                public int compare(File f1, File f2) {
+                    if (f1.isDirectory() && !f2.isDirectory()) {
+                        return 1;
+                    } else if (!f1.isDirectory() && f2.isDirectory()) {
+                        return -1;
+                    } else {
+                        long lastModified1 = f1.lastModified();
+                        long lastModified2 = f2.lastModified();
+                        int cmp = Long.compare(lastModified2, lastModified1);
+                        if (cmp == 0) {
+                            cmp = f1.getName().compareToIgnoreCase(f2.getName());
+                        }
+                        return cmp;
+                    }
+                }
+            };
+        } else {
+            return Comparator.comparing(File::isDirectory)
+                    .thenComparing(File::lastModified, Comparator.reverseOrder())
+                    .thenComparing(File::getName, String.CASE_INSENSITIVE_ORDER);
+        }
+
+    }
+
+    public static Comparator<File> getFileComparator_NewestFirst_DirFirst() {
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            return new Comparator<File>() {
+                @Override
+                public int compare(File f1, File f2) {
+                    if (f1.isDirectory() && !f2.isDirectory()) {
+                        return -1;
+                    } else if (!f1.isDirectory() && f2.isDirectory()) {
+                        return 1;
+                    } else {
+                        long lastModified1 = f1.lastModified();
+                        long lastModified2 = f2.lastModified();
+                        int cmp = Long.compare(lastModified2, lastModified1);
+                        if (cmp == 0) {
+                            cmp = f1.getName().compareToIgnoreCase(f2.getName());
+                        }
+                        return cmp;
+                    }
+                }
+            };
+        } else {
+            return Comparator.comparing(File::isDirectory, Comparator.reverseOrder())
+                    .thenComparing(File::lastModified, Comparator.reverseOrder())
+                    .thenComparing(File::getName, String.CASE_INSENSITIVE_ORDER);
+        }
+
+    }
+
+
     public static Comparator<File> getFileComparator_CaseInsensitive_DirectoryFirst() {
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
