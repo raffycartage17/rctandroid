@@ -62,6 +62,137 @@ public class RCTfile{
 
 
 
+    public static ArrayList<File> convert_FileArrayList(ArrayList<String> file_paths, boolean check_if_exist){
+        ArrayList<File> the_files = new ArrayList<>();
+        if(check_if_exist){
+            for(int index = 0; index<file_paths.size(); index++){
+                File current_file = new File(file_paths.get(index));
+                if(RCTfile.doesFileExist(current_file)) {
+                    the_files.add(current_file);
+                }
+            }
+        }else{
+            for(int index = 0; index<file_paths.size(); index++){
+                the_files.add(new File(file_paths.get(index)));
+            }
+        }
+        return the_files;
+    }
+
+
+
+    public static ArrayList<File> convert_FileArrayList(List<String> file_paths, boolean check_if_exist){
+        ArrayList<File> the_files = new ArrayList<>();
+        if(check_if_exist){
+            for(int index = 0; index<file_paths.size(); index++){
+                File current_file = new File(file_paths.get(index));
+                if(RCTfile.doesFileExist(current_file)) {
+                    the_files.add(current_file);
+                }
+            }
+        }else{
+            for(int index = 0; index<file_paths.size(); index++){
+                the_files.add(new File(file_paths.get(index)));
+            }
+        }
+        return the_files;
+    }
+
+    public static ArrayList<File> convert_FileArrayList(String[] file_paths, boolean check_if_exist){
+        ArrayList<File> the_files = new ArrayList<>();
+        if(check_if_exist){
+            for(int index = 0; index<file_paths.length; index++){
+                File current_file = new File(file_paths[index]);
+                if(RCTfile.doesFileExist(current_file)) {
+                    the_files.add(current_file);
+                }
+            }
+        }else{
+            for(int index = 0; index< file_paths.length; index++){
+                the_files.add(new File(file_paths[index]));
+            }
+        }
+        return the_files;
+    }
+
+
+
+    public static ArrayList<String> convert_StringArrayList(ArrayList<File> files, boolean check_if_exist){
+        ArrayList<String> the_files = new ArrayList<>();
+        if(check_if_exist){
+            for(int index = 0; index<files.size(); index++){
+                if(RCTfile.doesFileExist(files.get(index))){
+                    the_files.add(files.get(index).getAbsolutePath());
+                }
+            }
+        }else{
+            for(int index = 0; index<files.size(); index++){
+                the_files.add(files.get(index).getAbsolutePath());
+            }
+        }
+        return the_files;
+    }
+
+    public static ArrayList<String> convert_StringArrayList(List<File> files, boolean check_if_exist){
+        ArrayList<String> the_files = new ArrayList<>();
+        if(check_if_exist){
+            for(int index = 0; index<files.size(); index++){
+                if(RCTfile.doesFileExist(files.get(index))){
+                    the_files.add(files.get(index).getAbsolutePath());
+                }
+            }
+        }else{
+            for(int index = 0; index<files.size(); index++){
+                the_files.add(files.get(index).getAbsolutePath());
+            }
+        }
+        return the_files;
+    }
+
+    public static ArrayList<String> convert_StringArrayList(File[] files, boolean check_if_exist){
+        ArrayList<String> the_files = new ArrayList<>();
+        if(check_if_exist){
+            for(int index = 0; index<files.length; index++){
+                if(RCTfile.doesFileExist(files[index])){
+                    the_files.add(files[index].getAbsolutePath());
+                }
+            }
+        }else{
+            for(int index = 0; index<files.length; index++){
+                the_files.add(files[index].getAbsolutePath());
+            }
+        }
+        return the_files;
+    }
+
+
+
+    public static void createFile_String(ArrayList<String> files){
+        for(int index = 0; index<files.size(); index++){
+            RCTfile.createFile(files.get(index));
+        }
+    }
+
+    public static void createFile_File(ArrayList<File> files){
+        for(int index = 0; index<files.size(); index++){
+            RCTfile.createFile(files.get(index));
+        }
+    }
+
+    public static void createFile_String(String[] files){
+        for(int index = 0; index<files.length; index++){
+            RCTfile.createFile(files[index]);
+        }
+    }
+
+    public static void createFile_File(File[] files){
+        for(int index = 0; index<files.length; index++){
+            RCTfile.createFile(files[index]);
+        }
+    }
+
+
+
     public static void openFile(Context app_context,String title,File the_file){
         //TODO - View multiple files instead of 1 only
         Intent file_intent = new Intent(Intent.ACTION_VIEW);

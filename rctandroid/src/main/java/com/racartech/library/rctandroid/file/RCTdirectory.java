@@ -185,8 +185,6 @@ public class RCTdirectory{
     }
     public static void sortDir_Relative(ArrayList<String> directories,Comparator<String> comparator){
 
-
-
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             for(int index = 0; index< directories.size(); index++){
                 String current_dir = directories.get(index);
@@ -219,6 +217,9 @@ public class RCTdirectory{
         }
 
     }
+
+
+
 
 
 

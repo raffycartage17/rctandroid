@@ -99,8 +99,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-
         window_1_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
