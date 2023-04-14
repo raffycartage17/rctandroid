@@ -61,6 +61,16 @@ public class RCTfile{
     public final static int RELATIVE_SDCARD_STORAGE = 1;
 
 
+    public static boolean createAndOverride(String file_path,String[] file_contents){
+        RCTfile.createFile(file_path);
+        try {
+            return RCTfile.overrideFile(file_path, file_contents);
+        }catch(IOException ignored){
+            return false;
+        }
+    }
+
+
 
     public static ArrayList<File> convert_FileArrayList(ArrayList<String> file_paths, boolean check_if_exist){
         ArrayList<File> the_files = new ArrayList<>();

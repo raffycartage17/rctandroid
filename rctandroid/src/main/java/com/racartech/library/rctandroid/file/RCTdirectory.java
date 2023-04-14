@@ -796,6 +796,27 @@ public class RCTdirectory{
         }
     }
 
+    public static File[] getImmediateFileAndSubDir_FileArray(String parent_dir){
+        File[] the_files = new File(parent_dir).listFiles();
+        if(the_files != null){
+            return the_files;
+        }else{
+            return new File[0];
+        }
+    }
+
+    public static ArrayList<File> getImmediateFileAndSubDir_FileArrayList(String parent_dir) {
+        File[] the_files = new File(parent_dir).listFiles();
+        ArrayList<File> fileList = new ArrayList<>();
+        if (the_files != null) {
+            for (File file : the_files) {
+                fileList.add(file);
+            }
+        }
+        return fileList;
+    }
+
+
 
 
     public static List<String> getImmediateFileAndSubDir_ListString(String parent_dir) {
@@ -1188,6 +1209,12 @@ public class RCTdirectory{
         return file_list;
     }
 
+
+
+
+
+
+
     public static String[] getImmediateVideoFileList(String parent_directory_path) {
         File f = new File(parent_directory_path);
         File[] files = f.listFiles();
@@ -1220,6 +1247,9 @@ public class RCTdirectory{
         return file_list;
     }
 
+
+
+
     public static String[] getImmediateAudioFileList(String parent_directory_path) {
         File f = new File(parent_directory_path);
         File[] files = f.listFiles();
@@ -1236,6 +1266,8 @@ public class RCTdirectory{
         }
         return RCTarray.deleteIndexesBasedOnBooleanArray(file_list,is_files);
     }
+
+
     public static String[] getImmediateDocumentsFileList(String parent_directory_path) {
         File f = new File(parent_directory_path);
         File[] files = f.listFiles();
@@ -1251,6 +1283,70 @@ public class RCTdirectory{
             }
         }
         return RCTarray.deleteIndexesBasedOnBooleanArray(file_list,is_files);
+    }
+
+
+
+    public static ArrayList<File> getImmediateImageFile_FileArrayList(String parent_directory_path){
+        File f = new File(parent_directory_path);
+        File[] files = f.listFiles();
+        ArrayList<File> the_files = new ArrayList<>();
+        if(files != null){
+            for(int index = 0; index < files.length; index++){
+                if(RCTfile.isPathAFile(files[index])){
+                    if(RCTfile.isFile_Image(files[index])){
+                        the_files.add(files[index]);
+                    }
+                }
+            }
+        }
+        return the_files;
+    }
+    public static ArrayList<File> getImmediateVideoFile_FileArrayList(String parent_directory_path){
+        File f = new File(parent_directory_path);
+        File[] files = f.listFiles();
+        ArrayList<File> the_files = new ArrayList<>();
+        if(files != null){
+            for(int index = 0; index < files.length; index++){
+                if(RCTfile.isPathAFile(files[index])){
+                    if(RCTfile.isFile_Video(files[index])){
+                        the_files.add(files[index]);
+                    }
+                }
+            }
+        }
+        return the_files;
+    }
+    public static ArrayList<File> getImmediateAudioFile_FileArrayList(String parent_directory_path){
+        File f = new File(parent_directory_path);
+        File[] files = f.listFiles();
+        ArrayList<File> the_files = new ArrayList<>();
+        if(files != null){
+            for(int index = 0; index < files.length; index++){
+                if(RCTfile.isPathAFile(files[index])){
+                    if(RCTfile.isFile_Audio(files[index])){
+                        the_files.add(files[index]);
+                    }
+                }
+            }
+        }
+        return the_files;
+    }
+
+    public static ArrayList<File> getImmediateDocumentFile_FileArrayList(String parent_directory_path){
+        File f = new File(parent_directory_path);
+        File[] files = f.listFiles();
+        ArrayList<File> the_files = new ArrayList<>();
+        if(files != null){
+            for(int index = 0; index < files.length; index++){
+                if(RCTfile.isPathAFile(files[index])){
+                    if(RCTfile.isFile_Document(files[index])){
+                        the_files.add(files[index]);
+                    }
+                }
+            }
+        }
+        return the_files;
     }
 
 
@@ -1393,6 +1489,41 @@ public class RCTdirectory{
         }
     }
 
+    public static ArrayList<File> listAllFilesAndSubDirectories_ArrayList(File directory) throws IOException{
+        ArrayList<File> files = new ArrayList<>();
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+
+            Stack<File> stack = new Stack<>();
+            stack.push(directory);
+
+            while (!stack.empty()) {
+                File dir = stack.pop();
+                File[] dirFiles = dir.listFiles();
+                if (dirFiles != null) {
+                    for (File file : dirFiles) {
+                        if (file.isDirectory()) {
+                            stack.push(file);
+                        }
+                        files.add(file);
+                    }
+                }
+            }
+
+            return files;
+
+        } else {
+            try {
+                Path start = directory.toPath();
+                try (Stream<Path> stream = Files.walk(start, Integer.MAX_VALUE)) {
+                    return (ArrayList<File>) stream.map(Path::toFile).sorted().collect(Collectors.toList());
+                }
+            } catch (UncheckedIOException ignored) {
+                return null;
+            }
+        }
+    }
+
     public static List<File> listAllSubDirectories(File directory) throws IOException{
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             List<File> directories = new ArrayList<>();
@@ -1411,6 +1542,31 @@ public class RCTdirectory{
                 Path start = directory.toPath();
                 try (Stream<Path> stream = Files.walk(start, 1)) {
                     return stream.filter(p -> Files.isDirectory(p)).map(Path::toFile).sorted().collect(Collectors.toList());
+                }
+            }catch (UncheckedIOException ignored){
+                return null;
+            }
+        }
+    }
+
+    public static ArrayList<File> listAllSubDirectories_ArrayList(File directory) throws IOException{
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            ArrayList<File> directories = new ArrayList<>();
+            File[] files = directory.listFiles();
+            if (files != null) {
+                for (File file : files) {
+                    if (file.isDirectory()) {
+                        directories.add(file);
+                        directories.addAll(listAllSubDirectories(file));
+                    }
+                }
+            }
+            return directories;
+        }else{
+            try {
+                Path start = directory.toPath();
+                try (Stream<Path> stream = Files.walk(start, 1)) {
+                    return (ArrayList<File>) stream.filter(p -> Files.isDirectory(p)).map(Path::toFile).sorted().collect(Collectors.toList());
                 }
             }catch (UncheckedIOException ignored){
                 return null;
@@ -1439,6 +1595,49 @@ public class RCTdirectory{
         }
         return new_list;
     }
+
+    public static ArrayList<File> extractFiles(ArrayList<File> files){
+        ArrayList<File> the_files = new ArrayList<>();
+        for(int index = 0; index<files.size(); index++){
+            if(RCTfile.isPathAFile(files.get(index))){
+                the_files.add(files.get(index));
+            }
+        }
+        return the_files;
+    }
+
+    public static ArrayList<File> extractFiles(File[] files){
+        ArrayList<File> the_files = new ArrayList<>();
+        for(int index = 0; index<files.length; index++){
+            if(RCTfile.isPathAFile(files[index])){
+                the_files.add(files[index]);
+            }
+        }
+        return the_files;
+    }
+
+    public static ArrayList<File> extractDirectories(ArrayList<File> files){
+        ArrayList<File> the_files = new ArrayList<>();
+        for(int index = 0; index<files.size(); index++){
+            if(RCTfile.isPathADirectory(files.get(index))){
+                the_files.add(files.get(index));
+            }
+        }
+        return the_files;
+    }
+
+    public static ArrayList<File> extractDirectories(File[] files){
+        ArrayList<File> the_files = new ArrayList<>();
+        for(int index = 0; index<files.length; index++){
+            if(RCTfile.isPathADirectory(files[index])){
+                the_files.add(files[index]);
+            }
+        }
+        return the_files;
+    }
+
+
+
 
     public static String[] extractFilesFromList(ArrayList<String> list){
         int valid_file_count = 0;
