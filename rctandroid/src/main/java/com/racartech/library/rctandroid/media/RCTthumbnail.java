@@ -58,9 +58,37 @@ public class RCTthumbnail{
         return false;
     }
 
+    public static synchronized boolean doesDirectoryContainThumbnailableFiles(File[] file_paths){
+        for(int index = 0; index< file_paths.length; index++){
+            String current_path = file_paths[index].getAbsolutePath();
+            if(RCTfile.isPathAFile(current_path)){
+                for(int i = 0; i < THUMBNAILABLE_FILE_EXTENSIONS.length; i++){
+                    if(RCTfile.getFileExtension(current_path).equals(THUMBNAILABLE_FILE_EXTENSIONS[i])){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     public static synchronized boolean doesDirectoryContainThumbnailableFiles(ArrayList<String> file_paths){
         for(int index = 0; index< file_paths.size(); index++){
             String current_path = file_paths.get(index);
+            if(RCTfile.isPathAFile(current_path)){
+                for(int i = 0; i < THUMBNAILABLE_FILE_EXTENSIONS.length; i++){
+                    if(RCTfile.getFileExtension(current_path).equals(THUMBNAILABLE_FILE_EXTENSIONS[i])){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public static synchronized boolean doesDirectoryContainThumbnailableFiles_FileArrayList(ArrayList<File> file_paths){
+        for(int index = 0; index< file_paths.size(); index++){
+            String current_path = file_paths.get(index).getAbsolutePath();
             if(RCTfile.isPathAFile(current_path)){
                 for(int i = 0; i < THUMBNAILABLE_FILE_EXTENSIONS.length; i++){
                     if(RCTfile.getFileExtension(current_path).equals(THUMBNAILABLE_FILE_EXTENSIONS[i])){
@@ -85,7 +113,11 @@ public class RCTthumbnail{
 
     public static boolean generateThumbnailForFile(String file_path){
         setUpThumbnailFolder(RCTfile.getParentDirectory(file_path));
-        
+        return true;
+    }
+
+    public static boolean generateThumbnailForFile(File the_file){
+        setUpThumbnailFolder(RCTfile.getParentDirectory(the_file.getAbsolutePath()));
         return true;
     }
 
@@ -156,7 +188,7 @@ public class RCTthumbnail{
 
     public static synchronized boolean generateThumbnailsForThisFiles(
             Context app_context,
-            String current_explored_dir,
+            String parent_dir,
             String[] file_list,
             int thumbnail_width,
             int thumbnail_height){
@@ -164,7 +196,7 @@ public class RCTthumbnail{
         boolean does_need_refresh = false;
 
         if(doesDirectoryContainThumbnailableFiles(file_list)){
-            setUpThumbnailFolder(current_explored_dir);
+            setUpThumbnailFolder(parent_dir);
             for(int index = 0; index < file_list.length; index++) {
                 if (RCTfile.isPathAFile(file_list[index])){
                     if(shouldEvenCheck_ThumbnailExist(RCTfile.getFileExtension(file_list[index]).toLowerCase())) {
@@ -200,7 +232,7 @@ public class RCTthumbnail{
 
     public static synchronized boolean generateThumbnailsForThisFiles(
             Context app_context,
-            String current_explored_dir,
+            String parent_dir,
             ArrayList<String> file_list,
             int thumbnail_width,
             int thumbnail_height){
@@ -208,13 +240,58 @@ public class RCTthumbnail{
         boolean does_need_refresh = false;
 
         if(doesDirectoryContainThumbnailableFiles(file_list)){
-            RCTthumbnail.setUpThumbnailFolder(current_explored_dir);
+            RCTthumbnail.setUpThumbnailFolder(parent_dir);
             for(int index = 0; index < file_list.size(); index++) {
                 if (RCTfile.isPathAFile(file_list.get(index))){
                     if(shouldEvenCheck_ThumbnailExist(RCTfile.getFileExtension(file_list.get(index)).toLowerCase())) {
                         String current_file_thumbnail_file_path = getFile_ThumbnailFilePath(file_list.get(index));
                         File thumbnail_file = new File(current_file_thumbnail_file_path);
                         File the_file = new File(file_list.get(index));
+                        if (!RCTfile.doesFileExist(thumbnail_file)) {
+                            Bitmap thumb_bit = null;
+                            thumb_bit = getBitmapThumbnail(the_file,app_context,thumbnail_width,thumbnail_height);
+                            if(thumb_bit != null){
+                                RCTbitmap.saveBitmapAsFile(thumb_bit, current_file_thumbnail_file_path);
+                                does_need_refresh = true;
+                            } else {
+                                RCTfile.createFile(thumbnail_file);
+                            }
+                        }else{
+                            long file_size_bytes = RCTfile.getSize(thumbnail_file);
+                            if(file_size_bytes == 0){
+                                Bitmap thumb_bit = null;
+                                thumb_bit = getBitmapThumbnail(the_file,app_context,thumbnail_width,thumbnail_height);
+                                if(thumb_bit != null){
+                                    RCTbitmap.saveBitmapAsFile(thumb_bit, current_file_thumbnail_file_path);
+                                    does_need_refresh = true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return does_need_refresh;
+    }
+
+
+    public static synchronized boolean generateThumbnailsForThisFiles_FileArrayList(
+            Context app_context,
+            String parent_dir,
+            ArrayList<File> file_list,
+            int thumbnail_width,
+            int thumbnail_height){
+
+        boolean does_need_refresh = false;
+
+        if(doesDirectoryContainThumbnailableFiles_FileArrayList(file_list)){
+            RCTthumbnail.setUpThumbnailFolder(parent_dir);
+            for(int index = 0; index < file_list.size(); index++) {
+                if (RCTfile.isPathAFile(file_list.get(index))){
+                    if(shouldEvenCheck_ThumbnailExist(RCTfile.getFileExtension(file_list.get(index)).toLowerCase())) {
+                        String current_file_thumbnail_file_path = getFile_ThumbnailFilePath(file_list.get(index).getAbsolutePath());
+                        File thumbnail_file = new File(current_file_thumbnail_file_path);
+                        File the_file = file_list.get(index);
                         if (!RCTfile.doesFileExist(thumbnail_file)) {
                             Bitmap thumb_bit = null;
                             thumb_bit = getBitmapThumbnail(the_file,app_context,thumbnail_width,thumbnail_height);
