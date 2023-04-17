@@ -354,44 +354,38 @@ public class RCTdirectory{
 
 
 
-    public static String[] sortList(String[] filedir_list,boolean directory_first){
-        String[] new_list = new String[filedir_list.length];
-        int current_index = 0;
+    public static void sortList(String[] filedir_list, boolean directory_first){
         if(directory_first){
-            for(int index = 0; index<filedir_list.length; index++){
-                if(RCTfile.isPathADirectory(filedir_list[index])){
-                    new_list[current_index] = filedir_list[index];
-                    current_index++;
+            int current_index = 0;
+            for(int i = 0; i < filedir_list.length; i++){
+                if(RCTfile.isPathADirectory(filedir_list[i])){
+                    continue;
                 }
-            }
-            for(int index = 0; index<filedir_list.length; index++){
-                if(RCTfile.isPathAFile(filedir_list[index])){
-                    new_list[current_index] = filedir_list[index];
-                    current_index++;
-                }
+                String path = filedir_list[i];
+                System.arraycopy(filedir_list, current_index, filedir_list, current_index + 1, i - current_index);
+                filedir_list[current_index] = path;
+                current_index++;
             }
         }else{
+            Arrays.sort(filedir_list);
         }
-        return new_list;
     }
 
-    public static ArrayList<String> sortList(ArrayList<String> filedir_list, boolean directory_first){
-        ArrayList<String> new_list = new ArrayList<>();
+
+    public static void sortList(ArrayList<String> filedir_list, boolean directory_first){
         if(directory_first){
-            for(int index = 0; index<filedir_list.size(); index++){
-                if(RCTfile.isPathADirectory(filedir_list.get(index))){
-                    new_list.add(filedir_list.get(index));
+            for(int i = 0; i < filedir_list.size(); i++){
+                if(RCTfile.isPathADirectory(filedir_list.get(i))){
+                    continue;
                 }
-            }
-            for(int index = 0; index<filedir_list.size(); index++){
-                if(RCTfile.isPathAFile(filedir_list.get(index))){
-                    new_list.add(filedir_list.get(index));
-                }
+                String path = filedir_list.remove(i);
+                filedir_list.add(0, path);
             }
         }else{
+            Collections.sort(filedir_list);
         }
-        return new_list;
     }
+
 
     public static long getFileCount(String dir_path){
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
