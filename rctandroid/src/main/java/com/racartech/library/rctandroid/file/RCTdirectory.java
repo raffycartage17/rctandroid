@@ -374,15 +374,66 @@ public class RCTdirectory{
 
     public static void sortList(ArrayList<String> filedir_list, boolean directory_first){
         if(directory_first){
-            for(int i = 0; i < filedir_list.size(); i++){
-                if(RCTfile.isPathADirectory(filedir_list.get(i))){
-                    continue;
+            ArrayList<String> temp_list = new ArrayList<>();
+            temp_list.addAll(filedir_list);
+            filedir_list.clear();
+            for(int index = 0; index<temp_list.size(); index++){
+                if(RCTfile.isPathADirectory(temp_list.get(index))){
+                    filedir_list.add(temp_list.get(index));
                 }
-                String path = filedir_list.remove(i);
-                filedir_list.add(0, path);
+            }
+            for(int index = 0; index<temp_list.size(); index++){
+                if(RCTfile.isPathAFile(temp_list.get(index))){
+                    filedir_list.add(temp_list.get(index));
+                }
             }
         }else{
-            Collections.sort(filedir_list);
+            ArrayList<String> temp_list = new ArrayList<>();
+            temp_list.addAll(filedir_list);
+            filedir_list.clear();
+            for(int index = 0; index<temp_list.size(); index++){
+                if(RCTfile.isPathAFile(temp_list.get(index))){
+                    filedir_list.add(temp_list.get(index));
+                }
+            }
+            for(int index = 0; index<temp_list.size(); index++){
+                if(RCTfile.isPathADirectory(temp_list.get(index))){
+                    filedir_list.add(temp_list.get(index));
+                }
+            }
+        }
+    }
+
+    public static void sortList(ArrayList<String> filedir_list,Comparator<String> comparator,boolean directory_first){
+        filedir_list.sort(comparator);
+        if(directory_first){
+            ArrayList<String> temp_list = new ArrayList<>();
+            temp_list.addAll(filedir_list);
+            filedir_list.clear();
+            for(int index = 0; index<temp_list.size(); index++){
+                if(RCTfile.isPathADirectory(temp_list.get(index))){
+                    filedir_list.add(temp_list.get(index));
+                }
+            }
+            for(int index = 0; index<temp_list.size(); index++){
+                if(RCTfile.isPathAFile(temp_list.get(index))){
+                    filedir_list.add(temp_list.get(index));
+                }
+            }
+        }else{
+            ArrayList<String> temp_list = new ArrayList<>();
+            temp_list.addAll(filedir_list);
+            filedir_list.clear();
+            for(int index = 0; index<temp_list.size(); index++){
+                if(RCTfile.isPathAFile(temp_list.get(index))){
+                    filedir_list.add(temp_list.get(index));
+                }
+            }
+            for(int index = 0; index<temp_list.size(); index++){
+                if(RCTfile.isPathADirectory(temp_list.get(index))){
+                    filedir_list.add(temp_list.get(index));
+                }
+            }
         }
     }
 
