@@ -39,6 +39,15 @@ import java.util.stream.Stream;
 public class RCTdirectory{
 
 
+    public final static int SORT_TYPE_DIRECTORY_FIRST = 0;
+    public final static int SORT_TYPE_FILE_FIRST = 1;
+
+    public final static int SORT_MODE_ALPHABETICAL_ASCENDING = 0;
+    public final static int SORT_MODE_ALPHABETICAL_DESCENDING = 1;
+    public final static int SORT_MODE_MODIFIED_TIME_NEWEST_FIRST= 2;
+    public final static int SORT_MODE_MODIFIED_TIME_OLDEST_FIRST= 3;
+    public final static int SORT_MODE_SIZE_SMALLEST_FIRST= 2;
+    public final static int SORT_MODE_SIZE_LARGEST_FIRST= 2;
 
 
     public static ArrayList<String> getMountedStorageHomePath(Context app_context){
@@ -355,19 +364,69 @@ public class RCTdirectory{
 
 
     public static void sortList(String[] filedir_list, boolean directory_first){
+        String[] temp_list = new String[filedir_list.length];
+        temp_list = RCTarray.copy(filedir_list);
+        int current_index = 0;
         if(directory_first){
-            int current_index = 0;
-            for(int i = 0; i < filedir_list.length; i++){
-                if(RCTfile.isPathADirectory(filedir_list[i])){
-                    continue;
+            for(int index = 0; index<temp_list.length; index++){
+                if(RCTfile.isPathADirectory(temp_list[index])){
+                    filedir_list[current_index] = temp_list[index];
+                    current_index++;
                 }
-                String path = filedir_list[i];
-                System.arraycopy(filedir_list, current_index, filedir_list, current_index + 1, i - current_index);
-                filedir_list[current_index] = path;
-                current_index++;
+            }
+            for(int index = 0; index<temp_list.length; index++){
+                if(RCTfile.isPathAFile(temp_list[index])){
+                    filedir_list[current_index] = temp_list[index];
+                    current_index++;
+                }
             }
         }else{
-            Arrays.sort(filedir_list);
+            for(int index = 0; index<temp_list.length; index++){
+                if(RCTfile.isPathAFile(temp_list[index])){
+                    filedir_list[current_index] = temp_list[index];
+                    current_index++;
+                }
+            }
+            for(int index = 0; index<temp_list.length; index++){
+                if(RCTfile.isPathADirectory(temp_list[index])){
+                    filedir_list[current_index] = temp_list[index];
+                    current_index++;
+                }
+            }
+        }
+    }
+
+    public static void sortList(String[] filedir_list, Comparator<String> comparator, boolean directory_first){
+        String[] temp_list = new String[filedir_list.length];
+        Arrays.sort(temp_list,comparator);
+        temp_list = RCTarray.copy(filedir_list);
+        int current_index = 0;
+        if(directory_first){
+            for(int index = 0; index<temp_list.length; index++){
+                if(RCTfile.isPathADirectory(temp_list[index])){
+                    filedir_list[current_index] = temp_list[index];
+                    current_index++;
+                }
+            }
+            for(int index = 0; index<temp_list.length; index++){
+                if(RCTfile.isPathAFile(temp_list[index])){
+                    filedir_list[current_index] = temp_list[index];
+                    current_index++;
+                }
+            }
+        }else{
+            for(int index = 0; index<temp_list.length; index++){
+                if(RCTfile.isPathAFile(temp_list[index])){
+                    filedir_list[current_index] = temp_list[index];
+                    current_index++;
+                }
+            }
+            for(int index = 0; index<temp_list.length; index++){
+                if(RCTfile.isPathADirectory(temp_list[index])){
+                    filedir_list[current_index] = temp_list[index];
+                    current_index++;
+                }
+            }
         }
     }
 
@@ -436,6 +495,32 @@ public class RCTdirectory{
             }
         }
     }
+
+
+
+    /*
+    public static void sortList(ArrayList<String> filedir_list,int sort_type,int sort_mode,boolean show_hidden_files){
+        ArrayList<String> directories = new ArrayList<>();
+        ArrayList<String> files = new ArrayList<>();
+
+        for(int index = 0; index<filedir_list.size(); index++){
+            if(RCTfile.isPathADirectory(filedir_list.get(index))){
+                directories.add(filedir_list.get(index));
+            }else{
+                files.add(filedir_list.get(index));
+            }
+        }
+        filedir_list.clear();
+        directories.sort(String.CASE_INSENSITIVE_ORDER);
+        files.sort(String.CASE_INSENSITIVE_ORDER);
+
+        switch(sort_mode){
+            case SORT_MODE_ALPHABETICAL_ASCENDING:
+        }
+    }
+     */
+
+
 
 
     public static long getFileCount(String dir_path){
