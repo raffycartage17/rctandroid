@@ -39,6 +39,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -1475,6 +1478,22 @@ public class RCTfile{
         return false;
     }
 
+    public static boolean overrideFileOnURL(String url, String[] file_contents) throws IOException {
+        HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
+        conn.setRequestMethod("PUT");
+        conn.setDoOutput(true);
+        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()))) {
+            for (String new_file_datum : file_contents) {
+                writer.write(new_file_datum);
+                writer.newLine();
+            }
+            writer.flush();
+        }
+        int responseCode = conn.getResponseCode();
+        return (responseCode >= 200 && responseCode < 300);
+    }
+
+
     public static boolean overrideFile_FilePaths(String file_path,List<File> file_list) throws IOException{
         File target_file = new File(file_path);
         if(target_file.exists()){
@@ -1565,6 +1584,19 @@ public class RCTfile{
         }
         return lines.toArray(new String[0]);
     }
+
+    public static String[] readFileFromURL(String url) throws IOException {
+        List<String> lines = new ArrayList<>();
+        URLConnection conn = new URL(url).openConnection();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                lines.add(line);
+            }
+        }
+        return lines.toArray(new String[0]);
+    }
+
 
     public static List<String> readFile_List(File file) throws IOException {
         List<String> lines = new ArrayList<>();

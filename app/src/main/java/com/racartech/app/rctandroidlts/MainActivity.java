@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
@@ -27,6 +28,7 @@ import com.racartech.app.rctandroidlts.window1.Window1;
 import com.racartech.library.rctandroid.calendar.RCTcalendar;
 import com.racartech.library.rctandroid.file.RCTdirectory;
 import com.racartech.library.rctandroid.file.RCTfile;
+import com.racartech.library.rctandroid.file.RCTzip;
 import com.racartech.library.rctandroid.hardware.RCTdiskInformation;
 import com.racartech.library.rctandroid.math.RCTdataSizeConverter;
 import com.racartech.library.rctandroid.notifications.RCTnotifications;
@@ -55,10 +57,18 @@ public class MainActivity extends AppCompatActivity {
     private int REQUEST_CODE_PERMISSIONS = 1001;
     private final String[] REQUIRED_PERMISSIONS = new String[]{"android.permission.CAMERA", "android.permission.WRITE_EXTERNAL_STORAGE","android.permission.READ_EXTERNAL_STORAGE"};
 
+    private static String TEST_FILE_URL = "https://firebasestorage.googleapis.com/v0/b/halalife-e0c49.appspot.com/o/database%2Ffirebase_storage_test.txt?alt=media&token=c74fdd32-ffb3-4f0c-b7ab-40a284f32656";
+    private static String TEST_FILE_URT = "https://firebasestorage.googleapis.com/v0/b/halalife-e0c49.appspot.com/o/database%2Ffirebase_storage_test.txt?alt=media&token=c74fdd32-ffb3-4f0c-b7ab-40a284f32656";
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
 
         f1 = findViewById(R.id.mm_f1_button);
@@ -94,6 +104,58 @@ public class MainActivity extends AppCompatActivity {
         f1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String[] file_contents = new String[]{"Failed"};
+                        try{
+                        file_contents = RCTfile.readFileFromURL(TEST_FILE_URL);
+                        }catch(IOException ignored){
+                            Toast.makeText(MainActivity.this, "Task Failed", Toast.LENGTH_SHORT).show();
+                        }
+
+                        String[] finalFile_contents = file_contents;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run(){
+                                Toast.makeText(MainActivity.this, finalFile_contents[0], Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }).start();
+
+
+            }
+        });
+        f2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        boolean success = false;
+                        try {
+                            String[] new_file_contents = {
+                                    "New Contents Index 0",
+                                    "New Contents Index 1",
+                                    "New Contents Index 2",
+                                    "New Contents Index 3",
+                                    "New Contents Index 4",
+                                    "New Contents Index 5"};
+                            success = RCTfile.overrideFileOnURL(TEST_FILE_URL, new_file_contents);
+                        }catch (Exception ex){
+                            ex.printStackTrace();
+                        }
+                        boolean finalSuccess = success;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run(){
+                                Toast.makeText(MainActivity.this, "Task Boolean : ".concat(String.valueOf(finalSuccess)), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }).start();
             }
         });
 
@@ -110,45 +172,47 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        
+
 
 
     }
 
     private void promptUserAllowPermission(){
-        if(!Environment.isExternalStorageManager()){
-            Context app_context = MainActivity.this;
-            Dialog request_dialog = new Dialog(app_context);
-            request_dialog.setContentView(R.layout.standard_dialog_box);
-            request_dialog.setCancelable(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if(!Environment.isExternalStorageManager()){
+                Context app_context = MainActivity.this;
+                Dialog request_dialog = new Dialog(app_context);
+                request_dialog.setContentView(R.layout.standard_dialog_box);
+                request_dialog.setCancelable(true);
 
-            TextView dialog_title = request_dialog.findViewById(R.id.standard_dialog_title_textview);
-            TextView dialog_description = request_dialog.findViewById(R.id.standard_dialog_description_textview);
-            Button ok_button = request_dialog.findViewById(R.id.standard_dialog_right_operation_button);
-            Button cancel_button = request_dialog.findViewById(R.id.standard_dialog_left_operation_button);
-            ok_button.setText(app_context.getString(R.string.OK));
-            cancel_button.setText(app_context.getString(R.string.Cancel));
-            dialog_title.setText(app_context.getString(R.string.app_name));
-            dialog_description.setText(app_context.getString(R.string.access_all_files_permission_dialog_request_description));
-            request_dialog.show();
-            ok_button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent new_intent = new Intent(ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION, Uri.parse("package:" + BuildConfig.APPLICATION_ID));
-                    startActivityForResult(new_intent, MANAGE_EXTERNAL_STORAGE_PERMISSION_CODE);
-                    request_dialog.dismiss();
-                }
-            });
-            cancel_button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    RCTnotifications.makeToast_SHORT(app_context, "Permission Request Denied");
-                    request_dialog.dismiss();
-                }
-            });
+                TextView dialog_title = request_dialog.findViewById(R.id.standard_dialog_title_textview);
+                TextView dialog_description = request_dialog.findViewById(R.id.standard_dialog_description_textview);
+                Button ok_button = request_dialog.findViewById(R.id.standard_dialog_right_operation_button);
+                Button cancel_button = request_dialog.findViewById(R.id.standard_dialog_left_operation_button);
+                ok_button.setText(app_context.getString(R.string.OK));
+                cancel_button.setText(app_context.getString(R.string.Cancel));
+                dialog_title.setText(app_context.getString(R.string.app_name));
+                dialog_description.setText(app_context.getString(R.string.access_all_files_permission_dialog_request_description));
+                request_dialog.show();
+                ok_button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent new_intent = new Intent(ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION, Uri.parse("package:" + BuildConfig.APPLICATION_ID));
+                        startActivityForResult(new_intent, MANAGE_EXTERNAL_STORAGE_PERMISSION_CODE);
+                        request_dialog.dismiss();
+                    }
+                });
+                cancel_button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        RCTnotifications.makeToast_SHORT(app_context, "Permission Request Denied");
+                        request_dialog.dismiss();
+                    }
+                });
+            }
         }
-        checkPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE,WRITE_EXTERNAL_STORAGE_PERMISSION_CODE);
-        checkPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE,READ_EXTERNAL_STORAGE_PERMISSION_CODE);
+        checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE,WRITE_EXTERNAL_STORAGE_PERMISSION_CODE);
+        checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE,READ_EXTERNAL_STORAGE_PERMISSION_CODE);
 
 
     }
