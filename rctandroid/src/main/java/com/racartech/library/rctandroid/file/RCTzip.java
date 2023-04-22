@@ -12,10 +12,7 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 public class RCTzip {
-
     private static final int BUFFER_SIZE = 4096;
-
-
 
     public static void compress(String[] file_dir_paths,String zip_file_path) throws IOException{
         ZipUtility zipUtil = new ZipUtility();
@@ -26,28 +23,6 @@ public class RCTzip {
         ZipUtility zipUtil = new ZipUtility();
         zipUtil.zip(new String[]{target_path},zip_file_path);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     public static void extract(String zip_file_path, String destination_directory) throws IOException {
