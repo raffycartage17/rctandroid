@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
     private final String[] REQUIRED_PERMISSIONS = new String[]{"android.permission.CAMERA", "android.permission.WRITE_EXTERNAL_STORAGE","android.permission.READ_EXTERNAL_STORAGE"};
 
     private static String TEST_FILE_URL = "https://firebasestorage.googleapis.com/v0/b/halalife-e0c49.appspot.com/o/database%2Ffirebase_storage_test.txt?alt=media&token=c74fdd32-ffb3-4f0c-b7ab-40a284f32656";
-    private static String TEST_FILE_URT = "https://firebasestorage.googleapis.com/v0/b/halalife-e0c49.appspot.com/o/database%2Ffirebase_storage_test.txt?alt=media&token=c74fdd32-ffb3-4f0c-b7ab-40a284f32656";
 
 
 
