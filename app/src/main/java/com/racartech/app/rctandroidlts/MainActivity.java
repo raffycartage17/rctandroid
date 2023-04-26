@@ -4,7 +4,6 @@ import static android.provider.Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMI
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -13,6 +12,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,19 +25,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.racartech.app.rctandroidlts.window1.Window1;
-import com.racartech.library.rctandroid.calendar.RCTcalendar;
-import com.racartech.library.rctandroid.file.RCTdirectory;
 import com.racartech.library.rctandroid.file.RCTfile;
-import com.racartech.library.rctandroid.file.RCTzip;
-import com.racartech.library.rctandroid.hardware.RCTdiskInformation;
-import com.racartech.library.rctandroid.math.RCTdataSizeConverter;
+import com.racartech.library.rctandroid.json.RCTjson;
+import com.racartech.library.rctandroid.media.RCTbitmap;
+import com.racartech.library.rctandroid.net.RCTurl;
 import com.racartech.library.rctandroid.notifications.RCTnotifications;
 import com.racartech.library.rctandroid.permission.RCTpermission;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -48,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     EditText textbox;
     TextView textview_1;
     TextView textview_2;
+    TextView debug_textview;
     Switch switch_1,switch_2;
 
 
@@ -57,8 +55,9 @@ public class MainActivity extends AppCompatActivity {
     private int REQUEST_CODE_PERMISSIONS = 1001;
     private final String[] REQUIRED_PERMISSIONS = new String[]{"android.permission.CAMERA", "android.permission.WRITE_EXTERNAL_STORAGE","android.permission.READ_EXTERNAL_STORAGE"};
 
-    private static String TEST_FILE_URL = "https://firebasestorage.googleapis.com/v0/b/halalife-e0c49.appspot.com/o/database%2Ffirebase_storage_test.txt?alt=media&token=c74fdd32-ffb3-4f0c-b7ab-40a284f32656";
+    //private static String TEST_FILE_URL = "https://firebasestorage.googleapis.com/v0/b/halalife-21bd8.appspot.com/o/halalife_plant_database.txt?alt=media&token=dd0bb6af-4c6e-449f-be86-9bbd42411d5a";
 
+    private static String TEST_FILE_URL = "https://www.dropbox.com/home?preview=halalife_plant_database.txt";
 
 
 
@@ -79,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
         f7 = findViewById(R.id.mm_f7_button);
         f8 = findViewById(R.id.mm_f8_button);
         f9 = findViewById(R.id.mm_f9_button);
+        debug_textview = findViewById(R.id.mm_debug_textview);
 
         window_1_btn = findViewById(R.id.mm_window1_button);
         window_2_btn = findViewById(R.id.mm_window2_button);
@@ -99,6 +99,16 @@ public class MainActivity extends AppCompatActivity {
         },0);
         promptUserAllowPermission();
 
+        String debug_file = RCTfile.getDir_ExternalStorageRoot().concat("/apath/debug.txt");
+        RCTfile.createFile(debug_file);
+
+
+        f3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
+
 
         f1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
                         String[] file_contents = new String[]{"Failed"};
                         try{
                         file_contents = RCTfile.readFileFromURL(TEST_FILE_URL);
+                        RCTfile.overrideFile(debug_file,file_contents);
                         }catch(IOException ignored){
                             Toast.makeText(MainActivity.this, "Task Failed", Toast.LENGTH_SHORT).show();
                         }
@@ -118,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run(){
-                                Toast.makeText(MainActivity.this, finalFile_contents[0], Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, finalFile_contents[5], Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
@@ -142,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
                                     "New Contents Index 3",
                                     "New Contents Index 4",
                                     "New Contents Index 5"};
-                            success = RCTfile.overrideFileOnURL(TEST_FILE_URL, new_file_contents);
+                            success = RCTfile.overrideFileFromURL(TEST_FILE_URL, new_file_contents);
                         }catch (Exception ex){
                             ex.printStackTrace();
                         }

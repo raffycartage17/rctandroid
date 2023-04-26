@@ -1,8 +1,6 @@
 package com.racartech.library.rctandroid.file;
 
-import android.app.Activity;
 import android.content.ActivityNotFoundException;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -19,7 +17,6 @@ import android.webkit.MimeTypeMap;
 
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
-import androidx.documentfile.provider.DocumentFile;
 
 import com.racartech.library.rctandroid.array.RCTarray;
 import com.racartech.library.rctandroid.math.RCTdataSizeConverter;
@@ -1478,20 +1475,7 @@ public class RCTfile{
         return false;
     }
 
-    public static boolean overrideFileOnURL(String url, String[] file_contents) throws IOException {
-        HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
-        conn.setRequestMethod("PUT");
-        conn.setDoOutput(true);
-        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()))) {
-            for (String new_file_datum : file_contents) {
-                writer.write(new_file_datum);
-                writer.newLine();
-            }
-            writer.flush();
-        }
-        int responseCode = conn.getResponseCode();
-        return (responseCode >= 200 && responseCode < 300);
-    }
+
 
 
 
@@ -1598,6 +1582,23 @@ public class RCTfile{
         }
         return lines.toArray(new String[0]);
     }
+
+    public static boolean overrideFileFromURL(String url_token, String[] file_contents) throws IOException {
+        URL url = new URL(url_token);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setDoOutput(true);
+        connection.setRequestMethod("PUT");
+        OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
+        for (String line : file_contents) {
+            writer.write(line);
+            writer.write("\n");
+        }
+        writer.close();
+        return connection.getResponseCode() == HttpURLConnection.HTTP_OK;
+    }
+
+
+
 
 
     public static List<String> readFile_List(File file) throws IOException {
