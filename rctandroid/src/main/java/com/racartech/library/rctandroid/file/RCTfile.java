@@ -70,6 +70,24 @@ public class RCTfile{
         }
     }
 
+    public static boolean createAndOverride(String file_path,ArrayList<String> file_contents){
+        RCTfile.createFile(file_path);
+        try {
+            return RCTfile.overrideFile(file_path, file_contents);
+        }catch(IOException ignored){
+            return false;
+        }
+    }
+
+    public static boolean createAndOverride(String file_path,List<String> file_contents){
+        RCTfile.createFile(file_path);
+        try {
+            return RCTfile.overrideFile(file_path, file_contents);
+        }catch(IOException ignored){
+            return false;
+        }
+    }
+
 
 
     public static ArrayList<File> convert_FileArrayList(ArrayList<String> file_paths, boolean check_if_exist){
