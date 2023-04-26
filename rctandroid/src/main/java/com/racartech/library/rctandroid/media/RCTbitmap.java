@@ -38,7 +38,7 @@ public class RCTbitmap{
         return bitmap;
     }
 
-    public static Bitmap getBitmap(String image_url_string) {
+    public static Bitmap getBitmapForURL(String image_url_string) {
         Bitmap bitmap = null;
         HttpURLConnection connection = null;
         try {
