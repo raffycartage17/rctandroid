@@ -14,6 +14,83 @@ import java.lang.reflect.Type;
 
 public class RCTjson {
 
+
+    public static String convertArrayListToString_Integer(ArrayList<Integer> arrayList) {
+        // Create a Gson object
+        Gson gson = new Gson();
+
+        // Convert the ArrayList to JSON
+        String json = gson.toJson(arrayList);
+
+        // Return the JSON string
+        return json;
+    }
+
+    public static String convertArrayListToString_Double(ArrayList<Double> arrayList) {
+        // Create a Gson object
+        Gson gson = new Gson();
+
+        // Convert the ArrayList to JSON
+        String json = gson.toJson(arrayList);
+
+        // Return the JSON string
+        return json;
+    }
+
+    public static String convertArrayListToString_Long(ArrayList<Long> arrayList) {
+        // Create a Gson object
+        Gson gson = new Gson();
+
+        // Convert the ArrayList to JSON
+        String json = gson.toJson(arrayList);
+
+        // Return the JSON string
+        return json;
+    }
+
+    public static String convertArrayListToString_Boolean(ArrayList<Boolean> arrayList) {
+        // Create a Gson object
+        Gson gson = new Gson();
+
+        // Convert the ArrayList to JSON
+        String json = gson.toJson(arrayList);
+
+        // Return the JSON string
+        return json;
+    }
+
+    public static String convertArrayListToString_Float(ArrayList<Float> arrayList) {
+        // Create a Gson object
+        Gson gson = new Gson();
+
+        // Convert the ArrayList to JSON
+        String json = gson.toJson(arrayList);
+
+        // Return the JSON string
+        return json;
+    }
+    public static String convertArrayListToString_Byte(ArrayList<Byte> arrayList) {
+        // Create a Gson object
+        Gson gson = new Gson();
+
+        // Convert the ArrayList to JSON
+        String json = gson.toJson(arrayList);
+
+        // Return the JSON string
+        return json;
+    }
+
+    public static String convertArrayListToString_Char(ArrayList<Character> arrayList) {
+        // Create a Gson object
+        Gson gson = new Gson();
+
+        // Convert the ArrayList to JSON
+        String json = gson.toJson(arrayList);
+
+        // Return the JSON string
+        return json;
+    }
+
     public static String convertArrayListToString(ArrayList<String> arrayList) {
         // Create a Gson object
         Gson gson = new Gson();
@@ -36,6 +113,92 @@ public class RCTjson {
         // Return the ArrayList
         return arrayList;
     }
+
+    public static ArrayList<Integer> convertStringToArrayListInteger(String jsonString) {
+        // Create a Gson object
+        Gson gson = new Gson();
+
+        // Convert the JSON string to ArrayList
+        Type type = new TypeToken<ArrayList<Integer>>(){}.getType();
+        ArrayList<Integer> arrayList = gson.fromJson(jsonString, type);
+
+        // Return the ArrayList
+        return arrayList;
+    }
+
+    public static ArrayList<Double> convertStringToArrayListDouble(String jsonString) {
+        // Create a Gson object
+        Gson gson = new Gson();
+
+        // Convert the JSON string to ArrayList
+        Type type = new TypeToken<ArrayList<Double>>(){}.getType();
+        ArrayList<Double> arrayList = gson.fromJson(jsonString, type);
+
+        // Return the ArrayList
+        return arrayList;
+    }
+
+    public static ArrayList<Float> convertStringToArrayListFloat(String jsonString) {
+        // Create a Gson object
+        Gson gson = new Gson();
+
+        // Convert the JSON string to ArrayList
+        Type type = new TypeToken<ArrayList<Float>>(){}.getType();
+        ArrayList<Float> arrayList = gson.fromJson(jsonString, type);
+
+        // Return the ArrayList
+        return arrayList;
+    }
+
+    public static ArrayList<Long> convertStringToArrayListLong(String jsonString) {
+        // Create a Gson object
+        Gson gson = new Gson();
+
+        // Convert the JSON string to ArrayList
+        Type type = new TypeToken<ArrayList<Long>>(){}.getType();
+        ArrayList<Long> arrayList = gson.fromJson(jsonString, type);
+
+        // Return the ArrayList
+        return arrayList;
+    }
+
+    public static ArrayList<Byte> convertStringToArrayListByte(String jsonString) {
+        // Create a Gson object
+        Gson gson = new Gson();
+
+        // Convert the JSON string to ArrayList
+        Type type = new TypeToken<ArrayList<Byte>>(){}.getType();
+        ArrayList<Byte> arrayList = gson.fromJson(jsonString, type);
+
+        // Return the ArrayList
+        return arrayList;
+    }
+
+    public static ArrayList<Boolean> convertStringToArrayListBoolean(String jsonString) {
+        // Create a Gson object
+        Gson gson = new Gson();
+
+        // Convert the JSON string to ArrayList
+        Type type = new TypeToken<ArrayList<Boolean>>(){}.getType();
+        ArrayList<Boolean> arrayList = gson.fromJson(jsonString, type);
+
+        // Return the ArrayList
+        return arrayList;
+    }
+
+    public static ArrayList<Character> convertStringToArrayListCharacter(String jsonString) {
+        // Create a Gson object
+        Gson gson = new Gson();
+
+        // Convert the JSON string to ArrayList
+        Type type = new TypeToken<ArrayList<Character>>(){}.getType();
+        ArrayList<Character> arrayList = gson.fromJson(jsonString, type);
+
+        // Return the ArrayList
+        return arrayList;
+    }
+
+
 
 
     public static JSONArray arrayListToJsonArray_String(ArrayList<String> arrayList) {
