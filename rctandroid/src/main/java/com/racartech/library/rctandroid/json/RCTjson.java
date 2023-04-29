@@ -15,6 +15,10 @@ import java.lang.reflect.Type;
 public class RCTjson {
 
 
+
+    //This is a test comment, dont mind this
+    public static String TEST_STRING = "Hello Dont Mind this Variable";
+
     public static String convertArrayListToString_Integer(ArrayList<Integer> arrayList) {
         // Create a Gson object
         Gson gson = new Gson();
