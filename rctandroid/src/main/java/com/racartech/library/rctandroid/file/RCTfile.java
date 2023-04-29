@@ -61,32 +61,38 @@ public class RCTfile{
     public final static int RELATIVE_SDCARD_STORAGE = 1;
 
 
-    public static boolean createAndOverride(String file_path,String[] file_contents){
+    public static boolean createAndOverride(String file_path,String[] file_contents) throws IOException {
         RCTfile.createFile(file_path);
-        try {
-            return RCTfile.overrideFile(file_path, file_contents);
-        }catch(IOException ignored){
-            return false;
-        }
+        return RCTfile.overrideFile(file_path, file_contents);
     }
 
-    public static boolean createAndOverride(String file_path,ArrayList<String> file_contents){
+    public static boolean createAndOverride(String file_path,ArrayList<String> file_contents) throws IOException {
         RCTfile.createFile(file_path);
-        try {
-            return RCTfile.overrideFile(file_path, file_contents);
-        }catch(IOException ignored){
-            return false;
-        }
+        return RCTfile.overrideFile(file_path, file_contents);
     }
 
-    public static boolean createAndOverride(String file_path,List<String> file_contents){
+    public static boolean createAndOverride(String file_path,List<String> file_contents) throws IOException {
         RCTfile.createFile(file_path);
-        try {
-            return RCTfile.overrideFile(file_path, file_contents);
-        }catch(IOException ignored){
-            return false;
-        }
+        return RCTfile.overrideFile(file_path, file_contents);
     }
+
+    public static boolean createAndOverride(String file_path,String file_content) throws IOException {
+        RCTfile.createFile(file_path);
+        return RCTfile.overrideFile(file_path,new String[]{file_content});
+    }
+
+
+
+
+
+    public static boolean overrideFile(String file_path,String file_contents) throws IOException{
+        return overrideFile(file_path,new String[]{file_contents});
+    }
+
+    public static boolean overrideFile(File file_path,String file_contents) throws IOException{
+        return overrideFile(file_path.getAbsolutePath(),new String[]{file_contents});
+    }
+
 
 
 

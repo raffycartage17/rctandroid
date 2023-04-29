@@ -24,6 +24,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.racartech.app.rctandroidlts.window1.TestClass;
 import com.racartech.app.rctandroidlts.window1.Window1;
 import com.racartech.library.rctandroid.file.RCTfile;
 import com.racartech.library.rctandroid.json.RCTjson;
@@ -34,7 +35,11 @@ import com.racartech.library.rctandroid.permission.RCTpermission;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -66,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        
 
 
 
@@ -113,59 +119,17 @@ public class MainActivity extends AppCompatActivity {
         f1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        String[] file_contents = new String[]{"Failed"};
-                        try{
-                        file_contents = RCTfile.readFileFromURL(TEST_FILE_URL);
-                        RCTfile.overrideFile(debug_file,file_contents);
-                        }catch(IOException ignored){
-                            Toast.makeText(MainActivity.this, "Task Failed", Toast.LENGTH_SHORT).show();
-                        }
-
-                        String[] finalFile_contents = file_contents;
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run(){
-                                Toast.makeText(MainActivity.this, finalFile_contents[5], Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                        TestClass.printSharedFolders();
                     }
                 }).start();
-
-
             }
         });
         f2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        boolean success = false;
-                        try {
-                            String[] new_file_contents = {
-                                    "New Contents Index 0",
-                                    "New Contents Index 1",
-                                    "New Contents Index 2",
-                                    "New Contents Index 3",
-                                    "New Contents Index 4",
-                                    "New Contents Index 5"};
-                            success = RCTfile.overrideFileFromURL(TEST_FILE_URL, new_file_contents);
-                        }catch (Exception ex){
-                            ex.printStackTrace();
-                        }
-                        boolean finalSuccess = success;
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run(){
-                                Toast.makeText(MainActivity.this, "Task Boolean : ".concat(String.valueOf(finalSuccess)), Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                }).start();
             }
         });
 
