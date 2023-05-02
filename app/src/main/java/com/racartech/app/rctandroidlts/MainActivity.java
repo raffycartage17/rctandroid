@@ -29,6 +29,7 @@ import com.racartech.app.rctandroidlts.window1.Window1;
 import com.racartech.library.rctandroid.file.RCTfile;
 import com.racartech.library.rctandroid.json.RCTjson;
 import com.racartech.library.rctandroid.media.RCTbitmap;
+import com.racartech.library.rctandroid.net.RCTinternet;
 import com.racartech.library.rctandroid.net.RCTurl;
 import com.racartech.library.rctandroid.notifications.RCTnotifications;
 import com.racartech.library.rctandroid.permission.RCTpermission;
@@ -122,7 +123,10 @@ public class MainActivity extends AppCompatActivity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        TestClass.printSharedFolders();
+                        String test_url = "https://firebasestorage.googleapis.com/v0/b/racartech-81aff.appspot.com/o/plant_dictionary%2Fplants_dictionary_db.txt?alt=media&token=047bcaff-fe90-4590-a578-94d897ecfa55";
+                        RCTinternet.downloadFile(
+                                RCTurl.convertStringToUrl(test_url),
+                                RCTfile.getDir_ExternalStorageRoot().concat("/apath/plant_dictionary_db.txt"));
                     }
                 }).start();
             }
