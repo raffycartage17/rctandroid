@@ -28,7 +28,6 @@ public class RCTmediaStore{
         ContentResolver contentResolver = mContext.getContentResolver();
         Uri queryUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
 
-
         String[] projection = new String[]{
                 MediaStore.Images.Media.DATA
         };
@@ -37,20 +36,51 @@ public class RCTmediaStore{
         String excludeGif =  " AND " + MediaStore.Images.Media.MIME_TYPE + " != 'image/gif' " + " AND " + MediaStore.Images.Media.MIME_TYPE + " != 'image/giff' ";
         String selection =  includeImages + excludeGif;
 
-        Cursor cursor = contentResolver.query(queryUri, projection, selection, null, null);
-
-        if (cursor != null && cursor.moveToFirst()) {
-            do {
-
-                @SuppressLint("Range") String photoUri = cursor.getString(cursor.getColumnIndex(projection[0]));
-                if(!directories.contains(new File(photoUri).getParent())){
-                    directories.add(new File(photoUri).getParent());
+        try (Cursor cursor = contentResolver.query(queryUri, projection, selection, null, null)) {
+            if (cursor != null) {
+                int columnIndex = cursor.getColumnIndex(MediaStore.Images.Media.DATA);
+                while (cursor.moveToNext()) {
+                    String photoUri = cursor.getString(columnIndex);
+                    if (!directories.contains(new File(photoUri).getParent())) {
+                        directories.add(new File(photoUri).getParent());
+                    }
                 }
-
-            } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return directories;
     }
+
+    public static ArrayList<String> getDocumentDirectories(Context mContext) {
+        ArrayList<String> directories = new ArrayList<>();
+
+        ContentResolver contentResolver = mContext.getContentResolver();
+        Uri queryUri = MediaStore.Files.getContentUri("external");
+
+        String[] projection = new String[]{
+                MediaStore.Files.FileColumns.DATA
+        };
+
+        String includeDocuments = MediaStore.Files.FileColumns.MIME_TYPE + " LIKE 'application/%' OR " + MediaStore.Files.FileColumns.MIME_TYPE + " LIKE 'text/%' ";
+        String selection =  includeDocuments;
+
+        try (Cursor cursor = contentResolver.query(queryUri, projection, selection, null, null)) {
+            if (cursor != null) {
+                int columnIndex = cursor.getColumnIndex(MediaStore.Files.FileColumns.DATA);
+                while (cursor.moveToNext()) {
+                    String documentUri = cursor.getString(columnIndex);
+                    if (!directories.contains(new File(documentUri).getParent())) {
+                        directories.add(new File(documentUri).getParent());
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return directories;
+    }
+
 
     public static ArrayList<String> getVideoDirectories(Context mContext) {
         ArrayList<String> directories = new ArrayList<>();
@@ -58,29 +88,29 @@ public class RCTmediaStore{
         ContentResolver contentResolver = mContext.getContentResolver();
         Uri queryUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
 
-
         String[] projection = new String[]{
                 MediaStore.Video.Media.DATA
         };
 
-        String includeImages = MediaStore.Video.Media.MIME_TYPE + " LIKE 'video/%' ";
-        //String excludeGif =  " AND " + MediaStore.Video.Media.MIME_TYPE + " != 'image/gif' " + " AND " + MediaStore.Images.Media.MIME_TYPE + " != 'image/giff' ";
-        String selection =  includeImages;
+        String includeVideos = MediaStore.Video.Media.MIME_TYPE + " LIKE 'video/%' ";
+        String selection = includeVideos;
 
-        Cursor cursor = contentResolver.query(queryUri, projection, selection, null, null);
-
-        if (cursor != null && cursor.moveToFirst()) {
-            do {
-
-                @SuppressLint("Range") String photoUri = cursor.getString(cursor.getColumnIndex(projection[0]));
-                if(!directories.contains(new File(photoUri).getParent())){
-                    directories.add(new File(photoUri).getParent());
+        try (Cursor cursor = contentResolver.query(queryUri, projection, selection, null, null)) {
+            if (cursor != null) {
+                int columnIndex = cursor.getColumnIndex(MediaStore.Video.Media.DATA);
+                while (cursor.moveToNext()) {
+                    String videoUri = cursor.getString(columnIndex);
+                    if (!directories.contains(new File(videoUri).getParent())) {
+                        directories.add(new File(videoUri).getParent());
+                    }
                 }
-
-            } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return directories;
     }
+
 
     public static ArrayList<String> getAudioDirectories(Context mContext) {
         ArrayList<String> directories = new ArrayList<>();
@@ -88,29 +118,34 @@ public class RCTmediaStore{
         ContentResolver contentResolver = mContext.getContentResolver();
         Uri queryUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
 
-
         String[] projection = new String[]{
                 MediaStore.Audio.Media.DATA
         };
 
-        String includeImages = MediaStore.Audio.Media.MIME_TYPE + " LIKE 'audio/%' ";
-        //String excludeGif =  " AND " + MediaStore.Video.Media.MIME_TYPE + " != 'image/gif' " + " AND " + MediaStore.Images.Media.MIME_TYPE + " != 'image/giff' ";
-        String selection =  includeImages;
+        String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0";
 
-        Cursor cursor = contentResolver.query(queryUri, projection, selection, null, null);
-
-        if (cursor != null && cursor.moveToFirst()) {
-            do {
-
-                @SuppressLint("Range") String photoUri = cursor.getString(cursor.getColumnIndex(projection[0]));
-                if(!directories.contains(new File(photoUri).getParent())){
-                    directories.add(new File(photoUri).getParent());
-                }
-
-            } while (cursor.moveToNext());
+        try (Cursor cursor = contentResolver.query(queryUri, projection, selection, null, null)) {
+            if (cursor != null && cursor.moveToFirst()) {
+                int dataIndex = cursor.getColumnIndex(MediaStore.Audio.Media.DATA);
+                do {
+                    String path = cursor.getString(dataIndex);
+                    if (path != null) {
+                        File parent = new File(path).getParentFile();
+                        if (parent != null) {
+                            String parentPath = parent.getAbsolutePath();
+                            if (!directories.contains(parentPath)) {
+                                directories.add(parentPath);
+                            }
+                        }
+                    }
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return directories;
     }
+
 
     public static void reScanMediaStore(Context app_context,String the_path){
         //Nothing for now
