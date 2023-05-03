@@ -8,6 +8,131 @@ public class RCTarray{
 
 
 
+    public static String concatArrayListStringToString(ArrayList<String> array_list,String median){
+        if(array_list.size() > 0){
+            String current_string = "";
+            for(int index = 0; index<array_list.size(); index++){
+                if(index != array_list.size()-1){
+                    current_string = current_string.concat(array_list.get(index)).concat(median);
+                }else{
+                    current_string = current_string.concat(array_list.get(index));
+                }
+            }
+            return current_string;
+        }else{
+            return null;
+        }
+    }
+
+    public static String concatArrayListIntegerToString(ArrayList<Integer> array_list,String median){
+        if(array_list.size() > 0){
+            String current_string = "";
+            for(int index = 0; index<array_list.size(); index++){
+                if(index != array_list.size()-1){
+                    current_string = current_string.concat(String.valueOf(array_list.get(index))).concat(median);
+                }else{
+                    current_string = current_string.concat(String.valueOf(array_list.get(index)));
+                }
+            }
+            return current_string;
+        }else{
+            return null;
+        }
+    }
+
+    public static String concatArrayListDoubleToString(ArrayList<Double> array_list,String median){
+        if(array_list.size() > 0){
+            String current_string = "";
+            for(int index = 0; index<array_list.size(); index++){
+                if(index != array_list.size()-1){
+                    current_string = current_string.concat(String.valueOf(array_list.get(index))).concat(median);
+                }else{
+                    current_string = current_string.concat(String.valueOf(array_list.get(index)));
+                }
+            }
+            return current_string;
+        }else{
+            return null;
+        }
+    }
+
+    public static String concatArrayListFloatToString(ArrayList<Float> array_list,String median){
+        if(array_list.size() > 0){
+            String current_string = "";
+            for(int index = 0; index<array_list.size(); index++){
+                if(index != array_list.size()-1){
+                    current_string = current_string.concat(String.valueOf(array_list.get(index))).concat(median);
+                }else{
+                    current_string = current_string.concat(String.valueOf(array_list.get(index)));
+                }
+            }
+            return current_string;
+        }else{
+            return null;
+        }
+    }
+    public static String concatArrayListLongToString(ArrayList<Long> array_list,String median){
+        if(array_list.size() > 0){
+            String current_string = "";
+            for(int index = 0; index<array_list.size(); index++){
+                if(index != array_list.size()-1){
+                    current_string = current_string.concat(String.valueOf(array_list.get(index))).concat(median);
+                }else{
+                    current_string = current_string.concat(String.valueOf(array_list.get(index)));
+                }
+            }
+            return current_string;
+        }else{
+            return null;
+        }
+    }
+
+    public static String concatArrayListByteToString(ArrayList<Byte> array_list,String median){
+        if(array_list.size() > 0){
+            String current_string = "";
+            for(int index = 0; index<array_list.size(); index++){
+                if(index != array_list.size()-1){
+                    current_string = current_string.concat(String.valueOf(array_list.get(index))).concat(median);
+                }else{
+                    current_string = current_string.concat(String.valueOf(array_list.get(index)));
+                }
+            }
+            return current_string;
+        }else{
+            return null;
+        }
+    }
+
+    public static String concatArrayListBooleanToString(ArrayList<Boolean> array_list,String median){
+        if(array_list.size() > 0){
+            String current_string = "";
+            for(int index = 0; index<array_list.size(); index++){
+                if(index != array_list.size()-1){
+                    current_string = current_string.concat(String.valueOf(array_list.get(index))).concat(median);
+                }else{
+                    current_string = current_string.concat(String.valueOf(array_list.get(index)));
+                }
+            }
+            return current_string;
+        }else{
+            return null;
+        }
+    }
+    public static String concatArrayListCharToString(ArrayList<Character> array_list,String median){
+        if(array_list.size() > 0){
+            String current_string = "";
+            for(int index = 0; index<array_list.size(); index++){
+                if(index != array_list.size()-1){
+                    current_string = current_string.concat(String.valueOf(array_list.get(index))).concat(median);
+                }else{
+                    current_string = current_string.concat(String.valueOf(array_list.get(index)));
+                }
+            }
+            return current_string;
+        }else{
+            return null;
+        }
+    }
 
 
     public static String[] convertToStringArray(ArrayList<String> target_list){
