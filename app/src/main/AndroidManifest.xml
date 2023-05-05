@@ -23,6 +23,9 @@
             android:name=".window1.Window1"
             android:exported="false" />
         <activity
+            android:name=".window1.Window2"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

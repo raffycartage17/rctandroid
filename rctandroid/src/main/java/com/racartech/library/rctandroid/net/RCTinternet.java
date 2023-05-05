@@ -34,28 +34,17 @@ public class RCTinternet{
         }
     }
 
+
+
     public static boolean downloadFile(URL url, String saveToFilepath) {
-        try {
-            HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
-            httpConn.setRequestMethod("GET");
-            httpConn.setDoOutput(true);
-
-            int responseCode = httpConn.getResponseCode();
-
-            // always check HTTP response code first
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                try (BufferedInputStream in = new BufferedInputStream(httpConn.getInputStream());
-                     FileOutputStream fileOutputStream = new FileOutputStream(saveToFilepath)) {
-                    byte[] dataBuffer = new byte[8192]; // increase buffer size
-                    int bytesRead;
-                    while ((bytesRead = in.read(dataBuffer, 0, 8192)) != -1) {
-                        fileOutputStream.write(dataBuffer, 0, bytesRead);
-                    }
-                    return true;
-                }
-            }else{
-                return false;
+        try (BufferedInputStream in = new BufferedInputStream(url.openStream());
+             FileOutputStream fileOutputStream = new FileOutputStream(saveToFilepath)) {
+            byte dataBuffer[] = new byte[8192];
+            int bytesRead;
+            while ((bytesRead = in.read(dataBuffer, 0, 8192)) != -1) {
+                fileOutputStream.write(dataBuffer, 0, bytesRead);
             }
+            return true;
         } catch (IOException e) {
             e.printStackTrace();
             return false;
@@ -65,26 +54,16 @@ public class RCTinternet{
     public static boolean downloadFile(String urlString, String saveToFilepath) {
         try {
             URL url = new URL(urlString);
-            HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
-            httpConn.setRequestMethod("GET");
-            httpConn.setDoOutput(true);
-
-            int responseCode = httpConn.getResponseCode();
-
-            // always check HTTP response code first
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                try (BufferedInputStream in = new BufferedInputStream(httpConn.getInputStream());
-                     FileOutputStream fileOutputStream = new FileOutputStream(saveToFilepath)) {
-                    byte[] dataBuffer = new byte[8192]; // increase buffer size
-                    int bytesRead;
-                    while ((bytesRead = in.read(dataBuffer, 0, 8192)) != -1) {
-                        fileOutputStream.write(dataBuffer, 0, bytesRead);
-                    }
-                    return true;
-                }
-            }else{
-                return false;
+            BufferedInputStream in = new BufferedInputStream(url.openStream());
+            FileOutputStream fileOutputStream = new FileOutputStream(saveToFilepath);
+            byte dataBuffer[] = new byte[8192];
+            int bytesRead;
+            while ((bytesRead = in.read(dataBuffer, 0, 8192)) != -1) {
+                fileOutputStream.write(dataBuffer, 0, bytesRead);
             }
+            in.close();
+            fileOutputStream.close();
+            return true;
         } catch (IOException e) {
             e.printStackTrace();
             return false;

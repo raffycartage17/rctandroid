@@ -26,7 +26,9 @@ import android.widget.Toast;
 
 import com.racartech.app.rctandroidlts.window1.TestClass;
 import com.racartech.app.rctandroidlts.window1.Window1;
+import com.racartech.app.rctandroidlts.window1.Window2;
 import com.racartech.library.rctandroid.file.RCTfile;
+import com.racartech.library.rctandroid.google.RCTgoogleMaps;
 import com.racartech.library.rctandroid.json.RCTjson;
 import com.racartech.library.rctandroid.media.RCTbitmap;
 import com.racartech.library.rctandroid.net.RCTinternet;
@@ -123,10 +125,8 @@ public class MainActivity extends AppCompatActivity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        String test_url = "https://firebasestorage.googleapis.com/v0/b/racartech-81aff.appspot.com/o/plant_dictionary%2Fplants_dictionary_db.txt?alt=media&token=047bcaff-fe90-4590-a578-94d897ecfa55";
-                        RCTinternet.downloadFile(
-                                RCTurl.convertStringToUrl(test_url),
-                                RCTfile.getDir_ExternalStorageRoot().concat("/apath/plant_dictionary_db.txt"));
+                        String file_url = "https://firebasestorage.googleapis.com/v0/b/racartech-81aff.appspot.com/o/plant_dictionary%2Fplants_dictionary_db.txt?alt=media&token=047bcaff-fe90-4590-a578-94d897ecfa55";
+                        RCTinternet.downloadFile(file_url,RCTfile.getDir_ExternalStorageRoot().concat("/apath/test_dictionary.txt"));
                     }
                 }).start();
             }
@@ -145,6 +145,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, Window1.class);
+                startActivity(intent);
+            }
+        });
+        window_2_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, Window2.class);
                 startActivity(intent);
             }
         });
