@@ -38,6 +38,17 @@ public class RCTjson {
         return json;
     }
 
+    public static String convertArrayListToString_Short(ArrayList<Short> arrayList) {
+        // Create a Gson object
+        Gson gson = new Gson();
+
+        // Convert the ArrayList to JSON
+        String json = gson.toJson(arrayList);
+
+        // Return the JSON string
+        return json;
+    }
+
     public static String convertArrayListToString_Long(ArrayList<Long> arrayList) {
         // Create a Gson object
         Gson gson = new Gson();
@@ -134,6 +145,18 @@ public class RCTjson {
         // Convert the JSON string to ArrayList
         Type type = new TypeToken<ArrayList<Double>>(){}.getType();
         ArrayList<Double> arrayList = gson.fromJson(jsonString, type);
+
+        // Return the ArrayList
+        return arrayList;
+    }
+
+    public static ArrayList<Short> convertStringToArrayListShort(String jsonString) {
+        // Create a Gson object
+        Gson gson = new Gson();
+
+        // Convert the JSON string to ArrayList
+        Type type = new TypeToken<ArrayList<Short>>(){}.getType();
+        ArrayList<Short> arrayList = gson.fromJson(jsonString, type);
 
         // Return the ArrayList
         return arrayList;
@@ -288,6 +311,170 @@ public class RCTjson {
             e.printStackTrace();
             return false;
         }
+    }
+
+
+
+    public static ArrayList<ArrayList<String>> convertString_ArrayList2DString(String json_string){
+        ArrayList<String> main_body = convertStringToArrayList(json_string);
+
+        ArrayList<ArrayList<String>> all_list = new ArrayList<>();
+        for(int index = 0; index<main_body.size(); index++){
+            all_list.add(convertStringToArrayList(main_body.get(index)));
+        }
+        return all_list;
+    }
+
+    public static ArrayList<ArrayList<Integer>> convertString_ArrayList2DInteger(String json_string){
+        ArrayList<String> main_body = convertStringToArrayList(json_string);
+
+        ArrayList<ArrayList<Integer>> all_list = new ArrayList<>();
+        for(int index = 0; index<main_body.size(); index++){
+            all_list.add(convertStringToArrayListInteger(main_body.get(index)));
+        }
+        return all_list;
+    }
+
+    public static ArrayList<ArrayList<Double>> convertString_ArrayList2DDouble(String json_string){
+        ArrayList<String> main_body = convertStringToArrayList(json_string);
+
+        ArrayList<ArrayList<Double>> all_list = new ArrayList<>();
+        for(int index = 0; index<main_body.size(); index++){
+            all_list.add(convertStringToArrayListDouble(main_body.get(index)));
+        }
+        return all_list;
+    }
+
+    public static ArrayList<ArrayList<Float>> convertString_ArrayList2DFloat(String json_string) {
+        ArrayList<String> main_body = convertStringToArrayList(json_string);
+
+        ArrayList<ArrayList<Float>> all_list = new ArrayList<>();
+        for (int index = 0; index < main_body.size(); index++) {
+            all_list.add(convertStringToArrayListFloat(main_body.get(index)));
+        }
+        return all_list;
+    }
+
+    public static ArrayList<ArrayList<Long>> convertString_ArrayList2DLong(String json_string) {
+        ArrayList<String> main_body = convertStringToArrayList(json_string);
+
+        ArrayList<ArrayList<Long>> all_list = new ArrayList<>();
+        for (int index = 0; index < main_body.size(); index++) {
+            all_list.add(convertStringToArrayListLong(main_body.get(index)));
+        }
+        return all_list;
+    }
+
+    public static ArrayList<ArrayList<Short>> convertString_ArrayList2DShort(String json_string) {
+        ArrayList<String> main_body = convertStringToArrayList(json_string);
+
+        ArrayList<ArrayList<Short>> all_list = new ArrayList<>();
+        for (int index = 0; index < main_body.size(); index++) {
+            all_list.add(convertStringToArrayListShort(main_body.get(index)));
+        }
+        return all_list;
+    }
+
+    public static ArrayList<ArrayList<Byte>> convertString_ArrayList2DByte(String json_string) {
+        ArrayList<String> main_body = convertStringToArrayList(json_string);
+
+        ArrayList<ArrayList<Byte>> all_list = new ArrayList<>();
+        for (int index = 0; index < main_body.size(); index++) {
+            all_list.add(convertStringToArrayListByte(main_body.get(index)));
+        }
+        return all_list;
+    }
+
+    public static ArrayList<ArrayList<Character>> convertString_ArrayList2DCharacter(String json_string) {
+        ArrayList<String> main_body = convertStringToArrayList(json_string);
+
+        ArrayList<ArrayList<Character>> all_list = new ArrayList<>();
+        for (int index = 0; index < main_body.size(); index++) {
+            all_list.add(convertStringToArrayListCharacter(main_body.get(index)));
+        }
+        return all_list;
+    }
+
+    public static ArrayList<ArrayList<Boolean>> convertString_ArrayList2DBoolean(String json_string) {
+        ArrayList<String> main_body = convertStringToArrayList(json_string);
+        ArrayList<ArrayList<Boolean>> all_list = new ArrayList<>();
+        for (int index = 0; index < main_body.size(); index++) {
+            all_list.add(convertStringToArrayListBoolean(main_body.get(index)));
+        }
+        return all_list;
+    }
+
+
+    public static String convertArrayList2DString_ToString(ArrayList<ArrayList<String>> array_list){
+        ArrayList<String> main_body = new ArrayList<>();
+        for(int index = 0; index<array_list.size(); index++){
+            main_body.add(convertArrayListToString(array_list.get(index)));
+        }
+        return convertArrayListToString(main_body);
+    }
+
+    public static String convertArrayList2Integer_ToString(ArrayList<ArrayList<Integer>> array_list){
+        ArrayList<String> main_body = new ArrayList<>();
+        for(int index = 0; index<array_list.size(); index++){
+            main_body.add(convertArrayListToString_Integer(array_list.get(index)));
+        }
+        return convertArrayListToString(main_body);
+    }
+
+    public static String convertArrayList2DDouble_ToString(ArrayList<ArrayList<Double>> array_list){
+        ArrayList<String> main_body = new ArrayList<>();
+        for(int index = 0; index<array_list.size(); index++){
+            main_body.add(convertArrayListToString_Double(array_list.get(index)));
+        }
+        return convertArrayListToString(main_body);
+    }
+
+    public static String convertArrayList2DFloatToString(ArrayList<ArrayList<Float>> array_list) {
+        ArrayList<String> main_body = new ArrayList<>();
+        for (int index = 0; index < array_list.size(); index++) {
+            main_body.add(convertArrayListToString_Float(array_list.get(index)));
+        }
+        return convertArrayListToString(main_body);
+    }
+
+    public static String convertArrayList2DLongToString(ArrayList<ArrayList<Long>> array_list) {
+        ArrayList<String> main_body = new ArrayList<>();
+        for (int index = 0; index < array_list.size(); index++) {
+            main_body.add(convertArrayListToString_Long(array_list.get(index)));
+        }
+        return convertArrayListToString(main_body);
+    }
+
+    public static String convertArrayList2DShortToString(ArrayList<ArrayList<Short>> array_list) {
+        ArrayList<String> main_body = new ArrayList<>();
+        for (int index = 0; index < array_list.size(); index++) {
+            main_body.add(convertArrayListToString_Short(array_list.get(index)));
+        }
+        return convertArrayListToString(main_body);
+    }
+
+    public static String convertArrayList2DByteToString(ArrayList<ArrayList<Byte>> array_list) {
+        ArrayList<String> main_body = new ArrayList<>();
+        for (int index = 0; index < array_list.size(); index++) {
+            main_body.add(convertArrayListToString_Byte(array_list.get(index)));
+        }
+        return convertArrayListToString(main_body);
+    }
+
+    public static String convertArrayList2DCharacterToString(ArrayList<ArrayList<Character>> array_list) {
+        ArrayList<String> main_body = new ArrayList<>();
+        for (int index = 0; index < array_list.size(); index++) {
+            main_body.add(convertArrayListToString_Char(array_list.get(index)));
+        }
+        return convertArrayListToString(main_body);
+    }
+
+    public static String convertArrayList2DBooleanToString(ArrayList<ArrayList<Boolean>> array_list) {
+        ArrayList<String> main_body = new ArrayList<>();
+        for (int index = 0; index < array_list.size(); index++) {
+            main_body.add(convertArrayListToString_Boolean(array_list.get(index)));
+        }
+        return convertArrayListToString(main_body);
     }
 
 
