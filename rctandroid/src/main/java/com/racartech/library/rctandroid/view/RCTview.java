@@ -70,6 +70,25 @@ public class RCTview {
         });
     }
 
+    @SuppressLint("ClickableViewAccessibility")
+    public static void addButtonPressedFilters(Button the_button, int unpressed_color, int pressed_color){
+        the_button.setOnTouchListener((view, motionEvent) -> {
+            int action_taken = motionEvent.getAction();
+            switch(action_taken){
+                case MotionEvent.ACTION_DOWN:
+                    the_button.setBackgroundColor(pressed_color);
+                    break;
+                case MotionEvent.ACTION_UP:
+                case MotionEvent.ACTION_CANCEL:
+                    the_button.setBackgroundColor(unpressed_color);
+                    break;
+                default:
+                    break ;
+            }
+            return false;
+        });
+    }
+
 
 
 

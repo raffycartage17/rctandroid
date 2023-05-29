@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         test_image_button_1 = findViewById(R.id.mm_test_image_button_1);
 
 
-        int button_unpressed_color = MainActivity.this.getResources().getColor(R.color.white,null);
+        int button_unpressed_color = MainActivity.this.getResources().getColor(R.color.orange,null);
         int button_pressed_color = MainActivity.this.getResources().getColor(R.color.yellow,null);
 
 
@@ -139,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         RCTview.addButtonPressedFilters(test_image_button_1,button_pressed_color);
+        RCTview.addButtonPressedFilters(f1,button_unpressed_color,button_pressed_color);
         f1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
