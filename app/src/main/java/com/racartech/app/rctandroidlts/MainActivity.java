@@ -137,20 +137,27 @@ public class MainActivity extends AppCompatActivity {
                 button_pressed_color);
 
 
-
-        RCTview.addButtonPressedFilters(test_image_button_1,button_pressed_color);
-        RCTview.addButtonPressedFilters(f1,button_unpressed_color,button_pressed_color);
         f1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                    }
-                }).start();
 
-                 */
+                ArrayList<String> test_list = new ArrayList<>();
+                test_list.add(null);
+                test_list.add("null");
+                test_list.add("null");
+                test_list.add("null");
+                test_list.add("null");
+
+                String json_string = RCTjson.convertArrayListToString(test_list);
+                System.out.println("JSON STRING : ".concat(json_string));
+                ArrayList<String> decoded_string = RCTjson.convertStringToArrayList(json_string);
+                for(int index = 0; index<decoded_string.size(); index++){
+                    if(decoded_string.get(index) != null){
+                        System.out.println("DECODED (index ".concat(String.valueOf(index)).concat(" ) : ").concat(decoded_string.get(index)));
+                    }else{
+                        System.out.println("DECODED (index ".concat(String.valueOf(index)).concat(" ) : ").concat("NULL-NOT-STRING"));
+                    }
+                }
             }
         });
 
