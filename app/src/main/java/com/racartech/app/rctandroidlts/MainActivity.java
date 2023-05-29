@@ -130,13 +130,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
-        RCTview.addButtonPressedFilters_TextColor(
-                f1,
-                button_unpressed_color,
-                button_pressed_color);
-
-
         f1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
