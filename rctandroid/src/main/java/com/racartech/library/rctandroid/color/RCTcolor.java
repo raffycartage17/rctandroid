@@ -1,5 +1,8 @@
 package com.racartech.library.rctandroid.color;
 
+import android.content.Context;
+import android.content.res.Resources;
+
 public class RCTcolor {
 
     public final static String ALICE_BLUE = "#F0F8FF";
@@ -147,6 +150,17 @@ public class RCTcolor {
     public final static String WHITE_SMOKE = "#F5F5F5";
     public final static String YELLOW = "#FFFF00";
     public final static String YELLOW_GREEN = "#9ACD32";
+
+
+
+    public static int getColor(Context app_context, int color_resource_id){
+        return app_context.getResources().getColor(color_resource_id,null);
+    }
+    public static int getColor(Context app_context, int color_resource_id, Resources.Theme theme){
+        return app_context.getResources().getColor(color_resource_id,theme);
+    }
+
+
 
     /*
     <color name="purple_200">#FFBB86FC</color>

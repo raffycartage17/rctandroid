@@ -12,6 +12,36 @@
     <color name="white">#FFFFFFFF</color>
 
 
+    <color name="gray_alternate_0">#D3D3D3</color>
+    <color name="gray_alternate_1">#808080</color>
+
+    <color name="light_green_halalife">#0eff00</color>
+
+    <color name="light_gray_2">#A9A9A9</color>
+    <color name="button_pressed_color_filter">#ECFBFD</color>
+
+    <color name="skyblue_capri">#00BDFE</color>
+    <color name="halalife_light_green">#00e118</color>
+    <color name="halalife_green">#3c8d00</color>
+
+
+    <color name="halalife_alternate_1">#FFC857</color>
+    <color name="halalife_alternate_2">#4C6EB4</color>
+
+
+    <color name="darker_greyish_white">#D3D3D3</color>
+    <color name="greyish_white">#E0E0E0</color>
+    <color name="default_background">#ebf7f6</color>
+    <color name="default_text_color">#020202</color>
+    <color name="default_dialog_textbox_background_tint">#546e83</color>
+    <color name="default_dialog_text_hint_color">#1d6986</color>
+    <color name="default_dialog_button_text_color">#1a3bfd</color>
+    <color name="default_dialog_deactivated_part_color">#D3D3D3</color>
+    <color name="default_dialog_divider_color">#546e83</color>
+
+
+    <color name="dark_gray_text_color">#555555</color>
+
     <color name="alice_blue">#F0F8FF</color>
     <color name="antique_white">#FAEBD7</color>
     <color name="aqua">#00FFFF</color>

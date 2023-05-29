@@ -20,6 +20,7 @@ import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +36,7 @@ import com.racartech.library.rctandroid.net.RCTinternet;
 import com.racartech.library.rctandroid.net.RCTurl;
 import com.racartech.library.rctandroid.notifications.RCTnotifications;
 import com.racartech.library.rctandroid.permission.RCTpermission;
+import com.racartech.library.rctandroid.view.RCTview;
 
 import java.io.File;
 import java.io.IOException;
@@ -55,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
     TextView textview_2;
     TextView debug_textview;
     Switch switch_1,switch_2;
+
+    ImageButton test_image_button_1;
 
 
     private static final int MANAGE_EXTERNAL_STORAGE_PERMISSION_CODE = 100;
@@ -101,6 +105,13 @@ public class MainActivity extends AppCompatActivity {
         textview_1 = findViewById(R.id.mm_textview_1);
         textview_2 = findViewById(R.id.mm_textview_2);
 
+        test_image_button_1 = findViewById(R.id.mm_test_image_button_1);
+
+
+        int button_unpressed_color = MainActivity.this.getResources().getColor(R.color.white,null);
+        int button_pressed_color = MainActivity.this.getResources().getColor(R.color.yellow,null);
+
+
 
         RCTpermission.allowPermissions(this,new String[]{
                 Manifest.permission.CAMERA,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION
@@ -119,18 +130,29 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+
+        RCTview.addButtonPressedFilters_TextColor(
+                f1,
+                button_unpressed_color,
+                button_pressed_color);
+
+
+
+        RCTview.addButtonPressedFilters(test_image_button_1,button_pressed_color);
         f1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        String file_url = "https://firebasestorage.googleapis.com/v0/b/racartech-81aff.appspot.com/o/plant_dictionary%2Fplants_dictionary_db.txt?alt=media&token=047bcaff-fe90-4590-a578-94d897ecfa55";
-                        RCTinternet.downloadFile(file_url,RCTfile.getDir_ExternalStorageRoot().concat("/apath/test_dictionary.txt"));
                     }
                 }).start();
+
+                 */
             }
         });
+
         f2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
