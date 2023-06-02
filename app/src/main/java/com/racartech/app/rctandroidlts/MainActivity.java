@@ -133,24 +133,8 @@ public class MainActivity extends AppCompatActivity {
         f1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                ArrayList<String> test_list = new ArrayList<>();
-                test_list.add(null);
-                test_list.add("null");
-                test_list.add("null");
-                test_list.add("null");
-                test_list.add("null");
-
-                String json_string = RCTjson.convertArrayListToString(test_list);
-                System.out.println("JSON STRING : ".concat(json_string));
-                ArrayList<String> decoded_string = RCTjson.convertStringToArrayList(json_string);
-                for(int index = 0; index<decoded_string.size(); index++){
-                    if(decoded_string.get(index) != null){
-                        System.out.println("DECODED (index ".concat(String.valueOf(index)).concat(" ) : ").concat(decoded_string.get(index)));
-                    }else{
-                        System.out.println("DECODED (index ".concat(String.valueOf(index)).concat(" ) : ").concat("NULL-NOT-STRING"));
-                    }
-                }
+                boolean internet_access = RCTinternet.isInternetConnected(MainActivity.this);
+                Toast.makeText(MainActivity.this, "Internet Connection : ".concat(String.valueOf(internet_access)), Toast.LENGTH_SHORT).show();
             }
         });
 

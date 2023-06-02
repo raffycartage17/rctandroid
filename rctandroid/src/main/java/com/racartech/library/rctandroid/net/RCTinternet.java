@@ -1,6 +1,9 @@
 package com.racartech.library.rctandroid.net;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import com.racartech.library.rctandroid.media.RCTbitmap;
 
@@ -102,6 +105,16 @@ public class RCTinternet{
                 downloadFile(urls.get(index),save_to_file_paths.get(index));
             }
         }
+    }
+
+
+    public static boolean isInternetConnected(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager != null) {
+            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+            return networkInfo != null && networkInfo.isConnected();
+        }
+        return false;
     }
 
 
