@@ -78,8 +78,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        
-
 
 
         f1 = findViewById(R.id.mm_f1_button);

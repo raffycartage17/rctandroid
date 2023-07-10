@@ -584,245 +584,126 @@ public class RCTfile{
 
 
     public static String readLine(String target_file_path, int target_line_index){
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            StringBuilder builder = new StringBuilder();
-            int current_line = 0;
-            try {
-                FileInputStream fis = new FileInputStream(target_file_path);
-                BufferedReader br = new BufferedReader(new InputStreamReader(fis, StandardCharsets.UTF_8));
-                String line;
-                while ((line = br.readLine()) != null) {
+        int current_line = 0;
+        try {
+            try (BufferedReader br = Files.newBufferedReader(Paths.get(target_file_path), StandardCharsets.UTF_8)) {
+                for (String line = null; (line = br.readLine()) != null; ){
                     if(current_line == target_line_index){
                         return line;
                     }else{
                         current_line++;
                     }
                 }
-                br.close();
-            }catch (IOException ignored){}
-            return null;
-        }else{
-            try {
-                return Files.lines(Paths.get(target_file_path), StandardCharsets.UTF_8)
-                        .skip(target_line_index)
-                        .findFirst()
-                        .orElse(null);
-            } catch (IOException ignored) {}
-            return null;
-        }
+            }
+        }catch (IOException ignored){}
+        return null;
     }
 
 
     public static String readLine(File target_file, int target_line_index){
-
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            StringBuilder builder = new StringBuilder();
-            int current_line = 0;
-            try {
-                FileInputStream fis = new FileInputStream(target_file);
-                BufferedReader br = new BufferedReader(new InputStreamReader(fis, StandardCharsets.UTF_8));
-                String line;
-                while ((line = br.readLine()) != null) {
+        int current_line = 0;
+        try {
+            try (BufferedReader br = Files.newBufferedReader(Paths.get(target_file.getAbsolutePath()), StandardCharsets.UTF_8)) {
+                for (String line = null; (line = br.readLine()) != null; ){
                     if(current_line == target_line_index){
                         return line;
                     }else{
                         current_line++;
                     }
                 }
-                br.close();
-            }catch (IOException ignored){}
-            return null;
-        }else{
-            try {
-                return Files.lines(target_file.toPath(), StandardCharsets.UTF_8)
-                        .skip(target_line_index)
-                        .findFirst()
-                        .orElse(null);
-            } catch (IOException ignored) {}
-            return null;
-        }
+            }
+        }catch (IOException ignored){}
+        return null;
     }
 
 
 
     public static String[] readLine(String target_file_path, int[] target_line_index){
-
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            String[] values = new String[target_line_index.length];
-            int current_tli = 0;
-            int current_line = 0;
-            try {
-                FileInputStream fis = new FileInputStream(target_file_path);
-                BufferedReader br = new BufferedReader(new InputStreamReader(fis, StandardCharsets.UTF_8));
-                String line;
-                while ((line = br.readLine()) != null) {
+        String[] values = new String[target_line_index.length];
+        int current_tli = 0;
+        int current_line = 0;
+        try {
+            try (BufferedReader br = Files.newBufferedReader(Paths.get(target_file_path), StandardCharsets.UTF_8)) {
+                for (String line = null; (line = br.readLine()) != null; ) {
                     if(current_tli == target_line_index.length){
                         break;
                     }
                     if(current_line == target_line_index[current_tli]){
                         values[current_tli] = line;
                         current_tli++;
+                    }else{
                     }
                     current_line++;
                 }
-                br.close();
-            }catch (IOException ignored){}
-            return values;
-        }else{
-            AtomicInteger current_tli = new AtomicInteger(0);
-            try {
-                return Files.lines(Paths.get(target_file_path), StandardCharsets.UTF_8)
-                        .filter(line -> IntStream.of(target_line_index).anyMatch(tli -> tli == current_tli.getAndIncrement()))
-                        .toArray(String[]::new);
-            } catch (IOException ignored) {}
-            return new String[target_line_index.length];
-        }
+            }
+        }catch (IOException ignored){}
+        return values;
     }
-
-
 
     public static String[] readLine(File target_file, int[] target_line_index){
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            String[] values = new String[target_line_index.length];
-            int current_tli = 0;
-            int current_line = 0;
-            try {
-                BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(target_file), "UTF-8"));
-                String line;
-                while ((line = br.readLine()) != null) {
-                    if (current_tli == target_line_index.length) {
+        String[] values = new String[target_line_index.length];
+        int current_tli = 0;
+        int current_line = 0;
+        try {
+            try (BufferedReader br = Files.newBufferedReader(target_file.toPath(), StandardCharsets.UTF_8)) {
+                for (String line = null; (line = br.readLine()) != null; ) {
+                    if(current_tli == target_line_index.length){
                         break;
                     }
-                    if (current_line == target_line_index[current_tli]) {
+                    if(current_line == target_line_index[current_tli]){
                         values[current_tli] = line;
                         current_tli++;
+                    }else{
                     }
                     current_line++;
                 }
-                br.close();
-            } catch (IOException ignored) {}
-            return values;
-        } else {
-            String[] values = new String[target_line_index.length];
-            int current_tli = 0;
-            int current_line = 0;
-            try {
-                try (BufferedReader br = Files.newBufferedReader(target_file.toPath(), StandardCharsets.UTF_8)) {
-                    for (String line = null; (line = br.readLine()) != null; ) {
-                        if(current_tli == target_line_index.length){
-                            break;
-                        }
-                        if(current_line == target_line_index[current_tli]){
-                            values[current_tli] = line;
-                            current_tli++;
-                        }
-                        current_line++;
-                    }
-                }
-            }catch (IOException ignored){}
-            return values;
-        }
+            }
+        }catch (IOException ignored){}
+        return values;
     }
 
-
-
-
-
-    public static String[] readLine(String target_file_path, int from_index, int to_index) {
-
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            // Compatible implementation for Android versions prior to Oreo
-            int line_count = (to_index - from_index) + 1;
-            String[] values = new String[line_count];
-            int current_index = 0;
-            int current_line = 0;
-            try {
-                BufferedReader br = new BufferedReader(new FileReader(target_file_path));
-                String line;
-                while ((line = br.readLine()) != null) {
-                    if (current_line > to_index) {
+    public static String[] readLine(String target_file_path, int from_index, int to_index){
+        int line_count = (to_index-from_index)+1;
+        String[] values = new String[line_count];
+        int current_index = 0;
+        int current_line = 0;
+        try {
+            try (BufferedReader br = Files.newBufferedReader(Paths.get(target_file_path), StandardCharsets.UTF_8)) {
+                for (String line = null; (line = br.readLine()) != null; ) {
+                    if(current_line > to_index){
                         break;
                     }
-                    if (current_line >= from_index) {
+                    if(current_line >= from_index){
                         values[current_index] = line;
                         current_index++;
                     }
                     current_line++;
                 }
-                br.close();
-            } catch (IOException ignored) {}
-            return values;
-        } else {
-            // Implementation for Android Oreo and above
-            int line_count = (to_index - from_index) + 1;
-            String[] values = new String[line_count];
-            int current_index = 0;
-            int current_line = 0;
-            try {
-                try (BufferedReader br = Files.newBufferedReader(Paths.get(target_file_path), StandardCharsets.UTF_8)) {
-                    for (String line = null; (line = br.readLine()) != null; ) {
-                        if (current_line > to_index) {
-                            break;
-                        }
-                        if (current_line >= from_index) {
-                            values[current_index] = line;
-                            current_index++;
-                        }
-                        current_line++;
-                    }
-                }
-            } catch (IOException ignored) {}
-            return values;
-        }
+            }
+        }catch (IOException ignored){}
+        return values;
     }
 
-
-    public static String[] readLine(File target_file, int from_index, int to_index) {
-
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            // Compatible implementation for Android versions prior to Oreo
-            int line_count = (to_index - from_index) + 1;
-            String[] values = new String[line_count];
-            int current_index = 0;
-            int current_line = 0;
-            try {
-                BufferedReader br = new BufferedReader(new FileReader(target_file));
-                String line;
-                while ((line = br.readLine()) != null) {
-                    if (current_line > to_index) {
+    public static String[] readLine(File target_file, int from_index, int to_index){
+        int line_count = (to_index-from_index)+1;
+        String[] values = new String[line_count];
+        int current_index = 0;
+        int current_line = 0;
+        try {
+            try (BufferedReader br = Files.newBufferedReader(target_file.toPath(), StandardCharsets.UTF_8)) {
+                for (String line = null; (line = br.readLine()) != null; ) {
+                    if(current_line > to_index){
                         break;
                     }
-                    if (current_line >= from_index) {
+                    if(current_line >= from_index){
                         values[current_index] = line;
                         current_index++;
                     }
                     current_line++;
                 }
-                br.close();
-            } catch (IOException ignored) {}
-            return values;
-        } else {
-            // Implementation for Android Oreo and above
-            int line_count = (to_index - from_index) + 1;
-            String[] values = new String[line_count];
-            int current_index = 0;
-            int current_line = 0;
-            try {
-                try (BufferedReader br = Files.newBufferedReader(target_file.toPath(), StandardCharsets.UTF_8)) {
-                    for (String line = null; (line = br.readLine()) != null; ) {
-                        if (current_line > to_index) {
-                            break;
-                        }
-                        if (current_line >= from_index) {
-                            values[current_index] = line;
-                            current_index++;
-                        }
-                        current_line++;
-                    }
-                }
-            } catch (IOException ignored) {}
-            return values;
-        }
+            }
+        }catch (IOException ignored){}
+        return values;
     }
 
 
