@@ -51,6 +51,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -80,6 +81,27 @@ public class RCTfile{
         }catch(IOException ignored){}
 
      */
+
+
+    /**
+     * <h2>Description</h2>
+     * Finds if a word or char sequence is present inside the file.
+     * <br>
+     * Return >=0 = exist, index of the line
+     * <br>
+     * Return -1 = Not exist
+     * @author Rafael Andaya Cartagena
+     * @since 07-30-2023
+     */
+    public static int doesContainCharSequence_FirstAppearance(String file_path, String char_sequence) throws IOException{
+        ArrayList<String> file_contents = readFile_ArrayList(file_path);
+        for(int index = 0; index<file_contents.size(); index++){
+            if(file_contents.get(index).contains(char_sequence)){
+                return index;
+            }
+        }
+        return -1;
+    }
 
 
     public static void createFile(String directory, ArrayList<String> file_names){
