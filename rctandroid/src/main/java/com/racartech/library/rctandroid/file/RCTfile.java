@@ -82,6 +82,13 @@ public class RCTfile{
      */
 
 
+    public static void createFile(String directory, ArrayList<String> file_names){
+        for (int index = 0; index < file_names.size(); index++) {
+            createFile(directory.concat("/").concat(file_names.get(index)));
+        }
+    }
+
+
     public static boolean createAndOverride(String file_path,String[] file_contents) throws IOException {
         RCTfile.createFile(file_path);
         return RCTfile.overrideFile(file_path, file_contents);
