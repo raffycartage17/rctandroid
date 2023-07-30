@@ -1,0 +1,327 @@
+package com.racartech.library.rctandroid.color;
+
+import android.content.Context;
+import android.content.res.Resources;
+
+public class RCTcolor {
+
+    public final static String ALICE_BLUE = "#F0F8FF";
+    public final static String ANTIQUE_WHITE = "#FAEBD7";
+    public final static String AQUA = "#00FFFF";
+    public final static String AQUAMARINE = "#7FFFD4";
+    public final static String AZURE = "#F0FFFF";
+    public final static String BEIGE = "#F5F5DC";
+    public final static String BISQUE = "#FFE4C4";
+    public final static String BLACK = "#000000";
+    public final static String BLANCHED_ALMOND = "#FFEBCD";
+    public final static String BLUE = "#0000FF";
+    public final static String BLUE_VIOLET = "#8A2BE2";
+    public final static String BROWN = "#A52A2A";
+    public final static String BURLY_WOOD = "#DEB887";
+    public final static String CADET_BLUE = "#5F9EA0";
+    public final static String CHARTREUSE = "#7FFF00";
+    public final static String CHOCOLATE = "#D2691E";
+    public final static String CORAL = "#FF7F50";
+    public final static String CORNFLOWER_BLUE = "#6495ED";
+    public final static String CORNSILK = "#FFF8DC";
+    public final static String CRIMSON = "#DC143C";
+    public final static String CYAN = "#00FFFF";
+    public final static String DARK_BLUE = "#00008B";
+    public final static String DARK_CYAN = "#008B8B";
+    public final static String DARK_GRAY = "#A9A9A9";
+    public final static String DARK_GREY = "#A9A9A9";
+    public final static String DARK_GREEN = "#006400";
+    public final static String DARK_KHAKI = "#BDB76B";
+    public final static String DARK_MAGENTA = "#8B008B";
+    public final static String DARK_OLIVE_GREEN = "#556B2F";
+    public final static String DARK_ORANGE = "#FF8C00";
+    public final static String DARK_ORCHID = "#9932CC";
+    public final static String DARK_RED = "#8B0000";
+    public final static String DARK_SALMON = "#E9967A";
+    public final static String DARK_SEA_GREEN = "#8FBC8F";
+    public final static String DARK_SLATE_BLUE = "#483D8B";
+    public final static String DARK_SLATE_GRAY = "#2F4F4F";
+    public final static String DARK_SLATE_GREY = "#2F4F4F";
+    public final static String DARK_TURQUOISE = "#00CED1";
+    public final static String DARK_VIOLET = "#9400D3";
+    public final static String DEEP_PINK = "#FF1493";
+    public final static String DEEP_SKY_BLUE = "#00BFFF";
+    public final static String DIM_GRAY = "#696969";
+    public final static String DIM_GREY = "#696969";
+    public final static String DODGER_BLUE = "#1E90FF";
+    public final static String FIRE_BRICK = "#B22222";
+    public final static String FLORAL_WHITE = "#FFFAF0";
+    public final static String FOREST_GREEN = "#228B22";
+    public final static String FUCHSIA = "#FF00FF";
+    public final static String GAINSBORO = "#DCDCDC";
+    public final static String GHOST_WHITE = "#F8F8FF";
+    public final static String GOLD = "#FFD700";
+    public final static String GOLDEN_ROD = "#DAA520";
+    public final static String GRAY = "#808080";
+    public final static String GREY = "#808080";
+    public final static String GREEN = "#008000";
+    public final static String GREEN_YELLOW = "#ADFF2F";
+    public final static String HONEYDEW = "#F0FFF0";
+    public final static String HOT_PINK = "#FF69B4";
+    public final static String INDIAN_RED = "#CD5C5C";
+    public final static String INDIGO = "#4B0082";
+    public final static String IVORY = "#FFFFF0";
+    public final static String KHAKI = "#F0E68C";
+    public final static String LAVENDER = "#E6E6FA";
+    public final static String LAVENDER_BLUSH = "#FFF0F5";
+    public final static String LAWN_GREEN = "#7CFC00";
+    public final static String LEMON_CHIFFON = "#FFFACD";
+    public final static String LIGHT_BLUE = "#ADD8E6";
+    public final static String LIGHT_CORAL = "#F08080";
+    public final static String LIGHT_CYAN = "#E0FFFF";
+    public final static String LIGHT_GOLDEN_ROD_YELLOW = "#FAFAD2";
+    public final static String LIGHT_GRAY = "#D3D3D3";
+    public final static String LIGHT_GREY = "#D3D3D3";
+    public final static String LIGHT_GREEN = "#90EE90";
+    public final static String LIGHT_PINK = "#FFB6C1";
+    public final static String LIGHT_SALMON = "#FFA07A";
+    public final static String LIGHT_SEA_GREEN = "#20B2AA";
+    public final static String LIGHT_SKY_BLUE = "#87CEFA";
+    public final static String LIGHT_SLATE_GRAY = "#778899";
+    public final static String LIGHT_SLATE_GREY = "#778899";
+    public final static String LIGHT_STEEL_BLUE = "#B0C4DE";
+    public final static String LIGHT_YELLOW = "#FFFFE0";
+    public final static String LIME = "#00FF00";
+    public final static String LIME_GREEN = "#32CD32";
+    public final static String LINEN = "#FAF0E6";
+    public final static String MAGENTA = "#FF00FF";
+    public final static String MAROON = "#800000";
+    public final static String MEDIUM_AQUA_MARINE = "#66CDAA";
+    public final static String MEDIUM_BLUE = "#0000CD";
+    public final static String MEDIUM_ORCHID = "#BA55D3";
+    public final static String MEDIUM_PURPLE = "#9370DB";
+    public final static String MEDIUM_SEA_GREEN = "#3CB371";
+    public final static String MEDIUM_SLATE_BLUE = "#7B68EE";
+    public final static String MEDIUM_SPRING_GREEN = "#00FA9A";
+    public final static String MEDIUM_TURQUOISE = "#48D1CC";
+    public final static String MEDIUM_VIOLET_RED = "#C71585";
+    public final static String MIDNIGHT_BLUE = "#191970";
+    public final static String MINT_CREAM = "#F5FFFA";
+    public final static String MISTY_ROSE = "#FFE4E1";
+    public final static String MOCCASIN = "#FFE4B5";
+    public final static String NAVAJO_WHITE = "#FFDEAD";
+    public final static String NAVY = "#000080";
+    public final static String OLD_LACE = "#FDF5E6";
+    public final static String OLIVE = "#808000";
+    public final static String OLIVE_DRAB = "#6B8E23";
+    public final static String ORANGE = "#FFA500";
+    public final static String ORANGE_RED = "#FF4500";
+    public final static String ORCHID = "#DA70D6";
+    public final static String PALE_GOLDEN_ROD = "#EEE8AA";
+    public final static String PALE_GREEN = "#98FB98";
+    public final static String PALE_TURQUOISE = "#AFEEEE";
+    public final static String PALE_VIOLET_RED = "#DB7093";
+    public final static String PAPAYA_WHIP = "#FFEFD5";
+    public final static String PEACH_PUFF = "#FFDAB9";
+    public final static String PERU = "#CD853F";
+    public final static String PINK = "#FFC0CB";
+    public final static String PLUM = "#DDA0DD";
+    public final static String POWDER_BLUE = "#B0E0E6";
+    public final static String PURPLE = "#800080";
+    public final static String RED = "#FF0000";
+    public final static String ROSY_BROWN = "#BC8F8F";
+    public final static String ROYAL_BLUE = "#4169E1";
+    public final static String SADDLE_BROWN = "#8B4513";
+    public final static String SALMON = "#FA8072";
+    public final static String SANDY_BROWN = "#F4A460";
+    public final static String SEA_GREEN = "#2E8B57";
+    public final static String SEA_SHELL = "#FFF5EE";
+    public final static String SIENNA = "#A0522D";
+    public final static String SILVER = "#C0C0C0";
+    public final static String SKY_BLUE = "#87CEEB";
+    public final static String SLATE_BLUE = "#6A5ACD";
+    public final static String SLATE_GRAY = "#708090";
+    public final static String SLATE_GREY = "#708090";
+    public final static String SNOW = "#FFFAFA";
+    public final static String SPRING_GREEN = "#00FF7F";
+    public final static String STEEL_BLUE = "#4682B4";
+    public final static String TAN = "#D2B48C";
+    public final static String TEAL = "#008080";
+    public final static String THISTLE = "#D8BFD8";
+    public final static String TOMATO = "#FF6347";
+    public final static String TURQUOISE = "#40E0D0";
+    public final static String VIOLET = "#EE82EE";
+    public final static String WHEAT = "#F5DEB3";
+    public final static String WHITE_SMOKE = "#F5F5F5";
+    public final static String YELLOW = "#FFFF00";
+    public final static String YELLOW_GREEN = "#9ACD32";
+
+
+
+    public static int getColor(Context app_context, int color_resource_id){
+        return app_context.getResources().getColor(color_resource_id,null);
+    }
+    public static int getColor(Context app_context, int color_resource_id, Resources.Theme theme){
+        return app_context.getResources().getColor(color_resource_id,theme);
+    }
+
+
+
+    /*
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="alice_blue">#F0F8FF</color>
+    <color name="antique_white">#FAEBD7</color>
+    <color name="aqua">#00FFFF</color>
+    <color name="aquamarine">#7FFFD4</color>
+    <color name="azure">#F0FFFF</color>
+    <color name="beige">#F5F5DC</color>
+    <color name="bisque">#FFE4C4</color>
+    <color name="black">#000000</color>
+    <color name="blanched_almond">#FFEBCD</color>
+    <color name="blue">#0000FF</color>
+    <color name="blue_violet">#8A2BE2</color>
+    <color name="brown">#A52A2A</color>
+    <color name="burly_wood">#DEB887</color>
+    <color name="cadet_blue">#5F9EA0</color>
+    <color name="chartreuse">#7FFF00</color>
+    <color name="chocolate">#D2691E</color>
+    <color name="coral">#FF7F50</color>
+    <color name="cornflower_blue">#6495ED</color>
+    <color name="cornsilk">#FFF8DC</color>
+    <color name="crimson">#DC143C</color>
+    <color name="cyan">#00FFFF</color>
+    <color name="dark_blue">#00008B</color>
+    <color name="dark_cyan">#008B8B</color>
+
+    <color name="dark_gray">#A9A9A9</color>
+    <color name="dark_grey">#A9A9A9</color>
+    <color name="dark_green">#006400</color>
+    <color name="dark_khaki">#BDB76B</color>
+    <color name="dark_magenta">#8B008B</color>
+    <color name="dark_olive_green">#556B2F</color>
+    <color name="dark_orange">#FF8C00</color>
+    <color name="dark_orchid">#9932CC</color>
+    <color name="dark_red">#8B0000</color>
+    <color name="dark_salmon">#E9967A</color>
+    <color name="dark_sea_green">#8FBC8F</color>
+    <color name="dark_slate_blue">#483D8B</color>
+    <color name="dark_slate_gray">#2F4F4F</color>
+    <color name="dark_slate_grey">#2F4F4F</color>
+    <color name="dark_turquoise">#00CED1</color>
+    <color name="dark_violet">#9400D3</color>
+    <color name="deep_pink">#FF1493</color>
+    <color name="deep_sky_blue">#00BFFF</color>
+    <color name="dim_gray">#696969</color>
+    <color name="dim_grey">#696969</color>
+
+    <color name="dodger_blue">#1E90FF</color>
+    <color name="fire_brick">#B22222</color>
+    <color name="floral_white">#FFFAF0</color>
+    <color name="forest_green">#228B22</color>
+    <color name="fuchsia">#FF00FF</color>
+    <color name="gainsboro">#DCDCDC</color>
+    <color name="ghost_white">#F8F8FF</color>
+    <color name="gold">#FFD700</color>
+    <color name="golden_rod">#DAA520</color>
+    <color name="gray">#808080</color>
+    <color name="grey">#808080</color>
+    <color name="green">#008000</color>
+    <color name="green_yellow">#ADFF2F</color>
+    <color name="honeydew">#F0FFF0</color>
+    <color name="hot_pink">#FF69B4</color>
+    <color name="indian_red">#CD5C5C</color>
+    <color name="indigo">#4B0082</color>
+    <color name="ivory">#FFFFF0</color>
+    <color name="khaki">#F0E68C</color>
+    <color name="lavender">#E6E6FA</color>
+
+    <color name="lavender_blush">#FFF0F5</color>
+    <color name="lawn_green">#7CFC00</color>
+    <color name="lemon_chiffon">#FFFACD</color>
+    <color name="light_blue">#ADD8E6</color>
+    <color name="light_coral">#F08080</color>
+    <color name="light_cyan">#E0FFFF</color>
+    <color name="light_golden_rod_yellow">#FAFAD2</color>
+    <color name="light_gray">#D3D3D3</color>
+    <color name="light_grey">#D3D3D3</color>
+    <color name="light_green">#90EE90</color>
+    <color name="light_pink">#FFB6C1</color>
+    <color name="light_salmon">#FFA07A</color>
+    <color name="light_sea_green">#20B2AA</color>
+    <color name="light_sky_blue">#87CEFA</color>
+    <color name="light_slate_gray">#778899</color>
+    <color name="light_slate_grey">#778899</color>
+    <color name="light_steel_blue">#B0C4DE</color>
+    <color name="light_yellow">#FFFFE0</color>
+    <color name="lime">#00FF00</color>
+    <color name="lime_green">#32CD32</color>
+
+    <color name="linen">#FAF0E6</color>
+    <color name="magenta">#FF00FF</color>
+    <color name="maroon">#800000</color>
+    <color name="medium_aqua_marine">#66CDAA</color>
+    <color name="medium_blue">#0000CD</color>
+    <color name="medium_orchid">#BA55D3</color>
+    <color name="medium_purple">#9370DB</color>
+    <color name="medium_sea_green">#3CB371</color>
+    <color name="medium_slate_blue">#7B68EE</color>
+    <color name="medium_spring_green">#00FA9A</color>
+    <color name="medium_turquoise">#48D1CC</color>
+    <color name="medium_violet_red">#C71585</color>
+    <color name="midnight_blue">#191970</color>
+    <color name="mint_cream">#F5FFFA</color>
+    <color name="misty_rose">#FFE4E1</color>
+    <color name="moccasin">#FFE4B5</color>
+    <color name="navajo_white">#FFDEAD</color>
+    <color name="navy">#000080</color>
+    <color name="old_lace">#FDF5E6</color>
+
+    <color name="olive">#808000</color>
+    <color name="olive_drab">#6B8E23</color>
+    <color name="orange">#FFA500</color>
+    <color name="orange_red">#FF4500</color>
+    <color name="orchid">#DA70D6</color>
+    <color name="pale_golden_rod">#EEE8AA</color>
+    <color name="pale_green">#98FB98</color>
+    <color name="pale_turquoise">#AFEEEE</color>
+    <color name="pale_violet_red">#DB7093</color>
+    <color name="papaya_whip">#FFEFD5</color>
+    <color name="peach_puff">#FFDAB9</color>
+    <color name="peru">#CD853F</color>
+    <color name="pink">#FFC0CB</color>
+    <color name="plum">#DDA0DD</color>
+    <color name="powder_blue">#B0E0E6</color>
+    <color name="purple">#800080</color>
+    <color name="red">#FF0000</color>
+    <color name="rosy_brown">#BC8F8F</color>
+    <color name="royal_blue">#4169E1</color>
+    <color name="saddle_brown">#8B4513</color>
+
+    <color name="salmon">#FA8072</color>
+    <color name="sandy_brown">#F4A460</color>
+    <color name="sea_green">#2E8B57</color>
+    <color name="sea_shell">#FFF5EE</color>
+    <color name="sienna">#A0522D</color>
+    <color name="silver">#C0C0C0</color>
+    <color name="sky_blue">#87CEEB</color>
+    <color name="slate_blue">#6A5ACD</color>
+    <color name="slate_gray">#708090</color>
+    <color name="slate_grey">#708090</color>
+    <color name="snow">#FFFAFA</color>
+    <color name="spring_green">#00FF7F</color>
+    <color name="steel_blue">#4682B4</color>
+    <color name="tan">#D2B48C</color>
+    <color name="teal">#008080</color>
+    <color name="thistle">#D8BFD8</color>
+    <color name="tomato">#FF6347</color>
+    <color name="turquoise">#40E0D0</color>
+    <color name="violet">#EE82EE</color>
+    <color name="wheat">#F5DEB3</color>
+    <color name="white_smoke">#F5F5F5</color>
+    <color name="yellow">#FFFF00</color>
+    <color name="yellow_green">#9ACD32</color>
+     */
+
+
+}

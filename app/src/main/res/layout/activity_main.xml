@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mm_root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity" >
+
+    <ScrollView
+        android:id="@+id/mm_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/mm_cons_layout"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/mm_textview_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="null"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mm_switch1" />
+
+            <Button
+                android:id="@+id/mm_f6_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="F6"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/mm_f5_button"
+                app:layout_constraintTop_toTopOf="@+id/mm_f5_button" />
+
+            <View
+                android:id="@+id/mm_verticaldivider_center"
+                android:layout_width="1dp"
+                android:layout_height="1000dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/mm_f2_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="F2"
+                android:background="@color/gray_alternate_1"
+                app:layout_constraintEnd_toEndOf="@+id/mm_verticaldivider_center"
+                app:layout_constraintStart_toStartOf="@+id/mm_verticaldivider_center"
+                app:layout_constraintTop_toBottomOf="@+id/mm_debug_textview" />
+
+            <Button
+                android:id="@+id/mm_f1_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="f1"
+                android:background="@color/gray_alternate_1"
+                app:layout_constraintEnd_toStartOf="@+id/mm_f2_button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/mm_f2_button" />
+
+            <Button
+                android:id="@+id/mm_f3_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="F3"
+                android:background="@color/gray_alternate_1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/mm_f2_button"
+                app:layout_constraintTop_toTopOf="@+id/mm_f2_button" />
+
+            <Button
+                android:id="@+id/mm_f4_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="F4"
+                app:layout_constraintEnd_toEndOf="@+id/mm_f1_button"
+                app:layout_constraintStart_toStartOf="@+id/mm_f1_button"
+                app:layout_constraintTop_toTopOf="@+id/mm_f5_button" />
+
+            <Button
+                android:id="@+id/mm_f5_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="F5"
+                app:layout_constraintEnd_toEndOf="@+id/mm_f2_button"
+                app:layout_constraintStart_toStartOf="@+id/mm_f2_button"
+                app:layout_constraintTop_toBottomOf="@+id/mm_test_image_button_1" />
+
+            <Button
+                android:id="@+id/mm_f8_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="F8"
+                app:layout_constraintEnd_toEndOf="@+id/mm_f5_button"
+                app:layout_constraintStart_toStartOf="@+id/mm_f5_button"
+                app:layout_constraintTop_toBottomOf="@+id/mm_f5_button" />
+
+            <Button
+                android:id="@+id/mm_f7_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="F7"
+                app:layout_constraintEnd_toStartOf="@+id/mm_f8_button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/mm_f8_button" />
+
+            <Button
+                android:id="@+id/mm_f9_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="F9"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/mm_f8_button"
+                app:layout_constraintTop_toTopOf="@+id/mm_f8_button" />
+
+            <Button
+                android:id="@+id/mm_window1_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="Window 1"
+                app:layout_constraintEnd_toStartOf="@+id/mm_verticaldivider_center"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mm_f8_button" />
+
+            <Button
+                android:id="@+id/mm_window2_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="Window 2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/mm_verticaldivider_center"
+                app:layout_constraintTop_toBottomOf="@+id/mm_f8_button" />
+
+            <Button
+                android:id="@+id/mm_window3_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Window 3"
+                app:layout_constraintEnd_toStartOf="@+id/mm_verticaldivider_center"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mm_window1_button" />
+
+            <Button
+                android:id="@+id/mm_window4_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Window 4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/mm_verticaldivider_center"
+                app:layout_constraintTop_toBottomOf="@+id/mm_window2_button" />
+
+            <EditText
+                android:id="@+id/mm_textbox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:textColor="@color/black"
+                android:hint = "Enter here"
+                android:textColorHint= "@color/gray"
+                app:layout_constraintBottom_toBottomOf="@+id/mm_textbox_enter_button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/mm_textbox_enter_button"
+                app:layout_constraintTop_toTopOf="@+id/mm_textbox_enter_button" />
+
+            <Button
+                android:id="@+id/mm_textbox_enter_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="Enter"
+                app:layout_constraintStart_toStartOf="@+id/mm_window3_button"
+                app:layout_constraintTop_toBottomOf="@+id/mm_window3_button" />
+
+            <Switch
+                android:id="@+id/mm_switch1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="Switch 1"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toStartOf="@+id/mm_verticaldivider_center"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mm_textbox_enter_button" />
+
+            <Switch
+                android:id="@+id/mm_switch2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Switch 2"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/mm_verticaldivider_center"
+                app:layout_constraintTop_toTopOf="@+id/mm_switch1" />
+
+            <TextView
+                android:id="@+id/mm_textview_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="null"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mm_textview_1" />
+
+            <TextView
+                android:id="@+id/mm_debug_textview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:gravity="left"
+                android:text="Empty"
+                android:maxLines="10"
+                android:textColor="@color/blue"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/mm_test_image_button_1"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="16dp"
+                android:background="@null"
+                android:scaleType="fitCenter"
+                app:layout_constraintEnd_toEndOf="@+id/mm_f2_button"
+                app:layout_constraintStart_toStartOf="@+id/mm_f2_button"
+                app:layout_constraintTop_toBottomOf="@+id/mm_f2_button"
+                app:srcCompat="@drawable/debug_logo" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

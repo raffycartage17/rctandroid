@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">RCTandroidLTS</string>
+
+    <string name="OK">OK</string>
+    <string name="Cancel">Cancel</string>
+    <string name="access_all_files_permission_dialog_request_description">RC File Explorer need the permission to manage files in your device to function properly</string>
+
+</resources>
