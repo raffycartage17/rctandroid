@@ -52,7 +52,8 @@ public class FunctionOne{
                 file_contents.add("line_five");
 
                 long start_a = System.currentTimeMillis();
-                String file_url = RCTfirebaseStorage.createEmptyFile_GetURL(target_file, 200);
+                String file_url = RCTfirebaseStorage.createOverrideFile_GetURL(target_file,file_contents,200);
+                RCTfirebaseStorage.deleteFile_WaitProgress(target_file,200);
                 long end_a = System.currentTimeMillis();
                 System.out.println("Elapse Time With Wait : ".concat(String.valueOf((end_a-start_a))));
                 System.out.println("URL : ".concat(file_url));
