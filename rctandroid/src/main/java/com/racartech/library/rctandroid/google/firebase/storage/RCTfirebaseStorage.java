@@ -40,36 +40,36 @@ public class RCTfirebaseStorage {
      * Always call this method on a worker class
      * @author Rafael Andaya Cartagena
      * @return String - download url of the created file
-     * @param thread_sleep_ms length of time that the thread will wait to query the generated url in millisecond.
+     * @param thread_wait length of time that the thread will wait to query the generated url in millisecond.
      */
     public static String createOverrideFile_GetURL(
             FirebaseStorage instance,
             String file_name,
             ArrayList<String> file_contents,
-            long thread_sleep_ms){
-        RCTfirebaseStorageUtil.X0001_DOWNLOAD_URL.set(null);
-        boolean download_url_created = false;
-        RCTfirebaseStorageUtil.createOverrideFile_GetURL_X0001(instance,file_name,file_contents);
-        String generated_download_url = null;
-        while(!download_url_created){
-            String queried_download_url = RCTfirebaseStorageUtil.X0001_DOWNLOAD_URL.get();
-            if(queried_download_url != null){
-                generated_download_url = queried_download_url;
-                download_url_created = true;
-            }else{
+            long thread_wait){
+
+        boolean return_boolean = false;
+        AtomicBoolean finished_boolean = new AtomicBoolean(false);
+        AtomicReference<String> atomic_string = new AtomicReference<>(null);
+        RCTfirebaseStorageUtil.createOverrideFile_GetURL_X0001(
+                instance,
+                file_name,
+                file_contents,
+                finished_boolean,
+                atomic_string);
+        while(!return_boolean){
+            if(!finished_boolean.get() && atomic_string.get() == null){
                 try {
-                    Thread.sleep(thread_sleep_ms);
-                }catch(InterruptedException ex){
-                    ex.printStackTrace();
+                    Thread.sleep(thread_wait);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
                 }
+            }else{
+                return_boolean = true;
             }
         }
-        RCTfirebaseStorageUtil.X0001_DOWNLOAD_URL.set(null);
-        if(generated_download_url.equals(NULL_RESULT_IDENTIFIER)){
-            return null;
-        }else{
-            return generated_download_url;
-        }
+        return atomic_string.get();
+
     }
 
     /**
@@ -98,37 +98,32 @@ public class RCTfirebaseStorage {
      * Always call this method on a worker class
      * @author Rafael Andaya Cartagena
      * @return String - download url of the created file
-     * @param thread_sleep_ms length of time that the thread will wait to query the generated url in millisecond.
+     * @param thread_wait length of time that the thread will wait to query the generated url in millisecond.
      */
     public static String createOverrideFile_GetURL(
             FirebaseStorage instance,
             String directory,
             String file_name,
             ArrayList<String> file_contents,
-            long thread_sleep_ms){
-        RCTfirebaseStorageUtil.X0002_DOWNLOAD_URL.set(null);
-        boolean download_url_created = false;
-        RCTfirebaseStorageUtil.createWrite_File_X0002(instance,directory,file_name,file_contents);
-        String generated_download_url = null;
-        while(!download_url_created){
-            String queried_download_url = RCTfirebaseStorageUtil.X0002_DOWNLOAD_URL.get();
-            if(queried_download_url != null){
-                generated_download_url = queried_download_url;
-                download_url_created = true;
-            }else{
+            long thread_wait){
+
+        boolean return_boolean = false;
+        AtomicBoolean finished_boolean = new AtomicBoolean(false);
+        AtomicReference<String> atomic_string = new AtomicReference<>(null);
+        RCTfirebaseStorageUtil.createWrite_File_X0002(instance,directory,file_name,file_contents,finished_boolean,atomic_string);
+        while(!return_boolean){
+            if(!finished_boolean.get() && atomic_string.get() == null){
                 try {
-                    Thread.sleep(thread_sleep_ms);
-                }catch(InterruptedException ex){
-                    ex.printStackTrace();
+                    Thread.sleep(thread_wait);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
                 }
+            }else{
+                return_boolean = true;
             }
         }
-        RCTfirebaseStorageUtil.X0002_DOWNLOAD_URL.set(null);
-        if(generated_download_url.equals(NULL_RESULT_IDENTIFIER)){
-            return null;
-        }else{
-            return generated_download_url;
-        }
+        return atomic_string.get();
+
     }
 
     /**
@@ -154,32 +149,29 @@ public class RCTfirebaseStorage {
      * Always call this method on a worker class
      * @author Rafael Andaya Cartagena
      * @return String - download url of the created file
-     * @param thread_sleep_ms length of time that the thread will wait to query the generated url in millisecond.
+     * @param thread_wait length of time that the thread will wait to query the generated url in millisecond.
      */
-    public static String createEmptyFile_GetURL(FirebaseStorage instance,String file_name, long thread_sleep_ms){
-        RCTfirebaseStorageUtil.X0005_DOWNLOAD_URL.set(null);
-        boolean download_url_created = false;
-        RCTfirebaseStorageUtil.createEmptyFile_X0005(instance,file_name);
-        String generated_download_url = null;
-        while(!download_url_created){
-            String queried_download_url = RCTfirebaseStorageUtil.X0005_DOWNLOAD_URL.get();
-            if(queried_download_url != null){
-                generated_download_url = queried_download_url;
-                download_url_created = true;
-            }else{
+    public static String createEmptyFile_GetURL(FirebaseStorage instance,String file_name, long thread_wait){
+
+        boolean return_boolean = false;
+        AtomicBoolean finished_boolean = new AtomicBoolean(false);
+        AtomicReference<String> atomic_string = new AtomicReference<>(null);
+        RCTfirebaseStorageUtil.createEmptyFile_X0005(instance,file_name,finished_boolean,atomic_string);
+
+        while(!return_boolean){
+            if(!finished_boolean.get() && atomic_string.get() == null){
                 try {
-                    Thread.sleep(thread_sleep_ms);
-                }catch(InterruptedException ex){
-                    ex.printStackTrace();
+                    Thread.sleep(thread_wait);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
                 }
+            }else{
+                return_boolean = true;
             }
         }
-        RCTfirebaseStorageUtil.X0005_DOWNLOAD_URL.set(null);
-        if(generated_download_url.equals(NULL_RESULT_IDENTIFIER)){
-            return null;
-        }else{
-            return generated_download_url;
-        }
+        return atomic_string.get();
+
+
     }
 
     /**
@@ -202,30 +194,24 @@ public class RCTfirebaseStorage {
      * Always call this method on a worker thread
      * @author Rafael Andaya Cartagena
      */
-    public static String createEmptyFile_GetURL(FirebaseStorage instance, String directory, String file_name, long thread_sleep_ms){
-        RCTfirebaseStorageUtil.X0004_DOWNLOAD_URL.set(null);
-        boolean download_url_created = false;
-        RCTfirebaseStorageUtil.createEmptyFile_X0004(instance,directory,file_name);
-        String generated_download_url = null;
-        while(!download_url_created){
-            String queried_download_url = RCTfirebaseStorageUtil.X0004_DOWNLOAD_URL.get();
-            if(queried_download_url != null){
-                generated_download_url = queried_download_url;
-                download_url_created = true;
-            }else{
+    public static String createEmptyFile_GetURL(FirebaseStorage instance, String directory, String file_name, long thread_wait){
+        boolean return_boolean = false;
+        AtomicBoolean finished_boolean = new AtomicBoolean(false);
+        AtomicReference<String> atomic_string = new AtomicReference<>(null);
+        RCTfirebaseStorageUtil.createEmptyFile_X0004(instance,directory,file_name,finished_boolean,atomic_string);
+
+        while(!return_boolean){
+            if(!finished_boolean.get() && atomic_string.get() == null){
                 try {
-                    Thread.sleep(thread_sleep_ms);
-                }catch(InterruptedException ex){
-                    ex.printStackTrace();
+                    Thread.sleep(thread_wait);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
                 }
+            }else{
+                return_boolean = true;
             }
         }
-        RCTfirebaseStorageUtil.X0004_DOWNLOAD_URL.set(null);
-        if(generated_download_url.equals(NULL_RESULT_IDENTIFIER)){
-            return null;
-        }else{
-            return generated_download_url;
-        }
+        return atomic_string.get();
     }
 
     /**
@@ -266,30 +252,25 @@ public class RCTfirebaseStorage {
      * @author Rafael Andaya Cartagena
      * @return String - the download url of the target file
      */
-    public static String getDownloadURL(FirebaseStorage instance,String directory, String file_name, long thread_sleep_ms){
-        RCTfirebaseStorageUtil.X0003_DOWNLOAD_URL.set(null);
-        boolean download_url_created = false;
-        RCTfirebaseStorageUtil.getDownloadURL_X0003(instance,directory,file_name);
-        String generated_download_url = null;
-        while(!download_url_created){
-            String queried_download_url = RCTfirebaseStorageUtil.X0003_DOWNLOAD_URL.get();
-            if(queried_download_url != null){
-                generated_download_url = queried_download_url;
-                download_url_created = true;
-            }else{
+    public static String getDownloadURL(FirebaseStorage instance,String directory, String file_name, long thread_wait){
+        boolean return_boolean = false;
+        AtomicBoolean finished_boolean = new AtomicBoolean(false);
+        AtomicReference<String> atomic_string = new AtomicReference<>(null);
+        RCTfirebaseStorageUtil.getDownloadURL_X0003(instance,directory,file_name,finished_boolean,atomic_string);
+
+        while(!return_boolean){
+            if(!finished_boolean.get() && atomic_string.get() == null){
                 try {
-                    Thread.sleep(thread_sleep_ms);
-                }catch(InterruptedException ex){
-                    ex.printStackTrace();
+                    Thread.sleep(thread_wait);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
                 }
+            }else{
+                return_boolean = true;
             }
         }
-        RCTfirebaseStorageUtil.X0003_DOWNLOAD_URL.set(null);
-        if(generated_download_url.equals(NULL_RESULT_IDENTIFIER)){
-            return null;
-        }else{
-            return generated_download_url;
-        }
+        return atomic_string.get();
+
     }
 
     /**
@@ -298,30 +279,26 @@ public class RCTfirebaseStorage {
      * @author Rafael Andaya Cartagena
      * @return String - the download url of the target file
      */
-    public static String getDownloadURL(FirebaseStorage instance,String file_name, long thread_sleep_ms){
-        RCTfirebaseStorageUtil.X0006_DOWNLOAD_URL.set(null);
-        boolean download_url_created = false;
-        RCTfirebaseStorageUtil.getDownloadURL_X0006(instance,file_name);
-        String generated_download_url = null;
-        while(!download_url_created){
-            String queried_download_url = RCTfirebaseStorageUtil.X0006_DOWNLOAD_URL.get();
-            if(queried_download_url != null){
-                generated_download_url = queried_download_url;
-                download_url_created = true;
-            }else{
+    public static String getDownloadURL(FirebaseStorage instance,String file_name, long thread_wait){
+        boolean return_boolean = false;
+        AtomicBoolean finished_boolean = new AtomicBoolean(false);
+        AtomicReference<String> atomic_string = new AtomicReference<>(null);
+        RCTfirebaseStorageUtil.getDownloadURL_X0006(instance,file_name,finished_boolean,atomic_string);
+
+        while(!return_boolean){
+            if(!finished_boolean.get() && atomic_string.get() == null){
                 try {
-                    Thread.sleep(thread_sleep_ms);
-                }catch(InterruptedException ex){
-                    ex.printStackTrace();
+                    Thread.sleep(thread_wait);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
                 }
+            }else{
+                return_boolean = true;
             }
         }
-        RCTfirebaseStorageUtil.X0006_DOWNLOAD_URL.set(null);
-        if(generated_download_url.equals(NULL_RESULT_IDENTIFIER)){
-            return null;
-        }else{
-            return generated_download_url;
-        }
+        return atomic_string.get();
+
+
     }
 
 
@@ -334,33 +311,33 @@ public class RCTfirebaseStorage {
      * @author Rafael Andaya Cartagena
      */
     public static boolean createEmptyFiles_WaitProgress(FirebaseStorage instance,String directory_path, ArrayList<String> file_names, long thread_wait){
-        RCTfirebaseStorageUtil.I_0001_WAIT_INTEGER.set(-1);
+
+
+        boolean return_boolean = false;
+        AtomicBoolean finished_boolean = new AtomicBoolean(false);
+        AtomicInteger progress_integer = new AtomicInteger(-1);
 
         final ArrayList<String> cloned_file_names = new ArrayList<>(file_names);
 
-        RCTfirebaseStorageUtil.createEmptyFiles_WaitProgress(instance,directory_path,cloned_file_names);
+        RCTfirebaseStorageUtil.createEmptyFiles_WaitProgress(instance,directory_path,cloned_file_names,finished_boolean,progress_integer);
 
-        try {
-            boolean finished_boolean = false;
-            while (!finished_boolean) {
-                if(RCTfirebaseStorageUtil.I_0001_WAIT_INTEGER.get() != (cloned_file_names.size() - 1)){
-                    try {
-                        Thread.sleep(thread_wait);
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                }else{
-                    finished_boolean = true;
+
+        while(!return_boolean){
+            if(!finished_boolean.get() && progress_integer.get() == (cloned_file_names.size()-1)){
+                try {
+                    Thread.sleep(thread_wait);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
                 }
-
+            }else{
+                return_boolean = true;
             }
-
-            RCTfirebaseStorageUtil.I_0001_WAIT_INTEGER.set(-1);
-            return finished_boolean;
-        }catch(Exception exx){
-            exx.printStackTrace();
-            return false;
         }
+
+        return return_boolean;
+
+
+
     }
 
 
@@ -553,16 +530,14 @@ public class RCTfirebaseStorage {
 
     private final static String NULL_RESULT_IDENTIFIER = "NULL";
 
-    protected static AtomicReference<String> X0001_DOWNLOAD_URL = new AtomicReference<>(null);
-    protected static AtomicReference<String> X0002_DOWNLOAD_URL = new AtomicReference<>(null);
-    protected static AtomicReference<String> X0003_DOWNLOAD_URL = new AtomicReference<>(null);
-    protected static AtomicReference<String> X0004_DOWNLOAD_URL = new AtomicReference<>(null);
-    protected static AtomicReference<String> X0005_DOWNLOAD_URL = new AtomicReference<>(null);
-    protected static AtomicReference<String> X0006_DOWNLOAD_URL = new AtomicReference<>(null);
 
-    protected static AtomicInteger I_0001_WAIT_INTEGER = new AtomicInteger(-1);
 
-    public static void createOverrideFile_GetURL_X0001(FirebaseStorage instance,String fileName, ArrayList<String> file_contents) {
+    public static void createOverrideFile_GetURL_X0001(
+            FirebaseStorage instance,
+            String fileName,
+            ArrayList<String> file_contents,
+            AtomicBoolean finished_boolean,
+            AtomicReference<String> atomic_string) {
 
         new Thread(new Runnable() {
             @Override
@@ -597,21 +572,24 @@ public class RCTfirebaseStorage {
                                             // Get the URL of the uploaded file
                                             Uri downloadUrl = task.getResult();
                                             String downloadUrlString = downloadUrl.toString();
-                                            X0001_DOWNLOAD_URL.set(downloadUrlString);
+                                            atomic_string.set(downloadUrlString);
+                                            finished_boolean.set(true);
                                         } else {
-                                            X0001_DOWNLOAD_URL.set(NULL_RESULT_IDENTIFIER);
-                                            // Handle the error
+                                            atomic_string.set(NULL_RESULT_IDENTIFIER);
+                                            finished_boolean.set(true);
                                         }
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
-                                        X0001_DOWNLOAD_URL.set(NULL_RESULT_IDENTIFIER);
+                                        atomic_string.set(NULL_RESULT_IDENTIFIER);
+                                        finished_boolean.set(true);
                                     }
                                 }).addOnCanceledListener(new OnCanceledListener() {
                                     @Override
                                     public void onCanceled() {
-                                        X0001_DOWNLOAD_URL.set(NULL_RESULT_IDENTIFIER);
+                                        atomic_string.set(NULL_RESULT_IDENTIFIER);
+                                        finished_boolean.set(true);
                                     }
                                 });
                             }
@@ -620,12 +598,14 @@ public class RCTfirebaseStorage {
                             @Override
                             public void onFailure(@NonNull Exception e) {
                                 // Handle the error
-                                X0001_DOWNLOAD_URL.set(NULL_RESULT_IDENTIFIER);
+                                atomic_string.set(NULL_RESULT_IDENTIFIER);
+                                finished_boolean.set(true);
                             }
                         }).addOnCanceledListener(new OnCanceledListener() {
                             @Override
                             public void onCanceled() {
-                                X0001_DOWNLOAD_URL.set(NULL_RESULT_IDENTIFIER);
+                                atomic_string.set(NULL_RESULT_IDENTIFIER);
+                                finished_boolean.set(true);
                             }
                         });
             }
@@ -693,7 +673,9 @@ public class RCTfirebaseStorage {
             FirebaseStorage instance,
             String folder_path,
             String file_name,
-            ArrayList<String> file_contents) {
+            ArrayList<String> file_contents,
+            AtomicBoolean finished_boolean,
+            AtomicReference<String> atomic_string) {
 
         new Thread(new Runnable() {
             @Override
@@ -745,20 +727,24 @@ public class RCTfirebaseStorage {
                                             // Get the URL of the uploaded file
                                             Uri downloadUrl = task.getResult();
                                             String download_url_string = downloadUrl.toString();
-                                            X0002_DOWNLOAD_URL.set(download_url_string);
+                                            atomic_string.set(download_url_string);
+                                            finished_boolean.set(true);
                                         } else {
-                                            X0002_DOWNLOAD_URL.set(NULL_RESULT_IDENTIFIER);
+                                            atomic_string.set(NULL_RESULT_IDENTIFIER);
+                                            finished_boolean.set(true);
                                         }
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
-                                        X0002_DOWNLOAD_URL.set(NULL_RESULT_IDENTIFIER);
+                                        atomic_string.set(NULL_RESULT_IDENTIFIER);
+                                        finished_boolean.set(true);
                                     }
                                 }).addOnCanceledListener(new OnCanceledListener() {
                                     @Override
                                     public void onCanceled() {
-                                        X0002_DOWNLOAD_URL.set(NULL_RESULT_IDENTIFIER);
+                                        atomic_string.set(NULL_RESULT_IDENTIFIER);
+                                        finished_boolean.set(true);
                                     }
                                 });
                             }
@@ -767,12 +753,14 @@ public class RCTfirebaseStorage {
                             @Override
                             public void onFailure(@NonNull Exception e) {
                                 // Handle the error
-                                X0002_DOWNLOAD_URL.set(NULL_RESULT_IDENTIFIER);
+                                atomic_string.set(NULL_RESULT_IDENTIFIER);
+                                finished_boolean.set(true);
                             }
                         }).addOnCanceledListener(new OnCanceledListener() {
                             @Override
                             public void onCanceled() {
-                                X0002_DOWNLOAD_URL.set(NULL_RESULT_IDENTIFIER);
+                                atomic_string.set(NULL_RESULT_IDENTIFIER);
+                                finished_boolean.set(true);
                             }
                         });
 
@@ -853,7 +841,12 @@ public class RCTfirebaseStorage {
 
     }
 
-    public static void getDownloadURL_X0003(FirebaseStorage instance,String folder_path, String file_name) {
+    public static void getDownloadURL_X0003(
+            FirebaseStorage instance,
+            String folder_path,
+            String file_name,
+            AtomicBoolean finished_boolean,
+            AtomicReference<String> atomic_string) {
 
         new Thread(new Runnable() {
             @Override
@@ -885,18 +878,21 @@ public class RCTfirebaseStorage {
                             public void onSuccess(Uri downloadUrl) {
                                 // Get the URL of the file
                                 String download_url_string = downloadUrl.toString();
-                                X0003_DOWNLOAD_URL.set(download_url_string);
+                                atomic_string.set(download_url_string);
+                                finished_boolean.set(true);
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                X0003_DOWNLOAD_URL.set(NULL_RESULT_IDENTIFIER);
+                                atomic_string.set(NULL_RESULT_IDENTIFIER);
+                                finished_boolean.set(true);
                             }
                         }).addOnCanceledListener(new OnCanceledListener() {
                             @Override
                             public void onCanceled() {
-                                X0003_DOWNLOAD_URL.set(NULL_RESULT_IDENTIFIER);
+                                atomic_string.set(NULL_RESULT_IDENTIFIER);
+                                finished_boolean.set(true);
                             }
                         });
 
@@ -906,7 +902,11 @@ public class RCTfirebaseStorage {
 
     }
 
-    public static void getDownloadURL_X0006(FirebaseStorage instance, String file_name) {
+    public static void getDownloadURL_X0006(
+            FirebaseStorage instance,
+            String file_name,
+            AtomicBoolean finished_boolean,
+            AtomicReference<String> atomic_string) {
 
         new Thread(new Runnable() {
             @Override
@@ -925,18 +925,21 @@ public class RCTfirebaseStorage {
                             public void onSuccess(Uri downloadUrl) {
                                 // Get the URL of the file
                                 String download_url_string = downloadUrl.toString();
-                                X0006_DOWNLOAD_URL.set(download_url_string);
+                                atomic_string.set(download_url_string);
+                                finished_boolean.set(true);
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                X0006_DOWNLOAD_URL.set(NULL_RESULT_IDENTIFIER);
+                                atomic_string.set(NULL_RESULT_IDENTIFIER);
+                                finished_boolean.set(true);
                             }
                         }).addOnCanceledListener(new OnCanceledListener() {
                             @Override
                             public void onCanceled() {
-                                X0006_DOWNLOAD_URL.set(NULL_RESULT_IDENTIFIER);
+                                atomic_string.set(NULL_RESULT_IDENTIFIER);
+                                finished_boolean.set(true);
                             }
                         });
             }
@@ -976,7 +979,12 @@ public class RCTfirebaseStorage {
 
 
 
-    public static void createEmptyFile_X0004(FirebaseStorage instance, String folder_path, String file_name) {
+    public static void createEmptyFile_X0004(
+            FirebaseStorage instance,
+            String folder_path,
+            String file_name,
+            AtomicBoolean finished_boolean,
+            AtomicReference<String> atomic_string) {
 
 
         new Thread(new Runnable() {
@@ -1020,20 +1028,24 @@ public class RCTfirebaseStorage {
                                             // Get the URL of the uploaded file
                                             Uri downloadUrl = task.getResult();
                                             String download_url_string = downloadUrl.toString();
-                                            X0004_DOWNLOAD_URL.set(download_url_string);
+                                            atomic_string.set(download_url_string);
+                                            finished_boolean.set(true);
                                         } else {
-                                            X0004_DOWNLOAD_URL.set(NULL_RESULT_IDENTIFIER);
+                                            atomic_string.set(NULL_RESULT_IDENTIFIER);
+                                            finished_boolean.set(true);
                                         }
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
-                                        X0004_DOWNLOAD_URL.set(NULL_RESULT_IDENTIFIER);
+                                        atomic_string.set(NULL_RESULT_IDENTIFIER);
+                                        finished_boolean.set(true);
                                     }
                                 }).addOnCanceledListener(new OnCanceledListener() {
                                     @Override
                                     public void onCanceled() {
-                                        X0004_DOWNLOAD_URL.set(NULL_RESULT_IDENTIFIER);
+                                        atomic_string.set(NULL_RESULT_IDENTIFIER);
+                                        finished_boolean.set(true);
                                     }
                                 });
                             }
@@ -1042,12 +1054,14 @@ public class RCTfirebaseStorage {
                             @Override
                             public void onFailure(@NonNull Exception e) {
                                 // Handle the error
-                                X0004_DOWNLOAD_URL.set(NULL_RESULT_IDENTIFIER);
+                                atomic_string.set(NULL_RESULT_IDENTIFIER);
+                                finished_boolean.set(true);
                             }
                         }).addOnCanceledListener(new OnCanceledListener() {
                             @Override
                             public void onCanceled() {
-                                X0004_DOWNLOAD_URL.set(NULL_RESULT_IDENTIFIER);
+                                atomic_string.set(NULL_RESULT_IDENTIFIER);
+                                finished_boolean.set(true);
                             }
                         });
 
@@ -1115,7 +1129,11 @@ public class RCTfirebaseStorage {
     }
 
 
-    public static void createEmptyFile_X0005(FirebaseStorage instance, String fileName) {
+    public static void createEmptyFile_X0005(
+            FirebaseStorage instance,
+            String fileName,
+            AtomicBoolean finished_boolean,
+            AtomicReference<String> atomic_string) {
 
 
         new Thread(new Runnable() {
@@ -1141,21 +1159,25 @@ public class RCTfirebaseStorage {
                                     // Get the URL of the existing file
                                     Uri downloadUrl = task.getResult();
                                     String downloadUrlString = downloadUrl.toString();
-                                    X0005_DOWNLOAD_URL.set(downloadUrlString);
+                                    atomic_string.set(downloadUrlString);
+                                    finished_boolean.set(true);
                                 } else {
-                                    X0005_DOWNLOAD_URL.set(NULL_RESULT_IDENTIFIER);
+                                    atomic_string.set(NULL_RESULT_IDENTIFIER);
+                                    finished_boolean.set(true);
                                     // Handle the error
                                 }
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                X0005_DOWNLOAD_URL.set(NULL_RESULT_IDENTIFIER);
+                                atomic_string.set(NULL_RESULT_IDENTIFIER);
+                                finished_boolean.set(true);
                             }
                         }).addOnCanceledListener(new OnCanceledListener() {
                             @Override
                             public void onCanceled() {
-                                X0005_DOWNLOAD_URL.set(NULL_RESULT_IDENTIFIER);
+                                atomic_string.set(NULL_RESULT_IDENTIFIER);
+                                finished_boolean.set(true);
                             }
                         });
                     }
@@ -1179,16 +1201,19 @@ public class RCTfirebaseStorage {
                                                     // Get the URL of the uploaded file
                                                     Uri downloadUrl = task.getResult();
                                                     String downloadUrlString = downloadUrl.toString();
-                                                    X0005_DOWNLOAD_URL.set(downloadUrlString);
+                                                    atomic_string.set(downloadUrlString);
+                                                    finished_boolean.set(true);
                                                 } else {
-                                                    X0005_DOWNLOAD_URL.set(NULL_RESULT_IDENTIFIER);
+                                                    atomic_string.set(NULL_RESULT_IDENTIFIER);
+                                                    finished_boolean.set(true);
                                                     // Handle the error
                                                 }
                                             }
                                         }).addOnFailureListener(new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
-                                                X0005_DOWNLOAD_URL.set(NULL_RESULT_IDENTIFIER);
+                                                atomic_string.set(NULL_RESULT_IDENTIFIER);
+                                                finished_boolean.set(true);
                                             }
                                         });
                                     }
@@ -1197,19 +1222,22 @@ public class RCTfirebaseStorage {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
                                         // Handle the error
-                                        X0005_DOWNLOAD_URL.set(NULL_RESULT_IDENTIFIER);
+                                        atomic_string.set(NULL_RESULT_IDENTIFIER);
+                                        finished_boolean.set(true);
                                     }
                                 }).addOnCanceledListener(new OnCanceledListener() {
                                     @Override
                                     public void onCanceled() {
-                                        X0005_DOWNLOAD_URL.set(NULL_RESULT_IDENTIFIER);
+                                        atomic_string.set(NULL_RESULT_IDENTIFIER);
+                                        finished_boolean.set(true);
                                     }
                                 });
                     }
                 }).addOnCanceledListener(new OnCanceledListener() {
                     @Override
                     public void onCanceled() {
-                        X0005_DOWNLOAD_URL.set(NULL_RESULT_IDENTIFIER);
+                        atomic_string.set(NULL_RESULT_IDENTIFIER);
+                        finished_boolean.set(true);
                     }
                 });
 
@@ -1352,7 +1380,12 @@ public class RCTfirebaseStorage {
     }
 
 
-    public static void createEmptyFiles_WaitProgress(FirebaseStorage instance, String folder_path, ArrayList<String> file_names) {
+    public static void createEmptyFiles_WaitProgress(
+            FirebaseStorage instance,
+            String folder_path,
+            ArrayList<String> file_names,
+            AtomicBoolean finished_boolean,
+            AtomicInteger progress_integer) {
 
         new Thread(new Runnable() {
             @Override
@@ -1390,7 +1423,10 @@ public class RCTfirebaseStorage {
                         @Override
                         public void onSuccess(StorageMetadata storageMetadata) {
                             // File already exists, skip the upload process for this file
-                            I_0001_WAIT_INTEGER.set(finalIndex);
+                            progress_integer.set(finalIndex);
+                            if(finalIndex == (file_names.size()-1)){
+                                finished_boolean.set(true);
+                            }
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -1408,7 +1444,10 @@ public class RCTfirebaseStorage {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Uri> task) {
                                                     // File upload is complete for this file, you can add any further handling if needed.
-                                                    I_0001_WAIT_INTEGER.set(finalIndex);
+                                                    progress_integer.set(finalIndex);
+                                                    if(finalIndex == (file_names.size()-1)){
+                                                        finished_boolean.set(true);
+                                                    }
                                                 }
                                             });
                                         }
@@ -1417,17 +1456,26 @@ public class RCTfirebaseStorage {
                                         @Override
                                         public void onFailure(@NonNull Exception e) {
                                             // Handle the error
-                                            I_0001_WAIT_INTEGER.set(finalIndex);
+                                            progress_integer.set(finalIndex);
+                                            if(finalIndex == (file_names.size()-1)){
+                                                finished_boolean.set(true);
+                                            }
                                         }
                                     }).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                                         @Override
                                         public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                                            I_0001_WAIT_INTEGER.set(finalIndex);
+                                            progress_integer.set(finalIndex);
+                                            if(finalIndex == (file_names.size()-1)){
+                                                finished_boolean.set(true);
+                                            }
                                         }
                                     }).addOnCanceledListener(new OnCanceledListener() {
                                         @Override
                                         public void onCanceled() {
-                                            I_0001_WAIT_INTEGER.set(finalIndex);
+                                            progress_integer.set(finalIndex);
+                                            if(finalIndex == (file_names.size()-1)){
+                                                finished_boolean.set(true);
+                                            }
                                         }
                                     });
                         }
@@ -2019,6 +2067,35 @@ public class RCTfirebaseStorage {
     }
 
 
+
+
+    /*
+
+
+    boolean return_boolean = false;
+        AtomicBoolean finished_boolean = new AtomicBoolean(false);
+        AtomicReference<String> atomic_string = new AtomicReference<>(null);
+        RCTfirebaseStorageUtil.createOverrideFile_GetURL_X0001(
+                instance,
+                file_name,
+                file_contents,
+                finished_boolean,
+                atomic_string);
+        while(!return_boolean){
+            if(!finished_boolean.get() && atomic_string.get() == null){
+                try {
+                    Thread.sleep(thread_wait);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }else{
+                return_boolean = true;
+            }
+        }
+        return atomic_string.get();
+
+
+     */
 
 
 
