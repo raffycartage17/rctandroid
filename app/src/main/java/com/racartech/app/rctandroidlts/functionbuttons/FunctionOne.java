@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
+import com.racartech.library.rctandroid.datatypes.RCTstring;
 import com.racartech.library.rctandroid.file.RCTfile;
 import com.racartech.library.rctandroid.google.firebase.firestore.RCTfirebaseFirestore;
 import com.racartech.library.rctandroid.google.firebase.storage.RCTfirebaseStorage;
@@ -43,17 +44,35 @@ public class FunctionOne{
         new Thread(new Runnable() {
             @Override
             public void run() {
+
                 System.out.println("-------------------------------------------Test 2-------------------------------------------");
+                long start = System.currentTimeMillis();
+                ArrayList<String> local_file_paths = new ArrayList<>();
+                local_file_paths.add(RCTfile.getDir_ExternalStorageRoot().concat("/apath/test_0.jpg"));
+                local_file_paths.add(RCTfile.getDir_ExternalStorageRoot().concat("/apath/test_1.jpg"));
+                local_file_paths.add(RCTfile.getDir_ExternalStorageRoot().concat("/apath/test_2.jpg"));
+                local_file_paths.add(RCTfile.getDir_ExternalStorageRoot().concat("/apath/test_3.jpg"));
+                ArrayList<String> uploaded_file_names = new ArrayList<>();
+                for(int index = 0; index<local_file_paths.size(); index++){
+                    uploaded_file_names.add(RCTstring.randomString(64,64));
+                }
                 FirebaseStorage instance = FirebaseStorage.getInstance();
-                String download_url = RCTfirebaseStorage.uploadFile(
+                ArrayList<String> download_urls = RCTfirebaseStorage.uploadFiles(
                         instance,
-                        RCTfile.getDir_ExternalStorageRoot().concat("/apath/test.jpg"),
+                        local_file_paths,
                         "test_folder",
-                        "uploaded_image_raf.jpg",200
+                        uploaded_file_names,200
                 );
+                long end = System.currentTimeMillis();
                 System.out.println("--------------------------------------------------------------------------------------------");
-                System.out.println("Download URL : ".concat(download_url));
+                for(int index = 0; index<download_urls.size(); index++){
+                    System.out.println("Download URL : ".concat(download_urls.get(index)));
+                }
+
                 System.out.println("--------------------------------------------------------------------------------------------");
+                System.out.println("Elapse Time : ".concat(String.valueOf(end-start)));
+                System.out.println("--------------------------------------------------------------------------------------------");
+
             }
         }).start();
 

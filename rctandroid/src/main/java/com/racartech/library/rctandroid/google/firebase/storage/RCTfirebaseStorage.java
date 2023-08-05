@@ -314,16 +314,15 @@ public class RCTfirebaseStorage {
 
 
         boolean return_boolean = false;
-        AtomicBoolean finished_boolean = new AtomicBoolean(false);
-        AtomicInteger progress_integer = new AtomicInteger(-1);
 
         final ArrayList<String> cloned_file_names = new ArrayList<>(file_names);
+        AtomicReference<ArrayList<Boolean>> atomic_progress = new AtomicReference<>(new ArrayList<>());
 
-        RCTfirebaseStorageUtil.createEmptyFiles_WaitProgress(instance,directory_path,cloned_file_names,finished_boolean,progress_integer);
+        RCTfirebaseStorageUtil.createEmptyFiles_WaitProgress(instance,directory_path,cloned_file_names,atomic_progress);
 
 
         while(!return_boolean){
-            if(!finished_boolean.get() && progress_integer.get() == (cloned_file_names.size()-1)){
+            if(cloned_file_names.size() != atomic_progress.get().size()){
                 try {
                     Thread.sleep(thread_wait);
                 } catch (InterruptedException e) {
@@ -481,6 +480,38 @@ public class RCTfirebaseStorage {
             }
         }
         return atomic_string.get();
+    }
+
+
+    public static ArrayList<String> uploadFiles(
+            FirebaseStorage instance,
+            ArrayList<String> local_file_path,
+            String firebase_directory_path,
+            ArrayList<String> uploaded_file_name,
+            long thread_wait
+    ){
+        boolean return_boolean = false;
+        AtomicReference<ArrayList<String>> atomic_list = new AtomicReference<>(new ArrayList<>());
+        RCTfirebaseStorageUtil.uploadMultipleFile(
+                instance,
+                local_file_path,
+                firebase_directory_path,
+                uploaded_file_name,
+                atomic_list
+        );
+        while(!return_boolean){
+            if(atomic_list.get().size() != local_file_path.size()){
+                try {
+                    Thread.sleep(thread_wait);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }else{
+                return_boolean = true;
+            }
+        }
+
+        return atomic_list.get();
     }
     
 
@@ -1384,8 +1415,7 @@ public class RCTfirebaseStorage {
             FirebaseStorage instance,
             String folder_path,
             ArrayList<String> file_names,
-            AtomicBoolean finished_boolean,
-            AtomicInteger progress_integer) {
+            AtomicReference<ArrayList<Boolean>> atomic_progress) {
 
         new Thread(new Runnable() {
             @Override
@@ -1422,11 +1452,7 @@ public class RCTfirebaseStorage {
                     fileRef.getMetadata().addOnSuccessListener(new OnSuccessListener<StorageMetadata>() {
                         @Override
                         public void onSuccess(StorageMetadata storageMetadata) {
-                            // File already exists, skip the upload process for this file
-                            progress_integer.set(finalIndex);
-                            if(finalIndex == (file_names.size()-1)){
-                                finished_boolean.set(true);
-                            }
+                            atomic_progress.get().add(true);
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -1444,10 +1470,7 @@ public class RCTfirebaseStorage {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Uri> task) {
                                                     // File upload is complete for this file, you can add any further handling if needed.
-                                                    progress_integer.set(finalIndex);
-                                                    if(finalIndex == (file_names.size()-1)){
-                                                        finished_boolean.set(true);
-                                                    }
+                                                    atomic_progress.get().add(true);
                                                 }
                                             });
                                         }
@@ -1456,26 +1479,17 @@ public class RCTfirebaseStorage {
                                         @Override
                                         public void onFailure(@NonNull Exception e) {
                                             // Handle the error
-                                            progress_integer.set(finalIndex);
-                                            if(finalIndex == (file_names.size()-1)){
-                                                finished_boolean.set(true);
-                                            }
+                                            atomic_progress.get().add(true);
                                         }
                                     }).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                                         @Override
                                         public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                                            progress_integer.set(finalIndex);
-                                            if(finalIndex == (file_names.size()-1)){
-                                                finished_boolean.set(true);
-                                            }
+                                            atomic_progress.get().add(true);
                                         }
                                     }).addOnCanceledListener(new OnCanceledListener() {
                                         @Override
                                         public void onCanceled() {
-                                            progress_integer.set(finalIndex);
-                                            if(finalIndex == (file_names.size()-1)){
-                                                finished_boolean.set(true);
-                                            }
+                                            atomic_progress.get().add(true);
                                         }
                                     });
                         }
@@ -2022,7 +2036,6 @@ public class RCTfirebaseStorage {
                                             // Get the URL of the uploaded file
                                             Uri downloadUrl = task.getResult();
                                             String download_url_string = downloadUrl.toString();
-                                            System.out.println("Inner Download URL : ".concat(download_url_string));
                                             atomic_string.set(download_url_string);
                                             finished_boolean.set(true);
                                         } else {
@@ -2065,6 +2078,108 @@ public class RCTfirebaseStorage {
 
 
     }
+
+
+     public static void uploadMultipleFile(
+             FirebaseStorage instance,
+             ArrayList<String> local_file_paths,
+             String firebase_directory_path,
+             ArrayList<String> uploaded_file_names,
+             AtomicReference<ArrayList<String>> atomic_list) {
+
+
+
+
+
+         new Thread(new Runnable() {
+             @Override
+             public void run() {
+
+
+                 // Initialize Firebase Storage
+                 StorageReference storageRef = instance.getReference();
+
+
+                 for(int index = 0; index<local_file_paths.size(); index++){
+
+                     // Read the content of the local file into a byte array
+                     File localFile = new File(local_file_paths.get(index));
+                     byte[] data;
+                     try {
+                         data = Files.readAllBytes(localFile.toPath());
+                     } catch (IOException e) {
+                         // Handle the error
+                         atomic_list.get().add(NULL_RESULT_IDENTIFIER);
+                         return;
+                     }
+
+                     // Get the root folder reference
+                     StorageReference folderRef = storageRef;
+
+                     // Create nested directories if they exist in the firebase_directory_path
+                     String[] folder_path_branches = firebase_directory_path.split("/");
+                     for (String folderName : folder_path_branches) {
+                         if (!folderName.isEmpty()) {
+                             // Create a reference to the next level folder
+                             folderRef = folderRef.child(folderName);
+                         }
+                     }
+
+                     // Create a reference to the file inside the final folder
+                     StorageReference fileRef = folderRef.child(uploaded_file_names.get(index));
+
+                     // Upload the file to Firebase Storage
+                     fileRef.putBytes(data)
+                             .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                 @Override
+                                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                     // File upload successful
+                                     // Get the download URL of the uploaded file
+                                     Task<Uri> downloadUrlTask = taskSnapshot.getStorage().getDownloadUrl();
+                                     downloadUrlTask.addOnCompleteListener(new OnCompleteListener<Uri>() {
+                                         @Override
+                                         public void onComplete(@NonNull Task<Uri> task) {
+                                             if (task.isSuccessful()) {
+                                                 // Get the URL of the uploaded file
+                                                 Uri downloadUrl = task.getResult();
+                                                 String download_url_string = downloadUrl.toString();
+                                                 atomic_list.get().add(download_url_string);
+                                             } else {
+                                                 atomic_list.get().add(NULL_RESULT_IDENTIFIER);
+                                             }
+                                         }
+                                     }).addOnFailureListener(new OnFailureListener() {
+                                         @Override
+                                         public void onFailure(@NonNull Exception e) {
+                                             atomic_list.get().add(NULL_RESULT_IDENTIFIER);
+                                         }
+                                     }).addOnCanceledListener(new OnCanceledListener() {
+                                         @Override
+                                         public void onCanceled() {
+                                             atomic_list.get().add(NULL_RESULT_IDENTIFIER);
+                                         }
+                                     });
+                                 }
+                             })
+                             .addOnFailureListener(new OnFailureListener() {
+                                 @Override
+                                 public void onFailure(@NonNull Exception e) {
+                                     // Handle the error
+                                     atomic_list.get().add(NULL_RESULT_IDENTIFIER);
+                                 }
+                             }).addOnCanceledListener(new OnCanceledListener() {
+                                 @Override
+                                 public void onCanceled() {
+                                     atomic_list.get().add(NULL_RESULT_IDENTIFIER);
+                                 }
+                             });
+                 }
+
+             }
+         }).start();
+
+
+     }
 
 
 
