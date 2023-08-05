@@ -128,8 +128,8 @@ public class MainActivity extends AppCompatActivity {
         f1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FunctionOne.launch(MainActivity.this, MainActivity.this);
-                //FunctionOne.test2(MainActivity.this, MainActivity.this);
+                //FunctionOne.launch(MainActivity.this, MainActivity.this);
+                FunctionOne.test2(MainActivity.this, MainActivity.this);
             }
         });
 
