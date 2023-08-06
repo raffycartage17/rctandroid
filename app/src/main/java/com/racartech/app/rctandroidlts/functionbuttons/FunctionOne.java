@@ -44,34 +44,14 @@ public class FunctionOne{
         new Thread(new Runnable() {
             @Override
             public void run() {
-
-                System.out.println("-------------------------------------------Test 2-------------------------------------------");
-                long start = System.currentTimeMillis();
-                ArrayList<String> local_file_paths = new ArrayList<>();
-                local_file_paths.add(RCTfile.getDir_ExternalStorageRoot().concat("/apath/test_0.jpg"));
-                local_file_paths.add(RCTfile.getDir_ExternalStorageRoot().concat("/apath/test_1.jpg"));
-                local_file_paths.add(RCTfile.getDir_ExternalStorageRoot().concat("/apath/test_2.jpg"));
-                local_file_paths.add(RCTfile.getDir_ExternalStorageRoot().concat("/apath/test_3.jpg"));
-                ArrayList<String> uploaded_file_names = new ArrayList<>();
-                for(int index = 0; index<local_file_paths.size(); index++){
-                    uploaded_file_names.add(RCTstring.randomString(64,64));
-                }
-                FirebaseStorage instance = FirebaseStorage.getInstance();
-                ArrayList<String> download_urls = RCTfirebaseStorage.uploadFiles(
-                        instance,
-                        local_file_paths,
-                        "test_folder",
-                        uploaded_file_names,200
-                );
-                long end = System.currentTimeMillis();
-                System.out.println("--------------------------------------------------------------------------------------------");
-                for(int index = 0; index<download_urls.size(); index++){
-                    System.out.println("Download URL : ".concat(download_urls.get(index)));
-                }
-
-                System.out.println("--------------------------------------------------------------------------------------------");
-                System.out.println("Elapse Time : ".concat(String.valueOf(end-start)));
-                System.out.println("--------------------------------------------------------------------------------------------");
+                ArrayList<String> file_contents = new ArrayList<>();
+                file_contents.add("Rafael Cartagena 1");
+                file_contents.add("Rafael Cartagena 2");
+                file_contents.add("Rafael Cartagena 3");
+                file_contents.add("Rafael Cartagena 4");
+                file_contents.add("Rafael Cartagena 5");
+                RCTfirebaseStorage.createDirectory(FirebaseStorage.getInstance(),"aaa/aab","placeholder_1.txt");
+                System.out.println("Directory Created");
 
             }
         }).start();

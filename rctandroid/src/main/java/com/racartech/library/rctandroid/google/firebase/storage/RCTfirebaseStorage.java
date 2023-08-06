@@ -239,8 +239,8 @@ public class RCTfirebaseStorage {
     }
 
 
-    public static void createDirectory(FirebaseStorage instance,String directory){
-        RCTfirebaseStorageUtil.createDirectory(instance,directory);
+    public static void createDirectory(FirebaseStorage instance,String directory, String place_holder_filename){
+        RCTfirebaseStorageUtil.createDirectory(instance,directory,place_holder_filename);
     }
 
     /**
@@ -982,35 +982,27 @@ public class RCTfirebaseStorage {
 
 
 
-    public static void createDirectory(FirebaseStorage instance,String folder_path) {
+     public static void createDirectory(FirebaseStorage instance, String folder_path, String place_holder_file_name) {
+         String[] folder_path_branches = folder_path.split("/");
+         StorageReference folderRef = instance.getReference();
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String[] folder_path_branches = folder_path.split("/");
+         // Create nested directories if they exist in the folder_path_branches array
+         for (String folderName : folder_path_branches) {
+             if (!folderName.isEmpty()) {
+                 // Create a reference to the next level folder
+                 folderRef = folderRef.child(folderName);
+             }
+         }
 
-                StorageReference storageRef = instance.getReference();
-
-                // Get the root folder reference
-                StorageReference folderRef = storageRef;
-
-                // Create nested directories if they exist in the folder_path_branches array
-                for (String folderName : folder_path_branches) {
-                    if (!folderName.isEmpty()) {
-                        // Create a reference to the next level folder
-                        folderRef = folderRef.child(folderName);
-                    }
-                }
-            }
-        }).start();
+         // Create a placeholder file to ensure the directory is created in Firebase Storage
+         StorageReference placeholderFileRef = folderRef.child(place_holder_file_name);
+         placeholderFileRef.putBytes(new byte[]{});
+     }
 
 
 
-    }
 
-
-
-    public static void createEmptyFile_X0004(
+     public static void createEmptyFile_X0004(
             FirebaseStorage instance,
             String folder_path,
             String file_name,
