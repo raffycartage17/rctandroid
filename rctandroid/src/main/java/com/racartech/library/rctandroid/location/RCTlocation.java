@@ -11,6 +11,8 @@ import java.util.Locale;
 public class RCTlocation{
 
 
+    public final static int LATITUDE_INDEX = 0;
+    public final static int LONGITUDE_INDEX = 1;
     public static Address getAddress(Context context,double latitude, double longitude){
         Geocoder geocoder = new Geocoder(context, Locale.getDefault());
         try {
