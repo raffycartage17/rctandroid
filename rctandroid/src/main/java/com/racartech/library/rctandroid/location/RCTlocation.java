@@ -26,6 +26,10 @@ public class RCTlocation{
         }
     }
 
+    public static double[] getDefaultLocationCoordinates() {
+        return new double[]{14.5995, 120.9842};
+    }
+
 
 
 
