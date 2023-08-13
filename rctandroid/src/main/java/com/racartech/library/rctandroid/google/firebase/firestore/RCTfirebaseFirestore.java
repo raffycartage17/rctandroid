@@ -549,11 +549,11 @@ public class RCTfirebaseFirestore {
                                         DocumentSnapshot document = task.getResult();
                                         if (document.exists()) {
                                             try {
-                                                HashMap<String,Object> data_map = new HashMap<>();
-                                                //ArrayList<String> keyset = new ArrayList<>();
-                                                //inner_list.addAll(document.getData().keySet());
+                                                HashMap<String,Object> data_map = (HashMap<String, Object>) document.getData();
                                                 atomic_list.get().clear();
-                                                atomic_list.get().putAll(data_map);
+                                                if(data_map != null) {
+                                                    atomic_list.get().putAll(data_map);
+                                                }
                                             }catch (Exception ex){
                                                 ex.printStackTrace();
                                             }
