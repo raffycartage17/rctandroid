@@ -18,6 +18,7 @@ public class FunctionOne{
             public void run() {
                 HashMap<String, Object> document_data = RCTfirebaseFirestore.readDocument(FirebaseFirestore.getInstance(),"Bulacan","Towns",200);
                 System.out.println("Document Keys Size : ".concat(String.valueOf(document_data.keySet().size())));
+                //Test
 
 
             }
