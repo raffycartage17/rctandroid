@@ -33,6 +33,114 @@ public class RCTlocation{
     }
 
 
+    public static boolean isSameLocality(Address address_one, Address address_two){
+        String address_one_country_name = address_one.getCountryName();
+        String address_two_country_name = address_two.getCountryName();
+
+        String address_one_admin_area = address_one.getAdminArea();
+        String address_two_admin_area = address_two.getAdminArea();
+
+        String address_one_sub_admin_area = address_one.getSubAdminArea();
+        String address_two_sub_admin_area = address_two.getSubAdminArea();
+
+        String address_one_locality = address_one.getLocality();
+        String address_two_locality = address_two.getLocality();
+
+        boolean pass_one = true;
+        boolean pass_two = true;
+        boolean pass_three = true;
+        boolean pass_four = true;
+        try{
+            if(!address_one_country_name.equals(address_two_country_name)){
+                pass_one = false;
+            }
+        }catch (NullPointerException ignored){}
+
+        try{
+            if(!address_one_admin_area.equals(address_two_admin_area)){
+                pass_two = false;
+            }
+        }catch (NullPointerException ignored){}
+
+        try{
+            if(!address_one_sub_admin_area.equals(address_two_sub_admin_area)){
+                pass_three = false;
+            }
+        }catch (NullPointerException ignored){}
+
+        try{
+            if(!address_one_locality.equals(address_two_locality)){
+                pass_four = false;
+            }
+        }catch (NullPointerException ignored){
+            pass_four = false;
+        }
+        return (pass_one && pass_two && pass_three && pass_four);
+    }
+
+
+    public static boolean isSameLocality(
+            Context context,
+            double address_one_latitude,
+            double address_one_longitude,
+            double address_two_latitude,
+            double address_two_longitude){
+
+        Address address_one = getAddress(
+                context,
+                address_one_latitude,
+                address_one_longitude);
+
+        Address address_two = getAddress(
+                context,
+                address_two_latitude,
+                address_two_longitude);
+
+        String address_one_country_name = address_one.getCountryName();
+        String address_two_country_name = address_two.getCountryName();
+
+        String address_one_admin_area = address_one.getAdminArea();
+        String address_two_admin_area = address_two.getAdminArea();
+
+        String address_one_sub_admin_area = address_one.getSubAdminArea();
+        String address_two_sub_admin_area = address_two.getSubAdminArea();
+
+        String address_one_locality = address_one.getLocality();
+        String address_two_locality = address_two.getLocality();
+
+        boolean pass_one = true;
+        boolean pass_two = true;
+        boolean pass_three = true;
+        boolean pass_four = true;
+        try{
+            if(!address_one_country_name.equals(address_two_country_name)){
+                pass_one = false;
+            }
+        }catch (NullPointerException ignored){}
+
+        try{
+            if(!address_one_admin_area.equals(address_two_admin_area)){
+                pass_two = false;
+            }
+        }catch (NullPointerException ignored){}
+
+        try{
+            if(!address_one_sub_admin_area.equals(address_two_sub_admin_area)){
+                pass_three = false;
+            }
+        }catch (NullPointerException ignored){}
+
+        try{
+            if(!address_one_locality.equals(address_two_locality)){
+                pass_four = false;
+            }
+        }catch (NullPointerException ignored){
+            pass_four = false;
+        }
+        return (pass_one && pass_two && pass_three && pass_four);
+    }
+
+
 
 
 
