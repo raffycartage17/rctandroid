@@ -3,16 +3,50 @@ package com.racartech.library.rctandroid.json;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.racartech.library.rctandroid.file.RCTfile;
 
 import java.lang.reflect.Type;
 
 public class RCTjson {
+
+
+
+    public static JsonObject stringToJsonObject(String json_object_string){
+        return new Gson().fromJson(json_object_string, JsonElement.class).getAsJsonObject();
+    }
+
+    public static JsonObject[] jsonArrayToJsonObjectArray(String json_array_string){
+        JsonArray json_array = JsonParser.parseString(json_array_string).getAsJsonArray();
+        JsonObject[] json_object_array = new JsonObject[json_array.size()];
+        for (int i = 0; i < json_array.size(); i++) {
+            json_object_array[i] = json_array.get(i).getAsJsonObject();
+        }
+        return json_object_array;
+    }
+
+    public static JsonArray stringToJsonArray(String json_array_string){
+        return JsonParser.parseString(json_array_string).getAsJsonArray();
+    }
+
+
+    public static String jsonObjectToString(JsonObject jsonObject) {
+        return new Gson().toJson(jsonObject);
+    }
+
+    public static String jsonArrayToString(JsonArray jsonArray) {
+        return jsonArray.toString();
+    }
 
 
 
