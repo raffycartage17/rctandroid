@@ -22,6 +22,21 @@ public class RCTjson {
 
 
 
+    public static ArrayList<String> getKeySet_JsonObject(String json_object_string){
+        JsonElement jsonElement = new Gson().fromJson(json_object_string, JsonElement.class);
+        JsonObject response_object = jsonElement.getAsJsonObject();
+        return new ArrayList<>(response_object.keySet());
+    }
+    public static JsonObject toJsonObject(String json_object_string){
+        JsonElement jsonElement = new Gson().fromJson(json_object_string, JsonElement.class);
+        return jsonElement.getAsJsonObject();
+    }
+
+    public static JsonElement toJsonElement(String json_object_string){
+        return new Gson().fromJson(json_object_string, JsonElement.class);
+    }
+
+
     public static JsonObject stringToJsonObject(String json_object_string){
         return new Gson().fromJson(json_object_string, JsonElement.class).getAsJsonObject();
     }
