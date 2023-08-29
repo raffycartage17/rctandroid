@@ -18,26 +18,9 @@ public class FunctionOne{
         new Thread(new Runnable() {
             @Override
             public void run(){
-
-
-
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        LocationData location_data = new LocationData(context,LocationData.MODE_CURRENT,100);
-                        Address current_address = location_data.getAddress();
-
-                        System.out.println("Admin Area      : ".concat(current_address.getAdminArea()));
-                        System.out.println("Sub Admin Area  : ".concat(current_address.getSubAdminArea()));
-                        System.out.println("Locality        : ".concat(current_address.getLocality()));
-
-
-
-                    }
-                }).start();
-
-
+                String collection_path = "test_collection";
+                String document_path = "001_document";
+                String field = "aab_field";
             }
         }).start();
 

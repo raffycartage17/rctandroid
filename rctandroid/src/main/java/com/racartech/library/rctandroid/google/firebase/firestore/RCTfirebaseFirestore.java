@@ -10,6 +10,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
@@ -61,6 +62,70 @@ public class RCTfirebaseFirestore {
             }
         }
     }
+
+
+    public static void deleteField_WaitProgress(
+            FirebaseFirestore instance,
+            String collection_path,
+            String document_path,
+            String field,
+            long thread_wait){
+        boolean return_boolean = false;
+        AtomicBoolean finished_boolean = new AtomicBoolean(false);
+        FirestoreUtil.deleteField_WaitProgress(instance,collection_path,document_path,field,finished_boolean);
+        while(!return_boolean){
+            if(!finished_boolean.get()){
+                try {
+                    Thread.sleep(thread_wait);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }else{
+                return_boolean = true;
+            }
+        }
+    }
+
+    public static void deleteField(
+            FirebaseFirestore instance,
+            String collection_path,
+            String document_path,
+            String field
+    ){
+        FirestoreUtil.deleteField(instance,collection_path,document_path,field);
+    }
+
+
+
+    public static void deleteDocument_WaitProgress(
+            FirebaseFirestore instance,
+            String collection_path,
+            String document_path,
+            long thread_wait){
+        boolean return_boolean = false;
+        AtomicBoolean finished_boolean = new AtomicBoolean(false);
+        FirestoreUtil.deleteDocument_WaitProgress(instance,collection_path,document_path,finished_boolean);
+        while(!return_boolean){
+            if(!finished_boolean.get()){
+                try {
+                    Thread.sleep(thread_wait);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }else{
+                return_boolean = true;
+            }
+        }
+    }
+
+    public static void deleteDocument(
+            FirebaseFirestore instance,
+            String collection_path,
+            String document_path){
+        FirestoreUtil.deleteDocument(instance,collection_path,document_path);
+    }
+
+
 
 
     public static void createDocument(
@@ -367,6 +432,80 @@ public class RCTfirebaseFirestore {
 
 
 
+        protected static void deleteField_WaitProgress(
+                FirebaseFirestore instance,
+                String collection_path,
+                String document_path,
+                String fieldName,
+                AtomicBoolean finished_boolean) {
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    DocumentReference document = getDocumentReference(instance, collection_path, document_path);
+                    Map<String, Object> data = new HashMap<>();
+                    data.put(fieldName, FieldValue.delete()); // Use FieldValue.delete() to delete a field
+                    document.update(data).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            finished_boolean.set(true);
+                        }
+                    }).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            finished_boolean.set(true);
+                        }
+                    }).addOnCanceledListener(new OnCanceledListener() {
+                        @Override
+                        public void onCanceled() {
+                            finished_boolean.set(true);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            finished_boolean.set(true);
+                        }
+                    });
+                }
+            }).start();
+        }
+
+        protected static void deleteField(
+                FirebaseFirestore instance,
+                String collection_path,
+                String document_path,
+                String fieldName) {
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    DocumentReference document = getDocumentReference(instance, collection_path, document_path);
+                    Map<String, Object> data = new HashMap<>();
+                    data.put(fieldName, FieldValue.delete()); // Use FieldValue.delete() to delete a field
+                    document.update(data).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                        }
+                    }).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                        }
+                    }).addOnCanceledListener(new OnCanceledListener() {
+                        @Override
+                        public void onCanceled() {
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                        }
+                    });
+                }
+            }).start();
+        }
+
+
+
+
 
         public static void readField(
                 FirebaseFirestore instance,
@@ -648,6 +787,74 @@ public class RCTfirebaseFirestore {
 
         }
 
+
+
+
+        protected static void deleteDocument_WaitProgress(
+                FirebaseFirestore instance,
+                String collection_path,
+                String document_path,
+                AtomicBoolean finished_boolean) {
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    DocumentReference document = getDocumentReference(instance, collection_path, document_path);
+                    document.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            finished_boolean.set(true);
+                        }
+                    }).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            finished_boolean.set(true);
+                        }
+                    }).addOnCanceledListener(new OnCanceledListener() {
+                        @Override
+                        public void onCanceled() {
+                            finished_boolean.set(true);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            finished_boolean.set(true);
+                        }
+                    });
+                }
+            }).start();
+        }
+
+
+        protected static void deleteDocument(
+                FirebaseFirestore instance,
+                String collection_path,
+                String document_path) {
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    DocumentReference document = getDocumentReference(instance, collection_path, document_path);
+                    document.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                        }
+                    }).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                        }
+                    }).addOnCanceledListener(new OnCanceledListener() {
+                        @Override
+                        public void onCanceled() {
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                        }
+                    });
+                }
+            }).start();
+        }
 
 
 
