@@ -3,6 +3,7 @@ package com.racartech.library.rctandroid.location;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.LocationManager;
 
 import java.io.IOException;
 import java.util.List;
@@ -138,6 +139,16 @@ public class RCTlocation{
             pass_four = false;
         }
         return (pass_one && pass_two && pass_three && pass_four);
+    }
+
+
+    public static boolean isLocationEnabled(Context context) {
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        if (locationManager != null) {
+            return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+                    || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        }
+        return false;
     }
 
 
