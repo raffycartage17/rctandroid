@@ -762,6 +762,98 @@ public class RCTtime {
     }
 
 
+    public static String getMonthName(int month){ //1-12
+        String month_name = "null";
+        switch (month){
+            case 1:
+                month_name = "January";
+                break;
+            case 2:
+                month_name = "February";
+                break;
+            case 3:
+                month_name = "March";
+                break;
+            case 4:
+                month_name = "April";
+                break;
+            case 5:
+                month_name = "May";
+                break;
+            case 6:
+                month_name = "June";
+                break;
+            case 7:
+                month_name = "July";
+                break;
+            case 8:
+                month_name = "August";
+                break;
+            case 9:
+                month_name = "September";
+                break;
+            case 10:
+                month_name = "October";
+                break;
+            case 11:
+                month_name = "November";
+                break;
+            case 12:
+                month_name = "December";
+                break;
+        }
+
+        return month_name;
+    }
+
+
+    public static String getTimeStamp_MMDDYYYY(long millis){
+        RCTtimeData time_data = new RCTtimeData(millis);
+        String time_stamp =
+                getMonthName(time_data.MONTH).concat(" ").
+                        concat(convertIntToDoubleDigitString(time_data.DATE)).concat(", ").
+                        concat(convertIntToDoubleDigitString(time_data.YEAR));
+        return time_stamp;
+    }
+
+    public static String getTimeStamp_MMDDYYYY(RCTtimeData time_data){
+        String time_stamp =
+                getMonthName(time_data.MONTH).concat(" ").
+                        concat(convertIntToDoubleDigitString(time_data.DATE)).concat(", ").
+                        concat(convertIntToDoubleDigitString(time_data.YEAR));
+        return time_stamp;
+    }
+
+
+    public static String getTimeStamp_MMDDYYYY_HHMMSS(long millis){
+        RCTtimeData time_data = new RCTtimeData(millis);
+        String time_stamp =
+                getTimeStamp_MMDDYYYY(time_data).concat(" ").
+                        concat(convertIntToDoubleDigitString(time_data.HOUR)).concat(":").
+                        concat(convertIntToDoubleDigitString(time_data.MINUTE)).concat(":").
+                        concat(convertIntToDoubleDigitString(time_data.SECOND));
+
+        return time_stamp;
+    }
+
+    public static String getTimeStamp_MMDDYYYY_HHMMSS(RCTtimeData time_data){
+        String time_stamp =
+                getTimeStamp_MMDDYYYY(time_data).concat(" ").
+                        concat(convertIntToDoubleDigitString(time_data.HOUR)).concat(":").
+                        concat(convertIntToDoubleDigitString(time_data.MINUTE)).concat(":").
+                        concat(convertIntToDoubleDigitString(time_data.SECOND));
+
+        return time_stamp;
+    }
+
+    private static String convertIntToDoubleDigitString(int the_int){
+        if(the_int >= 0 && the_int <= 9){
+            return "0".concat(String.valueOf(the_int));
+        }else{
+            return String.valueOf(the_int);
+        }
+    }
+
 
 
 

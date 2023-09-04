@@ -9,6 +9,8 @@ import com.racartech.library.rctandroid.google.firebase.firestore.RCTfirebaseFir
 import com.racartech.library.rctandroid.location.LocationData;
 import com.racartech.library.rctandroid.location.RCTlocation;
 import com.racartech.library.rctandroid.net.RCTinternet;
+import com.racartech.library.rctandroid.time.RCTtime;
+import com.racartech.library.rctandroid.time.RCTtimeData;
 
 import java.util.HashMap;
 
@@ -19,8 +21,10 @@ public class FunctionOne{
         new Thread(new Runnable() {
             @Override
             public void run(){
-                boolean location_status = RCTlocation.isLocationEnabled(context);
-                System.out.println("Location Status : ".concat(String.valueOf(location_status)));
+                RCTtimeData time_data = new RCTtimeData(System.currentTimeMillis());
+                System.out.println("-------------------------------------------------------");
+                System.out.println(RCTtime.getTimeStamp_MMDDYYYY_HHMMSS(time_data));
+                System.out.println("-------------------------------------------------------");
             }
         }).start();
 
