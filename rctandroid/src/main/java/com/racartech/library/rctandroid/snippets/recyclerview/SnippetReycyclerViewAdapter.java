@@ -20,36 +20,33 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.racartech.app.rctandroid19.R;
+
 import java.util.ArrayList;
 
-
-public class Window1RecyclerAdapter extends RecyclerView.Adapter<Window1RecyclerAdapter.ViewHolder>{
+public class SuggestionsListAdapter extends RecyclerView.Adapter<SuggestionsListAdapter.ViewHolder>{
     private final Context app_context;
     private final Activity current_activity;
-    private Window1 window1;
     private ArrayList<String> dataset;
-    public Window1RecyclerAdapter(Window1 window1, Activity current_activity, Context app_context, ArrayList<String> dataset){
-        //Window1 is the ActivityClass of the recycler view
+    public SuggestionsListAdapter(Activity current_activity, Context app_context, ArrayList<String> dataset){
         this.app_context = app_context;
         this.current_activity = current_activity;
-        this.window1 = window1;
         this.dataset = dataset;
     }
 
 
     @NonNull
     @Override
-    public Window1RecyclerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(app_context).inflate(R.layout.sample_message_layout, parent, false);
+    public SuggestionsListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(app_context).inflate(R.layout.entry_layout, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull Window1RecyclerAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull SuggestionsListAdapter.ViewHolder holder, int position) {
         int adapter_position = holder.getAdapterPosition();
     }
 
