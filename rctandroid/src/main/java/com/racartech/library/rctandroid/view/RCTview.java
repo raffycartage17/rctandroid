@@ -170,7 +170,7 @@ public class RCTview {
             int action_taken = motionEvent.getAction();
             switch(action_taken){
                 case MotionEvent.ACTION_DOWN:
-                    image_button.setColorFilter(color,null);
+                    image_button.setColorFilter(color);
                     break;
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:

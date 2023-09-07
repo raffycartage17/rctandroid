@@ -61,7 +61,7 @@ afterEvaluate{
             from components.findByName(variant.name)
             groupId = 'com.racartech.library'
             artifactId = 'rctandroid'
-            version = '0.2.2'
+            version = '0.7.23'
         }
     }
 }
