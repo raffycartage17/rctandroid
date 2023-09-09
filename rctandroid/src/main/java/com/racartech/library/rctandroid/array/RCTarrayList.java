@@ -73,5 +73,27 @@ public class RCTarrayList{
 
 
 
+    public static boolean hasTheSameValues(ArrayList<String> list1, ArrayList<String> list2) {
+        // Check if the ArrayLists have the same size
+        if (list1.size() != list2.size()) {
+            return false;
+        }
+
+        // Iterate through both ArrayLists and compare their elements
+        for (int i = 0; i < list1.size(); i++) {
+            String element1 = list1.get(i);
+            String element2 = list2.get(i);
+
+            // Compare elements using the equals method (case-sensitive)
+            if (!element1.equals(element2)) {
+                return false;
+            }
+        }
+
+        // If all elements are equal, return true
+        return true;
+    }
+
+
 
 }
