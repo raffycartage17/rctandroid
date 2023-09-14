@@ -135,6 +135,18 @@ public class RCTfirebaseFirestore {
             FirestoreUtil.createDocument(instance,collection_path,document_path);
     }
 
+    public static void createDocument(
+            FirebaseFirestore instance,
+            String collection_path,
+            String document_path,
+            HashMap<String, Object> document_data){
+        FirestoreUtil.createDocument(
+                instance,
+                collection_path,
+                document_path,
+                document_data);
+    }
+
     public static void createDocument_WaitProgress(
             FirebaseFirestore instance,
             String collection_path,
@@ -154,6 +166,33 @@ public class RCTfirebaseFirestore {
                     return_boolean = true;
                 }
             }
+    }
+
+    public static void createDocument_WaitProgress(
+            FirebaseFirestore instance,
+            String collection_path,
+            String document_path,
+            HashMap<String, Object> document_data,
+            long thread_wait){
+        boolean return_boolean = false;
+        AtomicBoolean finished_boolean = new AtomicBoolean(false);
+        FirestoreUtil.createDocument_WaitProgress(
+                instance,
+                collection_path,
+                document_path,
+                document_data,
+                finished_boolean);
+        while(!return_boolean){
+            if(!finished_boolean.get()){
+                try {
+                    Thread.sleep(thread_wait);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }else{
+                return_boolean = true;
+            }
+        }
     }
 
 
@@ -316,6 +355,23 @@ public class RCTfirebaseFirestore {
 
         }
 
+
+        protected static void createDocument(
+                FirebaseFirestore instance,
+                String collection_path,
+                String document_path,
+                HashMap<String, Object> document_data) {
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    DocumentReference docRef = instance.collection(collection_path).document(document_path);
+                    docRef.set(document_data, SetOptions.merge());
+                }
+            }).start();
+
+        }
+
         protected static void createDocument_WaitProgress(FirebaseFirestore instance,String collection_path, String document_path, AtomicBoolean finished_bool) {
 
             new Thread(new Runnable() {
@@ -325,6 +381,47 @@ public class RCTfirebaseFirestore {
                     Map<String, Object> data = new HashMap<>();
                     DocumentReference docRef = instance.collection(collection_path).document(document_path);
                     docRef.set(data, SetOptions.merge())
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    finished_bool.set(true);
+                                }
+                            }).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    finished_bool.set(true);
+                                }
+                            }).addOnCanceledListener(new OnCanceledListener() {
+                                @Override
+                                public void onCanceled() {
+                                    finished_bool.set(true);
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    finished_bool.set(true);
+                                }
+                            });
+
+                }
+            }).start();
+
+
+        }
+
+        protected static void createDocument_WaitProgress(
+                FirebaseFirestore instance,
+                String collection_path,
+                String document_path,
+                HashMap<String, Object> document_data,
+                AtomicBoolean finished_bool) {
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+
+                    DocumentReference docRef = instance.collection(collection_path).document(document_path);
+                    docRef.set(document_data, SetOptions.merge())
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
