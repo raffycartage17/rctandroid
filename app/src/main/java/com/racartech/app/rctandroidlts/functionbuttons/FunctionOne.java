@@ -22,6 +22,7 @@ public class FunctionOne{
         new Thread(new Runnable() {
             @Override
             public void run(){
+                
                 long start = System.currentTimeMillis();
                 String download_url = "https://firebasestorage.googleapis.com/v0/b/racartech-81aff.appspot.com/o/test_file%2Ftest_file.zip?alt=media&token=705fdb44-cb1c-48da-962c-36a796ceffe5";
                 String file_path = RCTfile.getDir_IntAppFiles(context).concat("/download_test.zip");
