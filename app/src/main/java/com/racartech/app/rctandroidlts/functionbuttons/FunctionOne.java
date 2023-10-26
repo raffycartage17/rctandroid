@@ -14,6 +14,7 @@ import com.racartech.library.rctandroid.time.RCTtime;
 import com.racartech.library.rctandroid.time.RCTtimeData;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class FunctionOne{
 
@@ -22,11 +23,19 @@ public class FunctionOne{
         new Thread(new Runnable() {
             @Override
             public void run(){
-                
                 long start = System.currentTimeMillis();
-                String download_url = "https://firebasestorage.googleapis.com/v0/b/racartech-81aff.appspot.com/o/test_file%2Ftest_file.zip?alt=media&token=705fdb44-cb1c-48da-962c-36a796ceffe5";
-                String file_path = RCTfile.getDir_IntAppFiles(context).concat("/download_test.zip");
-                RCTinternet.downloadFile(download_url,file_path);
+                String query_address = "Washington";
+                List<Address> results = RCTlocation.searchAddress(context,query_address,20);
+                System.out.println("------------------------------------------------------------------------");
+                System.out.println("------------------------------------------------------------------------");
+                for(int index = 0; index<results.size(); index++){
+                    System.out.println("Result (".concat(String.valueOf(index)).concat(") : ").concat(
+                            results.get(index).getAddressLine(0)));
+                    System.out.println(results.get(index).getMaxAddressLineIndex());
+
+                }
+                System.out.println("------------------------------------------------------------------------");
+                System.out.println("------------------------------------------------------------------------");
                 long end = System.currentTimeMillis();
                 System.out.println("------------------------------------------------------------------------");
                 System.out.println("Elapse Time : ".concat(String.valueOf((end-start))));

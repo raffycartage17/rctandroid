@@ -15,19 +15,40 @@ public class RCTlocation{
     public final static int LATITUDE_INDEX = 0;
     public final static int LONGITUDE_INDEX = 1;
     public static Address getAddress(Context context,double latitude, double longitude){
-        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
         try {
+            Geocoder geocoder = new Geocoder(context, Locale.getDefault());
             List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
             if(addresses != null){
                 return addresses.get(0);
             }else{
                 return null;
             }
-        }catch (IOException ex){
+        }catch (Exception ex){
             ex.printStackTrace();
             return null;
         }
     }
+
+    public static List<Address> searchAddress(
+            Context context,
+            String search_query,
+            int max_results
+    ){
+        try {
+            Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+            List<Address> result_addresses = geocoder.getFromLocationName(search_query,max_results);
+            if(result_addresses != null){
+                return result_addresses;
+            }else{
+                return null;
+            }
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+
 
     public static double[] getDefaultLocationCoordinates() {
         return new double[]{14.5995, 120.9842};
