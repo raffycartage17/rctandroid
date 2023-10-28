@@ -13,6 +13,7 @@ import com.racartech.library.rctandroid.location.LocationData;
 import com.racartech.library.rctandroid.location.RCTlocation;
 import com.racartech.library.rctandroid.net.RCTinternet;
 import com.racartech.library.rctandroid.permission.RCTpermission;
+import com.racartech.library.rctandroid.phone.RCTdial;
 import com.racartech.library.rctandroid.time.RCTtime;
 import com.racartech.library.rctandroid.time.RCTtimeData;
 
@@ -24,7 +25,7 @@ public class FunctionOne{
 
     public static void launch(Context context, Activity activity) {
 
-
+        RCTdial.dial(activity,"09219543828");
     }
 
 
