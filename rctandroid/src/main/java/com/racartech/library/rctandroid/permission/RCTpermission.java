@@ -78,6 +78,19 @@ public class RCTpermission{
         }
     }
 
+
+    public static void allowPermission_CALL_PHONE(Activity activity, int requestCode) {
+        if (ContextCompat.checkSelfPermission(activity,
+                Manifest.permission.CALL_PHONE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Permission is not granted, prompt the user
+            ActivityCompat.requestPermissions(activity,
+                    new String[]{Manifest.permission.CALL_PHONE},
+                    requestCode);
+        }
+    }
+
     public static void allowPermission_ACCESS_COARSE_LOCATION(Activity activity, int requestCode) {
         if (ContextCompat.checkSelfPermission(activity,
                 Manifest.permission.ACCESS_COARSE_LOCATION)
