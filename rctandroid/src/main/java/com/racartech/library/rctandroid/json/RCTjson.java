@@ -153,13 +153,8 @@ public class RCTjson {
     }
 
     public static String convertArrayListToString(ArrayList<String> arrayList) {
-        // Create a Gson object
         Gson gson = new Gson();
-
-        // Convert the ArrayList to JSON
         String json = gson.toJson(arrayList);
-
-        // Return the JSON string
         return json;
     }
 

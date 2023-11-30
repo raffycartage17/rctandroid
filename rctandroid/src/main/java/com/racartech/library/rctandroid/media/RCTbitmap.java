@@ -5,7 +5,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Environment;
+import android.provider.MediaStore;
 
 import com.racartech.library.rctandroid.file.RCTdirectory;
 import com.racartech.library.rctandroid.file.RCTfile;
@@ -18,6 +20,15 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class RCTbitmap{
+
+
+    public static Bitmap getBitmapForURI(Context context, Uri the_uri){
+        try {
+            return MediaStore.Images.Media.getBitmap(context.getContentResolver(), the_uri);
+        }catch (IOException ignored){
+            return null;
+        }
+    }
 
 
     public static Bitmap getBitmapForURL(URL image_url) {
