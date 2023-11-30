@@ -17,12 +17,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 
 public class RCTbitmap{
 
 
-    public static Bitmap getBitmapForURI(Context context, Uri the_uri){
+    public static Bitmap getBitmapForURI(Context context,Uri the_uri){
         try {
             return MediaStore.Images.Media.getBitmap(context.getContentResolver(), the_uri);
         }catch (IOException ignored){
