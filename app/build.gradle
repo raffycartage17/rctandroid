@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace 'com.racartech.app.rctandroidlts'
-    compileSdk 34
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.racartech.app.rctandroidlts"
         minSdk 27
-        targetSdk 34
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -24,8 +24,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 
     buildFeatures{
@@ -50,12 +50,12 @@ dependencies {
     implementation 'com.google.firebase:firebase-config'
 
 
-    implementation "androidx.room:room-runtime:2.6.1"
-    implementation 'com.google.android.gms:play-services-maps:18.2.0'
-    annotationProcessor "androidx.room:room-compiler:2.6.1"
+    implementation "androidx.room:room-runtime:2.5.2"
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
+    annotationProcessor "androidx.room:room-compiler:2.5.2"
     implementation project(':rctandroid')
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.10.0'
+    implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
