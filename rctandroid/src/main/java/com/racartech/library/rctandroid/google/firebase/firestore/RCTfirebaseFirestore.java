@@ -34,6 +34,21 @@ public class RCTfirebaseFirestore {
         return FirebaseFirestore.getInstance();
     }
 
+    public static boolean doesFieldExist(
+            FirebaseFirestore instance,
+            String collection_path,
+            String document_path,
+            String field_name,
+            long thread_wait
+            ){
+        return ((RCTfirebaseFirestore.readField(
+                collection_path,
+                document_path,
+                field_name,
+                thread_wait,
+                instance)) != null);
+    }
+
 
 
     public static void createField(FirebaseFirestore instance, String collection_path, String document_path, String field, String value){
