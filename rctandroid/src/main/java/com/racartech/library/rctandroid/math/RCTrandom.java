@@ -23,6 +23,15 @@ public class RCTrandom{
         return (int)(Math.random()*(max-min+1))+min;
     }
 
+    public static long fromTo(long min, long max) {
+        if (min > max) {
+            long tempHolder = min;
+            min = max;
+            max = tempHolder;
+        }
+        return (long) (Math.random() * (max - min + 1)) + min;
+    }
+
     /**
      * <h2>Description</h2>
      * Generates a random double . The range is specified by the min and max parameters
