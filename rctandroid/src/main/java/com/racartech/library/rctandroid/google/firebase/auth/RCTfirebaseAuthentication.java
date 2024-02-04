@@ -3,7 +3,7 @@ package com.racartech.library.rctandroid.google.firebase.auth;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class RCTfirestoreAuthentication {
+public class RCTfirebaseAuthentication {
 
 
 
