@@ -110,6 +110,51 @@ public class RCTfirebaseFirestore {
         FirestoreUtil.deleteField(instance,collection_path,document_path,field);
     }
 
+    public static void renameField(
+            FirebaseFirestore instance,
+            String collection_path,
+            String document_path,
+            String field_name,
+            String new_field_name
+    ){
+        FirestoreUtil.renameField(
+                instance,
+                collection_path,
+                document_path,
+                field_name,
+                new_field_name);
+    }
+
+    public static void renameField_WaitProgress(
+            FirebaseFirestore instance,
+            String collection_path,
+            String document_path,
+            String field_name,
+            String new_field_name,
+            long thread_wait){
+        boolean return_boolean = false;
+        AtomicBoolean finished_boolean = new AtomicBoolean(false);
+
+        FirestoreUtil.renameField_WaitProgress(
+                instance,
+                collection_path,
+                document_path,
+                field_name,
+                new_field_name,
+                finished_boolean);
+
+        while(!return_boolean){
+            if(!finished_boolean.get()){
+                try {
+                    Thread.sleep(thread_wait);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }else{
+                return_boolean = true;
+            }
+        }
+    }
 
 
     public static void deleteDocument_WaitProgress(
@@ -138,6 +183,49 @@ public class RCTfirebaseFirestore {
             String collection_path,
             String document_path){
         FirestoreUtil.deleteDocument(instance,collection_path,document_path);
+    }
+
+
+
+    public static void renameDocument(
+            FirebaseFirestore instance,
+            String collection_path,
+            String document_path,
+            String new_document_name){
+
+        FirestoreUtil.renameDocument(
+                instance,
+                collection_path,
+                document_path,
+                new_document_name);
+    }
+
+    public static void renameDocument_WaitProgress(
+            FirebaseFirestore instance,
+            String collection_path,
+            String document_path,
+            String new_document_name,
+            long thread_wait){
+        boolean return_boolean = false;
+        AtomicBoolean finished_boolean = new AtomicBoolean(false);
+
+        FirestoreUtil.renameDocument_WaitProgress(
+                instance,
+                collection_path,
+                document_path,
+                new_document_name,
+                finished_boolean);
+        while(!return_boolean){
+            if(!finished_boolean.get()){
+                try {
+                    Thread.sleep(thread_wait);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }else{
+                return_boolean = true;
+            }
+        }
     }
 
 
@@ -970,7 +1058,256 @@ public class RCTfirebaseFirestore {
 
 
 
+
+
+
+
+
+        protected static void renameField_WaitProgress(
+                FirebaseFirestore instance,
+                String collection_path,
+                String document_path,
+                String oldFieldName,
+                String newFieldName,
+                AtomicBoolean finished_boolean) {
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    DocumentReference document = getDocumentReference(instance, collection_path, document_path);
+                    Map<String, Object> data = new HashMap<>();
+                    // Remove the old field and add it with the new name
+                    data.put(newFieldName, document.get().getResult().get(oldFieldName));
+                    data.put(oldFieldName, FieldValue.delete());
+                    document.update(data).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            finished_boolean.set(true);
+                        }
+                    }).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            finished_boolean.set(true);
+                        }
+                    }).addOnCanceledListener(new OnCanceledListener() {
+                        @Override
+                        public void onCanceled() {
+                            finished_boolean.set(true);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            finished_boolean.set(true);
+                        }
+                    });
+                }
+            }).start();
+        }
+
+        protected static void renameField(
+                FirebaseFirestore instance,
+                String collectionPath,
+                String documentPath,
+                String oldFieldName,
+                String newFieldName) {
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    DocumentReference document = getDocumentReference(instance, collectionPath, documentPath);
+
+                    // Read the current value of the field
+                    document.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            Object originalValue = documentSnapshot.get(oldFieldName);
+
+                            // Create a map to update the document
+                            Map<String, Object> data = new HashMap<>();
+                            data.put(newFieldName, originalValue); // Add the new field with the original value
+                            data.put(oldFieldName, FieldValue.delete()); // Delete the old field
+
+                            // Update the document
+                            document.update(data).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    // Handle success if needed
+                                }
+                            }).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    // Handle completion if needed
+                                }
+                            }).addOnCanceledListener(new OnCanceledListener() {
+                                @Override
+                                public void onCanceled() {
+                                    // Handle cancellation if needed
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    // Handle failure if needed
+                                }
+                            });
+                        }
+                    });
+                }
+            }).start();
+        }
+
+
+
+
+
+        protected static void renameDocument(
+                FirebaseFirestore instance,
+                String collectionPath,
+                String oldDocumentPath,
+                String newDocumentName) {
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    DocumentReference oldDocumentRef = instance.document(oldDocumentPath);
+                    DocumentReference newDocumentRef = instance.document(collectionPath + "/" + newDocumentName);
+
+                    oldDocumentRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            if (documentSnapshot.exists()) {
+                                Map<String, Object> data = documentSnapshot.getData();
+                                if (data != null) {
+                                    newDocumentRef.set(data)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    // New document created successfully with old data
+                                                    oldDocumentRef.delete()
+                                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                @Override
+                                                                public void onSuccess(Void aVoid) {
+                                                                    // Old document deleted successfully
+                                                                }
+                                                            })
+                                                            .addOnFailureListener(new OnFailureListener() {
+                                                                @Override
+                                                                public void onFailure(@NonNull Exception e) {
+                                                                    // Handle failure to delete old document
+                                                                }
+                                                            });
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    // Handle failure to create new document
+                                                }
+                                            });
+                                }
+                            } else {
+                                // Handle the case where old document doesn't exist
+                            }
+                        }
+                    });
+                }
+            }).start();
+        }
+
+        protected static void renameDocument_WaitProgress(
+                FirebaseFirestore instance,
+                String collection_path,
+                String old_document_path,
+                String new_document_name,
+                AtomicBoolean finished_boolean) {
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    // Get reference to the old document
+                    DocumentReference oldDocument = getDocumentReference(instance, collection_path, old_document_path);
+
+                    // Read data from the old document
+                    oldDocument.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            if (documentSnapshot.exists()) {
+                                // Get the data from the old document
+                                Map<String, Object> data = documentSnapshot.getData();
+
+                                // Get reference to the new document with the new name
+                                DocumentReference newDocument = getDocumentReference(instance, collection_path, new_document_name);
+
+                                // Write the data to the new document
+                                newDocument.set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        // New document created successfully, now delete the old document
+                                        oldDocument.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void unused) {
+                                                finished_boolean.set(true);
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                // Handle failure to delete old document
+                                                finished_boolean.set(true);
+                                            }
+                                        });
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        // Handle failure to write to new document
+                                        finished_boolean.set(true);
+                                    }
+                                });
+                            } else {
+                                // Handle case where old document doesn't exist
+                                finished_boolean.set(true);
+                            }
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            // Handle failure to read old document
+                            finished_boolean.set(true);
+                        }
+                    });
+                }
+            }).start();
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
+
+
+
+
+
+
+
+
+
 
 }
 
