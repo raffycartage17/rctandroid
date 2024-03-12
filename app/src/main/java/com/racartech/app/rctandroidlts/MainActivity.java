@@ -37,6 +37,7 @@ import com.racartech.library.rctandroid.net.RCTinternet;
 import com.racartech.library.rctandroid.net.RCTurl;
 import com.racartech.library.rctandroid.notifications.RCTnotifications;
 import com.racartech.library.rctandroid.permission.RCTpermission;
+import com.racartech.library.rctandroid.snippets.codefest.CFTfileBase;
 import com.racartech.library.rctandroid.view.RCTview;
 
 import java.io.File;
@@ -106,6 +107,8 @@ public class MainActivity extends AppCompatActivity {
 
         test_image_button_1 = findViewById(R.id.mm_test_image_button_1);
 
+        CFTfileBase.initialize(MainActivity.this);
+
 
 
         int button_unpressed_color = MainActivity.this.getResources().getColor(R.color.orange,null);
@@ -136,6 +139,19 @@ public class MainActivity extends AppCompatActivity {
         f3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                try {
+
+                    CFTfileBase.saveDouble("rafael", 25.0);
+                    CFTfileBase.saveDouble("andaya", 30.0);
+                    CFTfileBase.saveDouble("cartagena", 40.0);
+                    CFTfileBase.saveDouble("liane", 47.0);
+                    CFTfileBase.saveDouble("stamaria", 70.0);
+                    System.out.println("-------------------------------------------------------");
+                    System.out.println("Saved");
+                    System.out.println("-------------------------------------------------------");
+                }catch (IOException ignored){}
+
+
             }
         });
 
@@ -144,6 +160,14 @@ public class MainActivity extends AppCompatActivity {
         f2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                try {
+                    System.out.println("-------------------------------------------------------");
+                    Double value_double = CFTfileBase.readDouble("liane");
+                    System.out.println("Value : ".concat(String.valueOf(value_double)));
+                    System.out.println("-------------------------------------------------------");
+                }catch (IOException ignored){}
+
             }
         });
 
