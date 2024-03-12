@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace 'com.racartech.app.rctandroidlts'
-    compileSdk 34
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.racartech.app.rctandroidlts"
         minSdk 27
-        targetSdk 34
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -36,7 +36,7 @@ android {
 dependencies {
 
 
-    implementation(platform("com.google.firebase:firebase-bom:32.7.3"))
+    implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
     implementation 'com.google.firebase:firebase-analytics'
 
     implementation 'com.google.firebase:firebase-auth'
@@ -55,7 +55,7 @@ dependencies {
 
 
     implementation 'com.google.android.gms:play-services-maps:18.2.0'
-    implementation 'com.google.android.gms:play-services-location:21.1.0'
+    implementation 'com.google.android.gms:play-services-location:21.2.0'
     implementation project(':rctandroid')
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.11.0' //Update this only when SDK Target was 34 and the gradle was updated to 8.0+
