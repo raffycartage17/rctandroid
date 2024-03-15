@@ -1,6 +1,10 @@
 jdk:
-  -openjdk11
+  - openjdk11
 
 build:
   gradle:
     - ./gradlew assembleRelease
+
+before_install:
+  - mkdir -p $HOME/.android && touch $HOME/.android/repositories.cfg
+  - mkdir -p src/main/assets
