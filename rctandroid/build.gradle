@@ -17,6 +17,13 @@ android {
         consumerProguardFiles "consumer-rules.pro"
     }
 
+
+    sourceSets {
+        main {
+            res.srcDirs += 'src/main/res'
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false

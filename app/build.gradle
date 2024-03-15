@@ -23,11 +23,7 @@ android {
         }
     }
 
-    sourceSets {
-        main {
-            res.srcDirs += 'src/main/res'
-        }
-    }
+
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
