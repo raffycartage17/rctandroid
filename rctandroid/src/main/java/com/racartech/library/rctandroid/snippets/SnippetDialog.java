@@ -1,18 +1,27 @@
 package com.racartech.library.rctandroid.snippets;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.widget.Toast;
+
+import com.racartech.library.rctandroid.R;
 
 public class SnippetDialog {
 
 
 
     public static void test(Context context){
-        Toast.makeText(context, "Android Basic", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "Dialog", Toast.LENGTH_SHORT).show();
         /*
-    NOTE : this is a snippet class intended to help developers to fasten there production
+        NOTE : this is a snippet class intended to help developers to fasten there production
            by providing them easy to use code common code snippets
         */
+
+        Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.snippet_standard_dialog_box);
+        dialog.setCancelable(true);
+        dialog.show();
+
     }
 
 

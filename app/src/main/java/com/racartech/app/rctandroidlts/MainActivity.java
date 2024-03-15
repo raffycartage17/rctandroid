@@ -12,7 +12,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,30 +22,16 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.racartech.app.rctandroidlts.functionbuttons.FunctionOne;
-import com.racartech.app.rctandroidlts.window1.TestClass;
 import com.racartech.app.rctandroidlts.window1.Window1;
 import com.racartech.app.rctandroidlts.window1.Window2;
 import com.racartech.library.rctandroid.file.RCTfile;
-import com.racartech.library.rctandroid.google.RCTgoogleMaps;
-import com.racartech.library.rctandroid.json.RCTjson;
-import com.racartech.library.rctandroid.media.RCTbitmap;
-import com.racartech.library.rctandroid.net.RCTinternet;
-import com.racartech.library.rctandroid.net.RCTurl;
 import com.racartech.library.rctandroid.notifications.RCTnotifications;
 import com.racartech.library.rctandroid.permission.RCTpermission;
 import com.racartech.library.rctandroid.snippets.codefest.CFTfileBase;
-import com.racartech.library.rctandroid.view.RCTview;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.util.ArrayList;
-import java.util.Enumeration;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -201,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
             if(!Environment.isExternalStorageManager()){
                 Context app_context = MainActivity.this;
                 Dialog request_dialog = new Dialog(app_context);
-                request_dialog.setContentView(R.layout.standard_dialog_box);
+                request_dialog.setContentView(R.layout.snippet_standard_dialog_box);
                 request_dialog.setCancelable(true);
 
                 TextView dialog_title = request_dialog.findViewById(R.id.standard_dialog_title_textview);

@@ -41,7 +41,7 @@ public class Window1 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Dialog dialog = new Dialog(Window1.this);
-                dialog.setContentView(R.layout.standard_dialog_box);
+                dialog.setContentView(R.layout.snippet_standard_dialog_box);
                 dialog.setCancelable(true);
                 dialog.show();
             }

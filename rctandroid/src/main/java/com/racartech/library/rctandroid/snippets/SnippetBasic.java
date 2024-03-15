@@ -1,16 +1,49 @@
 package com.racartech.library.rctandroid.snippets;
 
+import android.app.Activity;
 import android.content.Context;
-import android.widget.Toast;
+import android.content.Intent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.racartech.library.rctandroid.R;
 
 public class SnippetBasic {
 
-    public static void test(Context context){
-        Toast.makeText(context, "Android Basic", Toast.LENGTH_SHORT).show();
-        /*
-    NOTE : this is a snippet class intended to help developers to fasten there production
-           by providing them easy to use code common code snippets
-        */
+    public static void test(Activity activity, Context context){
+        System.out.println("--------------------Intent--------------------");
+        Intent intent = new Intent(context, ReferenceTestClass.class);
+        activity.startActivity(intent);
+
+        System.out.println("--------------------Intent--------------------");
+
+        System.out.println("R.id.snippet_test_root_layout should be the parent layout");
+
+        ViewGroup parent = activity.findViewById(R.id.snippet_test_root_layout);
+        View view = LayoutInflater.from(context).inflate(R.layout.snippet_standard_dialog_box, parent, false);
+
+
+        System.out.println("--------------------Multi_Threading--------------------");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        }).start();
+
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run(){
+                    }
+                });
+            }
+        }).start();
+
     }
 
 
