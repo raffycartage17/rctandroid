@@ -21,8 +21,10 @@ android {
     sourceSets {
         main {
             res.srcDirs += 'src/main/res'
+            assets.srcDirs += 'src/main/assets'
         }
     }
+
 
     buildTypes {
         release {
