@@ -1,2 +1,6 @@
 jdk:
   -openjdk11
+
+build:
+  gradle:
+    - ./gradlew assembleRelease

@@ -186,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
             if(!Environment.isExternalStorageManager()){
                 Context app_context = MainActivity.this;
                 Dialog request_dialog = new Dialog(app_context);
-                request_dialog.setContentView(R.layout.snippet_standard_dialog_box);
+                request_dialog.setContentView(R.layout.standard_dialog_box);
                 request_dialog.setCancelable(true);
 
                 TextView dialog_title = request_dialog.findViewById(R.id.standard_dialog_title_textview);
