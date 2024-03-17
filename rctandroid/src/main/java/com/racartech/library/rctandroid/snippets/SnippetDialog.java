@@ -18,7 +18,7 @@ public class SnippetDialog {
         */
 
         Dialog dialog = new Dialog(context);
-        dialog.setContentView(R.layout.snippet_standard_dialog_box);
+        dialog.setContentView(R.layout.layout_standard_dialog_box);
         dialog.setCancelable(true);
         dialog.show();
 

@@ -21,7 +21,7 @@ public class SnippetBasic {
         System.out.println("R.id.snippet_test_root_layout should be the parent layout");
 
         ViewGroup parent = activity.findViewById(R.id.snippet_test_root_layout);
-        View view = LayoutInflater.from(context).inflate(R.layout.snippet_standard_dialog_box, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.layout_standard_dialog_box, parent, false);
 
 
         System.out.println("--------------------Multi_Threading--------------------");
