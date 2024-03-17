@@ -1,22 +1,11 @@
-package com.racartech.library.rctandroid.snippets.recyclerview;
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-import android.content.Context;
-import android.widget.Toast;
+    <!--
 
-public class SnippetPreloadingLinearLayoutManager {
-
-    public static void test(Context app_context){
-        Toast.makeText(app_context, "Snippet Class Test", Toast.LENGTH_SHORT).show();
-    }
-    /*
-    NOTE : this is a snippet class intended to help developers to fasten there production
-           by providing them easy to use code common code snippets
-     */
-}
-
-
-
-/* This is a "just paste it and used it" code, no need to edit/customize it
+    /* This is a "just paste it and used it" code, no need to edit/customize it
 
 
 
@@ -65,3 +54,6 @@ public class PreLoadingLinearLayoutManager extends LinearLayoutManager {
 
  */
 
+    -->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

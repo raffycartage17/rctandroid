@@ -1,19 +1,10 @@
-package com.racartech.library.rctandroid.snippets;
-
-import android.content.Context;
-import android.widget.Toast;
-
-public class SnippetPermission {
-
-    public static void test(Context context){
-        Toast.makeText(context, "Android Basic", Toast.LENGTH_SHORT).show();
-        /*
-    NOTE : this is a snippet class intended to help developers to fasten there production
-           by providing them easy to use code common code snippets
-        */
-    }
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
 
+    <!--
 
     /*
 
@@ -181,7 +172,9 @@ public class SnippetPermission {
      */
 
 
+    -->
 
 
 
-}
+
+</androidx.constraintlayout.widget.ConstraintLayout>
