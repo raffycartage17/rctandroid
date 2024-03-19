@@ -8,6 +8,105 @@ import java.util.ArrayList;
 
 public class RCTorgJSON {
 
+
+    public static ArrayList<String> jsonArray_To_ArrayListString(JSONArray json_array) throws JSONException{
+        ArrayList<String> the_arraylist = new ArrayList<>();
+        for (int i = 0; i < json_array.length(); i++) {
+            the_arraylist.add(json_array.getString(i));
+        }
+        return the_arraylist;
+    }
+
+    public static ArrayList<Integer> jsonArray_To_ArrayListInteger(JSONArray json_array) throws JSONException{
+        ArrayList<Integer> the_arraylist = new ArrayList<>();
+        for (int i = 0; i < json_array.length(); i++) {
+            the_arraylist.add(json_array.getInt(i));
+        }
+        return the_arraylist;
+    }
+
+    public static ArrayList<Double> jsonArray_To_ArrayListDouble(JSONArray json_array) throws JSONException{
+        ArrayList<Double> the_arraylist = new ArrayList<>();
+        for (int i = 0; i < json_array.length(); i++) {
+            the_arraylist.add(json_array.getDouble(i));
+        }
+        return the_arraylist;
+    }
+
+    public static ArrayList<Long> jsonArray_To_ArrayListLong(JSONArray json_array) throws JSONException{
+        ArrayList<Long> the_arraylist = new ArrayList<>();
+        for (int i = 0; i < json_array.length(); i++) {
+            the_arraylist.add(json_array.getLong(i));
+        }
+        return the_arraylist;
+    }
+
+    public static ArrayList<Boolean> jsonArray_To_ArrayListBoolean(JSONArray json_array) throws JSONException{
+        ArrayList<Boolean> the_arraylist = new ArrayList<>();
+        for (int i = 0; i < json_array.length(); i++) {
+            the_arraylist.add(json_array.getBoolean(i));
+        }
+        return the_arraylist;
+    }
+
+
+    public static JSONArray arrayListStringToJSONArray(ArrayList<String> array_list){
+        JSONArray json_array = new JSONArray();
+        for (int index = 0; index < array_list.size(); index++) {
+            String mate = array_list.get(index);
+            json_array.put(mate);
+        }
+        return json_array;
+    }
+
+    public static JSONArray arrayListIntegerToJSONArray(ArrayList<Integer> array_list){
+        JSONArray json_array = new JSONArray();
+        for (int index = 0; index < array_list.size(); index++) {
+            int mate = array_list.get(index);
+            json_array.put(mate);
+        }
+        return json_array;
+    }
+
+    public static JSONArray arrayListLongToJSONArray(ArrayList<Long> array_list){
+        JSONArray json_array = new JSONArray();
+        for (int index = 0; index < array_list.size(); index++) {
+            Long mate = array_list.get(index);
+            json_array.put(mate);
+        }
+        return json_array;
+    }
+
+    public static JSONArray arrayListDoubleToJSONArray(ArrayList<Double> array_list){
+        JSONArray json_array = new JSONArray();
+        for (int index = 0; index < array_list.size(); index++) {
+            Double mate = array_list.get(index);
+            json_array.put(mate);
+        }
+        return json_array;
+    }
+
+    public static JSONArray arrayListBooleanToJSONArray(ArrayList<Boolean> array_list){
+        JSONArray json_array = new JSONArray();
+        for (int index = 0; index < array_list.size(); index++) {
+            boolean mate = array_list.get(index);
+            json_array.put(mate);
+        }
+        return json_array;
+    }
+
+
+    /*
+
+
+    import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
+public class RCTorgJSON {
+
     public static String convertToJSONString(
             long chat_id,
             String username,
@@ -133,6 +232,14 @@ public class RCTorgJSON {
         }
         return json_array;
     }
+
+
+}
+
+
+
+
+     */
 
 
 }
