@@ -26,9 +26,23 @@
         tools:targetApi="31">
 
 
+
+
+
+
+
+
+
+
+
+
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBvXzMrULdTrH62dS9zBDJqBnKoTVqFqzs" />
+            android:value="${prod_google_api_key}" />
+
+            -->
+
         <activity
             android:name=".window1.Window1"
             android:exported="false" />

@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.application'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -13,6 +14,10 @@ android {
         versionCode 1
         versionName "1.0"
 
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file('local.properties').newDataInputStream())
+        manifestPlaceholders = [prod_google_api_key: "${properties.getProperty('prod_google_api_key')}"]
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -22,6 +27,21 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    /*
+
+    android {
+    ...
+    defaultConfig {
+        ...
+        def googleMapsApiKey = localProperties['google.maps.api.key']
+        buildConfigField 'String', 'GOOGLE_MAPS_API_KEY', "\"${googleMapsApiKey}\""
+    }
+}
+
+
+
+     */
 
 
 
@@ -38,7 +58,7 @@ android {
 dependencies {
 
 
-    implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
+    implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
     implementation 'com.google.firebase:firebase-analytics'
 
     implementation 'com.google.firebase:firebase-auth'
@@ -58,6 +78,9 @@ dependencies {
 
     implementation 'com.google.android.gms:play-services-maps:18.2.0'
     implementation 'com.google.android.gms:play-services-location:21.2.0'
+
+
+
     implementation project(':rctandroid')
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0' //Update this only when SDK Target was 34 and the gradle was updated to 8.0+

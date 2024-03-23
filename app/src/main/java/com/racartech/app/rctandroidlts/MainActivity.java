@@ -2,11 +2,6 @@ package com.racartech.app.rctandroidlts;
 
 import static android.provider.Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
@@ -19,22 +14,22 @@ import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.racartech.app.rctandroidlts.functionbuttons.FunctionOne;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import com.racartech.app.rctandroidlts.maps.MapsTestActivity;
 import com.racartech.app.rctandroidlts.resources.BuildConfig;
 import com.racartech.app.rctandroidlts.window1.Window1;
 import com.racartech.app.rctandroidlts.window1.Window2;
 import com.racartech.library.rctandroid.file.RCTfile;
-import com.racartech.library.rctandroid.google.maps.RCTgoogleMapsDropPin;
 import com.racartech.library.rctandroid.notifications.RCTnotifications;
 import com.racartech.library.rctandroid.permission.RCTpermission;
-
-import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -95,6 +90,18 @@ public class MainActivity extends AppCompatActivity {
         textview_2 = findViewById(R.id.mm_textview_2);
 
         test_image_button_1 = findViewById(R.id.mm_test_image_button_1);
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.common.api.internal.GoogleApiManager;
 import com.racartech.app.rctandroidlts.R;
 import com.racartech.library.rctandroid.google.maps.RCTgoogleMapsDropPin;
 
@@ -23,6 +24,8 @@ public class MapsTestActivity extends AppCompatActivity implements RCTgoogleMaps
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.maps_test_activity_layout);
+
+
 
         mapContainer = findViewById(R.id.map_container);
         addButton = findViewById(R.id.add_button);
