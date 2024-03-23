@@ -6,9 +6,6 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -25,14 +22,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class LocationData {
+public class RCTLocationData {
 
     public static final int MODE_CURRENT = 0;
     public static final int MODE_LAST_KNOWN = 1;
 
     private Address ADDRESS = null;
 
-    public LocationData(Context context, int mode, long thread_wait) {
+    public RCTLocationData(Context context, int mode, long thread_wait) {
 
         boolean progress_boolean = false;
         AtomicBoolean finished_boolean = new AtomicBoolean(false);
@@ -58,7 +55,7 @@ public class LocationData {
                                         try {
                                             addresses = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1);
                                             if(addresses != null) {
-                                                LocationData.this.ADDRESS = addresses.get(0);
+                                                RCTLocationData.this.ADDRESS = addresses.get(0);
                                                 finished_boolean.set(true);
                                             }
                                         } catch (IOException e) {
@@ -89,7 +86,7 @@ public class LocationData {
                                 try {
                                     addresses = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1);
                                     if(addresses != null) {
-                                        LocationData.this.ADDRESS = addresses.get(0);
+                                        RCTLocationData.this.ADDRESS = addresses.get(0);
                                         finished_boolean.set(true);
                                     }
                                 } catch (IOException e) {

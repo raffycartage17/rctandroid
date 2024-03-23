@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.common.api.internal.GoogleApiManager;
+import com.racartech.app.rctandroidlts.MainActivity;
 import com.racartech.app.rctandroidlts.R;
 import com.racartech.library.rctandroid.google.maps.RCTgoogleMapsDropPin;
 
@@ -41,7 +42,7 @@ public class MapsTestActivity extends AppCompatActivity implements RCTgoogleMaps
     }
 
     private void addMapView() {
-        customMapView = new RCTgoogleMapsDropPin(this);
+        customMapView = new RCTgoogleMapsDropPin(MapsTestActivity.this, MapsTestActivity.this);
         customMapView.setOnPinDropListener(this); // Set listener
         mapContainer.addView(customMapView);
     }
