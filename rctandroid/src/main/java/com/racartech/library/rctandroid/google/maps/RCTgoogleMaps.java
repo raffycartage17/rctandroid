@@ -1,4 +1,4 @@
-package com.racartech.library.rctandroid.google;
+package com.racartech.library.rctandroid.google.maps;
 
 import android.app.Activity;
 import android.content.Intent;

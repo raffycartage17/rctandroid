@@ -19,15 +19,18 @@ import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import com.racartech.app.rctandroidlts.functionbuttons.FunctionOne;
+import com.racartech.app.rctandroidlts.maps.MapsTestActivity;
 import com.racartech.app.rctandroidlts.resources.BuildConfig;
 import com.racartech.app.rctandroidlts.window1.Window1;
 import com.racartech.app.rctandroidlts.window1.Window2;
 import com.racartech.library.rctandroid.file.RCTfile;
+import com.racartech.library.rctandroid.google.maps.RCTgoogleMapsDropPin;
 import com.racartech.library.rctandroid.notifications.RCTnotifications;
 import com.racartech.library.rctandroid.permission.RCTpermission;
 
@@ -57,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     //private static String TEST_FILE_URL = "https://firebasestorage.googleapis.com/v0/b/halalife-21bd8.appspot.com/o/halalife_plant_database.txt?alt=media&token=dd0bb6af-4c6e-449f-be86-9bbd42411d5a";
 
     private static String TEST_FILE_URL = "https://www.dropbox.com/home?preview=halalife_plant_database.txt";
+
 
 
 
@@ -115,7 +119,8 @@ public class MainActivity extends AppCompatActivity {
         f1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(MainActivity.this, MapsTestActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -164,6 +169,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+
 
     private void promptUserAllowPermission(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {

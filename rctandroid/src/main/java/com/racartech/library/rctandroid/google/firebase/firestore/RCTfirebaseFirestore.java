@@ -1073,7 +1073,7 @@ public class RCTfirebaseFirestore {
 
             new Thread(new Runnable() {
                 @Override
-                public void run() {
+                public void run(){
                     DocumentReference document = getDocumentReference(instance, collection_path, document_path);
                     Map<String, Object> data = new HashMap<>();
                     // Remove the old field and add it with the new name
