@@ -36,12 +36,9 @@
 
 
 
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${prod_google_api_key}" />
-
-            -->
 
         <activity
             android:name=".window1.Window1"

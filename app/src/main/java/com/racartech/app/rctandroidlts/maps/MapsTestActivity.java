@@ -1,5 +1,6 @@
 package com.racartech.app.rctandroidlts.maps;
 
+import android.location.Address;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +13,7 @@ import com.google.android.gms.common.api.internal.GoogleApiManager;
 import com.racartech.app.rctandroidlts.MainActivity;
 import com.racartech.app.rctandroidlts.R;
 import com.racartech.library.rctandroid.google.maps.RCTgoogleMapsDropPin;
+import com.racartech.library.rctandroid.location.RCTlocation;
 
 public class MapsTestActivity extends AppCompatActivity implements RCTgoogleMapsDropPin.OnPinDropListener {
 
@@ -19,7 +21,7 @@ public class MapsTestActivity extends AppCompatActivity implements RCTgoogleMaps
     private RCTgoogleMapsDropPin customMapView;
     private Button addButton;
 
-    TextView long_value, lat_value;
+    TextView long_value, lat_value, address_value;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,7 @@ public class MapsTestActivity extends AppCompatActivity implements RCTgoogleMaps
         addButton = findViewById(R.id.add_button);
         long_value = findViewById(R.id.mtcl_long_value);
         lat_value = findViewById(R.id.mtcl_lat_value);
+        address_value = findViewById(R.id.mtcl_address_value);
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,5 +55,7 @@ public class MapsTestActivity extends AppCompatActivity implements RCTgoogleMaps
     public void onPinDrop(double latitude, double longitude) {
         lat_value.setText(String.valueOf(latitude));
         long_value.setText(String.valueOf(longitude));
+        Address marker_address = RCTlocation.getAddress(MapsTestActivity.this,latitude,longitude);
+        address_value.setText(marker_address.getAddressLine(0));
     }
 }

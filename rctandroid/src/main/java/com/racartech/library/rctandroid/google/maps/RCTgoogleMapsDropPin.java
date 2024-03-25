@@ -17,9 +17,11 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.racartech.library.rctandroid.R;
@@ -27,14 +29,16 @@ import com.racartech.library.rctandroid.location.RCTLocationData;
 
 public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallback {
 
-    private GoogleMap googleMap;
-    private Marker currentMarker;
-    private MapView mapView;
+    public GoogleMap googleMap;
+    public Marker currentMarker;
+    public MapView mapView;
+
+    public double base_visible_area = -1.0;
 
 
     private Activity activity;
 
-    private Circle current_location_circle = null;
+    public Circle current_location_circle = null;
 
     public RCTgoogleMapsDropPin(@NonNull Context context, Activity the_activity) {
         super(context);
@@ -98,6 +102,16 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
                 return false;
             }
         });
+
+
+        googleMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
+            @Override
+            public void onCameraMove() {
+                float zoomLevel = googleMap.getCameraPosition().zoom;
+                double elevation = googleMap.getCameraPosition().tilt;
+                reCalculateCurrentLocationCircleSize(googleMap.getCameraPosition());
+            }
+        });
         
 
     }
@@ -135,7 +149,7 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
                         LatLng specificLocation = new LatLng(
                                 location_data.getAddress().getLatitude(),
                                 location_data.getAddress().getLongitude());
-                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(specificLocation, 30)); // Adjust zoom level as needed
+                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(specificLocation, 21)); // Adjust zoom level as needed
 
                         if(current_location_circle != null){
                             current_location_circle.remove();
@@ -157,6 +171,69 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
             }
         }).start();
     }
+
+
+    public void reCalculateCurrentLocationCircleSize(CameraPosition camera_position){
+
+        System.out.println("----------------------------------------------------------------------");
+        System.out.println("Zoom            : ".concat(String.valueOf(camera_position.zoom)));
+        System.out.println("Visible Area    : ".concat(String.valueOf(calculateVisibleArea())));
+        if(current_location_circle != null) {
+
+            double current_visible_area = calculateVisibleArea();
+
+            if(base_visible_area < 0.0){
+                base_visible_area = current_visible_area;
+                //current_location_circle.setRadius();
+            }else{
+
+                double multiplier = current_visible_area/base_visible_area;
+                current_location_circle.setRadius(multiplier);
+
+            }
+
+
+
+
+            System.out.println("Circle Size : ".concat(String.valueOf(current_location_circle.getRadius())));
+        }
+
+
+    }
+
+
+
+    private double calculateVisibleArea() {
+        if (googleMap != null) {
+            LatLngBounds visibleBounds = googleMap.getProjection().getVisibleRegion().latLngBounds;
+            double visibleArea = calculateArea(visibleBounds);
+            // Now you have the visible area in square meters
+            return visibleArea;
+        }else{
+            return -1.0;
+        }
+    }
+
+    private double calculateArea(LatLngBounds bounds) {
+        double radiusEarth = 6371009; // Earth's radius in meters
+        double lat1 = Math.toRadians(bounds.southwest.latitude);
+        double lon1 = Math.toRadians(bounds.southwest.longitude);
+        double lat2 = Math.toRadians(bounds.northeast.latitude);
+        double lon2 = Math.toRadians(bounds.northeast.longitude);
+
+        // Delta values
+        double deltaLat = lat2 - lat1;
+        double deltaLon = lon2 - lon1;
+
+        // Calculate the area using Spherical Trigonometry
+        double a = Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) +
+                Math.cos(lat1) * Math.cos(lat2) *
+                        Math.sin(deltaLon / 2) * Math.sin(deltaLon / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double area = radiusEarth * radiusEarth * c;
+        return area;
+    }
+
 
 
 
