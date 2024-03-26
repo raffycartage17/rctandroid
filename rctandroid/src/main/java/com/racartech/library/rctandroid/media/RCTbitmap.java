@@ -3,12 +3,15 @@ package com.racartech.library.rctandroid.media;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.racartech.library.rctandroid.file.RCTdirectory;
 import com.racartech.library.rctandroid.file.RCTfile;
 
@@ -125,5 +128,33 @@ public class RCTbitmap{
             return true;
         }
         return false;
+    }
+
+
+
+    public static BitmapDescriptor drawableToBitmapDescriptor(Context context, int drawableResId) {
+        Drawable drawable = context.getResources().getDrawable(drawableResId);
+        return drawableToBitmapDescriptor(drawable);
+    }
+
+    public static BitmapDescriptor drawableToBitmapDescriptor(Drawable drawable) {
+        Bitmap bitmap = drawableToBitmap(drawable);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
+
+    private static Bitmap drawableToBitmap(Drawable drawable) {
+        if (drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable) drawable).getBitmap();
+        }
+
+        Bitmap bitmap = Bitmap.createBitmap(
+                drawable.getIntrinsicWidth(),
+                drawable.getIntrinsicHeight(),
+                Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+
+        return bitmap;
     }
 }

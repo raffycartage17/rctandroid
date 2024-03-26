@@ -6,6 +6,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
@@ -17,6 +21,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
@@ -26,8 +31,9 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.racartech.library.rctandroid.R;
 import com.racartech.library.rctandroid.location.RCTLocationData;
+import com.racartech.library.rctandroid.media.RCTbitmap;
 
-public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallback {
+public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallback, SensorEventListener{
 
     public GoogleMap googleMap;
     public Marker currentMarker;
@@ -35,10 +41,22 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
 
     public double base_visible_area = -1.0;
 
-
     private Activity activity;
+    private SensorManager sensorManager;
+    private Sensor accelerometer;
+    private Sensor magnetometer;
+    private float[] accelerometerReading = new float[3];
+    private float[] magnetometerReading = new float[3];
+    private boolean haveSensor = false;
+    private boolean haveAccelerometer = false;
+    private boolean haveMagnetometer = false;
+    private float[] rotationMatrix = new float[9];
+    private float[] orientationAngles = new float[3];
 
     public Circle current_location_circle = null;
+    public Marker facing_direction_marker = null;
+
+    RCTLocationData location_data = null;
 
     public RCTgoogleMapsDropPin(@NonNull Context context, Activity the_activity) {
         super(context);
@@ -61,6 +79,18 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
         mapView = findViewById(R.id.lmdp_map_view);
         mapView.onCreate(null);
         mapView.getMapAsync(this);
+
+        // Initialize sensor manager
+        sensorManager = (SensorManager) getContext().getSystemService(Context.SENSOR_SERVICE);
+        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+
+        // Check if the device has the required sensors
+        haveAccelerometer = sensorManager.registerListener((SensorEventListener) this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+        haveMagnetometer = sensorManager.registerListener((SensorEventListener) this, magnetometer, SensorManager.SENSOR_DELAY_NORMAL);
+        haveSensor = haveAccelerometer && haveMagnetometer;
+
+
     }
 
     @Override
@@ -116,6 +146,47 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
 
     }
 
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+        updateOrientationAngles();
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+    }
+
+
+    private void updateOrientationAngles() {
+        if (haveSensor) {
+            SensorManager.getRotationMatrix(rotationMatrix, null, accelerometerReading, magnetometerReading);
+            SensorManager.getOrientation(rotationMatrix, orientationAngles);
+            // orientationAngles[0] contains the azimuth (orientation angle) in radians
+            // Convert it to degrees
+            float azimuthInDegrees = (float) Math.toDegrees(orientationAngles[0]);
+            // Use azimuthInDegrees as the user's current orientation
+            // You can do something with this value here
+
+            if(current_location_circle != null && location_data != null){
+                if (facing_direction_marker == null) {
+                    LatLng new_facing_direction_marker_lat_lng = new LatLng(
+                            location_data.getAddress().getLatitude()+0.00015,
+                            location_data.getAddress().getLongitude());
+                    facing_direction_marker = googleMap.addMarker(new MarkerOptions().position(new_facing_direction_marker_lat_lng));
+                }else{
+                    facing_direction_marker.setPosition(new LatLng(
+                            location_data.getAddress().getLatitude()+0.00015,
+                            location_data.getAddress().getLongitude()));
+                }
+
+                facing_direction_marker.setIcon(RCTbitmap.drawableToBitmapDescriptor(getContext(),R.drawable.green_facing_direction_arrow));
+
+            }
+
+
+
+        }
+    }
+
     // Define an interface to communicate with the activity
     public interface OnPinDropListener {
         void onPinDrop(double latitude, double longitude);
@@ -141,7 +212,7 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
         new Thread(new Runnable() {
             @Override
             public void run() {
-                RCTLocationData location_data = new RCTLocationData(getContext(), RCTLocationData.MODE_CURRENT, 200);
+                location_data = new RCTLocationData(getContext(), RCTLocationData.MODE_CURRENT, 200);
 
                 activity.runOnUiThread(new Runnable() {
                     @Override
@@ -233,6 +304,8 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
         double area = radiusEarth * radiusEarth * c;
         return area;
     }
+
+
 
 
 
