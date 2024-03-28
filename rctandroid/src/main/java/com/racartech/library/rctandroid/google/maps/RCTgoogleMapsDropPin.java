@@ -72,7 +72,6 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
 
 
     //fahclmbd = facing_arrow_head_current_location_marker_base_distance
-    private double fahclmbd = 0.00001;
 
     public RCTgoogleMapsDropPin(@NonNull Context context, Activity the_activity) {
         super(context);
@@ -292,18 +291,18 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
                         if(location_data != null){
                             if (facing_direction_marker == null) {
                                 LatLng new_facing_direction_marker_lat_lng = new LatLng(
-                                        finalLatitude+fahclmbd,
+                                        finalLatitude,
                                         finalLongitude);
                                 facing_direction_marker = googleMap.addMarker(new MarkerOptions().position(new_facing_direction_marker_lat_lng));
                                 Bitmap fdmi_bitmap = RCTdrawable.convertToBitmap(AppCompatResources.getDrawable(getContext(),R.drawable.facing_direction_arrow_head));
-                                fdmi_bitmap = RCTbitmap.resize(fdmi_bitmap,100,100);
+                                fdmi_bitmap = RCTbitmap.resize(fdmi_bitmap,256,256);
                                 facing_direction_marker.setIcon(BitmapDescriptorFactory.fromBitmap(fdmi_bitmap));
                                 System.out.println("-------------------------------------------------------------");
                                 System.out.println("Facing direction marker set");
                                 System.out.println("-------------------------------------------------------------");
                             }else{
                                 facing_direction_marker.setPosition(new LatLng(
-                                        finalLatitude+fahclmbd,
+                                        finalLatitude,
                                         finalLongitude));
                             }
                         }
@@ -384,7 +383,7 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
         System.out.println("------------------------------------------------");
         if(facing_direction_marker != null && location_data != null) {
             facing_direction_marker.setPosition(new LatLng(
-                    (location_data.getAddress().getLatitude() + fahclmbd),
+                    (location_data.getAddress().getLatitude()),
                     location_data.getAddress().getLongitude()));
 
         }
