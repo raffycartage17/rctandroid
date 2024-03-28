@@ -35,6 +35,12 @@ public class RCTLocationData {
 
     private Address ADDRESS = null;
 
+
+
+    public RCTLocationData(Address address){
+        this.ADDRESS = address;
+    }
+
     public RCTLocationData(Context context, int mode, long thread_wait) {
 
         boolean progress_boolean = false;

@@ -390,7 +390,6 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
 
 
 
-
 }
 
 
