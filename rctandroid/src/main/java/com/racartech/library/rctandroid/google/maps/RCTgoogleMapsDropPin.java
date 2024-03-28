@@ -286,8 +286,6 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
                                 .radius(1)
                                 .strokeColor(Color.WHITE)
                                 .fillColor(Color.BLUE));
-                        
-
                         if(location_data != null){
                             if (facing_direction_marker == null) {
                                 LatLng new_facing_direction_marker_lat_lng = new LatLng(
