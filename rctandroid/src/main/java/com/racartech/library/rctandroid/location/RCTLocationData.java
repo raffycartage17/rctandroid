@@ -141,6 +141,10 @@ public class RCTLocationData {
         return this.ADDRESS;
     }
 
+    public void setAddress(Address new_address){
+        this.ADDRESS = new_address;
+    }
+
 
 }
 

@@ -11,6 +11,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.location.Address;
 import android.location.Location;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
@@ -160,7 +161,7 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
 
         refreshCurrentLocationCircleLocation(true,-1000, -1000);
 
-        getLocationUpdates(10000);
+        getLocationUpdates(1000);
 
 
         googleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
@@ -385,7 +386,14 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
     }
 
     public void updateCurrentLocationData() {
-        this.CURRENT_LOCATION_DATA.set(new RCTLocationData(getContext(), RCTLocationData.MODE_CURRENT, 200));
+        Address updated_location_address = new RCTLocationData(
+                getContext(),
+                RCTLocationData.MODE_CURRENT,
+                200).getAddress();
+        this.CURRENT_LOCATION_DATA.get().setAddress(RCTlocation.getAddress(
+                getContext(),
+                updated_location_address.getLatitude(),
+                updated_location_address.getLongitude()));
     }
 
 
@@ -405,8 +413,11 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
                 if (location != null) {
                     double latitude = location.getLatitude();
                     double longitude = location.getLongitude();
-
-                    CURRENT_LOCATION_DATA.set(new RCTLocationData(RCTlocation.getAddress(getContext(),latitude,longitude)));
+                    if(RCTgoogleMapsDropPin.this.CURRENT_LOCATION_DATA.get() == null) {
+                        RCTgoogleMapsDropPin.this.CURRENT_LOCATION_DATA.set(new RCTLocationData(RCTlocation.getAddress(getContext(), latitude, longitude)));
+                    }else{
+                        RCTgoogleMapsDropPin.this.CURRENT_LOCATION_DATA.get().setAddress(RCTlocation.getAddress(getContext(), latitude, longitude));
+                    }
                     updateFacingDirectionArrowHeadLocation(latitude,longitude);
                     refreshCurrentLocationCircleLocation(CAMERA_FOLLOW_CURRENT_LOCATION.get(), latitude,longitude);
                     reCalculateCurrentLocationCircleSize();
