@@ -2,9 +2,11 @@ package com.racartech.library.rctandroid.logging;
 
 import com.racartech.library.rctandroid.file.RCTfile;
 import com.racartech.library.rctandroid.location.RCTlatlng;
+import com.racartech.library.rctandroid.time.RCTtime;
 
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class RCTloggingLocationData{
 
@@ -24,6 +26,25 @@ public class RCTloggingLocationData{
     }
     public static void setLoggingInActive(){
         IS_LOGGING_ENABLED.set(false);
+    }
+
+    public static void archiveCurrentRecord(){
+        try {
+            ArrayList<String> file_contents = RCTfile.readFile_ArrayList(FILE_PATH);
+            long log_time_ms = System.currentTimeMillis();
+            String time_stamp = RCTtime.getTimeStamp_MMDDYYYY_HHMMSS(log_time_ms);
+
+            String parent_dir = RCTfile.getParentDirectory(FILE_PATH);
+            String archived_log_file_path =
+                    parent_dir.
+                            concat("/").
+                            concat("rctandroid_location_log_").
+                            concat(time_stamp).
+                            concat(".txt");
+            RCTfile.createFile(archived_log_file_path);
+            RCTfile.overrideFile(archived_log_file_path,file_contents);
+        }catch(Exception ignored){}
+
     }
 
 

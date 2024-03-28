@@ -84,6 +84,7 @@ public class MapsTestActivity extends AppCompatActivity implements RCTgoogleMaps
         Button clear_button = dialog.findViewById(R.id.mtam_clear_log_button);
         Button enable_logging_button = dialog.findViewById(R.id.mtam_enable_logging_button);
         Button disable_logging_button = dialog.findViewById(R.id.mtam_disable_logging_button);
+        Button archived_current_record_button = dialog.findViewById(R.id.mtam_archived_current_record_button);
 
 
         if(RCTloggingLocationData.IS_LOGGING_ENABLED.get()){
@@ -120,6 +121,15 @@ public class MapsTestActivity extends AppCompatActivity implements RCTgoogleMaps
                 disable_logging_button.setBackgroundColor(MapsTestActivity.this.getColor(R.color.blue));
                 RCTloggingLocationData.setLoggingInActive();
                 Toast.makeText(MapsTestActivity.this, "Logging Disabled", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        archived_current_record_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RCTloggingLocationData.archiveCurrentRecord();
+                Toast.makeText(MapsTestActivity.this, "Archived Current Record", Toast.LENGTH_SHORT).show();
             }
         });
 

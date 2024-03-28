@@ -63,7 +63,7 @@
         android:layout_marginEnd="16dp"
         android:text="Set"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button5" />
+        app:layout_constraintTop_toBottomOf="@+id/mtam_archived_current_record_button" />
 
     <Button
         android:id="@+id/mtam_close_button"
@@ -101,7 +101,7 @@
         app:layout_constraintTop_toBottomOf="@+id/mtam_set_log_update_interval_button" />
 
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/mtam_archived_current_record_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
