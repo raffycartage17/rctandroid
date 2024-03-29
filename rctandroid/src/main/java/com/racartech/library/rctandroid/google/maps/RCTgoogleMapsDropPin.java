@@ -8,10 +8,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.location.Address;
 import android.location.Location;
 import android.util.AttributeSet;
@@ -36,8 +32,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.common.util.concurrent.AtomicDouble;
 import com.racartech.library.rctandroid.R;
-import com.racartech.library.rctandroid.file.RCTfile;
 import com.racartech.library.rctandroid.location.RCTLocationData;
 import com.racartech.library.rctandroid.location.RCTlocation;
 import com.racartech.library.rctandroid.logging.RCTloggingLocationData;
@@ -61,12 +57,14 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
 
 
 
-    private Circle CURRENT_LOCATION_CIRCLE = null;
+    private volatile Circle CURRENT_LOCATION_CIRCLE = null;
 
-    public AtomicReference<RCTLocationData> CURRENT_LOCATION_DATA = new AtomicReference<>(null);
+    public volatile AtomicReference<RCTLocationData> CURRENT_LOCATION_DATA = new AtomicReference<>(null);
 
-    private boolean CAMERA_FOLLOW_CURRENT_LOCATION = false;
+    public volatile boolean CAMERA_FOLLOW_ON_LOCATION_UPDATE = true;
 
+    private volatile AtomicDouble current_location_latitude = new AtomicDouble(-1000);
+    private volatile AtomicDouble current_location_longitude = new AtomicDouble(-1000);
 
     public RCTgoogleMapsDropPin(@NonNull Context context, Activity the_activity) {
         super(context);
@@ -130,10 +128,15 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
         googleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
             @Override
             public boolean onMyLocationButtonClick() {
-                if(CURRENT_LOCATION_DATA != null && CURRENT_LOCATION_CIRCLE != null) {
-                    refreshCurrentLocationCircleLocation(true,
-                            CURRENT_LOCATION_DATA.get().getAddress().getLatitude(),
-                            CURRENT_LOCATION_DATA.get().getAddress().getLongitude());
+                if(
+                        CURRENT_LOCATION_DATA.get() != null &&
+                        CURRENT_LOCATION_CIRCLE != null &&
+                        current_location_latitude.get() > -200 &&
+                        current_location_longitude.get() > -200
+                ) {
+                    refreshCurrentLocationCircleLocation(true,true,
+                            current_location_latitude.get(),
+                            current_location_longitude.get());
                 }
                 return false;
             }
@@ -169,7 +172,7 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
     }
 
 
-    private void refreshCurrentLocationCircleLocation(boolean move_camera, double current_latitude, double current_longitude) {
+    private void refreshCurrentLocationCircleLocation(boolean move_camera, boolean max_zoom, double current_latitude, double current_longitude) {
 
 
         new Thread(new Runnable() {
@@ -217,7 +220,11 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
                             if(camera_zoom < 3.0){
                                 camera_zoom = 21.0F;
                             }
-                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(specificLocation, camera_zoom)); // Adjust zoom level as needed
+                            if(!max_zoom) {
+                                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(specificLocation, camera_zoom));
+                            }else{
+                                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(specificLocation, 21.0F));
+                            }
                         }
 
                     }
@@ -315,13 +322,16 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
                 if (location != null) {
                     double latitude = location.getLatitude();
                     double longitude = location.getLongitude();
+
+                    current_location_latitude.set(latitude);
+                    current_location_longitude.set(longitude);
                     if(RCTgoogleMapsDropPin.this.CURRENT_LOCATION_DATA.get() == null) {
                         RCTgoogleMapsDropPin.this.CURRENT_LOCATION_DATA.set(new RCTLocationData(RCTlocation.getAddress(getContext(), latitude, longitude)));
                     }else{
                         RCTgoogleMapsDropPin.this.CURRENT_LOCATION_DATA.get().setAddress(RCTlocation.getAddress(getContext(), latitude, longitude));
                     }
 
-                    refreshCurrentLocationCircleLocation(CAMERA_FOLLOW_CURRENT_LOCATION, latitude,longitude);
+                    refreshCurrentLocationCircleLocation(CAMERA_FOLLOW_ON_LOCATION_UPDATE,false, latitude,longitude);
                     reCalculateCurrentLocationCircleSize();
 
                     ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -350,13 +360,16 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
 
     public void updateCurrentLocation(double latitude, double longitude) {
 
+        current_location_latitude.set(latitude);
+        current_location_longitude.set(longitude);
+
         if(RCTgoogleMapsDropPin.this.CURRENT_LOCATION_DATA.get() == null) {
             RCTgoogleMapsDropPin.this.CURRENT_LOCATION_DATA.set(new RCTLocationData(RCTlocation.getAddress(getContext(), latitude, longitude)));
         }else{
             RCTgoogleMapsDropPin.this.CURRENT_LOCATION_DATA.get().setAddress(RCTlocation.getAddress(getContext(), latitude, longitude));
         }
 
-        refreshCurrentLocationCircleLocation(CAMERA_FOLLOW_CURRENT_LOCATION, latitude,longitude);
+        refreshCurrentLocationCircleLocation(CAMERA_FOLLOW_ON_LOCATION_UPDATE,false, latitude,longitude);
         reCalculateCurrentLocationCircleSize();
 
 
@@ -368,12 +381,16 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
     }
 
     public void setCameraFollowLocationUpdate(boolean follow_location_update){
-        this.CAMERA_FOLLOW_CURRENT_LOCATION = follow_location_update;
+        this.CAMERA_FOLLOW_ON_LOCATION_UPDATE = follow_location_update;
     }
 
     public boolean getCameraFollowLocationUpdate(){
-        return this.CAMERA_FOLLOW_CURRENT_LOCATION;
+        return this.CAMERA_FOLLOW_ON_LOCATION_UPDATE;
     }
+
+
+
+
 
 
 

@@ -59,7 +59,7 @@ public class MapsTestActivity extends AppCompatActivity implements
         more_button = findViewById(R.id.maps_test_more_options_button);
 
         setLoggingFilePath();
-        RCTloggingLocationData.IS_LOGGING_ENABLED.set(true);
+        RCTloggingLocationData.IS_LOGGING_ENABLED.set(false);
 
         facing_direction_listener = new RCTfacingDirectionListener(this, this);
 
@@ -112,7 +112,17 @@ public class MapsTestActivity extends AppCompatActivity implements
         Button enable_logging_button = dialog.findViewById(R.id.mtam_enable_logging_button);
         Button disable_logging_button = dialog.findViewById(R.id.mtam_disable_logging_button);
         Button archived_current_record_button = dialog.findViewById(R.id.mtam_archived_current_record_button);
+        Button camera_follow_on_location_update_toggle_button = dialog.findViewById(R.id.mtam_camera_follow_on_location_update_toggle_button);
 
+        if(customMapView.CAMERA_FOLLOW_ON_LOCATION_UPDATE){
+            camera_follow_on_location_update_toggle_button.
+                    setBackgroundColor(MapsTestActivity.this.getColor(R.color.blue));
+            camera_follow_on_location_update_toggle_button.setText("ENABLED");
+        }else{
+            camera_follow_on_location_update_toggle_button.
+                    setBackgroundColor(MapsTestActivity.this.getColor(R.color.dark_gray_text_color));
+            camera_follow_on_location_update_toggle_button.setText("DISABLED");
+        }
 
         if(RCTloggingLocationData.IS_LOGGING_ENABLED.get()){
             disable_logging_button.setBackgroundColor(MapsTestActivity.this.getColor(R.color.dark_gray_text_color));
@@ -130,6 +140,24 @@ public class MapsTestActivity extends AppCompatActivity implements
             }
         });
 
+
+
+        camera_follow_on_location_update_toggle_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(customMapView.CAMERA_FOLLOW_ON_LOCATION_UPDATE){
+                    camera_follow_on_location_update_toggle_button.
+                            setBackgroundColor(MapsTestActivity.this.getColor(R.color.dark_gray_text_color));
+                    camera_follow_on_location_update_toggle_button.setText("DISABLED");
+                    customMapView.setCameraFollowLocationUpdate(false);
+                }else{
+                    camera_follow_on_location_update_toggle_button.
+                            setBackgroundColor(MapsTestActivity.this.getColor(R.color.blue));
+                    camera_follow_on_location_update_toggle_button.setText("ENABLED");
+                    customMapView.setCameraFollowLocationUpdate(true);
+                }
+            }
+        });
 
         enable_logging_button.setOnClickListener(new View.OnClickListener() {
             @Override
