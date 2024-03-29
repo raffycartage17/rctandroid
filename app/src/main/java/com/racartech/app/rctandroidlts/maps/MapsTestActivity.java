@@ -204,6 +204,11 @@ public class MapsTestActivity extends AppCompatActivity implements
 
     @Override
     public void onFacingDirectionUpdate(float azimuth_in_degrees) {
-        facing_direction_compass.setRotation(azimuth_in_degrees);
+        if(customMapView != null){
+            if(customMapView.googleMap != null) {
+                facing_direction_compass.setRotation(azimuth_in_degrees + customMapView.googleMap.getCameraPosition().tilt);
+            }
+        }
+
     }
 }
