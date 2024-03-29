@@ -258,9 +258,6 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
                         LatLng specificLocation = new LatLng(
                                 finalLatitude,
                                 finalLongitude);
-                        if(move_camera){
-                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(specificLocation, 21)); // Adjust zoom level as needed
-                        }
 
                         if (current_location_circle == null) {
                             current_location_circle = googleMap.addCircle(new CircleOptions()
@@ -290,6 +287,15 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
                                         finalLatitude,
                                         finalLongitude));
                             }
+                        }
+
+
+                        if(move_camera){
+                            float camera_zoom = googleMap.getCameraPosition().zoom;
+                            if(camera_zoom < 3.0){
+                                camera_zoom = 21.0F;
+                            }
+                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(specificLocation, camera_zoom)); // Adjust zoom level as needed
                         }
 
                     }
@@ -386,14 +392,16 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
     }
 
     public void updateCurrentLocationData() {
-        Address updated_location_address = new RCTLocationData(
-                getContext(),
-                RCTLocationData.MODE_CURRENT,
-                200).getAddress();
-        this.CURRENT_LOCATION_DATA.get().setAddress(RCTlocation.getAddress(
-                getContext(),
-                updated_location_address.getLatitude(),
-                updated_location_address.getLongitude()));
+        if(this.CURRENT_LOCATION_DATA != null) {
+            Address updated_location_address = new RCTLocationData(
+                    getContext(),
+                    RCTLocationData.MODE_CURRENT,
+                    200).getAddress();
+            this.CURRENT_LOCATION_DATA.get().setAddress(RCTlocation.getAddress(
+                    getContext(),
+                    updated_location_address.getLatitude(),
+                    updated_location_address.getLongitude()));
+        }
     }
 
 
