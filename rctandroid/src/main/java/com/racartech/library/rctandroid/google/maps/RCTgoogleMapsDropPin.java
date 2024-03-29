@@ -44,16 +44,10 @@ import com.racartech.library.rctandroid.logging.RCTloggingLocationData;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallback, SensorEventListener {
+public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallback{
 
 
 
-    private SensorManager sensorManager;
-    private final float[] accelerometerReading = new float[3];
-    private final float[] magnetometerReading = new float[3];
-
-    private final float[] rotationMatrix = new float[9];
-    private final float[] orientationAngles = new float[3];
 
 
     public GoogleMap googleMap;
@@ -63,12 +57,8 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
     private double base_visible_area = -1.0;
 
     private Activity activity;
-    private Sensor accelerometer;
-    private Sensor magnetometer;
 
-    private boolean haveSensor = false;
-    private boolean haveAccelerometer = false;
-    private boolean haveMagnetometer = false;
+
 
 
     private Circle CURRENT_LOCATION_CIRCLE = null;
@@ -77,8 +67,6 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
 
     private boolean CAMERA_FOLLOW_CURRENT_LOCATION = false;
 
-
-    //fahclmbd = facing_arrow_head_current_location_marker_base_distance
 
     public RCTgoogleMapsDropPin(@NonNull Context context, Activity the_activity) {
         super(context);
@@ -104,15 +92,6 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
         mapView.getMapAsync(this);
 
 
-        // Initialize sensor manager
-        sensorManager = (SensorManager) getContext().getSystemService(Context.SENSOR_SERVICE);
-        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
-
-        // Check if the device has the required sensors
-        haveAccelerometer = sensorManager.registerListener((SensorEventListener) this, accelerometer, SensorManager.SENSOR_DELAY_GAME);
-        haveMagnetometer = sensorManager.registerListener((SensorEventListener) this, magnetometer, SensorManager.SENSOR_DELAY_GAME);
-        haveSensor = haveAccelerometer && haveMagnetometer;
 
 
 
@@ -148,8 +127,6 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
 
         googleMap.setMyLocationEnabled(true);
 
-        refreshCurrentLocationCircleLocation(true,-1000, -1000);
-
         googleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
             @Override
             public boolean onMyLocationButtonClick() {
@@ -172,28 +149,6 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
 
 
     }
-
-
-    // Get readings from accelerometer and magnetometer. To simplify calculations,
-    // consider storing these readings as unit vectors.
-    @Override
-    public void onSensorChanged(SensorEvent event) {
-        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            System.arraycopy(event.values, 0, accelerometerReading,
-                    0, accelerometerReading.length);
-        } else if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
-            System.arraycopy(event.values, 0, magnetometerReading,
-                    0, magnetometerReading.length);
-        }
-        facingDirectionAzimuthCalculator();
-    }
-
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int i) {
-
-    }
-
 
     public interface OnPinDropListener {
         void onPinDrop(double latitude, double longitude);
@@ -328,26 +283,20 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
     }
 
 
-
-    private void facingDirectionAzimuthCalculator() {
-        SensorManager.getRotationMatrix(rotationMatrix, null,
-                accelerometerReading, magnetometerReading);
-        SensorManager.getOrientation(rotationMatrix, orientationAngles);
-
-        float azimuthInDegrees = (float) Math.toDegrees(orientationAngles[0]);
-
-    }
-
     public void updateCurrentLocationData() {
         if(this.CURRENT_LOCATION_DATA != null) {
-            Address updated_location_address = new RCTLocationData(
-                    getContext(),
-                    RCTLocationData.MODE_CURRENT,
-                    200).getAddress();
-            this.CURRENT_LOCATION_DATA.get().setAddress(RCTlocation.getAddress(
-                    getContext(),
-                    updated_location_address.getLatitude(),
-                    updated_location_address.getLongitude()));
+            try {
+                Address updated_location_address = new RCTLocationData(
+                        getContext(),
+                        RCTLocationData.MODE_CURRENT,
+                        200).getAddress();
+                this.CURRENT_LOCATION_DATA.get().setAddress(RCTlocation.getAddress(
+                        getContext(),
+                        updated_location_address.getLatitude(),
+                        updated_location_address.getLongitude()));
+            }catch(NullPointerException ignored){
+                System.out.println("NullPointerException at\nRCTgoogleMapsDropPin.updateCurrentLocationData");
+            }
         }
     }
 

@@ -37,7 +37,9 @@
         app:layout_constraintBottom_toTopOf="@+id/textView3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+    </FrameLayout>
 
     <Button
         android:id="@+id/maps_test_add_map_view_button"
@@ -115,5 +117,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/divider2"
         app:layout_constraintStart_toStartOf="@+id/divider2" />
+
+    <ImageView
+        android:id="@+id/mtcl_facing_direction_compass_imageview"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/map_container"
+        app:layout_constraintEnd_toEndOf="@+id/map_container"
+        app:layout_constraintStart_toStartOf="@+id/map_container"
+        app:srcCompat="@drawable/facing_direction_arrow_head_center" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

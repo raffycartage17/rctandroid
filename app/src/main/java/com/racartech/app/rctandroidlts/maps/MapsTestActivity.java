@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,17 +19,26 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.racartech.app.rctandroidlts.R;
 import com.racartech.library.rctandroid.file.RCTfile;
 import com.racartech.library.rctandroid.google.maps.RCTgoogleMapsDropPin;
+import com.racartech.library.rctandroid.location.RCTfacingDirectionListener;
 import com.racartech.library.rctandroid.location.RCTlocation;
-import com.racartech.library.rctandroid.location.RCTlocationUpdate;
+import com.racartech.library.rctandroid.location.RCTlocationUpdateListener;
 import com.racartech.library.rctandroid.logging.RCTloggingLocationData;
 
-public class MapsTestActivity extends AppCompatActivity implements RCTgoogleMapsDropPin.OnPinDropListener, RCTlocationUpdate.LocationUpdateListener {
+public class MapsTestActivity extends AppCompatActivity implements
+        RCTgoogleMapsDropPin.OnPinDropListener,
+        RCTlocationUpdateListener.LocationUpdateListener,
+        RCTfacingDirectionListener.FacingDirectionListener
+{
 
     private FrameLayout mapContainer;
     private RCTgoogleMapsDropPin customMapView;
     private Button add_map_view_button, view_log_button, more_button;
 
     TextView long_value, lat_value, address_value;
+
+    ImageView facing_direction_compass;
+
+    RCTfacingDirectionListener facing_direction_listener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,11 +52,14 @@ public class MapsTestActivity extends AppCompatActivity implements RCTgoogleMaps
         lat_value = findViewById(R.id.mtcl_lat_value);
         address_value = findViewById(R.id.mtcl_address_value);
 
+        facing_direction_compass = findViewById(R.id.mtcl_facing_direction_compass_imageview);
         add_map_view_button = findViewById(R.id.maps_test_add_map_view_button);
         more_button = findViewById(R.id.maps_test_more_options_button);
 
         setLoggingFilePath();
         RCTloggingLocationData.IS_LOGGING_ENABLED.set(true);
+
+        facing_direction_listener = new RCTfacingDirectionListener(this, this);
 
         /*
         RCTlocationUpdate locationUpdate = new RCTlocationUpdate(this);
@@ -186,5 +200,10 @@ public class MapsTestActivity extends AppCompatActivity implements RCTgoogleMaps
         System.out.println("Location Update");
         System.out.println("Latitude  : ".concat(String.valueOf(latitude)));
         System.out.println("Longitude : ".concat(String.valueOf(longitude)));
+    }
+
+    @Override
+    public void onFacingDirectionUpdate(float azimuth_in_degrees) {
+        facing_direction_compass.setRotation(azimuth_in_degrees);
     }
 }

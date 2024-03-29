@@ -13,7 +13,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 
-public class RCTlocationUpdate {
+public class RCTlocationUpdateListener {
 
     public interface LocationUpdateListener {
         void onLocationUpdate(double latitude, double longitude);
@@ -21,7 +21,7 @@ public class RCTlocationUpdate {
 
     private LocationUpdateListener listener;
 
-    public RCTlocationUpdate(LocationUpdateListener listener) {
+    public RCTlocationUpdateListener(LocationUpdateListener listener) {
         this.listener = listener;
     }
 
