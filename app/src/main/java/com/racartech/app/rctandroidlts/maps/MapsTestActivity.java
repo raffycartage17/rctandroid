@@ -40,6 +40,8 @@ public class MapsTestActivity extends AppCompatActivity implements
 
     RCTfacingDirectionListener facing_direction_listener;
 
+    RCTlocationUpdateListener locationUpdate;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,10 +63,10 @@ public class MapsTestActivity extends AppCompatActivity implements
 
         facing_direction_listener = new RCTfacingDirectionListener(this, this);
 
-        /*
-        RCTlocationUpdate locationUpdate = new RCTlocationUpdate(this);
-        locationUpdate.getLocationUpdates(MapsTestActivity.this, 1000); // Update every 10 seconds (10000 milliseconds)
-         */
+
+        //locationUpdate = new RCTlocationUpdateListener(this);
+        //locationUpdate.getLocationUpdates(MapsTestActivity.this, 1000);
+
 
         addMapView();
         add_map_view_button.setOnClickListener(new View.OnClickListener() {
@@ -196,19 +198,25 @@ public class MapsTestActivity extends AppCompatActivity implements
 
     @Override
     public void onLocationUpdate(double latitude, double longitude) {
-        System.out.println("-----------------------------------------------------");
-        System.out.println("Location Update");
-        System.out.println("Latitude  : ".concat(String.valueOf(latitude)));
-        System.out.println("Longitude : ".concat(String.valueOf(longitude)));
+        customMapView.updateCurrentLocation(latitude, longitude);
     }
 
     @Override
     public void onFacingDirectionUpdate(float azimuth_in_degrees) {
         if(customMapView != null){
             if(customMapView.googleMap != null) {
-                facing_direction_compass.setRotation(azimuth_in_degrees + customMapView.googleMap.getCameraPosition().tilt);
+                facing_direction_compass.setRotation((azimuth_in_degrees - customMapView.googleMap.getCameraPosition().bearing));
             }
         }
 
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        facing_direction_listener.setEnabled(false);
+
+        finish();
     }
 }

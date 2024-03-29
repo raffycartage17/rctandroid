@@ -294,9 +294,7 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
                         getContext(),
                         updated_location_address.getLatitude(),
                         updated_location_address.getLongitude()));
-            }catch(NullPointerException ignored){
-                System.out.println("NullPointerException at\nRCTgoogleMapsDropPin.updateCurrentLocationData");
-            }
+            }catch(NullPointerException ignored){}
         }
     }
 
@@ -350,7 +348,7 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
 
 
 
-    private void updateCurrentLocation(double latitude, double longitude) {
+    public void updateCurrentLocation(double latitude, double longitude) {
 
         if(RCTgoogleMapsDropPin.this.CURRENT_LOCATION_DATA.get() == null) {
             RCTgoogleMapsDropPin.this.CURRENT_LOCATION_DATA.set(new RCTLocationData(RCTlocation.getAddress(getContext(), latitude, longitude)));

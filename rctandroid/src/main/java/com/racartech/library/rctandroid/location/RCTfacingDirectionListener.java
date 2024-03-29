@@ -1,6 +1,5 @@
 package com.racartech.library.rctandroid.location;
 
-
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -24,6 +23,8 @@ public class RCTfacingDirectionListener implements SensorEventListener {
     private final float[] rotationMatrix = new float[9];
     private final float[] orientationAngles = new float[3];
 
+    private boolean computingEnabled = true; // Flag to control computation
+
     public interface FacingDirectionListener {
         void onFacingDirectionUpdate(float azimuth_in_degrees);
     }
@@ -41,6 +42,8 @@ public class RCTfacingDirectionListener implements SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent event) {
+        if (!computingEnabled) return; // Check if computation is enabled
+
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             System.arraycopy(event.values, 0, accelerometerReading, 0, accelerometerReading.length);
         } else if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
@@ -63,6 +66,9 @@ public class RCTfacingDirectionListener implements SensorEventListener {
             facingDirectionListener.onFacingDirectionUpdate(azimuthInDegreesFacingDirection);
         }
     }
+
+    // Method to enable or disable computation
+    public void setEnabled(boolean enabled) {
+        computingEnabled = enabled;
+    }
 }
-
-
