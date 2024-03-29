@@ -7,6 +7,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Location;
@@ -15,6 +16,7 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -26,6 +28,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
@@ -35,12 +39,15 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.common.util.concurrent.AtomicDouble;
 import com.racartech.library.rctandroid.R;
 import com.racartech.library.rctandroid.location.RCTLocationData;
+import com.racartech.library.rctandroid.location.RCTfacingDirectionListener;
 import com.racartech.library.rctandroid.location.RCTlocation;
 import com.racartech.library.rctandroid.logging.RCTloggingLocationData;
+import com.racartech.library.rctandroid.media.RCTbitmap;
+import com.racartech.library.rctandroid.media.RCTdrawable;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallback{
+public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallback, RCTfacingDirectionListener.FacingDirectionListener {
 
 
 
@@ -53,6 +60,10 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
     private double base_visible_area = -1.0;
 
     private Activity activity;
+
+    private RCTfacingDirectionListener FACING_DIRECTION_LISTENER = null;
+
+    private Marker FACING_DIRECTION_ARROW;
 
 
 
@@ -89,7 +100,8 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
         mapView.onCreate(null);
         mapView.getMapAsync(this);
 
-
+        FACING_DIRECTION_LISTENER = new RCTfacingDirectionListener(getContext(),this);
+        FACING_DIRECTION_LISTENER.setEnabled(true);
 
 
 
@@ -153,6 +165,7 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
 
     }
 
+
     public interface OnPinDropListener {
         void onPinDrop(double latitude, double longitude);
     }
@@ -213,6 +226,22 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
                         }
 
 
+                        if(FACING_DIRECTION_ARROW == null){
+                            Bitmap fda_bitmap = RCTdrawable.convertToBitmap(
+                                    AppCompatResources.getDrawable(getContext(),R.drawable.facing_direction_arrow_head));
+                            fda_bitmap = RCTbitmap.resize(fda_bitmap,256,256);
+                            BitmapDescriptor the_icon = BitmapDescriptorFactory.fromBitmap(fda_bitmap);
+
+                            FACING_DIRECTION_ARROW = googleMap.addMarker(new MarkerOptions()
+                                    .position(new LatLng(current_location_latitude.get(), current_location_longitude.get()))
+                                    .icon(the_icon));
+                        }else{
+                            FACING_DIRECTION_ARROW.setPosition(new LatLng(
+                                    current_location_latitude.get(),
+                                    current_location_longitude.get()));
+                        }
+
+
 
 
                         if(move_camera){
@@ -241,11 +270,10 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
 
             double current_visible_area = calculateVisibleArea();
 
-            if (base_visible_area < 0.0) {
+            if(base_visible_area < 0.0){
                 base_visible_area = current_visible_area;
                 //current_location_circle.setRadius();
-            } else {
-
+            }else{
                 double multiplier = current_visible_area / base_visible_area;
                 CURRENT_LOCATION_CIRCLE.setRadius(multiplier);
             }
@@ -386,6 +414,15 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
 
     public boolean getCameraFollowLocationUpdate(){
         return this.CAMERA_FOLLOW_ON_LOCATION_UPDATE;
+    }
+
+
+
+    @Override
+    public void onFacingDirectionUpdate(float azimuth_in_degrees) {
+        if(googleMap != null && FACING_DIRECTION_ARROW != null){
+            FACING_DIRECTION_ARROW.setRotation((azimuth_in_degrees -googleMap.getCameraPosition().bearing));
+        }
     }
 
 
