@@ -15,11 +15,13 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.racartech.app.rctandroidlts.R;
+import com.racartech.library.rctandroid.file.RCTfile;
 import com.racartech.library.rctandroid.google.maps.RCTgoogleMapsDropPin;
 import com.racartech.library.rctandroid.location.RCTlocation;
+import com.racartech.library.rctandroid.location.RCTlocationUpdate;
 import com.racartech.library.rctandroid.logging.RCTloggingLocationData;
 
-public class MapsTestActivity extends AppCompatActivity implements RCTgoogleMapsDropPin.OnPinDropListener {
+public class MapsTestActivity extends AppCompatActivity implements RCTgoogleMapsDropPin.OnPinDropListener, RCTlocationUpdate.LocationUpdateListener {
 
     private FrameLayout mapContainer;
     private RCTgoogleMapsDropPin customMapView;
@@ -42,6 +44,13 @@ public class MapsTestActivity extends AppCompatActivity implements RCTgoogleMaps
         add_map_view_button = findViewById(R.id.maps_test_add_map_view_button);
         more_button = findViewById(R.id.maps_test_more_options_button);
 
+        setLoggingFilePath();
+        RCTloggingLocationData.IS_LOGGING_ENABLED.set(true);
+
+        /*
+        RCTlocationUpdate locationUpdate = new RCTlocationUpdate(this);
+        locationUpdate.getLocationUpdates(MapsTestActivity.this, 1000); // Update every 10 seconds (10000 milliseconds)
+         */
 
         addMapView();
         add_map_view_button.setOnClickListener(new View.OnClickListener() {
@@ -67,6 +76,8 @@ public class MapsTestActivity extends AppCompatActivity implements RCTgoogleMaps
         customMapView = new RCTgoogleMapsDropPin(MapsTestActivity.this, MapsTestActivity.this);
         customMapView.setOnPinDropListener(this); // Set listener
         mapContainer.addView(customMapView);
+        customMapView.getAutoLocationUpdates(1000);
+        customMapView.setCameraFollowLocationUpdate(true);
     }
 
     private void showMoreDialog(){
@@ -153,6 +164,12 @@ public class MapsTestActivity extends AppCompatActivity implements RCTgoogleMaps
     }
 
 
+    public void setLoggingFilePath(){
+        String location_log_filepath = RCTfile.getDir_IntAppFiles(MapsTestActivity.this).concat("/rctandroid_location_log.txt");
+        RCTloggingLocationData.setFilePath(location_log_filepath);
+    }
+
+
 
     // Implement the method from OnPinDropListener interface
     @Override
@@ -161,5 +178,13 @@ public class MapsTestActivity extends AppCompatActivity implements RCTgoogleMaps
         long_value.setText(String.valueOf(longitude));
         Address marker_address = RCTlocation.getAddress(MapsTestActivity.this,latitude,longitude);
         address_value.setText(marker_address.getAddressLine(0));
+    }
+
+    @Override
+    public void onLocationUpdate(double latitude, double longitude) {
+        System.out.println("-----------------------------------------------------");
+        System.out.println("Location Update");
+        System.out.println("Latitude  : ".concat(String.valueOf(latitude)));
+        System.out.println("Longitude : ".concat(String.valueOf(longitude)));
     }
 }
