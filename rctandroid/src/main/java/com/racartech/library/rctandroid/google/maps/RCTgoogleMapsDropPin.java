@@ -38,6 +38,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.common.util.concurrent.AtomicDouble;
 import com.racartech.library.rctandroid.R;
+import com.racartech.library.rctandroid.file.RCTfile;
 import com.racartech.library.rctandroid.location.RCTLocationData;
 import com.racartech.library.rctandroid.location.RCTfacingDirectionListener;
 import com.racartech.library.rctandroid.location.RCTlocation;
@@ -45,11 +46,15 @@ import com.racartech.library.rctandroid.logging.RCTloggingLocationData;
 import com.racartech.library.rctandroid.media.RCTbitmap;
 import com.racartech.library.rctandroid.media.RCTdrawable;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallback, RCTfacingDirectionListener.FacingDirectionListener {
 
 
+    private String SETTINGS_FILE_PATH = null;
 
 
 
@@ -64,6 +69,10 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
     private RCTfacingDirectionListener FACING_DIRECTION_LISTENER = null;
 
     private Marker FACING_DIRECTION_ARROW;
+
+    private double CAMERA_ZOOM_LEVEl = -1000.0F;
+
+    private AtomicLong CIRCLE_SIZE_LAST_UPDATE = new AtomicLong(0);
 
 
 
@@ -103,9 +112,118 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
         FACING_DIRECTION_LISTENER = new RCTfacingDirectionListener(getContext(),this);
         FACING_DIRECTION_LISTENER.setEnabled(true);
 
+        CIRCLE_SIZE_LAST_UPDATE.set(System.currentTimeMillis());
+        setSettingsFileData();
+
 
 
     }
+
+    public void setSettingsFileData(){
+        SETTINGS_FILE_PATH = RCTfile.getDir_IntAppFiles(getContext()).concat("/rctandroid_gmdp_settings.txt");
+        if(!RCTfile.doesFileExist(SETTINGS_FILE_PATH)) {
+            RCTfile.createFile(SETTINGS_FILE_PATH);
+            ArrayList<String> default_file_contents = new ArrayList<>();
+            default_file_contents.add("CAMERA_FOLLOW_ON_CURRENT_LOCATION_UPDATE=true"); //Index 0
+            default_file_contents.add("LAST_KNOWN_LATITUDE=-1000.0"); //Index 1
+            default_file_contents.add("LAST_KNOWN_LONGITUDE=-1000.0"); //Index 2
+            default_file_contents.add("CAMERA_ZOOM_LEVEL=-1000.0"); //Index 3
+            saveSettingsDataFileContents(default_file_contents);
+        }else{
+            try {
+                ArrayList<String> settings_file_contents = getSettingsDataFileContents();
+                CAMERA_FOLLOW_ON_LOCATION_UPDATE = getFileSettingsCameraFollowOnCurrentLocationUpdate(settings_file_contents);
+                current_location_latitude.set(getFileSettingsLastKnownLatitude(settings_file_contents));
+                current_location_longitude.set(getFileSettingsLastKnownLongitude(settings_file_contents));
+                CAMERA_ZOOM_LEVEl = getFileSettingsZoomLevel(settings_file_contents);
+            }catch (Exception ex){
+                RCTfile.delete_File(SETTINGS_FILE_PATH);
+                setSettingsFileData();
+            }
+        }
+    }
+
+
+    public boolean getFileSettingsCameraFollowOnCurrentLocationUpdate(ArrayList<String> file_contents){
+        try {
+            if (RCTfile.doesFileExist(SETTINGS_FILE_PATH)) {
+                String[] line_data = file_contents.get(0).split("=");
+                boolean data_value = Boolean.parseBoolean(line_data[1]);
+                return data_value;
+            } else {
+                return true;
+            }
+        }catch (Exception ex){
+            return true;
+        }
+    }
+
+    public double getFileSettingsLastKnownLatitude(ArrayList<String> file_contents){
+        try {
+            if (RCTfile.doesFileExist(SETTINGS_FILE_PATH)) {
+                String[] line_data = file_contents.get(1).split("=");
+                double data_value = Double.parseDouble(line_data[1]);
+                return data_value;
+            } else {
+                return -1000.0;
+            }
+        }catch (Exception ex){
+            return -1000.0;
+        }
+    }
+
+    public double getFileSettingsLastKnownLongitude(ArrayList<String> file_contents){
+        try{
+            if(RCTfile.doesFileExist(SETTINGS_FILE_PATH)) {
+                String[] line_data = file_contents.get(2).split("=");
+                double data_value = Double.parseDouble(line_data[1]);
+                return data_value;
+            }else{
+                return -1000.0;
+            }
+        }catch (Exception ex){
+            return -1000.0;
+        }
+
+    }
+
+    public float getFileSettingsZoomLevel(ArrayList<String> file_contents){
+        try{
+            if(RCTfile.doesFileExist(SETTINGS_FILE_PATH)) {
+                String[] line_data = file_contents.get(3).split("=");
+                double data_value = Float.parseFloat(line_data[1]);
+                return (float) data_value;
+            }else{
+                return (float) -1000.0;
+            }
+        }catch (Exception ex){
+            return (float) -1000.0;
+        }
+    }
+
+    public ArrayList<String> getSettingsDataFileContents(){
+        try {
+            return RCTfile.readFile_ArrayList(SETTINGS_FILE_PATH);
+        }catch (IOException ignored){
+            return null;
+        }
+    }
+
+    public void saveSettingsDataFileContents(ArrayList<String> file_contents){
+        try {
+            RCTfile.overrideFile(SETTINGS_FILE_PATH,file_contents);
+        }catch (IOException ignored){}
+    }
+
+    public void saveCurrentSettings(){
+        ArrayList<String> the_file_contents = new ArrayList<>();
+        the_file_contents.add("CAMERA_FOLLOW_ON_CURRENT_LOCATION_UPDATE=".concat(String.valueOf(CAMERA_FOLLOW_ON_LOCATION_UPDATE))); //Index 0
+        the_file_contents.add("LAST_KNOWN_LATITUDE=".concat(String.valueOf(current_location_latitude))); //Index 1
+        the_file_contents.add("LAST_KNOWN_LONGITUDE=".concat(String.valueOf(current_location_longitude))); //Index 2
+        the_file_contents.add("CAMERA_ZOOM_LEVEL=".concat(String.valueOf(CAMERA_ZOOM_LEVEl))); //Index 3
+        saveSettingsDataFileContents(the_file_contents);
+    }
+
 
 
     @Override
@@ -127,6 +245,7 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
 
             }
         });
+
 
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -158,9 +277,30 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
         googleMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
             @Override
             public void onCameraMove() {
+                CAMERA_ZOOM_LEVEl = googleMap.getCameraPosition().zoom;
                 reCalculateCurrentLocationCircleSize();
             }
         });
+
+
+        double last_known_latitude = -1000;
+        double last_known_longitude = -1000;
+        float last_known_zoom_level = -1000;
+        ArrayList<String> settings_file_contents = getSettingsDataFileContents();
+        last_known_latitude = getFileSettingsLastKnownLatitude(settings_file_contents);
+        last_known_longitude = getFileSettingsLastKnownLongitude(settings_file_contents);
+        last_known_zoom_level = getFileSettingsZoomLevel(settings_file_contents);
+
+        if(last_known_latitude > -200.0 && last_known_longitude > -200.0 && last_known_zoom_level > -200){
+            current_location_latitude.set(last_known_latitude);
+            current_location_longitude.set(last_known_longitude);
+            CAMERA_ZOOM_LEVEl = last_known_zoom_level;
+
+            updateCurrentLocation(
+                    last_known_latitude,
+                    last_known_longitude);
+
+        }
 
 
     }
@@ -246,6 +386,7 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
 
                         if(move_camera){
                             float camera_zoom = googleMap.getCameraPosition().zoom;
+
                             if(camera_zoom < 3.0){
                                 camera_zoom = 21.0F;
                             }
@@ -265,25 +406,29 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
     }
 
 
-    public void reCalculateCurrentLocationCircleSize() {
-        if (CURRENT_LOCATION_CIRCLE != null) {
+    public void reCalculateCurrentLocationCircleSize(){
 
-            double current_visible_area = calculateVisibleArea();
+        long current_time_millis = System.currentTimeMillis();
+        if((current_time_millis - CIRCLE_SIZE_LAST_UPDATE.get()) > 200) {
+            if (CURRENT_LOCATION_CIRCLE != null) {
 
-            if(base_visible_area < 0.0){
-                base_visible_area = current_visible_area;
-                //current_location_circle.setRadius();
-            }else{
-                double multiplier = current_visible_area / base_visible_area;
-                CURRENT_LOCATION_CIRCLE.setRadius(multiplier);
+                double current_visible_area = calculateVisibleArea();
+
+                if (base_visible_area < 0.0) {
+                    base_visible_area = current_visible_area;
+                } else {
+                    double multiplier = current_visible_area / base_visible_area;
+                    CURRENT_LOCATION_CIRCLE.setRadius(multiplier);
+                }
+                CIRCLE_SIZE_LAST_UPDATE.set(current_time_millis);
             }
-
-
-            //System.out.println("Circle Size : ".concat(String.valueOf(current_location_circle.getRadius())));
         }
 
 
     }
+
+
+
 
 
     private double calculateVisibleArea() {
@@ -407,6 +552,8 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
 
 
     }
+
+
 
     public void setCameraFollowLocationUpdate(boolean follow_location_update){
         this.CAMERA_FOLLOW_ON_LOCATION_UPDATE = follow_location_update;

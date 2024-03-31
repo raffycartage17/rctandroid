@@ -31,7 +31,7 @@ public class MapsTestActivity extends AppCompatActivity implements
 {
 
     private FrameLayout mapContainer;
-    private RCTgoogleMapsDropPin customMapView;
+    private RCTgoogleMapsDropPin customMapView = null;
     private Button add_map_view_button, view_log_button, more_button;
 
     TextView long_value, lat_value, address_value;
@@ -247,4 +247,43 @@ public class MapsTestActivity extends AppCompatActivity implements
 
         finish();
     }
+
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(customMapView != null) {
+            customMapView.saveCurrentSettings();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(customMapView != null) {
+            customMapView.saveCurrentSettings();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(customMapView != null) {
+            customMapView.saveCurrentSettings();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(customMapView != null) {
+            customMapView.setSettingsFileData();
+        }
+    }
+
+
+
+
+
 }
