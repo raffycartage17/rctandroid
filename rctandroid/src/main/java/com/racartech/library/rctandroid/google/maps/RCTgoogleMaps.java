@@ -46,6 +46,7 @@ import com.google.maps.model.DirectionsLeg;
 import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.DirectionsRoute;
 import com.google.maps.model.DirectionsStep;
+import com.google.maps.model.TrafficModel;
 import com.google.maps.model.TravelMode;
 import com.racartech.library.rctandroid.R;
 import com.racartech.library.rctandroid.file.RCTfile;
@@ -57,6 +58,7 @@ import com.racartech.library.rctandroid.media.RCTbitmap;
 import com.racartech.library.rctandroid.media.RCTdrawable;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
@@ -642,7 +644,13 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
 
 
 
-    public void getDrivingDirections(String api_key, com.google.maps.model.LatLng origin, com.google.maps.model.LatLng destination) {
+    public void getDrivingDirections(
+            String api_key,
+            com.google.maps.model.LatLng origin,
+            com.google.maps.model.LatLng destination,
+            TravelMode travel_mode,
+            ArrayList<DirectionsApi.RouteRestriction> route_restriction,
+            Instant departure_time) {
 
         GeoApiContext geoApiContext = new GeoApiContext.Builder()
                 .apiKey(api_key)
@@ -652,8 +660,12 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
         DirectionsApiRequest request = DirectionsApi.newRequest(geoApiContext);
         request.origin(origin);
         request.destination(destination);
-        request.mode(TravelMode.DRIVING); // Specify driving mode
-
+        request.mode(travel_mode);
+        request.departureTime(departure_time);
+        for(int index = 0; index<route_restriction.size(); index++){
+            request.avoid(route_restriction.get(index));
+        }
+        request.trafficModel(TrafficModel.BEST_GUESS);
         request.setCallback(new PendingResult.Callback<DirectionsResult>() {
             @Override
             public void onResult(DirectionsResult result) {

@@ -16,7 +16,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.maps.DirectionsApi;
 import com.google.maps.model.LatLng;
+import com.google.maps.model.TravelMode;
 import com.racartech.app.rctandroidlts.R;
 import com.racartech.app.rctandroidlts.api.ApiKeyManager;
 import com.racartech.library.rctandroid.file.RCTfile;
@@ -25,6 +27,9 @@ import com.racartech.library.rctandroid.location.RCTfacingDirectionListener;
 import com.racartech.library.rctandroid.location.RCTlocation;
 import com.racartech.library.rctandroid.location.RCTlocationUpdateListener;
 import com.racartech.library.rctandroid.logging.RCTloggingLocationData;
+
+import java.time.Instant;
+import java.util.ArrayList;
 
 public class MapsTestActivity extends AppCompatActivity implements
         RCTgoogleMaps.OnPinDropListener,
@@ -244,13 +249,18 @@ public class MapsTestActivity extends AppCompatActivity implements
             public void run() {
 
                 String api_key = ApiKeyManager.getGoogleApiKey(firestore_instance);
+                ArrayList<DirectionsApi.RouteRestriction> route_restrictions = new ArrayList<>();
+                route_restrictions.add(DirectionsApi.RouteRestriction.TOLLS);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run(){
                         customMapView.getDrivingDirections(
                                 api_key,
                                 origin_coordinates,
-                                destination_coordinates
+                                destination_coordinates,
+                                TravelMode.DRIVING,
+                                route_restrictions,
+                                Instant.ofEpochMilli(System.currentTimeMillis())
                         );
                     }
                 });
