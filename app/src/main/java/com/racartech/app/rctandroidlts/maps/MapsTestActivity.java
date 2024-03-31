@@ -9,29 +9,31 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.maps.model.LatLng;
 import com.racartech.app.rctandroidlts.R;
+import com.racartech.app.rctandroidlts.api.ApiKeyManager;
 import com.racartech.library.rctandroid.file.RCTfile;
-import com.racartech.library.rctandroid.google.maps.RCTgoogleMapsDropPin;
+import com.racartech.library.rctandroid.google.maps.RCTgoogleMaps;
 import com.racartech.library.rctandroid.location.RCTfacingDirectionListener;
 import com.racartech.library.rctandroid.location.RCTlocation;
 import com.racartech.library.rctandroid.location.RCTlocationUpdateListener;
 import com.racartech.library.rctandroid.logging.RCTloggingLocationData;
 
 public class MapsTestActivity extends AppCompatActivity implements
-        RCTgoogleMapsDropPin.OnPinDropListener,
+        RCTgoogleMaps.OnPinDropListener,
         RCTlocationUpdateListener.LocationUpdateListener,
         RCTfacingDirectionListener.FacingDirectionListener
 {
 
     private FrameLayout mapContainer;
-    private RCTgoogleMapsDropPin customMapView = null;
+    private RCTgoogleMaps customMapView = null;
     private Button add_map_view_button, view_log_button, more_button;
 
     TextView long_value, lat_value, address_value;
@@ -41,6 +43,8 @@ public class MapsTestActivity extends AppCompatActivity implements
     RCTfacingDirectionListener facing_direction_listener;
 
     RCTlocationUpdateListener locationUpdate;
+
+    private FirebaseFirestore firestore_instance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +66,8 @@ public class MapsTestActivity extends AppCompatActivity implements
         RCTloggingLocationData.IS_LOGGING_ENABLED.set(false);
 
         facing_direction_listener = new RCTfacingDirectionListener(this, this);
+
+        firestore_instance = FirebaseFirestore.getInstance();
 
 
         //locationUpdate = new RCTlocationUpdateListener(this);
@@ -89,7 +95,7 @@ public class MapsTestActivity extends AppCompatActivity implements
     }
 
     private void addMapView() {
-        customMapView = new RCTgoogleMapsDropPin(MapsTestActivity.this, MapsTestActivity.this);
+        customMapView = new RCTgoogleMaps(MapsTestActivity.this, MapsTestActivity.this);
         customMapView.setOnPinDropListener(this); // Set listener
         mapContainer.addView(customMapView);
         customMapView.getAutoLocationUpdates(200);
@@ -222,6 +228,35 @@ public class MapsTestActivity extends AppCompatActivity implements
         long_value.setText(String.valueOf(longitude));
         Address marker_address = RCTlocation.getAddress(MapsTestActivity.this,latitude,longitude);
         address_value.setText(marker_address.getAddressLine(0));
+
+
+        LatLng origin_coordinates = new LatLng(
+                customMapView.CURRENT_LOCATION_LATITUDE.get(),
+                customMapView.CURRENT_LOCATION_LONGITUDE.get()
+        );
+
+        LatLng destination_coordinates = new LatLng(
+                latitude,
+                longitude
+        );
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                String api_key = ApiKeyManager.getGoogleApiKey(firestore_instance);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run(){
+                        customMapView.getDrivingDirections(
+                                api_key,
+                                origin_coordinates,
+                                destination_coordinates
+                        );
+                    }
+                });
+            }
+        }).start();
+
     }
 
     @Override
