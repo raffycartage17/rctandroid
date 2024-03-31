@@ -74,6 +74,8 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
 
     private AtomicLong CIRCLE_SIZE_LAST_UPDATE = new AtomicLong(0);
 
+    private boolean is_initialized = false;
+
 
 
 
@@ -388,17 +390,22 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
 
 
 
-                        if(move_camera){
-                            float camera_zoom = googleMap.getCameraPosition().zoom;
+                        if(is_initialized){
+                            if (move_camera) {
+                                float camera_zoom = googleMap.getCameraPosition().zoom;
 
-                            if(camera_zoom < 3.0){
-                                camera_zoom = 21.0F;
+                                if (camera_zoom < 3.0) {
+                                    camera_zoom = 21.0F;
+                                }
+                                if (!max_zoom) {
+                                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(specificLocation, camera_zoom));
+                                } else {
+                                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(specificLocation, 21.0F));
+                                }
                             }
-                            if(!max_zoom) {
-                                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(specificLocation, camera_zoom));
-                            }else{
-                                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(specificLocation, 21.0F));
-                            }
+                        }else{
+                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(specificLocation, 21.0F));
+                            is_initialized = true;
                         }
 
                     }
@@ -413,7 +420,7 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
     public void reCalculateCurrentLocationCircleSize(){
 
         long current_time_millis = System.currentTimeMillis();
-        if((current_time_millis - CIRCLE_SIZE_LAST_UPDATE.get()) > 200) {
+        if((current_time_millis - CIRCLE_SIZE_LAST_UPDATE.get()) > 100) {
             if (CURRENT_LOCATION_CIRCLE != null) {
 
                 double current_visible_area = calculateVisibleArea();
@@ -514,6 +521,9 @@ public class RCTgoogleMapsDropPin extends FrameLayout implements OnMapReadyCallb
                     ///////////////////////////////////////////////////////////////////////////////////////////////////////
                     //Log
                     RCTloggingLocationData.add(latitude,longitude);
+                    System.out.println("-----------------------------------------------------");
+                    System.out.println("Location Updated");
+                    System.out.println("-----------------------------------------------------");
                     ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
                 }

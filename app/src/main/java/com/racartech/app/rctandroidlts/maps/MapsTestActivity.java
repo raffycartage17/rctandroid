@@ -92,7 +92,7 @@ public class MapsTestActivity extends AppCompatActivity implements
         customMapView = new RCTgoogleMapsDropPin(MapsTestActivity.this, MapsTestActivity.this);
         customMapView.setOnPinDropListener(this); // Set listener
         mapContainer.addView(customMapView);
-        customMapView.getAutoLocationUpdates(1000);
+        customMapView.getAutoLocationUpdates(200);
         customMapView.setCameraFollowLocationUpdate(true);
     }
 
