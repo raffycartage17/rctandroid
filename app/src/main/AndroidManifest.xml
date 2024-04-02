@@ -52,6 +52,9 @@
             android:name=".maps.MapsTestActivity"
             android:exported="false" />
         <activity
+            android:name=".maps.TextToSpeechActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
