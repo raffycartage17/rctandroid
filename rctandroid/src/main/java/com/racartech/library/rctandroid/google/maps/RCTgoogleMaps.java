@@ -74,7 +74,7 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
     public static int DESTINATION_TYPE_DEFAULT_STOPOVER = 0;
     public static int DESTINATION_TYPE_ROUTE_POINT = 1;
     public static int DESTINATION_TYPE_GAS = 2;
-    public static int DESTINATION_TYPE_EAT = 3;
+    public static int DESTINATION_TYPE_FOOD = 3;
     public static int DESTINATION_TYPE_SLEEPOVER = 4;
     public static int DESTINATION_TYPE_VEHICLE_MAINTENANCE = 5;
 
@@ -768,6 +768,9 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
 
                         if(PROCESSED_DIRECTIONS_POINTS_COUNTER.get() == CURRENT_DIRECTIONS_POINTS_COUNT.get()){
                             setCurrentDirectionsTotalDistance(CURRENT_DIRECTIONS_TOTAL_DISTANCE.get());
+                            CURRENT_DIRECTIONS_TOTAL_DISTANCE.set(0.0);
+                            PROCESSED_DIRECTIONS_POINTS_COUNTER.set(0);
+                            CURRENT_DIRECTIONS_POINTS_COUNT.set(0);
                         }
 
                     }

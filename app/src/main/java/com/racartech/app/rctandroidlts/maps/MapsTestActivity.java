@@ -37,7 +37,11 @@ public class MapsTestActivity extends AppCompatActivity implements
 
     private FrameLayout mapContainer;
     private RCTgoogleMaps customMapView = null;
-    private Button add_map_view_button, get_directions_button, more_button, reset_direction_button;
+    private Button
+            add_map_view_button,
+            get_directions_button,
+            more_button,
+            reset_direction_button;
 
     private volatile AtomicReference<ArrayList<LatLng>> PIN_POINTS = new AtomicReference<>(new ArrayList<>());
 
@@ -149,6 +153,11 @@ public class MapsTestActivity extends AppCompatActivity implements
     }
 
     private void addMapView() {
+
+        if(customMapView != null){
+            customMapView = null;
+        }
+
         customMapView = new RCTgoogleMaps(MapsTestActivity.this, MapsTestActivity.this);
         customMapView.setOnPinDropListener(this); // Set listener
         mapContainer.addView(customMapView);
