@@ -766,7 +766,6 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
                                         finalTotal_distance);
                         PROCESSED_DIRECTIONS_POINTS_COUNTER.set(PROCESSED_DIRECTIONS_POINTS_COUNTER.get()+1);
 
-
                         if(PROCESSED_DIRECTIONS_POINTS_COUNTER.get() == CURRENT_DIRECTIONS_POINTS_COUNT.get()){
                             setCurrentDirectionsTotalDistance(CURRENT_DIRECTIONS_TOTAL_DISTANCE.get());
                         }
