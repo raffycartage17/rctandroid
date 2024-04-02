@@ -3,14 +3,12 @@ package com.racartech.app.rctandroidlts.maps;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.location.Address;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,12 +22,12 @@ import com.racartech.app.rctandroidlts.api.ApiKeyManager;
 import com.racartech.library.rctandroid.file.RCTfile;
 import com.racartech.library.rctandroid.google.maps.RCTgoogleMaps;
 import com.racartech.library.rctandroid.location.RCTfacingDirectionListener;
-import com.racartech.library.rctandroid.location.RCTlocation;
 import com.racartech.library.rctandroid.location.RCTlocationUpdateListener;
 import com.racartech.library.rctandroid.logging.RCTloggingLocationData;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class MapsTestActivity extends AppCompatActivity implements
         RCTgoogleMaps.OnPinDropListener,
@@ -39,9 +37,10 @@ public class MapsTestActivity extends AppCompatActivity implements
 
     private FrameLayout mapContainer;
     private RCTgoogleMaps customMapView = null;
-    private Button add_map_view_button, view_log_button, more_button;
+    private Button add_map_view_button, get_directions_button, more_button, reset_direction_button;
 
-    TextView long_value, lat_value, address_value;
+    private volatile AtomicReference<ArrayList<LatLng>> PIN_POINTS = new AtomicReference<>(new ArrayList<>());
+
 
     ImageView facing_direction_compass;
 
@@ -59,13 +58,15 @@ public class MapsTestActivity extends AppCompatActivity implements
 
 
         mapContainer = findViewById(R.id.map_container);
-        long_value = findViewById(R.id.mtcl_long_value);
-        lat_value = findViewById(R.id.mtcl_lat_value);
-        address_value = findViewById(R.id.mtcl_address_value);
+
+
 
         facing_direction_compass = findViewById(R.id.mtcl_facing_direction_compass_imageview);
         add_map_view_button = findViewById(R.id.maps_test_add_map_view_button);
         more_button = findViewById(R.id.maps_test_more_options_button);
+
+        get_directions_button = findViewById(R.id.maps_test_directions_button);
+        reset_direction_button = findViewById(R.id.maps_test_reset_directions_button);
 
         setLoggingFilePath();
         RCTloggingLocationData.IS_LOGGING_ENABLED.set(false);
@@ -91,6 +92,51 @@ public class MapsTestActivity extends AppCompatActivity implements
             @Override
             public void onClick(View view) {
                 showMoreDialog();
+            }
+        });
+
+
+        get_directions_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                LatLng origin_coordinates = new LatLng(
+                        customMapView.CURRENT_LOCATION_LATITUDE.get(),
+                        customMapView.CURRENT_LOCATION_LONGITUDE.get()
+                );
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        String api_key = ApiKeyManager.getGoogleApiKey(firestore_instance);
+                        ArrayList<DirectionsApi.RouteRestriction> route_restrictions = new ArrayList<>();
+                        route_restrictions.add(DirectionsApi.RouteRestriction.TOLLS);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run(){
+
+                                customMapView.getDirections(
+                                        api_key,
+                                        origin_coordinates,
+                                        PIN_POINTS.get(),
+                                        TravelMode.DRIVING,
+                                        route_restrictions,
+                                        Instant.ofEpochMilli(System.currentTimeMillis())
+                                );
+                            }
+                        });
+                    }
+                }).start();
+
+            }
+        });
+
+        reset_direction_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PIN_POINTS.get().clear();
             }
         });
 
@@ -229,43 +275,12 @@ public class MapsTestActivity extends AppCompatActivity implements
     // Implement the method from OnPinDropListener interface
     @Override
     public void onPinDrop(double latitude, double longitude) {
-        lat_value.setText(String.valueOf(latitude));
-        long_value.setText(String.valueOf(longitude));
-        Address marker_address = RCTlocation.getAddress(MapsTestActivity.this,latitude,longitude);
-        address_value.setText(marker_address.getAddressLine(0));
-
-
-        LatLng origin_coordinates = new LatLng(
-                customMapView.CURRENT_LOCATION_LATITUDE.get(),
-                customMapView.CURRENT_LOCATION_LONGITUDE.get()
-        );
-
-        LatLng destination_coordinates = new LatLng(
-                latitude,
-                longitude
-        );
-        new Thread(new Runnable() {
+        runOnUiThread(new Runnable() {
             @Override
-            public void run() {
-
-                String api_key = ApiKeyManager.getGoogleApiKey(firestore_instance);
-                ArrayList<DirectionsApi.RouteRestriction> route_restrictions = new ArrayList<>();
-                route_restrictions.add(DirectionsApi.RouteRestriction.TOLLS);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run(){
-                        customMapView.getDrivingDirections(
-                                api_key,
-                                origin_coordinates,
-                                destination_coordinates,
-                                TravelMode.DRIVING,
-                                route_restrictions,
-                                Instant.ofEpochMilli(System.currentTimeMillis())
-                        );
-                    }
-                });
+            public void run(){
+                PIN_POINTS.get().add(new LatLng(latitude,longitude));
             }
-        }).start();
+        });
 
     }
 

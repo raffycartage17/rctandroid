@@ -9,6 +9,25 @@ import java.net.URL;
 public class RCTurl {
 
 
+
+
+
+    public static URL convertUriToUrl(String uriString) {
+        try {
+            // Create a URI object from the URI string
+            java.net.URI uri = new java.net.URI(uriString);
+
+            // Convert the URI object to a URL object
+            URL url = uri.toURL();
+
+            return url;
+        } catch (MalformedURLException | java.net.URISyntaxException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
     public static URL convertStringToUrl(String url_string) {
         URL url = null;
         try{

@@ -69,8 +69,6 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
 
     private String SETTINGS_FILE_PATH = null;
 
-
-
     public GoogleMap googleMap;
     public Marker DROPPED_PIN_MARKER;
     public MapView mapView;
@@ -86,6 +84,7 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
     private double CAMERA_ZOOM_LEVEl = -1000.0F;
 
     private AtomicLong CIRCLE_SIZE_LAST_UPDATE = new AtomicLong(0);
+    private volatile ArrayList<Marker> DESTINATIONS_MARKER = new ArrayList<>();
 
     private boolean is_initialized = false;
 
@@ -323,7 +322,6 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
 
 
             LatLng cache_latlng = new LatLng(last_known_latitude,last_known_longitude);
-            prefetchMapTiles(cache_latlng,10000);
 
             updateCurrentLocation(
                     last_known_latitude,
@@ -341,12 +339,10 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
 
     private OnPinDropListener mListener;
 
-    // Method to set the listener
     public void setOnPinDropListener(OnPinDropListener listener) {
         mListener = listener;
     }
 
-    // Method to notify the activity when pin is dropped
     private void onPinDrop(double latitude, double longitude) {
         if (mListener != null) {
             mListener.onPinDrop(latitude, longitude);
@@ -398,12 +394,13 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
                         if(FACING_DIRECTION_ARROW == null){
                             Bitmap fda_bitmap = RCTdrawable.convertToBitmap(
                                     AppCompatResources.getDrawable(getContext(),R.drawable.facing_direction_arrow_head));
-                            fda_bitmap = RCTbitmap.resize(fda_bitmap,256,256);
+                            fda_bitmap = RCTbitmap.resize(fda_bitmap,128,128);
                             BitmapDescriptor the_icon = BitmapDescriptorFactory.fromBitmap(fda_bitmap);
 
                             FACING_DIRECTION_ARROW = googleMap.addMarker(new MarkerOptions()
                                     .position(new LatLng(CURRENT_LOCATION_LATITUDE.get(), CURRENT_LOCATION_LONGITUDE.get()))
                                     .icon(the_icon));
+
                         }else{
                             FACING_DIRECTION_ARROW.setPosition(new LatLng(
                                     CURRENT_LOCATION_LATITUDE.get(),
@@ -469,7 +466,6 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
         if (googleMap != null) {
             LatLngBounds visibleBounds = googleMap.getProjection().getVisibleRegion().latLngBounds;
             double visibleArea = calculateArea(visibleBounds);
-            // Now you have the visible area in square meters
             return visibleArea;
         } else {
             return -1.0;
@@ -554,13 +550,7 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
         };
 
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+
             return;
         }
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
@@ -610,41 +600,56 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
     }
 
 
-
-    // Example method to prefetch map tiles for a given radius around a location
-    private void prefetchMapTiles(LatLng center, double radiusInMeters) {
-        // Calculate bounds for prefetching
-        LatLngBounds bounds = calculateBounds(center, radiusInMeters);
-
-        // Capture map snapshot for the calculated bounds
-        googleMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
-            @Override
-            public void onSnapshotReady(Bitmap bitmap) {
-                // Store the snapshot bitmap locally for offline use
-                // You may save it to a file or cache it in memory
-                // Handle storing and managing the snapshot bitmap here
-            }
-        });
-    }
-
-    // Helper method to calculate bounds based on center and radius
     private LatLngBounds calculateBounds(LatLng center, double radiusInMeters) {
-        // Convert radius from meters to degrees
         double radiusInDegrees = radiusInMeters / 111000.0;
 
-        // Calculate bounds
         double north = center.latitude + radiusInDegrees;
         double south = center.latitude - radiusInDegrees;
         double east = center.longitude + radiusInDegrees;
         double west = center.longitude - radiusInDegrees;
 
-        // Return LatLngBounds
         return new LatLngBounds(new LatLng(south, west), new LatLng(north, east));
     }
 
 
 
-    public void getDrivingDirections(
+
+    public void getDirections(String api_key,
+                              com.google.maps.model.LatLng origin,
+                              ArrayList<com.google.maps.model.LatLng> destinations,
+                              TravelMode travel_mode,
+                              ArrayList<DirectionsApi.RouteRestriction> route_restriction,
+                              Instant departure_time){
+
+
+
+        DESTINATIONS_MARKER.clear();
+        ArrayList<com.google.maps.model.LatLng> origins = new ArrayList<>();
+
+
+        origins.add(origin);
+        for(int index = 0; index<(destinations.size()-1); index++){
+            origins.add(destinations.get(index));
+        }
+
+        for(int index = 0; index<destinations.size(); index++){
+            LatLng converted_latlng = new LatLng(destinations.get(index).lat,destinations.get(index).lng);
+            Marker new_marker = googleMap.addMarker(new MarkerOptions().position(converted_latlng));
+            DESTINATIONS_MARKER.add(new_marker);
+        }
+
+        for(int index = 0; index<origins.size(); index++){
+            getDrivingDirections_System(api_key,origins.get(index),destinations.get(index),travel_mode,route_restriction,departure_time);
+        }
+
+
+    }
+
+
+
+
+
+    private void getDrivingDirections_System(
             String api_key,
             com.google.maps.model.LatLng origin,
             com.google.maps.model.LatLng destination,
@@ -669,8 +674,6 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
         request.setCallback(new PendingResult.Callback<DirectionsResult>() {
             @Override
             public void onResult(DirectionsResult result) {
-                // Parse the result and draw the route on the map
-                // Example:
                 List<LatLng> path = new ArrayList<>();
                 DirectionsRoute route = result.routes[0];
                 DirectionsLeg[] legs = route.legs;
@@ -686,7 +689,70 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
                         }
                     }
                 }
-                // Draw the route on the map using path
+                PolylineOptions polylineOptions = new PolylineOptions()
+                        .addAll(path)
+                        .color(Color.BLUE)
+                        .width(10);
+
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        googleMap.addPolyline(polylineOptions);
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Throwable e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+
+    private void getDrivingDirections_System(
+            String api_key,
+            com.google.maps.model.LatLng origin,
+            ArrayList<com.google.maps.model.LatLng> destination,
+            TravelMode travel_mode,
+            ArrayList<DirectionsApi.RouteRestriction> route_restriction,
+            Instant departure_time) {
+
+        GeoApiContext geoApiContext = new GeoApiContext.Builder()
+                .apiKey(api_key)
+                .build();
+
+
+        DirectionsApiRequest request = DirectionsApi.newRequest(geoApiContext);
+        request.origin(origin);
+
+        for(int index = 0; index<destination.size(); index++){
+            request.destination(destination.get(index));
+        }
+        request.mode(travel_mode);
+        request.departureTime(departure_time);
+        for(int index = 0; index<route_restriction.size(); index++){
+            request.avoid(route_restriction.get(index));
+        }
+        request.trafficModel(TrafficModel.BEST_GUESS);
+        request.setCallback(new PendingResult.Callback<DirectionsResult>() {
+            @Override
+            public void onResult(DirectionsResult result) {
+                List<LatLng> path = new ArrayList<>();
+                DirectionsRoute route = result.routes[0];
+                DirectionsLeg[] legs = route.legs;
+                for (int i = 0; i < legs.length; i++) {
+                    DirectionsLeg leg = legs[i];
+                    DirectionsStep[] steps = leg.steps;
+                    for (int j = 0; j < steps.length; j++) {
+                        DirectionsStep step = steps[j];
+                        List<com.google.maps.model.LatLng> decodePath = step.polyline.decodePath();
+                        for (int k = 0; k < decodePath.size(); k++) {
+                            com.google.maps.model.LatLng point = decodePath.get(k);
+                            path.add(new LatLng(point.lat,point.lng));
+                        }
+                    }
+                }
                 PolylineOptions polylineOptions = new PolylineOptions()
                         .addAll(path)
                         .color(Color.BLUE)
