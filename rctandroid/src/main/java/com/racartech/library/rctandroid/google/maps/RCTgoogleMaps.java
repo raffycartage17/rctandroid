@@ -67,6 +67,14 @@ import java.util.concurrent.atomic.AtomicReference;
 public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RCTfacingDirectionListener.FacingDirectionListener {
 
 
+
+    public static int POINT_TYPE_DEFAULT_STOPOVER = 0;
+    public static int POINT_TYPE_ROUTE_POINT = 1;
+    public static int POINT_TYPE_GAS = 2;
+    public static int POINT_TYPE_EAT = 3;
+    public static int POINT_TYPE_SLEEPOVER = 4;
+    public static int POINT_TYPE_VEHICLE_MAINTENANCE = 5;
+
     private String SETTINGS_FILE_PATH = null;
 
     public GoogleMap googleMap;
@@ -617,6 +625,7 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
     public void getDirections(String api_key,
                               com.google.maps.model.LatLng origin,
                               ArrayList<com.google.maps.model.LatLng> destinations,
+                              ArrayList<Integer> stop_over_type,
                               TravelMode travel_mode,
                               ArrayList<DirectionsApi.RouteRestriction> route_restriction,
                               Instant departure_time){
@@ -641,8 +650,35 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
         for(int index = 0; index<origins.size(); index++){
             getDrivingDirections_System(api_key,origins.get(index),destinations.get(index),travel_mode,route_restriction,departure_time);
         }
+    }
+
+    public void getDirections(String api_key,
+                              com.google.maps.model.LatLng origin,
+                              ArrayList<com.google.maps.model.LatLng> destinations,
+                              TravelMode travel_mode,
+                              ArrayList<DirectionsApi.RouteRestriction> route_restriction,
+                              Instant departure_time){
 
 
+
+        DESTINATIONS_MARKER.clear();
+        ArrayList<com.google.maps.model.LatLng> origins = new ArrayList<>();
+
+
+        origins.add(origin);
+        for(int index = 0; index<(destinations.size()-1); index++){
+            origins.add(destinations.get(index));
+        }
+
+        for(int index = 0; index<destinations.size(); index++){
+            LatLng converted_latlng = new LatLng(destinations.get(index).lat,destinations.get(index).lng);
+            Marker new_marker = googleMap.addMarker(new MarkerOptions().position(converted_latlng));
+            DESTINATIONS_MARKER.add(new_marker);
+        }
+
+        for(int index = 0; index<origins.size(); index++){
+            getDrivingDirections_System(api_key,origins.get(index),destinations.get(index),travel_mode,route_restriction,departure_time);
+        }
     }
 
 
@@ -689,6 +725,7 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
                         }
                     }
                 }
+
                 PolylineOptions polylineOptions = new PolylineOptions()
                         .addAll(path)
                         .color(Color.BLUE)
@@ -710,68 +747,7 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
     }
 
 
-    private void getDrivingDirections_System(
-            String api_key,
-            com.google.maps.model.LatLng origin,
-            ArrayList<com.google.maps.model.LatLng> destination,
-            TravelMode travel_mode,
-            ArrayList<DirectionsApi.RouteRestriction> route_restriction,
-            Instant departure_time) {
 
-        GeoApiContext geoApiContext = new GeoApiContext.Builder()
-                .apiKey(api_key)
-                .build();
-
-
-        DirectionsApiRequest request = DirectionsApi.newRequest(geoApiContext);
-        request.origin(origin);
-
-        for(int index = 0; index<destination.size(); index++){
-            request.destination(destination.get(index));
-        }
-        request.mode(travel_mode);
-        request.departureTime(departure_time);
-        for(int index = 0; index<route_restriction.size(); index++){
-            request.avoid(route_restriction.get(index));
-        }
-        request.trafficModel(TrafficModel.BEST_GUESS);
-        request.setCallback(new PendingResult.Callback<DirectionsResult>() {
-            @Override
-            public void onResult(DirectionsResult result) {
-                List<LatLng> path = new ArrayList<>();
-                DirectionsRoute route = result.routes[0];
-                DirectionsLeg[] legs = route.legs;
-                for (int i = 0; i < legs.length; i++) {
-                    DirectionsLeg leg = legs[i];
-                    DirectionsStep[] steps = leg.steps;
-                    for (int j = 0; j < steps.length; j++) {
-                        DirectionsStep step = steps[j];
-                        List<com.google.maps.model.LatLng> decodePath = step.polyline.decodePath();
-                        for (int k = 0; k < decodePath.size(); k++) {
-                            com.google.maps.model.LatLng point = decodePath.get(k);
-                            path.add(new LatLng(point.lat,point.lng));
-                        }
-                    }
-                }
-                PolylineOptions polylineOptions = new PolylineOptions()
-                        .addAll(path)
-                        .color(Color.BLUE)
-                        .width(10);
-
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        googleMap.addPolyline(polylineOptions);
-                    }
-                });
-            }
-
-            @Override
-            public void onFailure(Throwable e) {
-                e.printStackTrace();
-            }
-        });
-    }
 
 
 
