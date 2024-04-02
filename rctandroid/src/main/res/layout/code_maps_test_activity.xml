@@ -1,6 +1,13 @@
-package com.racartech.app.rctandroidlts.maps;
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-import android.app.Dialog;
+
+    <!--
+
+
+    import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -158,10 +165,10 @@ public class MapsTestActivity extends AppCompatActivity implements
         customMapView.setOnCurrentDirectionsTotalDistanceCalculated(new RCTgoogleMaps.OnCurrentDirectionsTotalDistanceCalculated() {
             @Override
             public void onMethodCalled(double total_distance) {
-                System.out.println("--------------------------------------------");
+                System.out.println("____________________________________________");
                 System.out.println("Method Called Listener");
                 System.out.println("Total Distance : ".concat(String.valueOf(total_distance)));
-                System.out.println("--------------------------------------------");
+                System.out.println("____________________________________________");
             }
         });
     }
@@ -360,3 +367,8 @@ public class MapsTestActivity extends AppCompatActivity implements
 
 
 }
+
+
+-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

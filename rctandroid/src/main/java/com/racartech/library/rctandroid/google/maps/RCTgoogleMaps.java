@@ -61,6 +61,7 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -68,12 +69,14 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
 
 
 
-    public static int POINT_TYPE_DEFAULT_STOPOVER = 0;
-    public static int POINT_TYPE_ROUTE_POINT = 1;
-    public static int POINT_TYPE_GAS = 2;
-    public static int POINT_TYPE_EAT = 3;
-    public static int POINT_TYPE_SLEEPOVER = 4;
-    public static int POINT_TYPE_VEHICLE_MAINTENANCE = 5;
+    private OnCurrentDirectionsTotalDistanceCalculated testListener;
+
+    public static int DESTINATION_TYPE_DEFAULT_STOPOVER = 0;
+    public static int DESTINATION_TYPE_ROUTE_POINT = 1;
+    public static int DESTINATION_TYPE_GAS = 2;
+    public static int DESTINATION_TYPE_EAT = 3;
+    public static int DESTINATION_TYPE_SLEEPOVER = 4;
+    public static int DESTINATION_TYPE_VEHICLE_MAINTENANCE = 5;
 
     private String SETTINGS_FILE_PATH = null;
 
@@ -92,11 +95,16 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
     private double CAMERA_ZOOM_LEVEl = -1000.0F;
 
     private AtomicLong CIRCLE_SIZE_LAST_UPDATE = new AtomicLong(0);
-    private volatile ArrayList<Marker> DESTINATIONS_MARKER = new ArrayList<>();
+    public volatile ArrayList<Marker> DESTINATIONS_MARKER = new ArrayList<>();
 
     private boolean is_initialized = false;
 
 
+
+    public volatile AtomicDouble CURRENT_DIRECTIONS_TOTAL_DISTANCE = new AtomicDouble(0.0);
+
+    private volatile AtomicInteger CURRENT_DIRECTIONS_POINTS_COUNT = new AtomicInteger(0);
+    private volatile AtomicInteger PROCESSED_DIRECTIONS_POINTS_COUNTER = new AtomicInteger(0);
 
 
     private volatile Circle CURRENT_LOCATION_CIRCLE = null;
@@ -622,13 +630,47 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
 
 
 
+
+
+
+
+
+
     public void getDirections(String api_key,
                               com.google.maps.model.LatLng origin,
                               ArrayList<com.google.maps.model.LatLng> destinations,
-                              ArrayList<Integer> stop_over_type,
                               TravelMode travel_mode,
                               ArrayList<DirectionsApi.RouteRestriction> route_restriction,
                               Instant departure_time){
+
+        ArrayList<Integer> destination_types = new ArrayList<>();
+        for(int index = 0; index<destinations.size(); index++){
+            destination_types.add(DESTINATION_TYPE_DEFAULT_STOPOVER);
+        }
+
+        CURRENT_DIRECTIONS_POINTS_COUNT.set(destinations.size());
+
+
+        getDirections(
+                api_key,
+                origin,
+                destinations,
+                destination_types,
+                travel_mode,
+                route_restriction,
+                departure_time);
+    }
+
+
+
+
+    private void getDirections(String api_key,
+                               com.google.maps.model.LatLng origin,
+                               ArrayList<com.google.maps.model.LatLng> destinations,
+                               ArrayList<Integer> destinations_type,
+                               TravelMode travel_mode,
+                               ArrayList<DirectionsApi.RouteRestriction> route_restriction,
+                               Instant departure_time){
 
 
 
@@ -651,37 +693,6 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
             getDrivingDirections_System(api_key,origins.get(index),destinations.get(index),travel_mode,route_restriction,departure_time);
         }
     }
-
-    public void getDirections(String api_key,
-                              com.google.maps.model.LatLng origin,
-                              ArrayList<com.google.maps.model.LatLng> destinations,
-                              TravelMode travel_mode,
-                              ArrayList<DirectionsApi.RouteRestriction> route_restriction,
-                              Instant departure_time){
-
-
-
-        DESTINATIONS_MARKER.clear();
-        ArrayList<com.google.maps.model.LatLng> origins = new ArrayList<>();
-
-
-        origins.add(origin);
-        for(int index = 0; index<(destinations.size()-1); index++){
-            origins.add(destinations.get(index));
-        }
-
-        for(int index = 0; index<destinations.size(); index++){
-            LatLng converted_latlng = new LatLng(destinations.get(index).lat,destinations.get(index).lng);
-            Marker new_marker = googleMap.addMarker(new MarkerOptions().position(converted_latlng));
-            DESTINATIONS_MARKER.add(new_marker);
-        }
-
-        for(int index = 0; index<origins.size(); index++){
-            getDrivingDirections_System(api_key,origins.get(index),destinations.get(index),travel_mode,route_restriction,departure_time);
-        }
-    }
-
-
 
 
 
@@ -692,6 +703,9 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
             TravelMode travel_mode,
             ArrayList<DirectionsApi.RouteRestriction> route_restriction,
             Instant departure_time) {
+
+
+
 
         GeoApiContext geoApiContext = new GeoApiContext.Builder()
                 .apiKey(api_key)
@@ -710,6 +724,9 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
         request.setCallback(new PendingResult.Callback<DirectionsResult>() {
             @Override
             public void onResult(DirectionsResult result) {
+
+
+                double total_distance = 0.0;
                 List<LatLng> path = new ArrayList<>();
                 DirectionsRoute route = result.routes[0];
                 DirectionsLeg[] legs = route.legs;
@@ -722,6 +739,12 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
                         for (int k = 0; k < decodePath.size(); k++) {
                             com.google.maps.model.LatLng point = decodePath.get(k);
                             path.add(new LatLng(point.lat,point.lng));
+
+                            if (k > 0) {
+                                com.google.maps.model.LatLng prevPoint = decodePath.get(k - 1);
+                                total_distance += distanceBetweenPoints(point, prevPoint);
+                            }
+
                         }
                     }
                 }
@@ -731,10 +754,23 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
                         .color(Color.BLUE)
                         .width(10);
 
+                //Computer Total Length Here in meters
+
+                double finalTotal_distance = total_distance;
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         googleMap.addPolyline(polylineOptions);
+                        CURRENT_DIRECTIONS_TOTAL_DISTANCE.set(
+                                CURRENT_DIRECTIONS_TOTAL_DISTANCE.get()+
+                                        finalTotal_distance);
+                        PROCESSED_DIRECTIONS_POINTS_COUNTER.set(PROCESSED_DIRECTIONS_POINTS_COUNTER.get()+1);
+
+
+                        if(PROCESSED_DIRECTIONS_POINTS_COUNTER.get() == CURRENT_DIRECTIONS_POINTS_COUNT.get()){
+                            setCurrentDirectionsTotalDistance(CURRENT_DIRECTIONS_TOTAL_DISTANCE.get());
+                        }
+
                     }
                 });
             }
@@ -744,8 +780,43 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
                 e.printStackTrace();
             }
         });
+
     }
 
+
+    private double distanceBetweenPoints(com.google.maps.model.LatLng point1, com.google.maps.model.LatLng point2) {
+        Location loc1 = new Location("");
+        loc1.setLatitude(point1.lat);
+        loc1.setLongitude(point1.lng);
+
+        Location loc2 = new Location("");
+        loc2.setLatitude(point2.lat);
+        loc2.setLongitude(point2.lng);
+
+        return loc1.distanceTo(loc2);
+    }
+
+
+
+    public interface OnCurrentDirectionsTotalDistanceCalculated {
+        void onMethodCalled(double total_distance);
+    }
+
+    // Method to set the listener
+    public void setOnCurrentDirectionsTotalDistanceCalculated(OnCurrentDirectionsTotalDistanceCalculated listener) {
+        this.testListener = listener;
+    }
+
+    // Method to be called
+    public double setCurrentDirectionsTotalDistance(double total_distance) {
+
+
+        if (testListener != null) {
+            testListener.onMethodCalled(total_distance);
+        }
+
+        return total_distance;
+    }
 
 
 

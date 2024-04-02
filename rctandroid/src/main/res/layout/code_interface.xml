@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+    <!--
+
+
+    // LibraryClass.java
+
+public class LibraryClass {
+    private OnMethodCalledListener mListener;
+
+    // Interface for the listener
+    public interface OnMethodCalledListener {
+        void onMethodCalled(int value);
+    }
+
+    // Method to set the listener
+    public void setOnMethodCalledListener(OnMethodCalledListener listener) {
+        this.mListener = listener;
+    }
+
+    // Method to be called
+    public int callMethod() {
+        // You can put any computation or logic here to generate the value
+        int value = 42; // Example value
+
+        // Check if listener is set and notify the activity with the value
+        if (mListener != null) {
+            mListener.onMethodCalled(value);
+        }
+
+        return value;
+    }
+}
+____________________________________________________________
+Sample Implementation
+____________________________________________________________
+// YourActivity.java
+
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
+
+public class YourActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        // Create an instance of LibraryClass
+        LibraryClass library = new LibraryClass();
+
+        // Set the listener for the method
+        library.setOnMethodCalledListener(new LibraryClass.OnMethodCalledListener() {
+            @Override
+            public void onMethodCalled(int value) {
+                // Do something with the returned value
+                showToast("Method called from library! Returned value: " + value);
+            }
+        });
+
+        // Call the method
+        int returnedValue = library.callMethod();
+        // You can also directly use the returned value here if needed
+    }
+
+    // Method to show a toast message
+    private void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+}
+
+
+-->
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
