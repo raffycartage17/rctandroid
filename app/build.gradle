@@ -1,6 +1,6 @@
 plugins {
     id 'com.android.application'
-    //id("com.google.gms.google-services")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -17,7 +17,7 @@ android {
         Properties properties = new Properties()
         properties.load(project.rootProject.file('local.properties').newDataInputStream())
         manifestPlaceholders = [prod_google_api_key: "${properties.getProperty('prod_google_api_key')}"]
-
+        
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 

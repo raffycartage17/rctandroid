@@ -31,7 +31,6 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class MapsTestActivity extends AppCompatActivity implements
         RCTgoogleMaps.OnPinDropListener,
-        RCTlocationUpdateListener.LocationUpdateListener,
         RCTfacingDirectionListener.FacingDirectionListener
 {
 
@@ -164,13 +163,24 @@ public class MapsTestActivity extends AppCompatActivity implements
         customMapView.getAutoLocationUpdates(100);
         customMapView.setCameraFollowLocationUpdate(true);
 
-        customMapView.setOnCurrentDirectionsTotalDistanceCalculated(new RCTgoogleMaps.OnCurrentDirectionsTotalDistanceCalculated() {
+        customMapView.setOnCurrentDirectionsTotalDistanceCalculated(new RCTgoogleMaps.OnCurrentDirectionsTotalDistanceCalculatedListener() {
             @Override
-            public void onMethodCalled(double total_distance) {
+            public void OnCurrentDirectionsTotalDistanceCalculatedListener(double total_distance) {
                 System.out.println("--------------------------------------------");
                 System.out.println("Method Called Listener");
                 System.out.println("Total Distance : ".concat(String.valueOf(total_distance)));
                 System.out.println("--------------------------------------------");
+            }
+        });
+
+        customMapView.setOnCurrentLocationUpdated(new RCTgoogleMaps.OnCurrentLocationUpdated() {
+            @Override
+            public void OnCurrentLocationUpdated(double latitude, double longitude) {
+                System.out.println("----------------------------------------------------");
+                System.out.println("OnCurrentLocationUpdated");
+                System.out.println("Latitude  : ".concat(String.valueOf(latitude)));
+                System.out.println("Longitude : ".concat(String.valueOf(longitude)));
+                System.out.println("----------------------------------------------------");
             }
         });
     }
@@ -306,10 +316,7 @@ public class MapsTestActivity extends AppCompatActivity implements
 
     }
 
-    @Override
-    public void onLocationUpdate(double latitude, double longitude) {
-        customMapView.updateCurrentLocation(latitude, longitude);
-    }
+
 
     @Override
     public void onFacingDirectionUpdate(float azimuth_in_degrees){
@@ -363,9 +370,6 @@ public class MapsTestActivity extends AppCompatActivity implements
             customMapView.setSettingsFileData();
         }
     }
-
-
-
 
 
 }

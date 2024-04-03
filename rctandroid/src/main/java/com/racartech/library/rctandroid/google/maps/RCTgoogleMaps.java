@@ -69,7 +69,9 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
 
 
 
-    private OnCurrentDirectionsTotalDistanceCalculated testListener;
+    private OnCurrentDirectionsTotalDistanceCalculatedListener CurrentDirectionTotalDistanceCalculatedListener;
+    private OnCurrentLocationUpdated CurrentLocationUpdatedListener;
+
 
     public static int DESTINATION_TYPE_DEFAULT_STOPOVER = 0;
     public static int DESTINATION_TYPE_ROUTE_POINT = 1;
@@ -125,11 +127,13 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
     public RCTgoogleMaps(@NonNull Context context, @Nullable AttributeSet attrs, Activity the_activity) {
         super(context, attrs);
         init();
+        activity = the_activity;
     }
 
     public RCTgoogleMaps(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, Activity the_activity) {
         super(context, attrs, defStyleAttr);
         init();
+        activity = the_activity;
     }
 
 
@@ -561,6 +565,8 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
                     System.out.println("-----------------------------------------------------");
                     ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
+                    notifyCurrentLocationUpdated(latitude, longitude);
+
                 }
             }
         };
@@ -592,6 +598,8 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
         if(RCTloggingLocationData.IS_LOGGING_ENABLED.get() && RCTloggingLocationData.LOG_FILE_PATH != null) {
             RCTloggingLocationData.add(latitude, longitude);
         }
+
+        notifyCurrentLocationUpdated(latitude, longitude);
 
 
     }
@@ -800,25 +808,88 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
 
 
 
-    public interface OnCurrentDirectionsTotalDistanceCalculated {
-        void onMethodCalled(double total_distance);
+    public interface OnCurrentDirectionsTotalDistanceCalculatedListener {
+        void OnCurrentDirectionsTotalDistanceCalculatedListener(double total_distance);
     }
 
     // Method to set the listener
-    public void setOnCurrentDirectionsTotalDistanceCalculated(OnCurrentDirectionsTotalDistanceCalculated listener) {
-        this.testListener = listener;
+    public void setOnCurrentDirectionsTotalDistanceCalculated(OnCurrentDirectionsTotalDistanceCalculatedListener listener) {
+        this.CurrentDirectionTotalDistanceCalculatedListener = listener;
     }
 
     // Method to be called
     public double setCurrentDirectionsTotalDistance(double total_distance) {
 
 
-        if (testListener != null) {
-            testListener.onMethodCalled(total_distance);
+        if (CurrentDirectionTotalDistanceCalculatedListener != null) {
+            CurrentDirectionTotalDistanceCalculatedListener.OnCurrentDirectionsTotalDistanceCalculatedListener(total_distance);
         }
 
         return total_distance;
     }
+
+    //OnCurrentLocationUpdated CurrentLocationUpdatedListener;
+
+    public interface OnCurrentLocationUpdated {
+        void OnCurrentLocationUpdated(double latitude, double longitude);
+    }
+
+    // Method to set the listener
+    public void setOnCurrentLocationUpdated(OnCurrentLocationUpdated listener) {
+        this.CurrentLocationUpdatedListener = listener;
+    }
+
+    // Method to be called
+    public LatLng notifyCurrentLocationUpdated(double latitude, double longitude) {
+
+
+        if (CurrentLocationUpdatedListener != null) {
+            CurrentLocationUpdatedListener.OnCurrentLocationUpdated(latitude, longitude);
+        }
+
+        return new LatLng(latitude,longitude);
+    }
+
+
+
+
+    public void moveCamera(double latitude, double longitude){
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude), 21.0F));
+    }
+
+    public void moveCamera(double latitude, double longitude, float zoom_level){
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude), zoom_level));
+    }
+
+
+    public void moveCamera(LatLng camera_latlng){
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(camera_latlng, 21.0F));
+    }
+
+    public void moveCamera(LatLng camera_latlng, float zoom_level){
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(camera_latlng, zoom_level));
+    }
+
+    public void addMarker(double latitude, double longitude){
+        googleMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)));
+    }
+
+    public void addMarker(
+            double latitude,
+            double longitude,
+            BitmapDescriptor marker_icon){
+
+        googleMap.addMarker(new MarkerOptions().
+                position(new LatLng(latitude, longitude)).
+                icon(marker_icon));
+    }
+
+    public void addMarker(MarkerOptions new_marker){
+        googleMap.addMarker(new_marker);
+    }
+
+
+
 
 
 
