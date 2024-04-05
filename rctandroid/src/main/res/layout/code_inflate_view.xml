@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.parent_layout);
+
+        // Get reference to the test_child_layout ConstraintLayout
+        ConstraintLayout testChildLayout = findViewById(R.id.test_cild_layout);
+
+        // Inflate the source layout XML programmatically
+        View sourceLayout = LayoutInflater.from(this).inflate(R.layout.child_layout, testChildLayout, false);
+
+        // Add the inflated source layout to the test_child_layout ConstraintLayout
+        testChildLayout.addView(sourceLayout);
+
+        // Accessing views inside the inflated layout
+        Button button4 = sourceLayout.findViewById(R.id.button4);
+        Button button5 = sourceLayout.findViewById(R.id.button5);
+        // You can similarly access other views inside the inflated layout and perform any necessary operations
+    }
+
+    -->
+
+</androidx.constraintlayout.widget.ConstraintLayout>
