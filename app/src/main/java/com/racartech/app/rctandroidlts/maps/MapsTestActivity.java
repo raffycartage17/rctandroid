@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.maps.model.Marker;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.maps.DirectionsApi;
 import com.google.maps.model.LatLng;
@@ -308,7 +309,7 @@ public class MapsTestActivity extends AppCompatActivity implements
 
     // Implement the method from OnPinDropListener interface
     @Override
-    public void onPinDrop(double latitude, double longitude) {
+    public void onPinDrop(Marker new_marker, double latitude, double longitude) {
         runOnUiThread(new Runnable() {
             @Override
             public void run(){

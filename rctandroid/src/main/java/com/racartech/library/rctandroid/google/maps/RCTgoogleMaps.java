@@ -284,7 +284,7 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
                         marker_longitude);
 
                 // Pass the coordinates to the activity
-                onPinDrop(marker_latitude, marker_longitude);
+                onPinDrop(DROPPED_PIN_MARKER,marker_latitude, marker_longitude);
 
 
             }
@@ -354,7 +354,7 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
 
 
     public interface OnPinDropListener {
-        void onPinDrop(double latitude, double longitude);
+        void onPinDrop(Marker new_marker, double latitude, double longitude);
     }
 
     private OnPinDropListener mListener;
@@ -363,9 +363,9 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
         mListener = listener;
     }
 
-    private void onPinDrop(double latitude, double longitude) {
+    private void onPinDrop(Marker new_marker, double latitude, double longitude) {
         if (mListener != null) {
-            mListener.onPinDrop(latitude, longitude);
+            mListener.onPinDrop(new_marker, latitude, longitude);
         }
     }
 
