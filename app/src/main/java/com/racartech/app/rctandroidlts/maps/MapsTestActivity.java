@@ -183,6 +183,8 @@ public class MapsTestActivity extends AppCompatActivity implements
                 System.out.println("----------------------------------------------------");
             }
         });
+
+
     }
 
     private void showMoreDialog(){

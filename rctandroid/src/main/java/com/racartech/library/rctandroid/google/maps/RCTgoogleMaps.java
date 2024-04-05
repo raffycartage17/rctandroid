@@ -870,22 +870,22 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(camera_latlng, zoom_level));
     }
 
-    public void addMarker(double latitude, double longitude){
-        googleMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)));
+    public Marker addMarker(double latitude, double longitude){
+        return googleMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)));
     }
 
-    public void addMarker(
+    public Marker addMarker(
             double latitude,
             double longitude,
             BitmapDescriptor marker_icon){
 
-        googleMap.addMarker(new MarkerOptions().
+        return googleMap.addMarker(new MarkerOptions().
                 position(new LatLng(latitude, longitude)).
                 icon(marker_icon));
     }
 
-    public void addMarker(MarkerOptions new_marker){
-        googleMap.addMarker(new_marker);
+    public Marker addMarker(MarkerOptions new_marker){
+        return googleMap.addMarker(new_marker);
     }
 
 
