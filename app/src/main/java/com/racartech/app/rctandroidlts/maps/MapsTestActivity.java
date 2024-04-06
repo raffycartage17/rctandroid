@@ -36,7 +36,7 @@ public class MapsTestActivity extends AppCompatActivity implements
 {
 
     private FrameLayout mapContainer;
-    private RCTgoogleMaps customMapView = null;
+    private RCTgoogleMaps googleMaps = null;
     private Button
             add_map_view_button,
             get_directions_button,
@@ -109,8 +109,8 @@ public class MapsTestActivity extends AppCompatActivity implements
 
 
                 LatLng origin_coordinates = new LatLng(
-                        customMapView.CURRENT_LOCATION_LATITUDE.get(),
-                        customMapView.CURRENT_LOCATION_LONGITUDE.get()
+                        googleMaps.CURRENT_LOCATION_LATITUDE.get(),
+                        googleMaps.CURRENT_LOCATION_LONGITUDE.get()
                 );
 
                 new Thread(new Runnable() {
@@ -124,7 +124,7 @@ public class MapsTestActivity extends AppCompatActivity implements
                             @Override
                             public void run(){
 
-                                customMapView.getDirections(
+                                googleMaps.getDirections(
                                         api_key,
                                         origin_coordinates,
                                         PIN_POINTS.get(),
@@ -154,17 +154,19 @@ public class MapsTestActivity extends AppCompatActivity implements
 
     private void addMapView() {
 
-        if(customMapView != null){
-            customMapView = null;
+        if(googleMaps != null){
+            googleMaps = null;
         }
 
-        customMapView = new RCTgoogleMaps(MapsTestActivity.this, MapsTestActivity.this);
-        customMapView.setOnPinDropListener(this); // Set listener
-        mapContainer.addView(customMapView);
-        customMapView.getAutoLocationUpdates(100);
-        customMapView.setCameraFollowLocationUpdate(true);
+        googleMaps = new RCTgoogleMaps(MapsTestActivity.this, MapsTestActivity.this);
+        googleMaps.setOnPinDropListener(this); // Set listener
+        mapContainer.addView(googleMaps);
+        googleMaps.getAutoLocationUpdates(100);
+        googleMaps.setCameraFollowLocationUpdate(false);
+        googleMaps.setDefaultMaxZoom(17.0F);
+        googleMaps.setFirstAutoLocationUpdateFollowCamera(true);
 
-        customMapView.setOnCurrentDirectionsTotalDistanceCalculated(new RCTgoogleMaps.OnCurrentDirectionsTotalDistanceCalculatedListener() {
+        googleMaps.setOnCurrentDirectionsTotalDistanceCalculated(new RCTgoogleMaps.OnCurrentDirectionsTotalDistanceCalculatedListener() {
             @Override
             public void OnCurrentDirectionsTotalDistanceCalculatedListener(double total_distance) {
                 System.out.println("--------------------------------------------");
@@ -174,7 +176,7 @@ public class MapsTestActivity extends AppCompatActivity implements
             }
         });
 
-        customMapView.setOnCurrentLocationUpdated(new RCTgoogleMaps.OnCurrentLocationUpdated() {
+        googleMaps.setOnCurrentLocationUpdated(new RCTgoogleMaps.OnCurrentLocationUpdated() {
             @Override
             public void OnCurrentLocationUpdated(double latitude, double longitude) {
                 System.out.println("----------------------------------------------------");
@@ -206,7 +208,7 @@ public class MapsTestActivity extends AppCompatActivity implements
         Button archived_current_record_button = dialog.findViewById(R.id.mtam_archived_current_record_button);
         Button camera_follow_on_location_update_toggle_button = dialog.findViewById(R.id.mtam_camera_follow_on_location_update_toggle_button);
 
-        if(customMapView.CAMERA_FOLLOW_ON_LOCATION_UPDATE){
+        if(googleMaps.CAMERA_FOLLOW_ON_LOCATION_UPDATE){
             camera_follow_on_location_update_toggle_button.
                     setBackgroundColor(MapsTestActivity.this.getColor(R.color.blue));
             camera_follow_on_location_update_toggle_button.setText("ENABLED");
@@ -237,16 +239,16 @@ public class MapsTestActivity extends AppCompatActivity implements
         camera_follow_on_location_update_toggle_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(customMapView.CAMERA_FOLLOW_ON_LOCATION_UPDATE){
+                if(googleMaps.CAMERA_FOLLOW_ON_LOCATION_UPDATE){
                     camera_follow_on_location_update_toggle_button.
                             setBackgroundColor(MapsTestActivity.this.getColor(R.color.dark_gray_text_color));
                     camera_follow_on_location_update_toggle_button.setText("DISABLED");
-                    customMapView.setCameraFollowLocationUpdate(false);
+                    googleMaps.setCameraFollowLocationUpdate(false);
                 }else{
                     camera_follow_on_location_update_toggle_button.
                             setBackgroundColor(MapsTestActivity.this.getColor(R.color.blue));
                     camera_follow_on_location_update_toggle_button.setText("ENABLED");
-                    customMapView.setCameraFollowLocationUpdate(true);
+                    googleMaps.setCameraFollowLocationUpdate(true);
                 }
             }
         });
@@ -323,9 +325,9 @@ public class MapsTestActivity extends AppCompatActivity implements
 
     @Override
     public void onFacingDirectionUpdate(float azimuth_in_degrees){
-        if(customMapView != null){
-            if(customMapView.googleMap != null){
-                facing_direction_compass.setRotation((azimuth_in_degrees - customMapView.googleMap.getCameraPosition().bearing));
+        if(googleMaps != null){
+            if(googleMaps.googleMap != null){
+                facing_direction_compass.setRotation((azimuth_in_degrees - googleMaps.googleMap.getCameraPosition().bearing));
             }
         }
 
@@ -345,32 +347,32 @@ public class MapsTestActivity extends AppCompatActivity implements
     @Override
     protected void onPause() {
         super.onPause();
-        if(customMapView != null) {
-            customMapView.saveCurrentSettings();
+        if(googleMaps != null) {
+            googleMaps.saveCurrentSettings();
         }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        if(customMapView != null) {
-            customMapView.saveCurrentSettings();
+        if(googleMaps != null) {
+            googleMaps.saveCurrentSettings();
         }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(customMapView != null) {
-            customMapView.saveCurrentSettings();
+        if(googleMaps != null) {
+            googleMaps.saveCurrentSettings();
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if(customMapView != null) {
-            customMapView.setSettingsFileData();
+        if(googleMaps != null) {
+            googleMaps.setSettingsFileData();
         }
     }
 

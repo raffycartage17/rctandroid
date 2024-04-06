@@ -118,6 +118,12 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
     public volatile AtomicDouble CURRENT_LOCATION_LATITUDE = new AtomicDouble(-1000);
     public volatile AtomicDouble CURRENT_LOCATION_LONGITUDE = new AtomicDouble(-1000);
 
+    public boolean FIRST_AUTO_LOCATION_UPDATE_FOLLOW_CAMERA = true;
+    private boolean FIRST_AUTO_LOCATION_UPDATE = false;
+
+    public float DEFAULT_MAX_ZOOM = 21.0F; //21 is the most zoom
+
+
     public RCTgoogleMaps(@NonNull Context context, Activity the_activity) {
         super(context);
         init();
@@ -257,6 +263,13 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
         the_file_contents.add("LAST_KNOWN_LONGITUDE=".concat(String.valueOf(CURRENT_LOCATION_LONGITUDE))); //Index 2
         the_file_contents.add("CAMERA_ZOOM_LEVEL=".concat(String.valueOf(CAMERA_ZOOM_LEVEl))); //Index 3
         saveSettingsDataFileContents(the_file_contents);
+    }
+
+    public void setFirstAutoLocationUpdateFollowCamera(boolean mode){
+        this.FIRST_AUTO_LOCATION_UPDATE_FOLLOW_CAMERA = true;
+    }
+    public void setDefaultMaxZoom(float zoom_level){
+        this.DEFAULT_MAX_ZOOM = zoom_level;
     }
 
 
@@ -431,18 +444,26 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
 
 
                         if(is_initialized){
-                            if (move_camera) {
-                                float camera_zoom = googleMap.getCameraPosition().zoom;
+                            float camera_zoom = googleMap.getCameraPosition().zoom;
 
-                                if (camera_zoom < 3.0) {
-                                    camera_zoom = 21.0F;
-                                }
+                            if (camera_zoom < 3.0) {
+                                camera_zoom = 21.0F;
+                            }
+                            if (move_camera) {
                                 if (!max_zoom) {
-                                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(specificLocation, camera_zoom));
+                                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(specificLocation, DEFAULT_MAX_ZOOM));
                                 } else {
                                     googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(specificLocation, 21.0F));
                                 }
+                            }else{
+                                if(!FIRST_AUTO_LOCATION_UPDATE){
+                                    if(FIRST_AUTO_LOCATION_UPDATE_FOLLOW_CAMERA){
+                                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(specificLocation, DEFAULT_MAX_ZOOM));
+                                    }
+                                    FIRST_AUTO_LOCATION_UPDATE = true;
+                                }
                             }
+
                         }else{
                             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(specificLocation, 21.0F));
                             is_initialized = true;
