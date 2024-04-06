@@ -3,7 +3,10 @@ package com.racartech.library.rctandroid.media;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.BitmapShader;
 import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -157,4 +160,36 @@ public class RCTbitmap{
 
         return bitmap;
     }
+
+    public static Bitmap getCircularBitmap(Bitmap srcBitmap) {
+        if (srcBitmap == null) return null;
+
+        // Get the minimum dimension of the Bitmap
+        int minDimension = Math.min(srcBitmap.getWidth(), srcBitmap.getHeight());
+
+        // Create a Bitmap with the same dimensions and ARGB_8888 config
+        Bitmap circularBitmap = Bitmap.createBitmap(minDimension, minDimension, Bitmap.Config.ARGB_8888);
+
+        // Create a Canvas with the circular Bitmap
+        Canvas canvas = new Canvas(circularBitmap);
+
+        // Create a Paint object with anti-aliasing enabled
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
+        // Create a BitmapShader with the source Bitmap
+        BitmapShader shader = new BitmapShader(srcBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+
+        // Set the shader of the paint
+        paint.setShader(shader);
+
+        // Calculate the radius
+        float radius = minDimension / 2f;
+
+        // Draw the circular bitmap
+        canvas.drawCircle(radius, radius, radius, paint);
+
+        return circularBitmap;
+    }
+
+
 }
