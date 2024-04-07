@@ -10,7 +10,8 @@ android {
     version '0.7.25.01'
 
     defaultConfig {
-        minSdk 24
+        //During codefest reduce this sdk 24
+        minSdk 27
         targetSdk 33
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
