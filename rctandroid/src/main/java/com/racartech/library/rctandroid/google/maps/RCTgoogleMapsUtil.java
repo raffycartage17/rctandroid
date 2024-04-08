@@ -207,44 +207,6 @@ public class RCTgoogleMapsUtil {
     }
 
 
-    /*
-
-
-    public static String readField(
-            String collection_path,
-            String document_path,
-            String fieldName,
-            long thread_wait,
-            FirebaseFirestore instance){
-
-        boolean return_boolean = false;
-        AtomicBoolean finished_boolean = new AtomicBoolean(false);
-        AtomicReference<String> atomic_value = new AtomicReference<>(null);
-        FirestoreUtil.readField(
-                instance,
-                collection_path,
-                document_path,
-                fieldName,
-                finished_boolean,
-                atomic_value);
-        while(!return_boolean){
-            if(!finished_boolean.get()){
-                try {
-                    Thread.sleep(thread_wait);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            }else{
-                return_boolean = true;
-            }
-        }
-        return atomic_value.get();
-    }
-
-
-     */
-
-
 
 
 
