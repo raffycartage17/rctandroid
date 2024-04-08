@@ -81,4 +81,13 @@
         app:layout_constraintBottom_toTopOf="@+id/maps_test_add_map_view_button"
         app:layout_constraintStart_toStartOf="@+id/maps_test_add_map_view_button" />
 
+    <Button
+        android:id="@+id/mtcl_function_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Function"
+        app:layout_constraintBottom_toTopOf="@+id/maps_test_more_options_button"
+        app:layout_constraintEnd_toEndOf="@+id/maps_test_more_options_button"
+        app:layout_constraintStart_toStartOf="@+id/maps_test_more_options_button" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

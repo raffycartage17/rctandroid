@@ -22,6 +22,7 @@ import com.racartech.app.rctandroidlts.R;
 import com.racartech.app.rctandroidlts.api.ApiKeyManager;
 import com.racartech.library.rctandroid.file.RCTfile;
 import com.racartech.library.rctandroid.google.maps.RCTgoogleMaps;
+import com.racartech.library.rctandroid.google.maps.RCTgoogleMapsUtil;
 import com.racartech.library.rctandroid.location.RCTfacingDirectionListener;
 import com.racartech.library.rctandroid.location.RCTlocationUpdateListener;
 import com.racartech.library.rctandroid.logging.RCTloggingLocationData;
@@ -41,7 +42,8 @@ public class MapsTestActivity extends AppCompatActivity implements
             add_map_view_button,
             get_directions_button,
             more_button,
-            reset_direction_button;
+            reset_direction_button,
+            function_button;
 
     private volatile AtomicReference<ArrayList<LatLng>> PIN_POINTS = new AtomicReference<>(new ArrayList<>());
 
@@ -71,6 +73,7 @@ public class MapsTestActivity extends AppCompatActivity implements
         facing_direction_compass = findViewById(R.id.mtcl_facing_direction_compass_imageview);
         add_map_view_button = findViewById(R.id.maps_test_add_map_view_button);
         more_button = findViewById(R.id.maps_test_more_options_button);
+        function_button = findViewById(R.id.mtcl_function_button);
 
         get_directions_button = findViewById(R.id.maps_test_directions_button);
         reset_direction_button = findViewById(R.id.maps_test_reset_directions_button);
@@ -99,6 +102,67 @@ public class MapsTestActivity extends AppCompatActivity implements
             @Override
             public void onClick(View view) {
                 showMoreDialog();
+            }
+        });
+
+        function_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        String api_key = ApiKeyManager.getGoogleApiKey(firestore_instance);
+                        LatLng origin_coordinates = new LatLng(
+                                googleMaps.CURRENT_LOCATION_LATITUDE.get(),
+                                googleMaps.CURRENT_LOCATION_LONGITUDE.get());
+
+                        double total_driving_distance =
+                                RCTgoogleMapsUtil.getDrivingDistance(api_key,origin_coordinates,PIN_POINTS.get().get(0));
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run(){
+                                Toast.makeText(MapsTestActivity.this,
+                                        "Driving Distance : ".concat(String.valueOf(total_driving_distance)),
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }).start();
+
+                /*
+                LatLng origin_coordinates = new LatLng(
+                        googleMaps.CURRENT_LOCATION_LATITUDE.get(),
+                        googleMaps.CURRENT_LOCATION_LONGITUDE.get()
+                );
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        String api_key = ApiKeyManager.getGoogleApiKey(firestore_instance);
+                        ArrayList<DirectionsApi.RouteRestriction> route_restrictions = new ArrayList<>();
+                        route_restrictions.add(DirectionsApi.RouteRestriction.TOLLS);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run(){
+
+                                googleMaps.getDirections(
+                                        api_key,
+                                        origin_coordinates,
+                                        PIN_POINTS.get(),
+                                        TravelMode.DRIVING,
+                                        route_restrictions,
+                                        Instant.ofEpochMilli(System.currentTimeMillis())
+                                );
+                            }
+                        });
+                    }
+                }).start();
+                 */
+
+
             }
         });
 
