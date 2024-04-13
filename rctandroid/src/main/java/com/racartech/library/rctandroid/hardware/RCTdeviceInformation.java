@@ -13,6 +13,7 @@ import android.os.BatteryManager;
 import android.os.Build;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
+import android.view.WindowManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,15 +63,6 @@ public class RCTdeviceInformation{
         return usedMemoryMB;
     }
 
-    public static int getScreenWidth(Context context) {
-        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-        return displayMetrics.widthPixels;
-    }
-
-    public static int getScreenHeight(Context context) {
-        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-        return displayMetrics.heightPixels;
-    }
 
     public static String getModelName() {
         return Build.MODEL;
@@ -149,6 +141,40 @@ public class RCTdeviceInformation{
     }
 
 
+
+
+    public static int getScreenWidthPixels(Context context) {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(displayMetrics);
+        return displayMetrics.widthPixels;
+    }
+
+    // Method to get screen height in pixels
+    public static int getScreenHeightPixels(Context context) {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(displayMetrics);
+        return displayMetrics.heightPixels;
+    }
+
+    // Method to get screen width in density-independent pixels (dp)
+    public static int getScreenWidthDp(Context context) {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(displayMetrics);
+        float density = context.getResources().getDisplayMetrics().density;
+        return (int) (displayMetrics.widthPixels / density);
+    }
+
+    // Method to get screen height in density-independent pixels (dp)
+    public static int getScreenHeightDp(Context context) {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(displayMetrics);
+        float density = context.getResources().getDisplayMetrics().density;
+        return (int) (displayMetrics.heightPixels / density);
+    }
 
 
 
