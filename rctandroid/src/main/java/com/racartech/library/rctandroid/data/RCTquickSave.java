@@ -290,7 +290,7 @@ public class RCTquickSave{
     }
 
 
-    private int getPosition(String name){
+    public int getPosition(String name){
         int position = -1;
         try {
             ArrayList<String> file_contents = RCTfile.readFile_ArrayList(this.SAVE_FILE_PATH);
@@ -306,7 +306,7 @@ public class RCTquickSave{
         return position;
     }
 
-    private int getPosition(ArrayList<String> file_contents, String name){
+    public int getPosition(ArrayList<String> file_contents, String name){
         int position = -1;
         for (int index = 0; index <file_contents.size(); index++) {
             ArrayList<String> json_contents = RCTjson.convertStringToArrayList(file_contents.get(index));
@@ -317,6 +317,10 @@ public class RCTquickSave{
             }
         }
         return position;
+    }
+
+    public boolean doDataExist(String name){
+        return (getPosition(name) >= 0);
     }
 
 
