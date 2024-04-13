@@ -11,6 +11,9 @@ public class RCTquickSave{
     public String SAVE_FILE_PATH = null;
     public RCTquickSave(String save_file_path){
         this.SAVE_FILE_PATH = save_file_path;
+        if(!RCTfile.doesFileExist(this.SAVE_FILE_PATH)){
+            RCTfile.createFile(this.SAVE_FILE_PATH);
+        }
     }
 
     public void addString(String name, String value){
