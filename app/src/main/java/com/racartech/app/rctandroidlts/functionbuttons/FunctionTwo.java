@@ -30,7 +30,12 @@ public class FunctionTwo extends AppCompatActivity{
         the_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                popTimePicker();
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                //intent.setType("*/*");  //All
+                intent.setType("image/*"); //Image
+                //intent.setType("video/*"); //Video
+                //intent.setType("audio/*"); //Audio
+                startActivityForResult(intent, PICK_FILE_REQUEST_CODE);
             }
         });
 
