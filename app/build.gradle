@@ -9,8 +9,7 @@ android {
 
     defaultConfig {
         applicationId "com.racartech.app.rctandroidlts"
-        //During codefest reduce this sdk 24
-        minSdk 27
+        minSdk 24
         targetSdk 33
         versionCode 1
         versionName "1.0"
