@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+
+    <style name="StyleTimePickerDialog" parent="ThemeOverlay.MaterialComponents.TimePicker">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textColorPrimary">#F60000</item>
+        <item name="android:textColorSecondary">#E0ED15</item>
+        <item name="colorAccent">#A018BD</item>
+        <item name="colorControlNormal">#00F804</item>
+        <item name="colorPrimary">#000000</item>
+        <item name="colorSurface">#0440F1</item>
+    </style>
+
+
+
+    <!--
+    /*
+        <item name="android:textColor">#FFFFFF</item> Select Time
+        <item name="android:textColorPrimary">#F60000</item> Highlighted/Focussed Numbers
+        <item name="android:textColorSecondary">#E0ED15</item> UnFocussedHighlighted/Focussed Numbers
+        <item name="colorAccent">#A018BD</item> Selector Highlight Color
+        <item name="colorControlNormal">#00F804</item> Keyboard icon color
+        <item name="colorPrimary">#000000</item> Cancel Ok Button text color
+        <item name="colorSurface">#0440F1</item> Main Background
+    */
+    -->
+
+
+
+
+</resources>

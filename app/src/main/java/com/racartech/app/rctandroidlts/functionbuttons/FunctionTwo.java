@@ -1,21 +1,19 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+package com.racartech.app.rctandroidlts.functionbuttons;
 
-
-    <!--
-
-    import android.content.Intent;
+import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TimePicker;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.racartech.app.rctandroidlts.R;
+
+import java.util.Locale;
 
 public class FunctionTwo extends AppCompatActivity{
     Button the_button;
@@ -32,12 +30,7 @@ public class FunctionTwo extends AppCompatActivity{
         the_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                //intent.setType("*/*");  //All
-                intent.setType("image/*"); //Image
-                //intent.setType("video/*"); //Video
-                //intent.setType("audio/*"); //Audio
-                startActivityForResult(intent, PICK_FILE_REQUEST_CODE);
+                popTimePicker();
             }
         });
 
@@ -52,9 +45,38 @@ public class FunctionTwo extends AppCompatActivity{
             image_view.setImageURI(selectedFileUri);
         }
     }
+
+
+
+    public void popTimePicker(){
+        TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener()
+        {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute)
+            {
+                hour = selectedHour;
+                minute = selectedMinute;
+                the_button.setText(String.format(Locale.getDefault(), "%02d:%02d",hour, minute));
+            }
+        };
+
+
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(
+                this,
+                R.style.StyleTimePickerDialog,
+                onTimeSetListener,
+                hour,
+                minute,
+                false);
+
+
+        timePickerDialog.setTitle("Select Time");
+        timePickerDialog.show();
+    }
+
+
+
 }
 
-    -->
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>

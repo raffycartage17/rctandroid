@@ -24,6 +24,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.firebase.FirebaseApp;
+import com.racartech.app.rctandroidlts.functionbuttons.FunctionThree;
+import com.racartech.app.rctandroidlts.functionbuttons.FunctionTwo;
 import com.racartech.app.rctandroidlts.maps.MapsTestActivity;
 import com.racartech.app.rctandroidlts.maps.TextToSpeechActivity;
 import com.racartech.app.rctandroidlts.resources.BuildConfig;
@@ -140,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
         f2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, TextToSpeechActivity.class);
+                Intent intent = new Intent(MainActivity.this, FunctionTwo.class);
                 startActivity(intent);
             }
         });
@@ -149,13 +151,21 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
-
-
+                Intent intent = new Intent(MainActivity.this, FunctionThree.class);
+                startActivity(intent);
 
             }
         });
 
+        f4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(MainActivity.this, TextToSpeechActivity.class);
+                startActivity(intent);
+
+            }
+        });
 
 
 

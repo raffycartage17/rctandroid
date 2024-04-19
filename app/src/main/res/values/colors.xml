@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+
+    <color name="skyBlue">#87CEEB</color>
+    <color name="skyAccent">#00BFFF</color>
+    <color name="skyDivider">#4682B4</color>
+
     <color name="sdb_background">#ebf7f6</color>
 
 
