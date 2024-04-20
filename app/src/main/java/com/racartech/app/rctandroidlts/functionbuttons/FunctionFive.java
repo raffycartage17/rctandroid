@@ -1,12 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-
-    <!--
-
-    /*
+package com.racartech.app.rctandroidlts.functionbuttons;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -32,8 +24,20 @@ public class FunctionFive extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.function_five_activity_layout);
         recycler_view = findViewById(R.id.f5_recycler_view);
+        dataset.add("AAAAA");
+        dataset.add("BBBBB");
+        dataset.add("CCCCC");
+        dataset.add("DDDDD");
+        dataset.add("EEEEE");
+        dataset.add("FFFFF");
+        dataset.add("GGGGG");
+        dataset.add("HHHHH");
+        dataset.add("HHHHH");
+        dataset.add("IIIII");
+        dataset.add("JJJJJ");
 
         displayEntries();
+
     }
 
 
@@ -70,18 +74,3 @@ public class FunctionFive extends AppCompatActivity {
     }
 
 }
-
-
-
-
-
-
-
-*/
-
-    -->
-
-
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>

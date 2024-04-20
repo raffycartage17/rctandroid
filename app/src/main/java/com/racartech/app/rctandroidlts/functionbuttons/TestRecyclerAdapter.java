@@ -1,13 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+package com.racartech.app.rctandroidlts.functionbuttons;
 
-
-
-    <!--
-
-    import android.app.Activity;
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +36,8 @@ public class TestRecyclerAdapter extends RecyclerView.Adapter<TestRecyclerAdapte
     @Override
     public void onBindViewHolder(@NonNull TestRecyclerAdapter.ViewHolder holder, int position) {
         int adapter_position = holder.getAdapterPosition();
+        holder.main_text.setText(dataset.get(adapter_position));
+        holder.number_text.setText("Index : ".concat(String.valueOf(adapter_position)));
     }
 
     @Override
@@ -52,18 +47,13 @@ public class TestRecyclerAdapter extends RecyclerView.Adapter<TestRecyclerAdapte
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
-
-
+        TextView main_text;
+        TextView number_text;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
-
+            main_text = itemView.findViewById(R.id.tra_main_textview);
+            number_text = itemView.findViewById(R.id.tra_number_textview);
         }
     }
 
 }
-
-
-    -->
-
-</androidx.constraintlayout.widget.ConstraintLayout>

@@ -24,6 +24,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.firebase.FirebaseApp;
+import com.racartech.app.rctandroidlts.functionbuttons.FunctionFive;
 import com.racartech.app.rctandroidlts.functionbuttons.FunctionThree;
 import com.racartech.app.rctandroidlts.functionbuttons.FunctionTwo;
 import com.racartech.app.rctandroidlts.maps.MapsTestActivity;
@@ -173,6 +174,8 @@ public class MainActivity extends AppCompatActivity {
         f5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
+                Intent intent = new Intent(MainActivity.this, FunctionFive.class);
+                startActivity(intent);
             }
         });
 

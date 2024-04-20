@@ -54,6 +54,9 @@
             android:name=".functionbuttons.FunctionTwo"
             android:exported="false" />
         <activity
+            android:name=".functionbuttons.FunctionFive"
+            android:exported="false" />
+        <activity
             android:name=".window1.Window2"
             android:exported="false" />
         <activity

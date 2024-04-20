@@ -6,6 +6,15 @@
 
     <!--
 
+    //Register Activity to Manifest
+
+    <activity
+            android:name=".functionbuttons.FunctionFive"
+            android:exported="false" />
+
+
+
+
     /*
 
 Intent intent = new Intent(getApplicationContext(), ClassName.class);
