@@ -12,6 +12,18 @@
             android:name=".functionbuttons.FunctionFive"
             android:exported="false" />
 
+    <activity
+        android:name=".chat.activity.ChatListActivity"
+        android:screenOrientation="portrait"
+        android:exported="false"
+        android:launchMode="singleTask" />
+
+    //Backpress
+    @SuppressLint("MissingSuperCall")
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 
 
 
