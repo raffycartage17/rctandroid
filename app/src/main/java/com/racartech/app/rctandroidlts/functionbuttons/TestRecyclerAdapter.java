@@ -14,12 +14,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.racartech.app.rctandroidlts.R;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class TestRecyclerAdapter extends RecyclerView.Adapter<TestRecyclerAdapter.ViewHolder>{
     private final Context app_context;
     private final Activity current_activity;
-    private ArrayList<String> dataset;
-    public TestRecyclerAdapter(Activity current_activity, Context app_context, ArrayList<String> dataset){
+    private AtomicReference<ArrayList<String>> dataset;
+    public TestRecyclerAdapter(Activity current_activity, Context app_context,
+                               AtomicReference<ArrayList<String>> dataset){
         this.app_context = app_context;
         this.current_activity = current_activity;
         this.dataset = dataset;
@@ -36,13 +38,13 @@ public class TestRecyclerAdapter extends RecyclerView.Adapter<TestRecyclerAdapte
     @Override
     public void onBindViewHolder(@NonNull TestRecyclerAdapter.ViewHolder holder, int position) {
         int adapter_position = holder.getAdapterPosition();
-        holder.main_text.setText(dataset.get(adapter_position));
+        holder.main_text.setText(dataset.get().get(adapter_position));
         holder.number_text.setText("Index : ".concat(String.valueOf(adapter_position)));
     }
 
     @Override
     public int getItemCount() {
-        return dataset.size();
+        return dataset.get().size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
