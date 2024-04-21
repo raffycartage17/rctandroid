@@ -44,7 +44,7 @@ public class RCTthumbnail{
 
 
 
-    public static synchronized boolean doesDirectoryContainThumbnailableFiles(String[] file_paths){
+    public static boolean doesDirectoryContainThumbnailableFiles(String[] file_paths){
         for(int index = 0; index< file_paths.length; index++){
             String current_path = file_paths[index];
             if(RCTfile.isPathAFile(current_path)){
@@ -58,7 +58,7 @@ public class RCTthumbnail{
         return false;
     }
 
-    public static synchronized boolean doesDirectoryContainThumbnailableFiles(File[] file_paths){
+    public static boolean doesDirectoryContainThumbnailableFiles(File[] file_paths){
         for(int index = 0; index< file_paths.length; index++){
             String current_path = file_paths[index].getAbsolutePath();
             if(RCTfile.isPathAFile(current_path)){
@@ -72,7 +72,7 @@ public class RCTthumbnail{
         return false;
     }
 
-    public static synchronized boolean doesDirectoryContainThumbnailableFiles(ArrayList<String> file_paths){
+    public static boolean doesDirectoryContainThumbnailableFiles(ArrayList<String> file_paths){
         for(int index = 0; index< file_paths.size(); index++){
             String current_path = file_paths.get(index);
             if(RCTfile.isPathAFile(current_path)){
@@ -86,7 +86,7 @@ public class RCTthumbnail{
         return false;
     }
 
-    public static synchronized boolean doesDirectoryContainThumbnailableFiles_FileArrayList(ArrayList<File> file_paths){
+    public static boolean doesDirectoryContainThumbnailableFiles_FileArrayList(ArrayList<File> file_paths){
         for(int index = 0; index< file_paths.size(); index++){
             String current_path = file_paths.get(index).getAbsolutePath();
             if(RCTfile.isPathAFile(current_path)){
@@ -169,7 +169,7 @@ public class RCTthumbnail{
         }
     }
 
-    public static synchronized void generateThumbnailsForThisFiles(Context app_context,
+    public static void generateThumbnailsForThisFiles(Context app_context,
                                                                    String[] target_dir,
                                                                    int thumbnail_width,
                                                                    int thumbnail_height){
@@ -186,7 +186,7 @@ public class RCTthumbnail{
 
     }
 
-    public static synchronized boolean generateThumbnailsForThisFiles(
+    public static boolean generateThumbnailsForThisFiles(
             Context app_context,
             String parent_dir,
             String[] file_list,
@@ -230,7 +230,7 @@ public class RCTthumbnail{
         return does_need_refresh;
     }
 
-    public static synchronized boolean generateThumbnailsForThisFiles(
+    public static boolean generateThumbnailsForThisFiles(
             Context app_context,
             String parent_dir,
             ArrayList<String> file_list,
@@ -275,7 +275,7 @@ public class RCTthumbnail{
     }
 
 
-    public static synchronized boolean generateThumbnailsForThisFiles_FileArrayList(
+    public static boolean generateThumbnailsForThisFiles_FileArrayList(
             Context app_context,
             String parent_dir,
             ArrayList<File> file_list,
@@ -322,7 +322,7 @@ public class RCTthumbnail{
 
 
 
-    public static synchronized Bitmap getThumbnail_Image_CropCenter(
+    public static Bitmap getThumbnail_Image_CropCenter(
             File the_file,
             Context app_context,
             int height,
@@ -367,6 +367,44 @@ public class RCTthumbnail{
         }
     }
 
+
+    public static Bitmap getThumbnail_Image_CropCenter(
+            Bitmap target_bitmap,
+            int height,
+            int width){
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            // Use BitmapFactory to decode the file into a Bitmap
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            options.inSampleSize = calculateInSampleSize(options, width, height);
+            options.inJustDecodeBounds = false;
+            Bitmap the_bitmap = target_bitmap;
+
+            // Crop the bitmap to center square
+            try {
+                int dimension = getSquareCropDimensionForBitmap(the_bitmap);
+                return ThumbnailUtils.extractThumbnail(the_bitmap, dimension, dimension);
+            }catch(NullPointerException ignored){
+                return null;
+            }
+
+        }else{
+            // Use loadThumbnail() to get a thumbnail of the file
+            Bitmap the_bitmap = target_bitmap;
+
+            // Crop the bitmap to center square
+            try {
+                int dimension = getSquareCropDimensionForBitmap(Objects.requireNonNull(the_bitmap));
+                return ThumbnailUtils.extractThumbnail(the_bitmap, dimension, dimension);
+            }catch(NullPointerException ignored){
+                return null;
+            }
+        }
+    }
+
+
+
     public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
         final int height = options.outHeight;
         final int width = options.outWidth;
@@ -383,7 +421,7 @@ public class RCTthumbnail{
 
 
 
-    public static synchronized Bitmap getThumbnail_Video_CropCenter(File the_file, Context app_context, int t_width, int t_height){
+    public static Bitmap getThumbnail_Video_CropCenter(File the_file, Context app_context, int t_width, int t_height){
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
             Bitmap the_bitmap = ThumbnailUtils.createVideoThumbnail(the_file.getAbsolutePath(), MediaStore.Video.Thumbnails.MINI_KIND);
@@ -440,7 +478,7 @@ public class RCTthumbnail{
         return should_check;
     }
 
-    private static Bitmap getBitmapThumbnail(
+    public static Bitmap getBitmapThumbnail(
             File thumbnail_file,
             Context app_context,
             int thumbnail_width,
