@@ -59,6 +59,7 @@ public class RCTsimpleDateTimeData {
 
         this.UNIX_EPOCH_MILLISECOND = calendar.getTimeInMillis();
     }
+
 }
 
 
