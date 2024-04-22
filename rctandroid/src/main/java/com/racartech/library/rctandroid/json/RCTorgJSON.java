@@ -9,6 +9,128 @@ import java.util.ArrayList;
 public class RCTorgJSON {
 
 
+
+    public static String arrayListStringToJSONString(ArrayList<String> array_list) {
+        JSONArray json_array = new JSONArray();
+        for (int index = 0; index < array_list.size(); index++) {
+            String item = array_list.get(index);
+            json_array.put(item);
+        }
+        return json_array.toString();
+    }
+
+    public static ArrayList<String> jsonStringToArrayListString(String json_string) {
+        ArrayList<String> array_list = new ArrayList<>();
+        try {
+            JSONArray json_array = new JSONArray(json_string);
+            for (int index = 0; index < json_array.length(); index++) {
+                array_list.add(json_array.getString(index));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return array_list;
+    }
+
+    public static String arrayListDoubleToJSONString(ArrayList<Double> array_list) {
+        JSONArray json_array = new JSONArray();
+        for (int index = 0; index < array_list.size(); index++) {
+            Double item = array_list.get(index);
+            json_array.put(item);
+        }
+        return json_array.toString();
+    }
+
+
+    public static ArrayList<Double> jsonStringToArrayListDouble(String json_string) {
+        ArrayList<Double> array_list = new ArrayList<>();
+        try {
+            JSONArray json_array = new JSONArray(json_string);
+            for (int index = 0; index < json_array.length(); index++) {
+                array_list.add(json_array.getDouble(index));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return array_list;
+    }
+
+    public static String arrayListLongToJSONString(ArrayList<Long> array_list) {
+        JSONArray json_array = new JSONArray();
+        for (int index = 0; index < array_list.size(); index++) {
+            Long item = array_list.get(index);
+            json_array.put(item);
+        }
+        return json_array.toString();
+    }
+
+    public static ArrayList<Long> jsonStringToArrayListLong(String json_string) {
+        ArrayList<Long> array_list = new ArrayList<>();
+        try {
+            JSONArray json_array = new JSONArray(json_string);
+            for (int index = 0; index < json_array.length(); index++) {
+                array_list.add(json_array.getLong(index));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return array_list;
+    }
+
+    public static String arrayListIntegerToJSONString(ArrayList<Integer> array_list) {
+        JSONArray json_array = new JSONArray();
+        for (int index = 0; index < array_list.size(); index++) {
+            Integer item = array_list.get(index);
+            json_array.put(item);
+        }
+        return json_array.toString();
+    }
+
+
+    public static ArrayList<Integer> jsonStringToArrayListInteger(String json_string) {
+        ArrayList<Integer> array_list = new ArrayList<>();
+        try {
+            JSONArray json_array = new JSONArray(json_string);
+            for (int index = 0; index < json_array.length(); index++) {
+                array_list.add(json_array.getInt(index));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return array_list;
+    }
+
+    public static String arrayListBooleanToJSONString(ArrayList<Boolean> array_list) {
+        JSONArray json_array = new JSONArray();
+        for (int index = 0; index < array_list.size(); index++) {
+            Boolean item = array_list.get(index);
+            json_array.put(item);
+        }
+        return json_array.toString();
+    }
+
+    public static ArrayList<Boolean> jsonStringToArrayListBoolean(String json_string) {
+        ArrayList<Boolean> array_list = new ArrayList<>();
+        try {
+            JSONArray json_array = new JSONArray(json_string);
+            for (int index = 0; index < json_array.length(); index++) {
+                array_list.add(json_array.getBoolean(index));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return array_list;
+    }
+
+
+
+
+    ///////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////
+
+
     public static ArrayList<String> jsonArray_To_ArrayListString(JSONArray json_array) throws JSONException{
         ArrayList<String> the_arraylist = new ArrayList<>();
         for (int i = 0; i < json_array.length(); i++) {

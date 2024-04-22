@@ -33,8 +33,11 @@ import com.racartech.app.rctandroidlts.resources.BuildConfig;
 import com.racartech.app.rctandroidlts.window1.Window1;
 import com.racartech.app.rctandroidlts.window1.Window2;
 import com.racartech.library.rctandroid.file.RCTfile;
+import com.racartech.library.rctandroid.json.RCTorgJSON;
 import com.racartech.library.rctandroid.notifications.RCTnotifications;
 import com.racartech.library.rctandroid.permission.RCTpermission;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -176,6 +179,28 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view){
                 Intent intent = new Intent(MainActivity.this, FunctionFive.class);
                 startActivity(intent);
+            }
+        });
+
+        f6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view){
+                ArrayList<Integer> initial_arraylist = new ArrayList<>();
+                initial_arraylist.add(5);
+                initial_arraylist.add(108);
+                initial_arraylist.add(100);
+                String json_string = RCTorgJSON.arrayListIntegerToJSONString(initial_arraylist);
+                System.out.println("--------------------------------------------");
+                System.out.println("JSON String : ".concat(json_string));
+
+                ArrayList<Integer> parsed_array = RCTorgJSON.jsonStringToArrayListInteger(json_string);
+                for(int index = 0; index<parsed_array.size(); index++){
+                    System.out.println("Index (".
+                            concat(String.valueOf(index).
+                                    concat(") : ").
+                                    concat(String.valueOf(parsed_array.get(index)))));
+                }
+                System.out.println("--------------------------------------------");
             }
         });
 
