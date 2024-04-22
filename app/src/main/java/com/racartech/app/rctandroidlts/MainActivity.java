@@ -36,6 +36,8 @@ import com.racartech.library.rctandroid.file.RCTfile;
 import com.racartech.library.rctandroid.json.RCTorgJSON;
 import com.racartech.library.rctandroid.notifications.RCTnotifications;
 import com.racartech.library.rctandroid.permission.RCTpermission;
+import com.racartech.library.rctandroid.time.RCTsimpleDateTimeData;
+import com.racartech.library.rctandroid.time.RCTtimeData;
 
 import java.util.ArrayList;
 
@@ -201,6 +203,43 @@ public class MainActivity extends AppCompatActivity {
                                     concat(String.valueOf(parsed_array.get(index)))));
                 }
                 System.out.println("--------------------------------------------");
+            }
+        });
+
+        f7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.out.println("----------------------------------------------------------------");
+                long cached_current_millis = System.currentTimeMillis();
+
+                RCTsimpleDateTimeData dt_data = new RCTsimpleDateTimeData(cached_current_millis);
+                // Print out every variable from dt_data object
+                System.out.println("Year: " + dt_data.YEAR);
+                System.out.println("Month: " + dt_data.MONTH);
+                System.out.println("Date: " + dt_data.DATE);
+                System.out.println("Hour: " + dt_data.HOUR);
+                System.out.println("Minute: " + dt_data.MINUTE);
+                System.out.println("Second: " + dt_data.SECOND);
+                System.out.println("Millisecond: " + dt_data.MILLISECOND);
+                System.out.println("Unix Epoch Millisecond: " + dt_data.UNIX_EPOCH_MILLISECOND);
+                System.out.println("----------------------------------------------------------------");
+                RCTsimpleDateTimeData new_data = new RCTsimpleDateTimeData(
+                        dt_data.YEAR,
+                        dt_data.MONTH,
+                        dt_data.DATE,
+                        dt_data.HOUR,
+                        dt_data.MINUTE,
+                        dt_data.SECOND,
+                        dt_data.MILLISECOND
+                );
+                System.out.println("Year: " + new_data.YEAR);
+                System.out.println("Month: " + new_data.MONTH);
+                System.out.println("Date: " + new_data.DATE);
+                System.out.println("Hour: " + new_data.HOUR);
+                System.out.println("Minute: " + new_data.MINUTE);
+                System.out.println("Second: " + new_data.SECOND);
+                System.out.println("Millisecond: " + new_data.MILLISECOND);
+                System.out.println("Unix Epoch Millisecond: " + new_data.UNIX_EPOCH_MILLISECOND);
             }
         });
 

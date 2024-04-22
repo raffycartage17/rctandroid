@@ -20,8 +20,14 @@ public class FunctionThree extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.function_three_activity_layout);
-        initDatePicker();
         dateButton = findViewById(R.id.F3_date_picker_button);
+
+        dateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openDatePicker();
+            }
+        });
         dateButton.setText(getTodaysDate());
     }
 
@@ -35,7 +41,7 @@ public class FunctionThree extends AppCompatActivity
         return makeDateString(day, month, year);
     }
 
-    private void initDatePicker()
+    private void openDatePicker()
     {
         DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener()
         {
@@ -56,7 +62,8 @@ public class FunctionThree extends AppCompatActivity
         int style = AlertDialog.THEME_HOLO_LIGHT;
 
         datePickerDialog = new DatePickerDialog(this, style, dateSetListener, year, month, day);
-        //datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+        datePickerDialog.getDatePicker().setMinDate(28437483783L);
 
     }
 
@@ -96,10 +103,6 @@ public class FunctionThree extends AppCompatActivity
         return "JAN";
     }
 
-    public void openDatePicker(View view)
-    {
-        datePickerDialog.show();
-    }
 }
 
 

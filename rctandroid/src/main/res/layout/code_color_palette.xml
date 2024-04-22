@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--
+
+
+    ///////////////////////////
+        **Note-taking App:
+        Primary: #FF5722 (Orange)
+        Secondary: #2196F3 (Blue)
+        Accent: #4CAF50 (Green)
+        ///////////////////////////
+        **Task Manager:
+        Primary: #673AB7 (Purple)
+        Secondary: #FF9800 (Amber)
+        Accent: #009688 (Teal)
+        ///////////////////////////
+        **Inventory Management:
+        Primary: #795548 (Brown)
+        Secondary: #607D8B (Blue Grey)
+        Accent: #FFC107 (Amber)
+        ///////////////////////////
+        **Expense Tracker:
+        Primary: #FFEB3B (Yellow)
+        Secondary: #9C27B0 (Deep Purple)
+        Accent: #03A9F4 (Light Blue)
+        ///////////////////////////
+        **Recipe Book:
+        Primary: #FF5722 (Orange)
+        Secondary: #FFC107 (Amber)
+        Accent: #4CAF50 (Green)
+        ///////////////////////////
+        **Address Book:
+        Primary: #2196F3 (Blue)
+        Secondary: #FF9800 (Amber)
+        Accent: #FF5722 (Orange)
+        ///////////////////////////
+        **Fitness Tracker:
+        Primary: #4CAF50 (Green)
+        Secondary: #FF5722 (Orange)
+        Accent: #2196F3 (Blue)
+        ///////////////////////////
+        **Journal/Diary App:
+        Primary: #673AB7 (Purple)
+        Secondary: #FFEB3B (Yellow)
+        Accent: #FF5722 (Orange)
+        ///////////////////////////
+        **Library Management:
+        Primary: #795548 (Brown)
+        Secondary: #607D8B (Blue Grey)
+        Accent: #FF9800 (Amber)
+        ///////////////////////////
+        **Event Planner:
+        Primary: #FF9800 (Amber)
+        Secondary: #03A9F4 (Light Blue)
+        Accent: #FF5722 (Orange)
+    ///////////////////////////
+
+
+
+    -->
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
