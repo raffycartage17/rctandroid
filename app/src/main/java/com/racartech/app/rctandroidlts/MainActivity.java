@@ -240,6 +240,12 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("Second: " + new_data.SECOND);
                 System.out.println("Millisecond: " + new_data.MILLISECOND);
                 System.out.println("Unix Epoch Millisecond: " + new_data.UNIX_EPOCH_MILLISECOND);
+
+                System.out.println("Time Stamp : ".concat(new_data.getTimeStamp_YYYY_MM_DD()));
+                System.out.println("Time Stamp : ".concat(new_data.getTimeStamp_YYYY_MM_DD_HH_MM()));
+                System.out.println("Time Stamp : ".concat(new_data.getTimeStamp_YYYY_MM_DD_HH_MM_SS()));
+
+                System.out.println("----------------------------------------------------------------");
             }
         });
 

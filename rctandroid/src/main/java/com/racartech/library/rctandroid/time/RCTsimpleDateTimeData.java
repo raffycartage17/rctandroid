@@ -2,8 +2,11 @@ package com.racartech.library.rctandroid.time;
 
 
 import java.util.Calendar;
+import java.util.Locale;
 
 public class RCTsimpleDateTimeData {
+
+    //Note , Month parameter should be passed as 1-12
     public int YEAR;
     public int MONTH;
     public int DATE;
@@ -58,6 +61,22 @@ public class RCTsimpleDateTimeData {
         calendar.set(Calendar.MILLISECOND, millisecond);
 
         this.UNIX_EPOCH_MILLISECOND = calendar.getTimeInMillis();
+    }
+
+
+    public String getTimeStamp_YYYY_MM_DD(){
+        // Create a timestamp string with this format "YYYY-MM-DD"
+        return String.format(Locale.US, "%04d-%02d-%02d", YEAR, MONTH, DATE);
+    }
+
+    public String getTimeStamp_YYYY_MM_DD_HH_MM(){
+        // Create a timestamp string with this format "YYYY-MM-DD-HH-MM"
+        return String.format(Locale.US, "%04d-%02d-%02d-%02d-%02d", YEAR, MONTH, DATE, HOUR, MINUTE);
+    }
+
+    public String getTimeStamp_YYYY_MM_DD_HH_MM_SS(){
+        // Create a timestamp string with this format "YYYY-MM-DD-HH-MM-SS"
+        return String.format(Locale.US, "%04d-%02d-%02d-%02d-%02d-%02d", YEAR, MONTH, DATE, HOUR, MINUTE, SECOND);
     }
 
 }
