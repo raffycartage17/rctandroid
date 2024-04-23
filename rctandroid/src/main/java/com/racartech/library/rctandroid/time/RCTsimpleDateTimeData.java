@@ -6,6 +6,12 @@ import java.util.Locale;
 
 public class RCTsimpleDateTimeData {
 
+    public final static long MILLIS_IN_WEEK = 604800000L;
+    public final static long MILLIS_IN_DAY = 86400000L;
+    public final static long MILLIS_IN_HOUR = 3600000L;
+    public final static long MILLIS_IN_MINUTE = 60000L;
+    public final static long MILLIS_IN_SECOND = 1000L;
+
     //Note , Month parameter should be passed as 1-12
     public int YEAR;
     public int MONTH;
@@ -15,19 +21,24 @@ public class RCTsimpleDateTimeData {
     public int SECOND;
     public int MILLISECOND;
 
+    public int DAY_OF_WEEK;
+    public int DAY_OF_YEAR;
+
     public long UNIX_EPOCH_MILLISECOND;
 
     public RCTsimpleDateTimeData(long unix_epoch_millis) {
         Calendar current_time = Calendar.getInstance();
         current_time.setTimeInMillis(unix_epoch_millis); // Set time using milliseconds
 
-        YEAR = current_time.get(Calendar.YEAR);
-        MONTH = current_time.get(Calendar.MONTH) + 1; // Adding 1 as Calendar.MONTH is zero-based
-        DATE = current_time.get(Calendar.DATE);
-        HOUR = current_time.get(Calendar.HOUR_OF_DAY);
-        MINUTE = current_time.get(Calendar.MINUTE);
-        SECOND = current_time.get(Calendar.SECOND);
-        MILLISECOND = current_time.get(Calendar.MILLISECOND);
+        this.YEAR = current_time.get(Calendar.YEAR);
+        this.MONTH = current_time.get(Calendar.MONTH) + 1; // Adding 1 as Calendar.MONTH is zero-based
+        this.DATE = current_time.get(Calendar.DATE);
+        this.HOUR = current_time.get(Calendar.HOUR_OF_DAY);
+        this.MINUTE = current_time.get(Calendar.MINUTE);
+        this.SECOND = current_time.get(Calendar.SECOND);
+        this.MILLISECOND = current_time.get(Calendar.MILLISECOND);
+        this.DAY_OF_WEEK = current_time.get(Calendar.DAY_OF_WEEK);
+        this.DAY_OF_YEAR = current_time.get(Calendar.DAY_OF_YEAR);
         this.UNIX_EPOCH_MILLISECOND = unix_epoch_millis;
     }
 
@@ -61,6 +72,8 @@ public class RCTsimpleDateTimeData {
         calendar.set(Calendar.MILLISECOND, millisecond);
 
         this.UNIX_EPOCH_MILLISECOND = calendar.getTimeInMillis();
+        this.DAY_OF_WEEK = calendar.get(Calendar.DAY_OF_WEEK);
+        this.DAY_OF_YEAR = calendar.get(Calendar.DAY_OF_YEAR);
     }
 
 
@@ -78,6 +91,48 @@ public class RCTsimpleDateTimeData {
         // Create a timestamp string with this format "YYYY-MM-DD-HH-MM-SS"
         return String.format(Locale.US, "%04d-%02d-%02d-%02d-%02d-%02d", YEAR, MONTH, DATE, HOUR, MINUTE, SECOND);
     }
+
+
+
+    public RCTsimpleDateTimeData subtractWeek(int day){
+        long subtract_millis = this.UNIX_EPOCH_MILLISECOND - (day*MILLIS_IN_WEEK);
+        return new RCTsimpleDateTimeData(subtract_millis);
+    }
+
+    public RCTsimpleDateTimeData addWeek(int day){
+        long add_millis = this.UNIX_EPOCH_MILLISECOND + (day*MILLIS_IN_WEEK);
+        return new RCTsimpleDateTimeData(add_millis);
+    }
+    public RCTsimpleDateTimeData subtractDay(int day){
+        long subtract_day_millis = this.UNIX_EPOCH_MILLISECOND - (day*MILLIS_IN_DAY);
+        return new RCTsimpleDateTimeData(subtract_day_millis);
+    }
+
+    public RCTsimpleDateTimeData addDay(int day){
+        long add_day_millis = this.UNIX_EPOCH_MILLISECOND + (day*MILLIS_IN_DAY);
+        return new RCTsimpleDateTimeData(add_day_millis);
+    }
+
+    public RCTsimpleDateTimeData subtractHour(int hour){
+        long subtract_hour_millis = this.UNIX_EPOCH_MILLISECOND - (hour*MILLIS_IN_HOUR);
+        return new RCTsimpleDateTimeData(subtract_hour_millis);
+    }
+    public RCTsimpleDateTimeData addHour(int hour){
+        long add_hour_millis = this.UNIX_EPOCH_MILLISECOND + (hour*MILLIS_IN_HOUR);
+        return new RCTsimpleDateTimeData(add_hour_millis);
+    }
+
+    public RCTsimpleDateTimeData subtractMinute(int hour){
+        long subtract_millis = this.UNIX_EPOCH_MILLISECOND - (hour*MILLIS_IN_MINUTE);
+        return new RCTsimpleDateTimeData(subtract_millis);
+    }
+    public RCTsimpleDateTimeData addMinute(int hour){
+        long add_millis = this.UNIX_EPOCH_MILLISECOND + (hour*MILLIS_IN_MINUTE);
+        return new RCTsimpleDateTimeData(add_millis);
+    }
+
+
+
 
 }
 
