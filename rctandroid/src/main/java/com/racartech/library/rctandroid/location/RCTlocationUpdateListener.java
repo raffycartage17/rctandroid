@@ -19,18 +19,28 @@ public class RCTlocationUpdateListener {
         void onLocationUpdate(double latitude, double longitude);
     }
 
-    private LocationUpdateListener listener;
+    private final LocationUpdateListener listener;
 
-    public RCTlocationUpdateListener(LocationUpdateListener listener) {
+    public RCTlocationUpdateListener(
+            Context context,
+            LocationUpdateListener listener,
+            long update_interval,
+            long update_fastest_interval
+    ) {
         this.listener = listener;
+        this.getLocationUpdates(context,update_interval,update_fastest_interval);
     }
 
-    public void getLocationUpdates(Context context, long update_per_millis) {
+    private void getLocationUpdates(
+            Context context,
+            long update_interval,
+            long update_fastest_interval
+            ) {
         FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
         LocationRequest locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(update_per_millis);
-        locationRequest.setFastestInterval(update_per_millis);
+        locationRequest.setInterval(update_interval);
+        locationRequest.setFastestInterval(update_fastest_interval);
 
 
         LocationCallback locationCallback = new LocationCallback() {

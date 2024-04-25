@@ -52,8 +52,6 @@ public class MapsTestActivity extends AppCompatActivity implements
 
     RCTfacingDirectionListener facing_direction_listener;
 
-    RCTlocationUpdateListener locationUpdate;
-
     private FirebaseFirestore firestore_instance;
 
 
@@ -211,9 +209,6 @@ public class MapsTestActivity extends AppCompatActivity implements
             }
         });
 
-
-
-
     }
 
     private void addMapView() {
@@ -222,10 +217,14 @@ public class MapsTestActivity extends AppCompatActivity implements
             googleMaps = null;
         }
 
-        googleMaps = new RCTgoogleMaps(MapsTestActivity.this, MapsTestActivity.this);
+        googleMaps = new RCTgoogleMaps(
+                MapsTestActivity.this,
+                MapsTestActivity.this,
+                500,
+                200
+        );
         googleMaps.setOnPinDropListener(this); // Set listener
         mapContainer.addView(googleMaps);
-        googleMaps.getAutoLocationUpdates(100);
         googleMaps.setCameraFollowLocationUpdate(false);
         googleMaps.setDefaultMaxZoom(17.0F);
         googleMaps.setFirstAutoLocationUpdateFollowCamera(true);

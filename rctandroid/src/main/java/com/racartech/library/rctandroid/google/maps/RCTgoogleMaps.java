@@ -19,11 +19,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.app.ActivityCompat;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -53,6 +48,7 @@ import com.racartech.library.rctandroid.file.RCTfile;
 import com.racartech.library.rctandroid.location.RCTLocationData;
 import com.racartech.library.rctandroid.location.RCTfacingDirectionListener;
 import com.racartech.library.rctandroid.location.RCTlocation;
+import com.racartech.library.rctandroid.location.RCTlocationUpdateListener;
 import com.racartech.library.rctandroid.logging.RCTloggingLocationData;
 import com.racartech.library.rctandroid.media.RCTbitmap;
 import com.racartech.library.rctandroid.media.RCTdrawable;
@@ -123,20 +119,22 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
 
     public float DEFAULT_MAX_ZOOM = 21.0F; //21 is the most zoom
 
+    private RCTlocationUpdateListener location_update_listener;
 
-    public RCTgoogleMaps(@NonNull Context context, Activity the_activity) {
+
+    public RCTgoogleMaps(@NonNull Context context, Activity the_activity, long update_interval, long fastest_interval) {
         super(context);
         init();
         activity = the_activity;
     }
 
-    public RCTgoogleMaps(@NonNull Context context, @Nullable AttributeSet attrs, Activity the_activity) {
+    public RCTgoogleMaps(@NonNull Context context, @Nullable AttributeSet attrs, Activity the_activity, long update_interval, long fastest_interval) {
         super(context, attrs);
         init();
         activity = the_activity;
     }
 
-    public RCTgoogleMaps(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, Activity the_activity) {
+    public RCTgoogleMaps(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, Activity the_activity, long update_interval, long fastest_interval) {
         super(context, attrs, defStyleAttr);
         init();
         activity = the_activity;
@@ -339,6 +337,13 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
             }
         });
 
+        location_update_listener = new RCTlocationUpdateListener(getContext(), new RCTlocationUpdateListener.LocationUpdateListener() {
+            @Override
+            public void onLocationUpdate(double latitude, double longitude) {
+                updateCurrentLocation(latitude,longitude);
+            }
+        }, 500, 200);
+
 
         double last_known_latitude = -1000;
         double last_known_longitude = -1000;
@@ -352,17 +357,10 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
             CURRENT_LOCATION_LATITUDE.set(last_known_latitude);
             CURRENT_LOCATION_LONGITUDE.set(last_known_longitude);
             CAMERA_ZOOM_LEVEl = last_known_zoom_level;
-
-
-            LatLng cache_latlng = new LatLng(last_known_latitude,last_known_longitude);
-
             updateCurrentLocation(
                     last_known_latitude,
                     last_known_longitude);
-
         }
-
-
     }
 
 
@@ -550,62 +548,13 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
     }
 
 
-    public void getAutoLocationUpdates(long update_per_millis) {
-        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
-        LocationRequest locationRequest = LocationRequest.create();
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(update_per_millis);
-        locationRequest.setFastestInterval(update_per_millis);
-
-
-        LocationCallback locationCallback = new LocationCallback() {
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                // Handle location updates here
-                Location location = locationResult.getLastLocation();
-                if (location != null) {
-                    double latitude = location.getLatitude();
-                    double longitude = location.getLongitude();
-
-                    CURRENT_LOCATION_LATITUDE.set(latitude);
-                    CURRENT_LOCATION_LONGITUDE.set(longitude);
-                    if(RCTgoogleMaps.this.CURRENT_LOCATION_DATA.get() == null) {
-                        RCTgoogleMaps.this.CURRENT_LOCATION_DATA.set(new RCTLocationData(RCTlocation.getAddress(getContext(), latitude, longitude)));
-                    }else{
-                        RCTgoogleMaps.this.CURRENT_LOCATION_DATA.get().setAddress(RCTlocation.getAddress(getContext(), latitude, longitude));
-                    }
-
-                    refreshCurrentLocationCircleLocation(CAMERA_FOLLOW_ON_LOCATION_UPDATE,false, latitude,longitude);
-                    reCalculateCurrentLocationCircleSize();
-
-                    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-                    //Log
-                    RCTloggingLocationData.add(latitude,longitude);
-                    System.out.println("-----------------------------------------------------");
-                    System.out.println("Location Updated");
-                    System.out.println("-----------------------------------------------------");
-                    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-
-                    notifyCurrentLocationUpdated(latitude, longitude);
-
-                }
-            }
-        };
-
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            return;
-        }
-        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
-    }
+    private void updateCurrentLocation(double latitude, double longitude) {
 
 
 
-    public void updateCurrentLocation(double latitude, double longitude) {
 
         CURRENT_LOCATION_LATITUDE.set(latitude);
         CURRENT_LOCATION_LONGITUDE.set(longitude);
-
         if(RCTgoogleMaps.this.CURRENT_LOCATION_DATA.get() == null) {
             RCTgoogleMaps.this.CURRENT_LOCATION_DATA.set(new RCTLocationData(RCTlocation.getAddress(getContext(), latitude, longitude)));
         }else{
@@ -615,15 +564,16 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
         refreshCurrentLocationCircleLocation(CAMERA_FOLLOW_ON_LOCATION_UPDATE,false, latitude,longitude);
         reCalculateCurrentLocationCircleSize();
 
-
         if(RCTloggingLocationData.IS_LOGGING_ENABLED.get() && RCTloggingLocationData.LOG_FILE_PATH != null) {
             RCTloggingLocationData.add(latitude, longitude);
         }
-
         notifyCurrentLocationUpdated(latitude, longitude);
 
-
     }
+
+
+
+
 
 
 
@@ -643,27 +593,6 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
             FACING_DIRECTION_ARROW.setRotation((azimuth_in_degrees -googleMap.getCameraPosition().bearing));
         }
     }
-
-
-    private LatLngBounds calculateBounds(LatLng center, double radiusInMeters) {
-        double radiusInDegrees = radiusInMeters / 111000.0;
-
-        double north = center.latitude + radiusInDegrees;
-        double south = center.latitude - radiusInDegrees;
-        double east = center.longitude + radiusInDegrees;
-        double west = center.longitude - radiusInDegrees;
-
-        return new LatLngBounds(new LatLng(south, west), new LatLng(north, east));
-    }
-
-
-
-
-
-
-
-
-
 
     public void getDirections(String api_key,
                               com.google.maps.model.LatLng origin,
@@ -689,9 +618,6 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
                 route_restriction,
                 departure_time);
     }
-
-
-
 
     private void getDirections(String api_key,
                                com.google.maps.model.LatLng origin,
@@ -723,8 +649,6 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
         }
     }
 
-
-
     private void getDrivingDirections_System(
             String api_key,
             com.google.maps.model.LatLng origin,
@@ -733,14 +657,9 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
             ArrayList<DirectionsApi.RouteRestriction> route_restriction,
             Instant departure_time) {
 
-
-
-
         GeoApiContext geoApiContext = new GeoApiContext.Builder()
                 .apiKey(api_key)
                 .build();
-
-
         DirectionsApiRequest request = DirectionsApi.newRequest(geoApiContext);
         request.origin(origin);
         request.destination(destination);
