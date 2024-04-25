@@ -382,8 +382,6 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
 
 
     private void refreshCurrentLocationCircleLocation(boolean move_camera, boolean max_zoom, double current_latitude, double current_longitude) {
-
-
         new Thread(new Runnable() {
             @Override
             public void run() {
