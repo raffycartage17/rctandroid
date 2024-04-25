@@ -247,6 +247,10 @@ public class MapsTestActivity extends AppCompatActivity implements
                 System.out.println("Latitude  : ".concat(String.valueOf(latitude)));
                 System.out.println("Longitude : ".concat(String.valueOf(longitude)));
                 System.out.println("----------------------------------------------------");
+
+
+
+
             }
         });
 
