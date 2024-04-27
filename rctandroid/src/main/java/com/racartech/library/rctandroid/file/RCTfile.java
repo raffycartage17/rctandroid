@@ -63,6 +63,29 @@ public class RCTfile{
 
 
 
+    public final static int FILE_TYPE_IMAGE = 0;
+    public final static int FILE_TYPE_VIDEO = 1;
+    public final static int FILE_TYPE_AUDIO = 2;
+    public final static int FILE_TYPE_DOCUMENT = 3;
+
+
+
+    public int getFileType(String file_path){
+        if(isFile_Image(file_path)){
+            return FILE_TYPE_IMAGE;
+        }
+        if(isFile_Video(file_path)){
+            return FILE_TYPE_VIDEO;
+        }
+        if(isFile_Audio(file_path)){
+            return FILE_TYPE_AUDIO;
+        }
+        if(isFile_Document(file_path)){
+            return FILE_TYPE_DOCUMENT;
+        }
+        return -1;
+    }
+
 
     /* Snippet
 
