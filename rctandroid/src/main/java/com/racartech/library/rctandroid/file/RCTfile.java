@@ -70,7 +70,7 @@ public class RCTfile{
 
 
 
-    public int getFileType(String file_path){
+    public static int getFileType(String file_path){
         if(isFile_Image(file_path)){
             return FILE_TYPE_IMAGE;
         }
