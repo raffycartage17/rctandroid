@@ -42,33 +42,40 @@ public class RCTsimpleDateTimeData {
         this.UNIX_EPOCH_MILLISECOND = unix_epoch_millis;
     }
 
-    public RCTsimpleDateTimeData(int year, int month, int day) {
-        this(year, month, day, 0, 0, 0, 0);
+
+    public RCTsimpleDateTimeData(int year) {
+        this(year, 1, 0, 0, 0, 0, 0);
+    }
+    public RCTsimpleDateTimeData(int year, int month) {
+        this(year, month, 1, 0, 0, 0, 0);
+    }
+    public RCTsimpleDateTimeData(int year, int month, int date) {
+        this(year, month, date, 0, 0, 0, 0);
     }
 
-    public RCTsimpleDateTimeData(int year, int month, int day, int hour) {
-        this(year, month, day, hour, 0, 0, 0);
+    public RCTsimpleDateTimeData(int year, int month, int date, int hour) {
+        this(year, month, date, hour, 0, 0, 0);
     }
 
-    public RCTsimpleDateTimeData(int year, int month, int day, int hour, int minute) {
-        this(year, month, day, hour, minute, 0, 0);
+    public RCTsimpleDateTimeData(int year, int month, int date, int hour, int minute) {
+        this(year, month, date, hour, minute, 0, 0);
     }
 
-    public RCTsimpleDateTimeData(int year, int month, int day, int hour, int minute, int second) {
-        this(year, month, day, hour, minute, second, 0);
+    public RCTsimpleDateTimeData(int year, int month, int date, int hour, int minute, int second) {
+        this(year, month, date, hour, minute, second, 0);
     }
 
-    public RCTsimpleDateTimeData(int year, int month, int day, int hour, int minute, int second, int millisecond) {
+    public RCTsimpleDateTimeData(int year, int month, int date, int hour, int minute, int second, int millisecond) {
         YEAR = year;
         MONTH = month;
-        DATE = day;
+        DATE = date;
         HOUR = hour;
         MINUTE = minute;
         SECOND = second;
         MILLISECOND = millisecond;
 
         Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month - 1, day, hour, minute, second);
+        calendar.set(year, month - 1, date, hour, minute, second);
         calendar.set(Calendar.MILLISECOND, millisecond);
 
         this.UNIX_EPOCH_MILLISECOND = calendar.getTimeInMillis();
@@ -130,6 +137,40 @@ public class RCTsimpleDateTimeData {
         long add_millis = this.UNIX_EPOCH_MILLISECOND + (hour*MILLIS_IN_MINUTE);
         return new RCTsimpleDateTimeData(add_millis);
     }
+
+
+
+    public RCTsimpleDateTimeData getExactYear(){
+        return new RCTsimpleDateTimeData(this.YEAR);
+    }
+    public RCTsimpleDateTimeData getExactMonth(){
+        return new RCTsimpleDateTimeData(this.YEAR, this.MONTH);
+    }
+    public RCTsimpleDateTimeData getExactDate(){
+        return new RCTsimpleDateTimeData(this.YEAR, this.MONTH, this.DATE);
+    }
+    public RCTsimpleDateTimeData getExactHour(){
+        return new RCTsimpleDateTimeData(this.YEAR, this.MONTH, this.DATE, this.HOUR);
+    }
+
+    public RCTsimpleDateTimeData getExactMinute(){
+        return new RCTsimpleDateTimeData(this.YEAR, this.MONTH, this.DATE, this.HOUR, this.MINUTE);
+    }
+    public RCTsimpleDateTimeData getExactSecond(){
+        return new RCTsimpleDateTimeData(this.YEAR, this.MONTH, this.DATE, this.HOUR, this.MINUTE,this.SECOND);
+    }
+
+    public void print(){
+        System.out.println("Year        : ".concat(String.valueOf(this.YEAR)));
+        System.out.println("Month       : ".concat(String.valueOf(this.MONTH)));
+        System.out.println("Date        : ".concat(String.valueOf(this.DATE)));
+        System.out.println("Hour        : ".concat(String.valueOf(this.HOUR)));
+        System.out.println("Minute      : ".concat(String.valueOf(this.MINUTE)));
+        System.out.println("Second      : ".concat(String.valueOf(this.SECOND)));
+        System.out.println("Milisecond  : ".concat(String.valueOf(this.MILLISECOND)));
+        System.out.println("Unix Epoch  : ".concat(String.valueOf(this.UNIX_EPOCH_MILLISECOND)));
+    }
+
 
 
 

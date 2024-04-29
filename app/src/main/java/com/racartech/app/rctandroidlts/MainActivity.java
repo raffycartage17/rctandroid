@@ -24,6 +24,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.racartech.app.rctandroidlts.functionbuttons.FunctionFive;
 import com.racartech.app.rctandroidlts.functionbuttons.FunctionOne;
 import com.racartech.app.rctandroidlts.functionbuttons.FunctionThree;
@@ -34,6 +35,7 @@ import com.racartech.app.rctandroidlts.resources.BuildConfig;
 import com.racartech.app.rctandroidlts.window1.Window1;
 import com.racartech.app.rctandroidlts.window1.Window2;
 import com.racartech.library.rctandroid.file.RCTfile;
+import com.racartech.library.rctandroid.google.firebase.firestore.RCTfirebaseFirestore;
 import com.racartech.library.rctandroid.json.RCTorgJSON;
 import com.racartech.library.rctandroid.notifications.RCTnotifications;
 import com.racartech.library.rctandroid.permission.RCTpermission;
@@ -251,6 +253,39 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("Time Stamp : ".concat(new_data.getTimeStamp_YYYY_MM_DD_HH_MM_SS()));
 
                 System.out.println("----------------------------------------------------------------");
+            }
+        });
+
+        f8.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+
+
+                        RCTsimpleDateTimeData simple_time_data = new RCTsimpleDateTimeData(System.currentTimeMillis());
+                        RCTsimpleDateTimeData exact_month = simple_time_data.getExactMonth();
+                        RCTsimpleDateTimeData cloned_data = new RCTsimpleDateTimeData(exact_month.UNIX_EPOCH_MILLISECOND);
+                        cloned_data.print();
+                        /*
+                        String collection = "Bulacan";
+                        String document_city = "Cities";
+
+                        boolean does_document_exist_cities = RCTfirebaseFirestore.doesDocumentExist(
+                                FirebaseFirestore.getInstance(),collection, document_city,100);
+                        boolean does_document_exist_nothing = RCTfirebaseFirestore.doesDocumentExist(
+                                FirebaseFirestore.getInstance(),collection, "Nothing",100);
+                        System.out.println("------------------------------------------------");
+                        System.out.println("Does Cities Exist : ".concat(String.valueOf(does_document_exist_cities)));
+                        System.out.println("Does Cities Exist : ".concat(String.valueOf(does_document_exist_nothing)));
+                        System.out.println("------------------------------------------------");
+
+                         */
+                    }
+                }).start();
+
             }
         });
 

@@ -439,12 +439,110 @@ public class RCTfirebaseFirestore {
     }
 
 
+    public static boolean doesDocumentExist(
+            FirebaseFirestore instance,
+            String collection_path,
+            String document_path,
+            long thread_wait){
+        boolean return_boolean = false;
+        AtomicBoolean finished_boolean = new AtomicBoolean(false);
+        AtomicBoolean does_document_exist = new AtomicBoolean(false);
+        FirestoreUtil.doesDocumentExist(instance,collection_path, document_path,finished_boolean,does_document_exist);
+        while(!return_boolean){
+            if(!finished_boolean.get()){
+                try {
+                    Thread.sleep(thread_wait);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }else{
+                return_boolean = true;
+            }
+        }
+        return does_document_exist.get();
+    }
+
+
+
+
+
 
 
 
 
 
     protected static class FirestoreUtil {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public static void doesDocumentExist(
+                FirebaseFirestore fs_instance,
+                String collectionPath,
+                String documentPath,
+                AtomicBoolean isFinished,
+                AtomicBoolean documentExists) {
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+
+                    fs_instance.collection(collectionPath).document(documentPath).get()
+                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot document = task.getResult();
+                                        if (document.exists()) {
+                                            documentExists.set(true);
+                                        } else {
+                                            documentExists.set(false);
+                                        }
+                                    } else {
+                                        documentExists.set(false);
+                                    }
+                                    isFinished.set(true);
+                                }
+                            }).addOnCanceledListener(new OnCanceledListener() {
+                                @Override
+                                public void onCanceled() {
+                                    isFinished.set(true);
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    isFinished.set(true);
+                                }
+                            });
+
+                }
+            }).start();
+        }
+
+
+
+
+
+
+
+
+
+
+
+
         protected static void createDocument(FirebaseFirestore instance,String collection_path, String document_path) {
 
             new Thread(new Runnable() {
