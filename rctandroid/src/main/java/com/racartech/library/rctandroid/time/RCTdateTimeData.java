@@ -4,7 +4,7 @@ package com.racartech.library.rctandroid.time;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class RCTsimpleDateTimeData {
+public class RCTdateTimeData {
 
     public final static long MILLIS_IN_WEEK = 604800000L;
     public final static long MILLIS_IN_DAY = 86400000L;
@@ -26,7 +26,7 @@ public class RCTsimpleDateTimeData {
 
     public long UNIX_EPOCH_MILLISECOND;
 
-    public RCTsimpleDateTimeData(long unix_epoch_millis) {
+    public RCTdateTimeData(long unix_epoch_millis) {
         Calendar current_time = Calendar.getInstance();
         current_time.setTimeInMillis(unix_epoch_millis); // Set time using milliseconds
 
@@ -43,29 +43,29 @@ public class RCTsimpleDateTimeData {
     }
 
 
-    public RCTsimpleDateTimeData(int year) {
+    public RCTdateTimeData(int year) {
         this(year, 1, 0, 0, 0, 0, 0);
     }
-    public RCTsimpleDateTimeData(int year, int month) {
+    public RCTdateTimeData(int year, int month) {
         this(year, month, 1, 0, 0, 0, 0);
     }
-    public RCTsimpleDateTimeData(int year, int month, int date) {
+    public RCTdateTimeData(int year, int month, int date) {
         this(year, month, date, 0, 0, 0, 0);
     }
 
-    public RCTsimpleDateTimeData(int year, int month, int date, int hour) {
+    public RCTdateTimeData(int year, int month, int date, int hour) {
         this(year, month, date, hour, 0, 0, 0);
     }
 
-    public RCTsimpleDateTimeData(int year, int month, int date, int hour, int minute) {
+    public RCTdateTimeData(int year, int month, int date, int hour, int minute) {
         this(year, month, date, hour, minute, 0, 0);
     }
 
-    public RCTsimpleDateTimeData(int year, int month, int date, int hour, int minute, int second) {
+    public RCTdateTimeData(int year, int month, int date, int hour, int minute, int second) {
         this(year, month, date, hour, minute, second, 0);
     }
 
-    public RCTsimpleDateTimeData(int year, int month, int date, int hour, int minute, int second, int millisecond) {
+    public RCTdateTimeData(int year, int month, int date, int hour, int minute, int second, int millisecond) {
         YEAR = year;
         MONTH = month;
         DATE = date;
@@ -101,64 +101,71 @@ public class RCTsimpleDateTimeData {
 
 
 
-    public RCTsimpleDateTimeData subtractWeek(int day){
+    public RCTdateTimeData subtractWeek(int day){
         long subtract_millis = this.UNIX_EPOCH_MILLISECOND - (day*MILLIS_IN_WEEK);
-        return new RCTsimpleDateTimeData(subtract_millis);
+        return new RCTdateTimeData(subtract_millis);
     }
 
-    public RCTsimpleDateTimeData addWeek(int day){
+    public RCTdateTimeData addWeek(int day){
         long add_millis = this.UNIX_EPOCH_MILLISECOND + (day*MILLIS_IN_WEEK);
-        return new RCTsimpleDateTimeData(add_millis);
+        return new RCTdateTimeData(add_millis);
     }
-    public RCTsimpleDateTimeData subtractDay(int day){
+    public RCTdateTimeData subtractDay(int day){
         long subtract_day_millis = this.UNIX_EPOCH_MILLISECOND - (day*MILLIS_IN_DAY);
-        return new RCTsimpleDateTimeData(subtract_day_millis);
+        return new RCTdateTimeData(subtract_day_millis);
     }
 
-    public RCTsimpleDateTimeData addDay(int day){
+    public RCTdateTimeData addDay(int day){
         long add_day_millis = this.UNIX_EPOCH_MILLISECOND + (day*MILLIS_IN_DAY);
-        return new RCTsimpleDateTimeData(add_day_millis);
+        return new RCTdateTimeData(add_day_millis);
     }
 
-    public RCTsimpleDateTimeData subtractHour(int hour){
+    public RCTdateTimeData subtractHour(int hour){
         long subtract_hour_millis = this.UNIX_EPOCH_MILLISECOND - (hour*MILLIS_IN_HOUR);
-        return new RCTsimpleDateTimeData(subtract_hour_millis);
+        return new RCTdateTimeData(subtract_hour_millis);
     }
-    public RCTsimpleDateTimeData addHour(int hour){
+    public RCTdateTimeData addHour(int hour){
         long add_hour_millis = this.UNIX_EPOCH_MILLISECOND + (hour*MILLIS_IN_HOUR);
-        return new RCTsimpleDateTimeData(add_hour_millis);
+        return new RCTdateTimeData(add_hour_millis);
     }
 
-    public RCTsimpleDateTimeData subtractMinute(int hour){
+    public RCTdateTimeData subtractMinute(int hour){
         long subtract_millis = this.UNIX_EPOCH_MILLISECOND - (hour*MILLIS_IN_MINUTE);
-        return new RCTsimpleDateTimeData(subtract_millis);
+        return new RCTdateTimeData(subtract_millis);
     }
-    public RCTsimpleDateTimeData addMinute(int hour){
+    public RCTdateTimeData addMinute(int hour){
         long add_millis = this.UNIX_EPOCH_MILLISECOND + (hour*MILLIS_IN_MINUTE);
-        return new RCTsimpleDateTimeData(add_millis);
+        return new RCTdateTimeData(add_millis);
     }
 
 
 
-    public RCTsimpleDateTimeData getExactYear(){
-        return new RCTsimpleDateTimeData(this.YEAR);
+    public RCTdateTimeData getExactYear(){
+        return new RCTdateTimeData(this.YEAR);
     }
-    public RCTsimpleDateTimeData getExactMonth(){
-        return new RCTsimpleDateTimeData(this.YEAR, this.MONTH);
+    public RCTdateTimeData getExactMonth(){
+        return new RCTdateTimeData(this.YEAR, this.MONTH);
     }
-    public RCTsimpleDateTimeData getExactDate(){
-        return new RCTsimpleDateTimeData(this.YEAR, this.MONTH, this.DATE);
+    public RCTdateTimeData getExactDate(){
+        return new RCTdateTimeData(this.YEAR, this.MONTH, this.DATE);
     }
-    public RCTsimpleDateTimeData getExactHour(){
-        return new RCTsimpleDateTimeData(this.YEAR, this.MONTH, this.DATE, this.HOUR);
+    public RCTdateTimeData getExactHour(){
+        return new RCTdateTimeData(this.YEAR, this.MONTH, this.DATE, this.HOUR);
     }
 
-    public RCTsimpleDateTimeData getExactMinute(){
-        return new RCTsimpleDateTimeData(this.YEAR, this.MONTH, this.DATE, this.HOUR, this.MINUTE);
+    public RCTdateTimeData getExactMinute(){
+        return new RCTdateTimeData(this.YEAR, this.MONTH, this.DATE, this.HOUR, this.MINUTE);
     }
-    public RCTsimpleDateTimeData getExactSecond(){
-        return new RCTsimpleDateTimeData(this.YEAR, this.MONTH, this.DATE, this.HOUR, this.MINUTE,this.SECOND);
+    public RCTdateTimeData getExactSecond(){
+        return new RCTdateTimeData(this.YEAR, this.MONTH, this.DATE, this.HOUR, this.MINUTE,this.SECOND);
     }
+
+    public boolean isLeapYear() {
+        return RCTtime.isLeapYear(this.YEAR);
+    }
+
+
+
 
     public void print(){
         System.out.println("Year        : ".concat(String.valueOf(this.YEAR)));

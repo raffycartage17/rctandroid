@@ -6,8 +6,7 @@ import android.content.Context;
 import android.icu.util.Calendar;
 import android.widget.DatePicker;
 
-import com.racartech.library.rctandroid.phone.RCTdial;
-import com.racartech.library.rctandroid.time.RCTsimpleDateTimeData;
+import com.racartech.library.rctandroid.time.RCTdateTimeData;
 
 public class FunctionOne{
 
@@ -36,9 +35,9 @@ public class FunctionOne{
 
 
         datePickerDialog.getDatePicker().setMinDate(
-                new RCTsimpleDateTimeData(System.currentTimeMillis()).UNIX_EPOCH_MILLISECOND);
+                new RCTdateTimeData(System.currentTimeMillis()).UNIX_EPOCH_MILLISECOND);
         datePickerDialog.getDatePicker().setMaxDate(
-                new RCTsimpleDateTimeData(System.currentTimeMillis()).addDay(7).UNIX_EPOCH_MILLISECOND);
+                new RCTdateTimeData(System.currentTimeMillis()).addDay(7).UNIX_EPOCH_MILLISECOND);
 
 
 

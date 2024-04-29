@@ -24,9 +24,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.racartech.app.rctandroidlts.functionbuttons.FunctionFive;
-import com.racartech.app.rctandroidlts.functionbuttons.FunctionOne;
 import com.racartech.app.rctandroidlts.functionbuttons.FunctionThree;
 import com.racartech.app.rctandroidlts.functionbuttons.FunctionTwo;
 import com.racartech.app.rctandroidlts.maps.MapsTestActivity;
@@ -35,12 +33,10 @@ import com.racartech.app.rctandroidlts.resources.BuildConfig;
 import com.racartech.app.rctandroidlts.window1.Window1;
 import com.racartech.app.rctandroidlts.window1.Window2;
 import com.racartech.library.rctandroid.file.RCTfile;
-import com.racartech.library.rctandroid.google.firebase.firestore.RCTfirebaseFirestore;
 import com.racartech.library.rctandroid.json.RCTorgJSON;
 import com.racartech.library.rctandroid.notifications.RCTnotifications;
 import com.racartech.library.rctandroid.permission.RCTpermission;
-import com.racartech.library.rctandroid.time.RCTsimpleDateTimeData;
-import com.racartech.library.rctandroid.time.RCTtimeData;
+import com.racartech.library.rctandroid.time.RCTdateTimeData;
 
 import java.util.ArrayList;
 
@@ -219,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("----------------------------------------------------------------");
                 long cached_current_millis = System.currentTimeMillis();
 
-                RCTsimpleDateTimeData dt_data = new RCTsimpleDateTimeData(cached_current_millis);
+                RCTdateTimeData dt_data = new RCTdateTimeData(cached_current_millis);
                 // Print out every variable from dt_data object
                 System.out.println("Year: " + dt_data.YEAR);
                 System.out.println("Month: " + dt_data.MONTH);
@@ -230,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("Millisecond: " + dt_data.MILLISECOND);
                 System.out.println("Unix Epoch Millisecond: " + dt_data.UNIX_EPOCH_MILLISECOND);
                 System.out.println("----------------------------------------------------------------");
-                RCTsimpleDateTimeData new_data = new RCTsimpleDateTimeData(
+                RCTdateTimeData new_data = new RCTdateTimeData(
                         dt_data.YEAR,
                         dt_data.MONTH,
                         dt_data.DATE,
@@ -265,9 +261,9 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
 
 
-                        RCTsimpleDateTimeData simple_time_data = new RCTsimpleDateTimeData(System.currentTimeMillis());
-                        RCTsimpleDateTimeData exact_month = simple_time_data.getExactMonth();
-                        RCTsimpleDateTimeData cloned_data = new RCTsimpleDateTimeData(exact_month.UNIX_EPOCH_MILLISECOND);
+                        RCTdateTimeData simple_time_data = new RCTdateTimeData(System.currentTimeMillis());
+                        RCTdateTimeData exact_month = simple_time_data.getExactMonth();
+                        RCTdateTimeData cloned_data = new RCTdateTimeData(exact_month.UNIX_EPOCH_MILLISECOND);
                         cloned_data.print();
                         /*
                         String collection = "Bulacan";
