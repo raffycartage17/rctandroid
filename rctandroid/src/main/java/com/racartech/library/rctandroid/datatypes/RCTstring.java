@@ -12,6 +12,17 @@ public class RCTstring{
             '0','1','2','3','4','5','6','7','8','9'
     };
 
+
+    public static String getPasswordify(int string_length){
+        String passwordify = "";
+        for(int index = 0; index<string_length; index++){
+            passwordify = passwordify.concat("*");
+        }
+        return passwordify;
+    }
+
+
+
     public static String reverse(String target_string){
         char[] target_string_char = target_string.toCharArray();
         RCTarray.reverse(target_string_char);
