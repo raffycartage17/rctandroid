@@ -273,10 +273,12 @@ public class RCTquickSave{
 
 
 
-    private void saveFileContents(ArrayList<String> file_contents){
+    private synchronized boolean saveFileContents(ArrayList<String> file_contents){
         try {
             RCTfile.overrideFile(this.SAVE_FILE_PATH, file_contents);
+            return true;
         } catch (IOException ignored) {
+            return false;
         }
     }
 
