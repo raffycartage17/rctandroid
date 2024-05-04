@@ -19,6 +19,11 @@ import java.util.ArrayList;
 public class RCTinternet{
 
 
+    public static final int BYTES_IN_KB = 1024;
+    public static final int BYTES_IN_100KB = 102400;
+    public static final int BYTES_IN_1MB = 1024000;
+
+
     public static boolean saveImageAsFile(URL image_url, String file_path){
         try {
             Bitmap image_bitmap = RCTbitmap.getBitmapForURL(image_url);
@@ -105,6 +110,32 @@ public class RCTinternet{
         }
     }
 
+
+    public static boolean downloadFile(String download_url, String save_to_file_path, int buffer_size) {
+        try {
+            URL url = new URL(download_url);
+            URLConnection connection = url.openConnection();
+            connection.setConnectTimeout(10000);
+            connection.setReadTimeout(10000);
+
+            try (InputStream in = connection.getInputStream();
+                 FileOutputStream out = new FileOutputStream(save_to_file_path)) {
+
+                byte[] buffer = new byte[buffer_size];
+                int bytesRead;
+                while ((bytesRead = in.read(buffer)) != -1) {
+                    out.write(buffer, 0, bytesRead);
+                }
+            }
+
+            return true; // Successfully downloaded and saved the file.
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false; // Failed to download or save the file.
+        }
+    }
+
+
     public static boolean downloadFile(URL download_url, String save_to_file_path) {
         try {
             URLConnection connection = download_url.openConnection();
@@ -115,6 +146,29 @@ public class RCTinternet{
                  FileOutputStream out = new FileOutputStream(save_to_file_path)) {
 
                 byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = in.read(buffer)) != -1) {
+                    out.write(buffer, 0, bytesRead);
+                }
+            }
+
+            return true; // Successfully downloaded and saved the file.
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false; // Failed to download or save the file.
+        }
+    }
+
+    public static boolean downloadFile(URL download_url, String save_to_file_path, int buffer_size) {
+        try {
+            URLConnection connection = download_url.openConnection();
+            connection.setConnectTimeout(10000);
+            connection.setReadTimeout(10000);
+
+            try (InputStream in = connection.getInputStream();
+                 FileOutputStream out = new FileOutputStream(save_to_file_path)) {
+
+                byte[] buffer = new byte[buffer_size];
                 int bytesRead;
                 while ((bytesRead = in.read(buffer)) != -1) {
                     out.write(buffer, 0, bytesRead);
