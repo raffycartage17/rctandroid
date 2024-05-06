@@ -68,7 +68,11 @@ public class RCTfirebaseStorage {
                 return_boolean = true;
             }
         }
-        return atomic_string.get();
+        if(atomic_string.get().equalsIgnoreCase(NULL_RESULT_IDENTIFIER)) {
+            return null;
+        }else{
+            return atomic_string.get();
+        }
 
     }
 
@@ -122,7 +126,11 @@ public class RCTfirebaseStorage {
                 return_boolean = true;
             }
         }
-        return atomic_string.get();
+        if(atomic_string.get().equalsIgnoreCase(NULL_RESULT_IDENTIFIER)) {
+            return null;
+        }else{
+            return atomic_string.get();
+        }
 
     }
 
@@ -169,7 +177,11 @@ public class RCTfirebaseStorage {
                 return_boolean = true;
             }
         }
-        return atomic_string.get();
+        if(atomic_string.get().equalsIgnoreCase(NULL_RESULT_IDENTIFIER)) {
+            return null;
+        }else{
+            return atomic_string.get();
+        }
 
 
     }
@@ -211,7 +223,11 @@ public class RCTfirebaseStorage {
                 return_boolean = true;
             }
         }
-        return atomic_string.get();
+        if(atomic_string.get().equalsIgnoreCase(NULL_RESULT_IDENTIFIER)) {
+            return null;
+        }else{
+            return atomic_string.get();
+        }
     }
 
     /**
@@ -269,7 +285,11 @@ public class RCTfirebaseStorage {
                 return_boolean = true;
             }
         }
-        return atomic_string.get();
+        if(atomic_string.get().equalsIgnoreCase(NULL_RESULT_IDENTIFIER)) {
+            return null;
+        }else{
+            return atomic_string.get();
+        }
 
     }
 
@@ -296,7 +316,11 @@ public class RCTfirebaseStorage {
                 return_boolean = true;
             }
         }
-        return atomic_string.get();
+        if(atomic_string.get().equalsIgnoreCase(NULL_RESULT_IDENTIFIER)) {
+            return null;
+        }else{
+            return atomic_string.get();
+        }
 
 
     }
@@ -479,7 +503,11 @@ public class RCTfirebaseStorage {
                 return_boolean = true;
             }
         }
-        return atomic_string.get();
+        if(atomic_string.get().equalsIgnoreCase(NULL_RESULT_IDENTIFIER)) {
+            return null;
+        }else{
+            return atomic_string.get();
+        }
     }
 
 
@@ -511,7 +539,16 @@ public class RCTfirebaseStorage {
             }
         }
 
-        return atomic_list.get();
+        ArrayList<String> processed_atomic_list = new ArrayList<>();
+        for(int index = 0; index<atomic_list.get().size(); index++){
+            if(atomic_list.get().get(index).equalsIgnoreCase(NULL_RESULT_IDENTIFIER)){
+                processed_atomic_list.add(null);
+            }else{
+                processed_atomic_list.add(atomic_list.get().get(index));
+            }
+        }
+
+        return processed_atomic_list;
     }
     
 

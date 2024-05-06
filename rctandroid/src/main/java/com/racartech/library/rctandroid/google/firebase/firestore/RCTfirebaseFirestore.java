@@ -51,20 +51,25 @@ public class RCTfirebaseFirestore {
 
 
 
-    public static void createField(FirebaseFirestore instance, String collection_path, String document_path, String field, String value){
-            FirestoreUtil.createField(instance,collection_path,document_path,field,value);
+    public static void createField(
+            FirebaseFirestore instance,
+            String collection_path,
+            String document_path,
+            String field_name,
+            String field_value){
+            FirestoreUtil.createField(instance,collection_path,document_path,field_name,field_value);
     }
 
     public static void createField_WaitProgress(
             FirebaseFirestore instance,
             String collection_path,
             String document_path,
-            String field,
-            String value,
+            String field_name,
+            String field_value,
             long thread_wait){
         boolean return_boolean = false;
         AtomicBoolean finished_boolean = new AtomicBoolean(false);
-        FirestoreUtil.createField_WaitProgress(instance,collection_path,document_path,field,value,finished_boolean);
+        FirestoreUtil.createField_WaitProgress(instance,collection_path,document_path,field_name,field_value,finished_boolean);
         while(!return_boolean){
             if(!finished_boolean.get()){
                 try {
@@ -83,11 +88,11 @@ public class RCTfirebaseFirestore {
             FirebaseFirestore instance,
             String collection_path,
             String document_path,
-            String field,
+            String field_name,
             long thread_wait){
         boolean return_boolean = false;
         AtomicBoolean finished_boolean = new AtomicBoolean(false);
-        FirestoreUtil.deleteField_WaitProgress(instance,collection_path,document_path,field,finished_boolean);
+        FirestoreUtil.deleteField_WaitProgress(instance,collection_path,document_path,field_name,finished_boolean);
         while(!return_boolean){
             if(!finished_boolean.get()){
                 try {
@@ -105,9 +110,9 @@ public class RCTfirebaseFirestore {
             FirebaseFirestore instance,
             String collection_path,
             String document_path,
-            String field
+            String field_name
     ){
-        FirestoreUtil.deleteField(instance,collection_path,document_path,field);
+        FirestoreUtil.deleteField(instance,collection_path,document_path,field_name);
     }
 
     public static void renameField(
@@ -299,10 +304,19 @@ public class RCTfirebaseFirestore {
     }
 
 
+    public static String readField(FirebaseFirestore instance,
+                                   String collection_path,
+                                   String document_path,
+                                   String field_name,
+                                   long thread_wait){
+        return readField(collection_path, document_path, field_name, thread_wait, instance);
+    }
+
+
     public static String readField(
             String collection_path,
             String document_path,
-            String fieldName,
+            String field_name,
             long thread_wait,
             FirebaseFirestore instance){
 
@@ -313,7 +327,7 @@ public class RCTfirebaseFirestore {
                 instance,
                 collection_path,
                 document_path,
-                fieldName,
+                field_name,
                 finished_boolean,
                 atomic_value);
         while(!return_boolean){
