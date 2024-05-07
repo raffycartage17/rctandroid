@@ -1,5 +1,7 @@
 package com.racartech.library.rctandroid.time;
 
+import com.racartech.library.rctandroid.math.RCTrandom;
+
 import java.text.DecimalFormat;
 
 public class RCTtimeConverter{
@@ -18,6 +20,22 @@ public class RCTtimeConverter{
         return day*(24L*60L*60L*1000L);
     }
 
+    public static long convertYear_ToMS(long number_of_year){
+        return number_of_year*(365L*24L*60L*60L*1000L);
+    }
+
+    public static long convertDecade_ToMS(long number_of_decades){
+        return (number_of_decades*10L)*(365L*24L*60L*60L*1000L);
+    }
+
+    public static long convertCentury_ToMS(long number_of_century){
+        return (number_of_century*100L)*(365L*24L*60L*60L*1000L);
+    }
+
+    public static long convertMillennium_ToMS(long number_of_millennium){
+        return (number_of_millennium*1000L)*(365L*24L*60L*60L*1000L);
+    }
+
     public static long convertMS_toSecond(long millisecond){
         return millisecond/(1000L);
     }
@@ -29,6 +47,18 @@ public class RCTtimeConverter{
     }
     public static long convertMS_toDay(long millisecond){
         return millisecond/(24L*60L*60L*1000L);
+    }
+    public static long convertMS_toYear(long millisecond){
+        return millisecond/(365L*24L*60L*60L*1000L);
+    }
+    public static long convertMS_toDecade(long millisecond){
+        return millisecond/(10L*365L*24L*60L*60L*1000L);
+    }
+    public static long convertMS_toCentury(long millisecond){
+        return millisecond/(100L*365L*24L*60L*60L*1000L);
+    }
+    public static long convertMS_toMillennium(long millisecond){
+        return millisecond/(1000L*365L*24L*60L*60L*1000L);
     }
 
     public static String convertMS_toTimeTag(long milliseconds){
