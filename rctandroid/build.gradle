@@ -54,7 +54,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-database'
     implementation 'com.google.firebase:firebase-config'
 
-    implementation 'com.google.maps.android:android-maps-utils:3.8.0'
+    implementation 'com.google.maps.android:android-maps-utils:3.8.2'
 
 
     implementation 'commons-io:commons-io:2.16.1' //2.13.0
