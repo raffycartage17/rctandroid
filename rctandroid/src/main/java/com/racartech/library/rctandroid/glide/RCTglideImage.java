@@ -35,7 +35,6 @@ public class RCTglideImage {
     public static void loadImageFromUrl(Context context, String imageUrl, ImageView imageView) {
         RequestOptions requestOptions = new RequestOptions()
                 .diskCacheStrategy(DiskCacheStrategy.ALL);
-
         Glide.with(context)
                 .load(imageUrl)
                 .apply(requestOptions)
@@ -45,7 +44,6 @@ public class RCTglideImage {
     public static void loadImageFromUrl(Context context, String imageUrl, ImageButton imageButton) {
         RequestOptions requestOptions = new RequestOptions()
                 .diskCacheStrategy(DiskCacheStrategy.ALL);
-
         Glide.with(context)
                 .load(imageUrl)
                 .apply(requestOptions)
@@ -56,7 +54,6 @@ public class RCTglideImage {
     public static void loadImageFromUri(Context context, Uri uri, ImageView imageView) {
         RequestOptions requestOptions = new RequestOptions()
                 .diskCacheStrategy(DiskCacheStrategy.ALL);
-
         Glide.with(context)
                 .load(uri)
                 .apply(requestOptions)
@@ -66,7 +63,6 @@ public class RCTglideImage {
     public static void loadImageFromUri(Context context, Uri uri, ImageButton imageButton) {
         RequestOptions requestOptions = new RequestOptions()
                 .diskCacheStrategy(DiskCacheStrategy.ALL);
-
         Glide.with(context)
                 .load(uri)
                 .apply(requestOptions)
