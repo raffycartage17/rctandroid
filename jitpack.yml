@@ -1,12 +1,13 @@
 jdk:
   - openjdk17
 
-build:
-  gradle:
-    - ./gradlew assembleRelease
-
 before_install:
   - mkdir -p $HOME/.android && touch $HOME/.android/repositories.cfg
   - mkdir -p src/main/assets
   - sdk install java 17.0.9-open
   - sdk use java 17.0.9-open
+
+build:
+  gradle:
+    - ./gradlew assembleRelease
+
