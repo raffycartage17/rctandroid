@@ -39,6 +39,7 @@ android {
     }
 }
 
+
 dependencies {
 
     implementation group: 'com.google.guava', name: 'guava', version: '33.2.0-android'
@@ -69,6 +70,24 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }
 
+afterEvaluate{
+    android.libraryVariants.each{variant->
+        publishing.publications.create(variant.name, MavenPublication){
+            from components.findByName(variant.name)
+            groupId = 'com.racartech.library'
+            artifactId = 'rctandroid'
+            version = '0.7.25.01'
+        }
+    }
+}
+
+
+
+
+
+
+
+
 
 /*
 publishing {
@@ -89,20 +108,9 @@ publishing {
 
 
 
-/*
 
-afterEvaluate{
-    android.libraryVariants.each{variant->
-        publishing.publications.create(variant.name, MavenPublication){
-            from components.findByName(variant.name)
-            groupId = 'com.racartech.library'
-            artifactId = 'rctandroid'
-            version = '0.7.25.01'
-        }
-    }
-}
 
- */
+
 
 /*
 
