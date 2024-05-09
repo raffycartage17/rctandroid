@@ -1,24 +1,23 @@
 plugins {
-    //alias(libs.plugins.android.application)
     id 'com.android.application'
     //id("com.google.gms.google-services")
 }
 
 android {
     namespace 'com.racartech.app.rctandroidlts'
-    compileSdk 34
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.racartech.app.rctandroidlts"
         minSdk 27
-        targetSdk 34
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
         Properties properties = new Properties()
         properties.load(project.rootProject.file('local.properties').newDataInputStream())
         manifestPlaceholders = [prod_google_api_key: "${properties.getProperty('prod_google_api_key')}"]
-        
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -47,8 +46,8 @@ android {
 
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 
     buildFeatures{
@@ -58,10 +57,8 @@ android {
 
 dependencies {
 
-    implementation group: 'com.google.guava', name: 'guava', version: '33.2.0-android'
 
-
-    implementation(platform("com.google.firebase:firebase-bom:33.0.0")) //32.8.1
+    implementation(platform("com.google.firebase:firebase-bom:32.8.1")) //32.8.1
     implementation 'com.google.firebase:firebase-analytics'
 
     implementation 'com.google.firebase:firebase-auth'
@@ -87,7 +84,7 @@ dependencies {
 
     implementation project(':rctandroid')
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.12.0' //Update this only when SDK Target was 34 and the gradle was updated to 8.0+
+    implementation 'com.google.android.material:material:1.9.0' //Update this only when SDK Target was 34 and the gradle was updated to 8.0+
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
