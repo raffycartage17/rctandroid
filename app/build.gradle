@@ -1,16 +1,17 @@
 plugins {
+    //alias(libs.plugins.android.application)
     id 'com.android.application'
-    //id("com.google.gms.google-services")
+    id("com.google.gms.google-services")
 }
 
 android {
     namespace 'com.racartech.app.rctandroidlts'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.racartech.app.rctandroidlts"
         minSdk 27
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -56,6 +57,8 @@ android {
 }
 
 dependencies {
+
+    implementation group: 'com.google.guava', name: 'guava', version: '33.2.0-android'
 
 
     implementation(platform("com.google.firebase:firebase-bom:32.8.1")) //32.8.1
