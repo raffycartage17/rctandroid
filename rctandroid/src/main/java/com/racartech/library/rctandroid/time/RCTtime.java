@@ -16,6 +16,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.TimeZone;
 
+@Deprecated
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class RCTtime {
     private final static Calendar timeAndDate = Calendar.getInstance();

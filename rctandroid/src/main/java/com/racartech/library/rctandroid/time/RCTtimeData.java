@@ -2,6 +2,8 @@ package com.racartech.library.rctandroid.time;
 
 import java.util.Calendar;
 
+
+@Deprecated
 public class RCTtimeData {
 
     public int YEAR = 0; // current year
