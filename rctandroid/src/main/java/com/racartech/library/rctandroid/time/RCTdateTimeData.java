@@ -2,7 +2,6 @@ package com.racartech.library.rctandroid.time;
 
 
 import java.util.Calendar;
-import java.util.Locale;
 
 public class RCTdateTimeData {
 
@@ -81,24 +80,48 @@ public class RCTdateTimeData {
         this.UNIX_EPOCH_MILLISECOND = calendar.getTimeInMillis();
         this.DAY_OF_WEEK = calendar.get(Calendar.DAY_OF_WEEK);
         this.DAY_OF_YEAR = calendar.get(Calendar.DAY_OF_YEAR);
+
+
+        if(MONTH < 1 ){
+            MONTH = 1;
+        }else if(MONTH > 12){
+            MONTH = 12;
+        }
+
+        if(DATE < 1){
+            DATE = 1;
+        }else if(DATE > RCTdateTime.getDayCountInMonth(MONTH,YEAR)){
+            DATE = RCTdateTime.getDayCountInMonth(MONTH,YEAR);
+        }
+
+        if(HOUR < 0){
+            HOUR = 0;
+        }else if(HOUR > 23){
+            HOUR = 23;
+        }
+
+        if(MINUTE < 0){
+            MINUTE = 0;
+        }else if(MINUTE > 59){
+            MINUTE = 59;
+        }
+
+        if(SECOND < 0){
+            SECOND = 0;
+        }else if(SECOND > 59){
+            SECOND = 59;
+        }
+
+        if(MILLISECOND < 0){
+            MILLISECOND = 0;
+        }else if(MILLISECOND > 999){
+            MILLISECOND = 999;
+        }
+
+
+
+
     }
-
-
-    public String getTimeStamp_YYYY_MM_DD(){
-        // Create a timestamp string with this format "YYYY-MM-DD"
-        return String.format(Locale.US, "%04d-%02d-%02d", YEAR, MONTH, DATE);
-    }
-
-    public String getTimeStamp_YYYY_MM_DD_HH_MM(){
-        // Create a timestamp string with this format "YYYY-MM-DD-HH-MM"
-        return String.format(Locale.US, "%04d-%02d-%02d-%02d-%02d", YEAR, MONTH, DATE, HOUR, MINUTE);
-    }
-
-    public String getTimeStamp_YYYY_MM_DD_HH_MM_SS(){
-        // Create a timestamp string with this format "YYYY-MM-DD-HH-MM-SS"
-        return String.format(Locale.US, "%04d-%02d-%02d-%02d-%02d-%02d", YEAR, MONTH, DATE, HOUR, MINUTE, SECOND);
-    }
-
 
 
     public RCTdateTimeData subtractWeek(int day){

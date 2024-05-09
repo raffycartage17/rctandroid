@@ -36,7 +36,9 @@ import com.racartech.library.rctandroid.file.RCTfile;
 import com.racartech.library.rctandroid.json.RCTorgJSON;
 import com.racartech.library.rctandroid.notifications.RCTnotifications;
 import com.racartech.library.rctandroid.permission.RCTpermission;
+import com.racartech.library.rctandroid.time.RCTdateTime;
 import com.racartech.library.rctandroid.time.RCTdateTimeData;
+import com.racartech.library.rctandroid.time.RCTtime;
 import com.racartech.library.rctandroid.time.RCTtimeConverter;
 
 import java.util.ArrayList;
@@ -245,9 +247,6 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("Millisecond: " + new_data.MILLISECOND);
                 System.out.println("Unix Epoch Millisecond: " + new_data.UNIX_EPOCH_MILLISECOND);
 
-                System.out.println("Time Stamp : ".concat(new_data.getTimeStamp_YYYY_MM_DD()));
-                System.out.println("Time Stamp : ".concat(new_data.getTimeStamp_YYYY_MM_DD_HH_MM()));
-                System.out.println("Time Stamp : ".concat(new_data.getTimeStamp_YYYY_MM_DD_HH_MM_SS()));
 
                 System.out.println("----------------------------------------------------------------");
             }
@@ -261,27 +260,36 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
 
+                        RCTdateTimeData x = new RCTdateTimeData(2024,5,1,0).getExactMonth();
+                        RCTdateTimeData y = new RCTdateTimeData(2024,4,20,0);
+
+                        long day_dif = RCTdateTime.getDayDifference(x,y);
+                        double day_dif_exact = RCTdateTime.getDayDifference_Exact(x,y);
 
 
+                        System.out.println("Day Difference : ".concat(String.valueOf(day_dif)));
+                        System.out.println("Day Diff Exact : ".concat(String.valueOf(day_dif_exact)));
 
-                        RCTdateTimeData simple_time_data = new RCTdateTimeData(System.currentTimeMillis());
-                        RCTdateTimeData exact_month = simple_time_data.getExactMonth();
-                        RCTdateTimeData cloned_data = new RCTdateTimeData(exact_month.UNIX_EPOCH_MILLISECOND);
-                        cloned_data.print();
-                        /*
-                        String collection = "Bulacan";
-                        String document_city = "Cities";
 
-                        boolean does_document_exist_cities = RCTfirebaseFirestore.doesDocumentExist(
-                                FirebaseFirestore.getInstance(),collection, document_city,100);
-                        boolean does_document_exist_nothing = RCTfirebaseFirestore.doesDocumentExist(
-                                FirebaseFirestore.getInstance(),collection, "Nothing",100);
-                        System.out.println("------------------------------------------------");
-                        System.out.println("Does Cities Exist : ".concat(String.valueOf(does_document_exist_cities)));
-                        System.out.println("Does Cities Exist : ".concat(String.valueOf(does_document_exist_nothing)));
-                        System.out.println("------------------------------------------------");
+                        RCTdateTimeData current_time = new RCTdateTimeData(System.currentTimeMillis());
+                        System.out.println("-----------------------------------------------------------------");
+                        System.out.println("-----------------------------------------------------------------");
+                        System.out.println(RCTdateTime.getNumericalTimeStamp_YYYYMMDD(current_time));
+                        System.out.println(RCTdateTime.getNumericalTimeStamp_YYYYMMDD_HHMMSS_24HR(current_time));
+                        System.out.println(RCTdateTime.getNumericalTimeStamp_YYYYMMDD_HHMMSS_SSS_24HR(current_time));
+                        System.out.println("-----------------------------------------------------------------");
+                        System.out.println(RCTdateTime.getNumericalTimeStamp_HHMM_24HR(current_time));
+                        System.out.println(RCTdateTime.getNumericalTimeStamp_HHMMSS_24HR(current_time));
+                        System.out.println(RCTdateTime.getNumericalTimeStamp_HHMMSS_SSS_24HR(current_time));
+                        System.out.println("-----------------------------------------------------------------");
+                        System.out.println(RCTdateTime.getNumericalTimeStamp_YYYYMMDD_HHMMSS_12HR(current_time));
+                        System.out.println(RCTdateTime.getNumericalTimeStamp_YYYYMMDD_HHMMSS_SSS_12HR(current_time));
+                        System.out.println("-----------------------------------------------------------------");
+                        System.out.println(RCTdateTime.getNumericalTimeStamp_HHMM_12HR(current_time));
+                        System.out.println(RCTdateTime.getNumericalTimeStamp_HHMMSS_12HR(current_time));
+                        System.out.println(RCTdateTime.getNumericalTimeStamp_HHMMSS_SSS_12HR(current_time));
+                        System.out.println("-----------------------------------------------------------------");
 
-                         */
                     }
                 }).start();
 
