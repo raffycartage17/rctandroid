@@ -278,9 +278,7 @@ public class RCTfirebaseStorage {
             if(!finished_boolean.get() && atomic_string.get() == null){
                 try {
                     Thread.sleep(thread_wait);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+                } catch (Exception e){}
             }else{
                 return_boolean = true;
             }

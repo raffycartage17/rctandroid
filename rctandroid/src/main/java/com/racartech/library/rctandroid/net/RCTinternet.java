@@ -136,6 +136,64 @@ public class RCTinternet{
     }
 
 
+    public static boolean downloadFile(
+            String download_url,
+            String save_to_file_path,
+            int buffer_size,
+            int connection_timeout,
+            int read_timeout) {
+        try {
+            URL url = new URL(download_url);
+            URLConnection connection = url.openConnection();
+            connection.setConnectTimeout(connection_timeout);
+            connection.setReadTimeout(read_timeout);
+
+            try (InputStream in = connection.getInputStream();
+                 FileOutputStream out = new FileOutputStream(save_to_file_path)) {
+
+                byte[] buffer = new byte[buffer_size];
+                int bytesRead;
+                while ((bytesRead = in.read(buffer)) != -1) {
+                    out.write(buffer, 0, bytesRead);
+                }
+            }
+
+            return true; // Successfully downloaded and saved the file.
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false; // Failed to download or save the file.
+        }
+    }
+
+    public static boolean downloadFile(URL download_url,
+                                       String save_to_file_path,
+                                       int buffer_size,
+                                       int connection_timeout,
+                                       int read_timeout) {
+        try {
+            URLConnection connection = download_url.openConnection();
+            connection.setConnectTimeout(connection_timeout);
+            connection.setReadTimeout(read_timeout);
+
+            try (InputStream in = connection.getInputStream();
+                 FileOutputStream out = new FileOutputStream(save_to_file_path)) {
+
+                byte[] buffer = new byte[buffer_size];
+                int bytesRead;
+                while ((bytesRead = in.read(buffer)) != -1) {
+                    out.write(buffer, 0, bytesRead);
+                }
+            }
+
+            return true; // Successfully downloaded and saved the file.
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false; // Failed to download or save the file.
+        }
+    }
+
+
+
     public static boolean downloadFile(URL download_url, String save_to_file_path) {
         try {
             URLConnection connection = download_url.openConnection();

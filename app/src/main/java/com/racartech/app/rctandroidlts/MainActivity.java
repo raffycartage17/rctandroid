@@ -24,6 +24,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.storage.FirebaseStorage;
 import com.racartech.app.rctandroidlts.functionbuttons.FunctionFive;
 import com.racartech.app.rctandroidlts.functionbuttons.FunctionThree;
 import com.racartech.app.rctandroidlts.functionbuttons.FunctionTwo;
@@ -33,13 +34,12 @@ import com.racartech.app.rctandroidlts.resources.BuildConfig;
 import com.racartech.app.rctandroidlts.window1.Window1;
 import com.racartech.app.rctandroidlts.window1.Window2;
 import com.racartech.library.rctandroid.file.RCTfile;
+import com.racartech.library.rctandroid.google.firebase.storage.RCTfirebaseStorageTextFileWriter;
 import com.racartech.library.rctandroid.json.RCTorgJSON;
+import com.racartech.library.rctandroid.net.RCTinternet;
 import com.racartech.library.rctandroid.notifications.RCTnotifications;
 import com.racartech.library.rctandroid.permission.RCTpermission;
-import com.racartech.library.rctandroid.time.RCTdateTime;
 import com.racartech.library.rctandroid.time.RCTdateTimeData;
-import com.racartech.library.rctandroid.time.RCTtime;
-import com.racartech.library.rctandroid.time.RCTtimeConverter;
 
 import java.util.ArrayList;
 
@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
         f8 = findViewById(R.id.mm_f8_button);
         f9 = findViewById(R.id.mm_f9_button);
         debug_textview = findViewById(R.id.mm_debug_textview);
+        textbox = findViewById(R.id.mm_textbox);
 
         window_1_btn = findViewById(R.id.mm_window1_button);
         window_2_btn = findViewById(R.id.mm_window2_button);
@@ -103,15 +104,6 @@ public class MainActivity extends AppCompatActivity {
         textview_2 = findViewById(R.id.mm_textview_2);
 
         test_image_button_1 = findViewById(R.id.mm_test_image_button_1);
-
-
-        //Test
-
-
-
-
-
-
 
 
 
@@ -260,38 +252,49 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
 
-                        RCTdateTimeData x = new RCTdateTimeData(2024,5,1,0).getExactMonth();
-                        RCTdateTimeData y = new RCTdateTimeData(2024,4,20,0);
-
-                        long day_dif = RCTdateTime.getDayDifference(x,y);
-                        double day_dif_exact = RCTdateTime.getDayDifference_Exact(x,y);
+                        String storage_dir = "test_write";
+                        String storage_file = "aaa.txt";
 
 
-                        System.out.println("Day Difference : ".concat(String.valueOf(day_dif)));
-                        System.out.println("Day Diff Exact : ".concat(String.valueOf(day_dif_exact)));
+                        RCTfirebaseStorageTextFileWriter storage_writer = new RCTfirebaseStorageTextFileWriter(
+                                FirebaseStorage.getInstance(),
+                                MainActivity.this,
+                                storage_dir,
+                                storage_file,
+                                100,
+                                RCTinternet.BYTES_IN_1MB,
+                                60000,
+                                60000
+                        );
+
+                        storage_writer.initialize();
 
 
-                        RCTdateTimeData current_time = new RCTdateTimeData(System.currentTimeMillis());
-                        System.out.println("-----------------------------------------------------------------");
-                        System.out.println("-----------------------------------------------------------------");
-                        System.out.println(RCTdateTime.getNumericalTimeStamp_YYYYMMDD(current_time));
-                        System.out.println(RCTdateTime.getNumericalTimeStamp_YYYYMMDD_HHMMSS_24HR(current_time));
-                        System.out.println(RCTdateTime.getNumericalTimeStamp_YYYYMMDD_HHMMSS_SSS_24HR(current_time));
-                        System.out.println("-----------------------------------------------------------------");
-                        System.out.println(RCTdateTime.getNumericalTimeStamp_HHMM_24HR(current_time));
-                        System.out.println(RCTdateTime.getNumericalTimeStamp_HHMMSS_24HR(current_time));
-                        System.out.println(RCTdateTime.getNumericalTimeStamp_HHMMSS_SSS_24HR(current_time));
-                        System.out.println("-----------------------------------------------------------------");
-                        System.out.println(RCTdateTime.getNumericalTimeStamp_YYYYMMDD_HHMMSS_12HR(current_time));
-                        System.out.println(RCTdateTime.getNumericalTimeStamp_YYYYMMDD_HHMMSS_SSS_12HR(current_time));
-                        System.out.println("-----------------------------------------------------------------");
-                        System.out.println(RCTdateTime.getNumericalTimeStamp_HHMM_12HR(current_time));
-                        System.out.println(RCTdateTime.getNumericalTimeStamp_HHMMSS_12HR(current_time));
-                        System.out.println(RCTdateTime.getNumericalTimeStamp_HHMMSS_SSS_12HR(current_time));
-                        System.out.println("-----------------------------------------------------------------");
+                        if(!textbox.getText().toString().isEmpty()) {
+                            ArrayList<String> file_contents = storage_writer.getFileContents();
+                            file_contents.add(textbox.getText().toString());
 
+                            System.out.println("--------------------------------------------");
+                            System.out.println(">>>>>>>> F8 File Contents <<<<<<<<");
+                            for(int index = 0; index< file_contents.size(); index++){
+                                System.out.println(file_contents.get(index));
+                            }
+                            System.out.println("--------------------------------------------");
+                            System.out.println("Override : ".concat(
+                                    String.valueOf(storage_writer.override(file_contents))));
+                            System.out.println("Save : ".concat(
+                                    String.valueOf(storage_writer.save())));
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    textbox.setText("");
+                                }
+                            });
+                        }
                     }
                 }).start();
+
+
 
             }
         });
