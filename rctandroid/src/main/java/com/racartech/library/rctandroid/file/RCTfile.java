@@ -27,7 +27,6 @@ import org.apache.commons.io.FileUtils;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -51,9 +50,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class RCTfile{
@@ -1685,7 +1681,8 @@ public class RCTfile{
         }
     }
 
-    public static boolean delete_File(String file_path){
+
+    public static boolean deleteFile(String file_path){
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             File td_file = new File(file_path);
             if(td_file.exists()){
@@ -2006,7 +2003,7 @@ public class RCTfile{
                 String[] dir_contents = RCTdirectory.getImmediateFileAndSubDir(directory_path);
                 for (int index = 0; index < dir_contents.length; index++) {
                     if (isPathAFile(dir_contents[index])) {
-                        RCTfile.delete_File(dir_contents[index]);
+                        RCTfile.deleteFile(dir_contents[index]);
                     } else {
                         deleteDirectory(dir_contents[index]);
                     }
@@ -2021,7 +2018,7 @@ public class RCTfile{
                     String[] dir_contents = RCTdirectory.getImmediateFileAndSubDir(directory_path);
                     for (int index = 0; index < dir_contents.length; index++) {
                         if (isPathAFile(dir_contents[index])) {
-                            RCTfile.delete_File(dir_contents[index]);
+                            RCTfile.deleteFile(dir_contents[index]);
                         } else {
                             deleteDirectory(dir_contents[index]);
                         }
@@ -2036,27 +2033,7 @@ public class RCTfile{
         }
     }
 
-    public static boolean deleteFile_Exclusive(String path){
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-            File td_file = new File(path);
-            if(td_file.exists()){
-                return td_file.delete();
-            }else{
-                return false;
-            }
-        }else{
-            File td_file = new File(path);
-            if(td_file.exists()){
-                try {
-                    return td_file.delete();
-                }catch (UncheckedIOException ignored){
-                    return false;
-                }
-            }else{
-                return false;
-            }
-        }
-    }
+
 
 
     protected static boolean deleteDirectory_ExtStorageRelative(String directory){

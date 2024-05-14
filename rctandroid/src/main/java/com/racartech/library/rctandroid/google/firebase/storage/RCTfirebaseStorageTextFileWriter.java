@@ -70,7 +70,7 @@ public class RCTfirebaseStorageTextFileWriter {
                 RCTdirectory.createDirectory(this.LOCAL_DIRECTORY);
             }
             if(RCTfile.doesFileExist(SESSION_FILE)){
-                RCTfile.delete_File(SESSION_FILE);
+                RCTfile.deleteFile(SESSION_FILE);
             }
 
             String fstorage_file_url;
@@ -111,7 +111,7 @@ public class RCTfirebaseStorageTextFileWriter {
                 RCTdirectory.createDirectory(this.LOCAL_DIRECTORY);
             }
             if(RCTfile.doesFileExist(SESSION_FILE)){
-                RCTfile.delete_File(SESSION_FILE);
+                RCTfile.deleteFile(SESSION_FILE);
             }
 
             String fstorage_file_url;
@@ -213,7 +213,7 @@ public class RCTfirebaseStorageTextFileWriter {
         if(save){
             save();
         }
-        RCTfile.delete_File(this.SESSION_FILE);
+        RCTfile.deleteFile(this.SESSION_FILE);
         this.INSTANCE = null;
         this.CONTEXT = null;
         this.FSTORAGE_DIRECTORY = null;

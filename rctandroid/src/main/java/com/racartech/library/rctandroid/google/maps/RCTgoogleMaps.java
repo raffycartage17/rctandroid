@@ -176,7 +176,7 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
                 CURRENT_LOCATION_LONGITUDE.set(getFileSettingsLastKnownLongitude(settings_file_contents));
                 CAMERA_ZOOM_LEVEl = getFileSettingsZoomLevel(settings_file_contents);
             }catch (Exception ex){
-                RCTfile.delete_File(SETTINGS_FILE_PATH);
+                RCTfile.deleteFile(SETTINGS_FILE_PATH);
                 setSettingsFileData();
             }
         }
