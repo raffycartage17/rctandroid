@@ -8,6 +8,149 @@ public class RCTarray{
 
 
 
+    public static ArrayList<String> convertStringArrayToArrayListString(String[] string_array){
+        ArrayList<String> arraylist_string = new ArrayList<>();
+        for(int index = 0; index<string_array.length; index++){
+            arraylist_string.add(string_array[index]);
+        }
+        return arraylist_string;
+    }
+
+    public static String[] convertArrayListStringToStringArray(ArrayList<String> arraylist_string){
+        String[] string_array = new String[arraylist_string.size()];
+        for(int index = 0; index<arraylist_string.size(); index++){
+            string_array[index] = arraylist_string.get(index);
+        }
+        return string_array;
+    }
+
+
+    public static ArrayList<Integer> convertIntegerArrayToArrayListInteger(int[] the_array){
+        ArrayList<Integer> the_arraylist = new ArrayList<>();
+        for(int index = 0; index<the_array.length; index++){
+            the_arraylist.add(the_array[index]);
+        }
+        return the_arraylist;
+    }
+
+    public static int[] convertArrayListIntegerToIntegerArray(ArrayList<Integer> the_arraylist){
+        int[] the_array = new int[the_arraylist.size()];
+        for(int index = 0; index<the_arraylist.size(); index++){
+            the_array[index] = the_arraylist.get(index);
+        }
+        return the_array;
+    }
+
+
+    public static ArrayList<Double> convertDoubleArrayToArrayListDouble(double[] the_array){
+        ArrayList<Double> the_arraylist = new ArrayList<>();
+        for(int index = 0; index<the_array.length; index++){
+            the_arraylist.add(the_array[index]);
+        }
+        return the_arraylist;
+    }
+
+    public static double[] convertArrayListDoubleToDoubleArray(ArrayList<Double> the_arraylist){
+        double[] the_array = new double[the_arraylist.size()];
+        for(int index = 0; index<the_arraylist.size(); index++){
+            the_array[index] = the_arraylist.get(index);
+        }
+        return the_array;
+    }
+
+    public static ArrayList<Float> convertFloatArrayToArrayListFloat(float[] the_array){
+        ArrayList<Float> the_arraylist = new ArrayList<>();
+        for(int index = 0; index<the_array.length; index++){
+            the_arraylist.add(the_array[index]);
+        }
+        return the_arraylist;
+    }
+
+    public static float[] convertArrayListFloatToFloatArray(ArrayList<Float> the_arraylist){
+        float[] the_array = new float[the_arraylist.size()];
+        for(int index = 0; index<the_arraylist.size(); index++){
+            the_array[index] = the_arraylist.get(index);
+        }
+        return the_array;
+    }
+
+
+    public static ArrayList<Long> convertLongArrayToArrayListLong(long[] the_array){
+        ArrayList<Long> the_arraylist = new ArrayList<>();
+        for(int index = 0; index<the_array.length; index++){
+            the_arraylist.add(the_array[index]);
+        }
+        return the_arraylist;
+    }
+
+    public static long[] convertArrayListLongToLongArray(ArrayList<Long> the_arraylist){
+        long[] the_array = new long[the_arraylist.size()];
+        for(int index = 0; index<the_arraylist.size(); index++){
+            the_array[index] = the_arraylist.get(index);
+        }
+        return the_array;
+    }
+
+    public static ArrayList<Short> convertShortArrayToArrayListShort(short[] the_array){
+        ArrayList<Short> the_arraylist = new ArrayList<>();
+        for(int index = 0; index<the_array.length; index++){
+            the_arraylist.add(the_array[index]);
+        }
+        return the_arraylist;
+    }
+
+    public static short[] convertArrayListShortToShortArray(ArrayList<Short> the_arraylist){
+        short[] the_array = new short[the_arraylist.size()];
+        for(int index = 0; index<the_arraylist.size(); index++){
+            the_array[index] = the_arraylist.get(index);
+        }
+        return the_array;
+    }
+
+
+    public static ArrayList<Character> convertCharArrayToArrayListCharacter(char[] the_array){
+        ArrayList<Character> the_arraylist = new ArrayList<>();
+        for(int index = 0; index<the_array.length; index++){
+            the_arraylist.add(the_array[index]);
+        }
+        return the_arraylist;
+    }
+
+    public static char[] convertArrayListCharacterToCharArray(ArrayList<Character> the_arraylist){
+        char[] the_array = new char[the_arraylist.size()];
+        for(int index = 0; index<the_arraylist.size(); index++){
+            the_array[index] = the_arraylist.get(index);
+        }
+        return the_array;
+    }
+
+
+    public static ArrayList<Boolean> convertBooleanArrayToArrayListBoolean(boolean[] the_array){
+        ArrayList<Boolean> the_arraylist = new ArrayList<>();
+        for(int index = 0; index<the_array.length; index++){
+            the_arraylist.add(the_array[index]);
+        }
+        return the_arraylist;
+    }
+
+    public static boolean[] convertArrayListBooleanToBooleanArray(ArrayList<Boolean> the_arraylist){
+        boolean[] the_array = new boolean[the_arraylist.size()];
+        for(int index = 0; index<the_arraylist.size(); index++){
+            the_array[index] = the_arraylist.get(index);
+        }
+        return the_array;
+    }
+
+
+
+
+
+
+
+
+
+
+
     public static String concatArrayListStringToString(ArrayList<String> array_list,String median){
         if(array_list.size() > 0){
             String current_string = "";
