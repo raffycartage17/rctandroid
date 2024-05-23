@@ -1,6 +1,9 @@
 package com.racartech.library.rctandroid.time;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class RCTdateTime{
 
@@ -433,6 +436,24 @@ public class RCTdateTime{
         }
         return null;
 
+    }
+
+
+
+    public static ArrayList<Long> convertDateToMS(ArrayList<Date> dates){
+        ArrayList<Long> ms_dates = new ArrayList<>();
+        for(int index = 0; index<dates.size(); index++){
+            ms_dates.add(dates.get(index).getTime());
+        }
+        return ms_dates;
+    }
+
+    public static ArrayList<RCTdateTimeData> convertDateToRCTdateTimeData(ArrayList<Date> dates){
+        ArrayList<RCTdateTimeData> ms_time_datas = new ArrayList<>();
+        for(int index = 0; index<dates.size(); index++){
+            ms_time_datas.add(new RCTdateTimeData(dates.get(index).getTime()));
+        }
+        return ms_time_datas;
     }
 
 }

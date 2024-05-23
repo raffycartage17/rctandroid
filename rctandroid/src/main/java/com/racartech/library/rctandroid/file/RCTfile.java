@@ -1705,6 +1705,56 @@ public class RCTfile{
     }
 
 
+    public static void deleteFile(ArrayList<String> file_paths){
+        for(int index = 0; index<file_paths.size(); index++){
+            try {
+                deleteFile(file_paths.get(index));
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * <h2>Description</h2>
+     * Reads the contents of the files and returns all of the combined contents of all the files in a single ArrayList String</>
+     * @author Rafael Andaya Cartagena
+     * @version 1.0
+     * @since 2024-05-14
+     */
+    public static ArrayList<String> readFile_Combine(ArrayList<String> file_paths){
+        ArrayList<String> file_contents = new ArrayList<>();
+        for(int index = 0; index<file_paths.size(); index++){
+            try{
+                file_contents.addAll(readFile_ArrayList(file_paths.get(index)));
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
+        }
+        return file_contents;
+    }
+
+    /**
+     * <h2>Description</h2>
+     * Reads the contents of the files and returns ArrayList[ArrayList[String]], where each index represents the ArrayList[String] of each file
+     * @author Rafael Andaya Cartagena
+     * @version 1.0
+     * @since 2024-05-14
+     */
+    public static ArrayList<ArrayList<String>> readFile(ArrayList<String> file_paths){
+        ArrayList<ArrayList<String>> individual_file_contents = new ArrayList<>();
+        for(int index = 0; index<file_paths.size(); index++){
+            try{
+                ArrayList<String> current_file_contents = new ArrayList<>(readFile_ArrayList(file_paths.get(index)));
+                individual_file_contents.add(current_file_contents);
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
+        }
+        return individual_file_contents;
+    }
+
+
 
 
 
