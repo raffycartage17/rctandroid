@@ -262,7 +262,7 @@ public class RCTdateTime{
     public static String getTimeStamp_MMDDYYYY_HHMMSS_12HR(RCTdateTimeData time_data){
         String time_stamp =
                 getTimeStamp_MMDDYYYY(time_data).concat(" ").
-                        concat(convertIntToDoubleDigitString(time_data.HOUR)).concat(":").
+                        concat(convertIntToDoubleDigitString(convert24HRto12HR(time_data.HOUR))).concat(":").
                         concat(convertIntToDoubleDigitString(time_data.MINUTE)).concat(":").
                         concat(convertIntToDoubleDigitString(time_data.SECOND)).concat(" ").
                         concat(getAM_PM(time_data.HOUR));
@@ -295,7 +295,7 @@ public class RCTdateTime{
         //May 10, 2024, at 3:30 PM and 15 seconds would be represented as 2024-05-10 15:30:15
         String date_stamp = getNumericalTimeStamp_YYYYMMDD(time_data);
         String time_stamp = "";
-        time_stamp = time_stamp.concat(String.valueOf(time_data.HOUR)).concat(":");
+        time_stamp = time_stamp.concat(String.valueOf(convert24HRto12HR(time_data.HOUR))).concat(":");
         time_stamp = time_stamp.concat(String.valueOf(time_data.MINUTE)).concat(" ").concat(getAM_PM(time_data.HOUR));
 
         return date_stamp.concat(time_stamp);
@@ -316,7 +316,7 @@ public class RCTdateTime{
         //May 10, 2024, at 3:30 PM and 15 seconds would be represented as 2024-05-10 15:30:15
         String date_stamp = getNumericalTimeStamp_YYYYMMDD(time_data);
         String time_stamp = "";
-        time_stamp = time_stamp.concat(String.valueOf(time_data.HOUR)).concat(":");
+        time_stamp = time_stamp.concat(String.valueOf(convert24HRto12HR(time_data.HOUR))).concat(":");
         time_stamp = time_stamp.concat(String.valueOf(time_data.MINUTE)).concat(":");
         time_stamp = time_stamp.concat(String.valueOf(time_data.SECOND)).concat(" ").concat(getAM_PM(time_data.HOUR));
 
@@ -341,7 +341,7 @@ public class RCTdateTime{
         //May 10, 2024, at 3:30 PM and 15 seconds would be represented as 2024-05-10 15:30:15
         String date_stamp = getNumericalTimeStamp_YYYYMMDD(time_data);
         String time_stamp = "";
-        time_stamp = time_stamp.concat(String.valueOf(time_data.HOUR)).concat(":");
+        time_stamp = time_stamp.concat(String.valueOf(convert24HRto12HR(time_data.HOUR))).concat(":");
         time_stamp = time_stamp.concat(String.valueOf(time_data.MINUTE)).concat(":");
         time_stamp = time_stamp.concat(String.valueOf(time_data.SECOND)).concat(".");
         time_stamp = time_stamp.concat(String.valueOf(time_data.MILLISECOND)).concat(" ").concat(getAM_PM(time_data.HOUR));
@@ -360,7 +360,7 @@ public class RCTdateTime{
 
     public static String getNumericalTimeStamp_HHMM_12HR(RCTdateTimeData time_data){
         String time_stamp = "";
-        time_stamp = time_stamp.concat(String.valueOf(time_data.HOUR)).concat(":");
+        time_stamp = time_stamp.concat(String.valueOf(convert24HRto12HR(time_data.HOUR))).concat(":");
         time_stamp = time_stamp.concat(String.valueOf(time_data.MINUTE)).concat(" ").concat(getAM_PM(time_data.HOUR));
 
         return time_stamp;
@@ -375,7 +375,7 @@ public class RCTdateTime{
     }
     public static String getNumericalTimeStamp_HHMMSS_12HR(RCTdateTimeData time_data){
         String time_stamp = "";
-        time_stamp = time_stamp.concat(String.valueOf(time_data.HOUR)).concat(":");
+        time_stamp = time_stamp.concat(String.valueOf(convert24HRto12HR(time_data.HOUR))).concat(":");
         time_stamp = time_stamp.concat(String.valueOf(time_data.MINUTE)).concat(":");
         time_stamp = time_stamp.concat(String.valueOf(time_data.SECOND)).concat(" ").concat(getAM_PM(time_data.HOUR));
 
@@ -392,7 +392,7 @@ public class RCTdateTime{
     }
     public static String getNumericalTimeStamp_HHMMSS_SSS_12HR(RCTdateTimeData time_data){
         String time_stamp = "";
-        time_stamp = time_stamp.concat(String.valueOf(time_data.HOUR)).concat(":");
+        time_stamp = time_stamp.concat(String.valueOf(convert24HRto12HR(time_data.HOUR))).concat(":");
         time_stamp = time_stamp.concat(String.valueOf(time_data.MINUTE)).concat(":");
         time_stamp = time_stamp.concat(String.valueOf(time_data.SECOND)).concat(".");
         time_stamp = time_stamp.concat(String.valueOf(time_data.MILLISECOND)).concat(" ").concat(getAM_PM(time_data.HOUR));
@@ -416,8 +416,13 @@ public class RCTdateTime{
 
 
 
-
-
+    private static int convert24HRto12HR(int hour){
+        if(hour > 12){
+            return hour-12;
+        }else{
+            return hour;
+        }
+    }
 
     private static String convertIntToDoubleDigitString(int the_int){
         if(the_int >= 0 && the_int <= 9){
