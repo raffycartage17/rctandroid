@@ -24,7 +24,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
+import com.racartech.app.rctandroidlts.api.ApiKeyManager;
 import com.racartech.app.rctandroidlts.functionbuttons.FunctionFive;
 import com.racartech.app.rctandroidlts.functionbuttons.FunctionThree;
 import com.racartech.app.rctandroidlts.functionbuttons.FunctionTwo;
@@ -36,10 +38,14 @@ import com.racartech.app.rctandroidlts.window1.Window2;
 import com.racartech.library.rctandroid.file.RCTfile;
 import com.racartech.library.rctandroid.google.firebase.storage.RCTfirebaseStorageTextFileWriter;
 import com.racartech.library.rctandroid.json.RCTorgJSON;
+import com.racartech.library.rctandroid.location.RCTLocationData;
 import com.racartech.library.rctandroid.net.RCTinternet;
 import com.racartech.library.rctandroid.notifications.RCTnotifications;
 import com.racartech.library.rctandroid.permission.RCTpermission;
+import com.racartech.library.rctandroid.time.RCTdateTime;
 import com.racartech.library.rctandroid.time.RCTdateTimeData;
+import com.racartech.library.rctandroid.weather.openweathermap.OWM_3HR40P_Data;
+import com.racartech.library.rctandroid.weather.openweathermap.OWM_3HR40P_DataUtil;
 
 import java.util.ArrayList;
 
@@ -296,6 +302,35 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+            }
+        });
+
+        f9.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        RCTLocationData current_location = new RCTLocationData(MainActivity.this,RCTLocationData.MODE_CURRENT,200);
+                        String owm_api_key = ApiKeyManager.getOpenWeatherMapApiKey(FirebaseFirestore.getInstance());
+
+                        ArrayList<OWM_3HR40P_Data> weather_data =
+                                OWM_3HR40P_DataUtil.getWeatherData_40P_3HR(
+                                        owm_api_key,
+                                        current_location.getAddress().getLatitude(),
+                                        current_location.getAddress().getLongitude()
+                                );
+                        System.out.println("-------------------------------------------------");
+                        for(int index = 0; index<weather_data.size(); index++){
+                            OWM_3HR40P_Data current_data = weather_data.get(index);
+                            System.out.println("Time : ".concat(RCTdateTime.getTimeStamp_MMDDYYYY_HHMMSS_12HR(new RCTdateTimeData(current_data.DATE_MS))));
+                            System.out.println("Temp Max : ".concat(String.valueOf(current_data.TEMP_MAX)));
+                            System.out.println("Humidity : ".concat(String.valueOf(current_data.HUMIDITY)));
+                            System.out.println("Rain     : ".concat(String.valueOf(current_data.RAIN_3HR_MM)));
+                            System.out.println("-------------------------------------------------");
+                        }
+                    }
+                }).start();
             }
         });
 

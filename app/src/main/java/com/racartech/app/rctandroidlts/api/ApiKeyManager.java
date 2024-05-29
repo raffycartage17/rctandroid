@@ -17,4 +17,16 @@ public class ApiKeyManager {
                 instance);
     }
 
+    public static String getOpenWeatherMapApiKey(FirebaseFirestore instance){
+        String collection = "key";
+        String document = "keys";
+        String field_name = "open_weather_map";
+        return RCTfirebaseFirestore.readField(
+                collection,
+                document,
+                field_name,
+                100,
+                instance);
+    }
+
 }
