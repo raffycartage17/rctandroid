@@ -38,7 +38,6 @@ public class RCTview {
 
     @SuppressLint("ClickableViewAccessibility")
     public static void addButtonPressedFilters(
-            Context context,
             Button the_button,
             int pressed_color,
             int unpressed_color){
@@ -62,7 +61,6 @@ public class RCTview {
 
     @SuppressLint("ClickableViewAccessibility")
     public static void addButtonPressedFilters_WithOriginalColor(
-            Context context,
             ImageButton image_button,
             int pressed_color,
             int unpressed_color){
@@ -86,7 +84,7 @@ public class RCTview {
 
 
     @SuppressLint("ClickableViewAccessibility")
-    public static void addButtonPressedFilters(Context context,View the_view, int pressed_color, int original_color){
+    public static void addButtonPressedFilters(View the_view, int pressed_color, int original_color){
         the_view.setOnTouchListener((view, motionEvent) -> {
             int action_taken = motionEvent.getAction();
             switch(action_taken){
@@ -104,9 +102,28 @@ public class RCTview {
         });
     }
 
+    @SuppressLint("ClickableViewAccessibility")
+    public static void addButtonPressedFilters(ImageButton image_button, int pressed_color, int original_color){
+        image_button.setOnTouchListener((view, motionEvent) -> {
+            int action_taken = motionEvent.getAction();
+            switch(action_taken){
+                case MotionEvent.ACTION_DOWN:
+                    image_button.setColorFilter(pressed_color);
+                    break;
+                case MotionEvent.ACTION_UP:
+                case MotionEvent.ACTION_CANCEL:
+                    image_button.setColorFilter(original_color);
+                    break;
+                default:
+                    break ;
+            }
+            return false;
+        });
+    }
+
 
     @SuppressLint("ClickableViewAccessibility")
-    public static void addButtonPressedFilters(Context context, View the_view, Drawable pressed_color, Drawable original_color){
+    public static void addButtonPressedFilters(View the_view, Drawable pressed_color, Drawable original_color){
         the_view.setOnTouchListener((view, motionEvent) -> {
             int action_taken = motionEvent.getAction();
             switch(action_taken){
@@ -126,7 +143,7 @@ public class RCTview {
 
 
     @SuppressLint("ClickableViewAccessibility")
-    public static void addTextViewPressedFilters_BackgroundColor(Context context, TextView text_view, int pressed_color, int original_color){
+    public static void addTextViewPressedFilters_BackgroundColor(TextView text_view, int pressed_color, int original_color){
         text_view.setOnTouchListener((view, motionEvent) -> {
             int action_taken = motionEvent.getAction();
             switch(action_taken){
@@ -145,7 +162,7 @@ public class RCTview {
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    public static void addTextViewPressedFilters_TextColor(Context context, TextView text_view, int pressed_color, int original_color){
+    public static void addTextViewPressedFilters_TextColor(TextView text_view, int pressed_color, int original_color){
         text_view.setOnTouchListener((view, motionEvent) -> {
             int action_taken = motionEvent.getAction();
             switch(action_taken){
@@ -165,7 +182,7 @@ public class RCTview {
 
 
     @SuppressLint("ClickableViewAccessibility")
-    public static void addButtonPressedFilters(Context context, ImageButton image_button, int color){
+    public static void addButtonPressedFilters(ImageButton image_button, int color){
         image_button.setOnTouchListener((view, motionEvent) -> {
             int action_taken = motionEvent.getAction();
             switch(action_taken){
