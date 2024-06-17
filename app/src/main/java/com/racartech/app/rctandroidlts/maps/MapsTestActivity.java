@@ -24,7 +24,6 @@ import com.racartech.library.rctandroid.file.RCTfile;
 import com.racartech.library.rctandroid.google.maps.RCTgoogleMaps;
 import com.racartech.library.rctandroid.google.maps.RCTgoogleMapsUtil;
 import com.racartech.library.rctandroid.location.RCTfacingDirectionListener;
-import com.racartech.library.rctandroid.location.RCTlocationUpdateListener;
 import com.racartech.library.rctandroid.logging.RCTloggingLocationData;
 
 import java.time.Instant;
@@ -117,7 +116,7 @@ public class MapsTestActivity extends AppCompatActivity implements
                                 googleMaps.CURRENT_LOCATION_LONGITUDE.get());
 
                         double total_driving_distance =
-                                RCTgoogleMapsUtil.getDrivingDistance(api_key,origin_coordinates,PIN_POINTS.get().get(0));
+                                RCTgoogleMapsUtil.getDrivingDistance_M(RCTgoogleMapsUtil.getDirectionRoute(api_key,origin_coordinates,PIN_POINTS.get().get(0)));
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run(){

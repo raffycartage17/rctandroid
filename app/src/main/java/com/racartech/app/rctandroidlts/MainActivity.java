@@ -27,6 +27,10 @@ import androidx.core.content.ContextCompat;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.maps.DirectionsApi;
+import com.google.maps.model.DirectionsRoute;
+import com.google.maps.model.LatLng;
+import com.google.maps.model.TravelMode;
 import com.racartech.app.rctandroidlts.api.ApiKeyManager;
 import com.racartech.app.rctandroidlts.functionbuttons.FunctionFive;
 import com.racartech.app.rctandroidlts.functionbuttons.FunctionThree;
@@ -38,17 +42,16 @@ import com.racartech.app.rctandroidlts.window1.Window1;
 import com.racartech.app.rctandroidlts.window1.Window2;
 import com.racartech.library.rctandroid.file.RCTfile;
 import com.racartech.library.rctandroid.google.firebase.storage.RCTfirebaseStorageTextFileWriter;
+import com.racartech.library.rctandroid.google.maps.RCTgoogleMapsUtil;
 import com.racartech.library.rctandroid.json.RCTorgJSON;
 import com.racartech.library.rctandroid.location.RCTLocationData;
 import com.racartech.library.rctandroid.location.RCTdistance;
 import com.racartech.library.rctandroid.net.RCTinternet;
 import com.racartech.library.rctandroid.notifications.RCTnotifications;
 import com.racartech.library.rctandroid.permission.RCTpermission;
-import com.racartech.library.rctandroid.time.RCTdateTime;
 import com.racartech.library.rctandroid.time.RCTdateTimeData;
-import com.racartech.library.rctandroid.weather.openweathermap.OWM_3HR40P_Data;
-import com.racartech.library.rctandroid.weather.openweathermap.OWM_3HR40P_DataUtil;
 
+import java.time.Instant;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -318,8 +321,14 @@ public class MainActivity extends AppCompatActivity {
                         double my_house_lat = 14.78073813;
                         double my_house_lng = 120.87887886;
 
+                        /*
                         double ref_lat = 14.60728483;
                         double ref_lng = 120.98522199;
+
+                         */
+
+                        double ref_lat = 12.58512844;
+                        double ref_lng = 124.08584501;
 
                         RCTLocationData my_house_location = new RCTLocationData(MainActivity.this, my_house_lat,my_house_lng);
                         RCTLocationData reference_location = new RCTLocationData(MainActivity.this, ref_lat,ref_lng);
@@ -331,6 +340,26 @@ public class MainActivity extends AppCompatActivity {
                         System.out.println("---------------------------------------------------------------");
                         System.out.println("Distance M  : ".concat(String.valueOf(RCTdistance.calculateDistance_M(my_house_address, ref_address))));
                         System.out.println("Distance KM : ".concat(String.valueOf(RCTdistance.calculateDistance_KM(my_house_address, ref_address))));
+
+                        System.out.println("---------------------------------------------------------------");
+
+                        ArrayList<DirectionsApi.RouteRestriction> route_rest = new ArrayList<>();
+                        route_rest.add(DirectionsApi.RouteRestriction.TOLLS);
+                        DirectionsRoute direction_route =
+                                RCTgoogleMapsUtil.getAllDirectionRoute(
+                                        ApiKeyManager.getGoogleApiKey(FirebaseFirestore.getInstance()),
+                                        new LatLng(my_house_address.getLatitude(), my_house_address.getLongitude()),
+                                        new LatLng(ref_address.getLatitude(), ref_address.getLongitude()),
+                                        TravelMode.DRIVING,
+                                        route_rest,
+                                        Instant.now()
+                                ).get(0);
+
+                        System.out.println("---------------------------------------------------------------");
+                        double driving_distance = RCTgoogleMapsUtil.getDrivingDistance_M(direction_route);
+                        System.out.println("Driving Distance : ".concat(String.valueOf(driving_distance)));
+                        System.out.println("Driving Time Sec : ".concat(String.valueOf(RCTgoogleMapsUtil.getDrivingTime_Seconds(direction_route))));
+
 
 
                         System.out.println("---------------------------------------------------------------");
