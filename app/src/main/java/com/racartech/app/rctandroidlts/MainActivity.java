@@ -7,6 +7,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -39,6 +40,7 @@ import com.racartech.library.rctandroid.file.RCTfile;
 import com.racartech.library.rctandroid.google.firebase.storage.RCTfirebaseStorageTextFileWriter;
 import com.racartech.library.rctandroid.json.RCTorgJSON;
 import com.racartech.library.rctandroid.location.RCTLocationData;
+import com.racartech.library.rctandroid.location.RCTdistance;
 import com.racartech.library.rctandroid.net.RCTinternet;
 import com.racartech.library.rctandroid.notifications.RCTnotifications;
 import com.racartech.library.rctandroid.permission.RCTpermission;
@@ -311,24 +313,27 @@ public class MainActivity extends AppCompatActivity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        RCTLocationData current_location = new RCTLocationData(MainActivity.this,RCTLocationData.MODE_CURRENT,200);
-                        String owm_api_key = ApiKeyManager.getOpenWeatherMapApiKey(FirebaseFirestore.getInstance());
+                        System.out.println("---------------------------------------------------------------");
 
-                        ArrayList<OWM_3HR40P_Data> weather_data =
-                                OWM_3HR40P_DataUtil.getWeatherData_40P_3HR(
-                                        owm_api_key,
-                                        current_location.getAddress().getLatitude(),
-                                        current_location.getAddress().getLongitude()
-                                );
-                        System.out.println("-------------------------------------------------");
-                        for(int index = 0; index<weather_data.size(); index++){
-                            OWM_3HR40P_Data current_data = weather_data.get(index);
-                            System.out.println("Time : ".concat(RCTdateTime.getTimeStamp_MMDDYYYY_HHMMSS_12HR(new RCTdateTimeData(current_data.DATE_MS))));
-                            System.out.println("Temp Max : ".concat(String.valueOf(current_data.TEMP_MAX)));
-                            System.out.println("Humidity : ".concat(String.valueOf(current_data.HUMIDITY)));
-                            System.out.println("Rain     : ".concat(String.valueOf(current_data.RAIN_3HR_MM)));
-                            System.out.println("-------------------------------------------------");
-                        }
+                        double my_house_lat = 14.78073813;
+                        double my_house_lng = 120.87887886;
+
+                        double ref_lat = 14.60728483;
+                        double ref_lng = 120.98522199;
+
+                        RCTLocationData my_house_location = new RCTLocationData(MainActivity.this, my_house_lat,my_house_lng);
+                        RCTLocationData reference_location = new RCTLocationData(MainActivity.this, ref_lat,ref_lng);
+
+                        Address my_house_address = my_house_location.getAddress();
+                        Address ref_address = reference_location.getAddress();
+                        System.out.println("House Address : ".concat(String.valueOf(my_house_address.getAddressLine(0))));
+                        System.out.println("Refer Address : ".concat(String.valueOf(ref_address.getAddressLine(0))));
+                        System.out.println("---------------------------------------------------------------");
+                        System.out.println("Distance M  : ".concat(String.valueOf(RCTdistance.calculateDistance_M(my_house_address, ref_address))));
+                        System.out.println("Distance KM : ".concat(String.valueOf(RCTdistance.calculateDistance_KM(my_house_address, ref_address))));
+
+
+                        System.out.println("---------------------------------------------------------------");
                     }
                 }).start();
             }

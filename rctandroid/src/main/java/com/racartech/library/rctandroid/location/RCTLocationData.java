@@ -37,6 +37,10 @@ public class RCTLocationData {
 
 
 
+    public RCTLocationData(Context context, double lat, double lng){
+        this.ADDRESS = RCTlocation.getAddress(context,lat,lng);
+    }
+
     public RCTLocationData(Address address){
         this.ADDRESS = address;
     }
@@ -141,8 +145,10 @@ public class RCTLocationData {
         return this.ADDRESS;
     }
 
-    public void setAddress(Address new_address){
+    public Address setAddress(Address new_address){
+        Address old_address = this.ADDRESS;
         this.ADDRESS = new_address;
+        return old_address;
     }
 
 
