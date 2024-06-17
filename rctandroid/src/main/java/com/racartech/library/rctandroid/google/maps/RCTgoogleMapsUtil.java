@@ -541,9 +541,50 @@ public class RCTgoogleMapsUtil {
     }
 
 
+    public static List<com.google.android.gms.maps.model.LatLng> getDirectionRoutePathsWithInterval(
+            DirectionsRoute direction_route, double intervalMeters) {
+        List<com.google.android.gms.maps.model.LatLng> paths = new ArrayList<>();
+        DirectionsLeg[] legs = direction_route.legs;
+        for (DirectionsLeg leg : legs) {
+            DirectionsStep[] steps = leg.steps;
+            for (DirectionsStep step : steps) {
+                List<com.google.maps.model.LatLng> decodedPath = step.polyline.decodePath();
+                for (int i = 0; i < decodedPath.size() - 1; i++) {
+                    com.google.maps.model.LatLng start = decodedPath.get(i);
+                    com.google.maps.model.LatLng end = decodedPath.get(i + 1);
+                    paths.add(new com.google.android.gms.maps.model.LatLng(start.lat, start.lng));
+                    paths.addAll(interpolatePoints(start, end, intervalMeters));
+                }
+                // Add the last point of the step
+                paths.add(new com.google.android.gms.maps.model.LatLng(decodedPath.get(decodedPath.size() - 1).lat, decodedPath.get(decodedPath.size() - 1).lng));
+            }
+        }
+        return paths;
+    }
+
+    private static List<com.google.android.gms.maps.model.LatLng> interpolatePoints(
+            com.google.maps.model.LatLng start, com.google.maps.model.LatLng end,
+            double intervalMeters
+    ) {
+        List<com.google.android.gms.maps.model.LatLng> points = new ArrayList<>();
+        double distance = distanceBetweenPoints(start, end);
+        int numIntervals = (int) (distance / intervalMeters);
+        double latDiff = end.lat - start.lat;
+        double lngDiff = end.lng - start.lng;
+        for (int i = 1; i <= numIntervals; i++) {
+            double fraction = (double) i / numIntervals;
+            double lat = start.lat + fraction * latDiff;
+            double lng = start.lng + fraction * lngDiff;
+            points.add(new com.google.android.gms.maps.model.LatLng(lat, lng));
+        }
+        return points;
+    }
 
 
-    protected static double distanceBetweenPoints(com.google.maps.model.LatLng point1, com.google.maps.model.LatLng point2) {
+
+
+
+    public static double distanceBetweenPoints(com.google.maps.model.LatLng point1, com.google.maps.model.LatLng point2) {
         double R = 6371000; // Radius of the Earth in meters
         double lat1 = Math.toRadians(point1.lat);
         double lon1 = Math.toRadians(point1.lng);

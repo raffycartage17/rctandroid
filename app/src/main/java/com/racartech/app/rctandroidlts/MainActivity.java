@@ -36,6 +36,7 @@ import com.racartech.app.rctandroidlts.functionbuttons.FunctionFive;
 import com.racartech.app.rctandroidlts.functionbuttons.FunctionThree;
 import com.racartech.app.rctandroidlts.functionbuttons.FunctionTwo;
 import com.racartech.app.rctandroidlts.maps.MapsTestActivity;
+import com.racartech.app.rctandroidlts.maps.MapsUtilTest;
 import com.racartech.app.rctandroidlts.maps.TextToSpeechActivity;
 import com.racartech.app.rctandroidlts.resources.BuildConfig;
 import com.racartech.app.rctandroidlts.window1.Window1;
@@ -315,109 +316,7 @@ public class MainActivity extends AppCompatActivity {
         f9.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        /*
-                        System.out.println("---------------------------------------------------------------");
-
-                        double my_house_lat = 14.78073813;
-                        double my_house_lng = 120.87887886;
-
-
-                        double ref_lat = 14.60728483;
-                        double ref_lng = 120.98522199;
-
-
-
-                        RCTLocationData my_house_location = new RCTLocationData(MainActivity.this, my_house_lat,my_house_lng);
-                        RCTLocationData reference_location = new RCTLocationData(MainActivity.this, ref_lat,ref_lng);
-
-                        Address my_house_address = my_house_location.getAddress();
-                        Address ref_address = reference_location.getAddress();
-                        System.out.println("House Address : ".concat(String.valueOf(my_house_address.getAddressLine(0))));
-                        System.out.println("Refer Address : ".concat(String.valueOf(ref_address.getAddressLine(0))));
-                        System.out.println("---------------------------------------------------------------");
-                        System.out.println("Distance M  : ".concat(String.valueOf(RCTdistance.calculateDistance_M(my_house_address, ref_address))));
-                        System.out.println("Distance KM : ".concat(String.valueOf(RCTdistance.calculateDistance_KM(my_house_address, ref_address))));
-
-                        System.out.println("---------------------------------------------------------------");
-
-                        ArrayList<DirectionsApi.RouteRestriction> route_rest = new ArrayList<>();
-                        route_rest.add(DirectionsApi.RouteRestriction.TOLLS);
-                        DirectionsRoute direction_route =
-                                RCTgoogleMapsUtil.getAllDirectionRoute(
-                                        ApiKeyManager.getGoogleApiKey(FirebaseFirestore.getInstance()),
-                                        new LatLng(my_house_address.getLatitude(), my_house_address.getLongitude()),
-                                        new LatLng(ref_address.getLatitude(), ref_address.getLongitude()),
-                                        TravelMode.DRIVING,
-                                        route_rest,
-                                        Instant.now()
-                                ).get(0);
-
-                        System.out.println("---------------------------------------------------------------");
-                        double driving_distance = RCTgoogleMapsUtil.getDrivingDistance_M(direction_route);
-                        System.out.println("Driving Distance : ".concat(String.valueOf(driving_distance)));
-                        System.out.println("Driving Time Sec : ".concat(String.valueOf(RCTgoogleMapsUtil.getDrivingTime_Seconds(direction_route))));
-
-
-
-                        System.out.println("---------------------------------------------------------------");
-
-                         */
-
-                        LatLng origin = new LatLng(14.78073813, 120.87887886);
-
-                        ArrayList<LatLng> destinations = new ArrayList<>();
-                        destinations.add(new LatLng(18.19468676,120.59243305));
-                        destinations.add(new LatLng(18.3465677,121.64292501));
-                        destinations.add(new LatLng(14.82302884,120.90089204));
-
-                        ArrayList<DirectionsApi.RouteRestriction> route_rest = new ArrayList<>();
-                        route_rest.add(DirectionsApi.RouteRestriction.TOLLS);
-
-                        long start = System.currentTimeMillis();
-
-                        ArrayList<DirectionsRoute> multi_routes =
-                                RCTgoogleMapsUtil.getMultiPointDirectionRoute(
-                                        ApiKeyManager.getGoogleApiKey(FirebaseFirestore.getInstance()),
-                                        origin,
-                                        destinations,
-                                        TravelMode.DRIVING,
-                                        route_rest,
-                                        Instant.now()
-                                );
-
-                        double driving_distance = 0;
-                        long driving_time = 0;
-                        for(int index = 0; index< multi_routes.size(); index++){
-                            driving_distance += RCTgoogleMapsUtil.getDrivingDistance_M(multi_routes.get(index));
-                            driving_time += RCTgoogleMapsUtil.getDrivingTime_Seconds(multi_routes.get(index));
-                        }
-
-                        driving_distance = driving_distance/1000.0;
-                        long end = System.currentTimeMillis();
-                        long elapsed_time = end-start;
-
-
-                        System.out.println("----------------------------------------------------------------------");
-                        System.out.println("GOOGLE MAPS DIRECTIONS API RESULT");
-                        System.out.println("----------------------------------------------------------------------");
-                        System.out.println("Driving Distance : ".concat(String.valueOf(driving_distance)).concat(" KM"));
-                        System.out.println("Driving Time     : ".concat(String.valueOf(driving_time)).concat(" seconds"));
-                        System.out.println("Elapsed Time     : ".concat(String.valueOf(elapsed_time)).concat(" ms"));
-                        System.out.println("----------------------------------------------------------------------");
-                        RCTsecondsToTimeData seconds_time = new RCTsecondsToTimeData(driving_time);
-                        System.out.println("ST Day     : ".concat(String.valueOf(seconds_time.DAYS)));
-                        System.out.println("ST Hour    : ".concat(String.valueOf(seconds_time.HOURS)));
-                        System.out.println("ST Minute  : ".concat(String.valueOf(seconds_time.MINUTES)));
-                        System.out.println("ST Seconds : ".concat(String.valueOf(seconds_time.SECONDS)));
-                        System.out.println("----------------------------------------------------------------------");
-
-
-                    }
-                }).start();
+                MapsUtilTest.multiDestinationRouteWithInterval();
             }
         });
 
