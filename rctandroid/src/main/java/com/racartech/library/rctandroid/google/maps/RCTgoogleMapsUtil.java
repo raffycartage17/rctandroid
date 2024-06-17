@@ -14,6 +14,7 @@ import com.google.maps.model.DirectionsLeg;
 import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.DirectionsRoute;
 import com.google.maps.model.DirectionsStep;
+import com.google.maps.model.LatLng;
 import com.google.maps.model.TrafficModel;
 import com.google.maps.model.TravelMode;
 
@@ -21,6 +22,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -373,7 +375,165 @@ public class RCTgoogleMapsUtil {
 
 
 
-    private static double distanceBetweenPoints(com.google.maps.model.LatLng point1, com.google.maps.model.LatLng point2) {
+
+
+
+
+
+
+
+
+
+
+
+
+    public static ArrayList<DirectionsRoute> getMultiPointDirectionRoute(
+            String api_key,
+            com.google.maps.model.LatLng origin,
+            ArrayList<com.google.maps.model.LatLng> destination,
+            TravelMode travel_mode,
+            ArrayList<DirectionsApi.RouteRestriction> route_restriction,
+            Instant departure_time
+    ){
+        boolean return_boolean = false;
+        AtomicBoolean finished_boolean = new AtomicBoolean(false);
+        AtomicReference<ArrayList<DirectionsRoute>> atomic_value = new AtomicReference<>(null);
+
+        getMultiPointDirectionRoute_System(
+                api_key,
+                origin,
+                destination,
+                travel_mode,
+                route_restriction,
+                departure_time,
+                atomic_value,
+                finished_boolean
+        );
+        while(!return_boolean){
+            if(!finished_boolean.get()){
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }else{
+                return_boolean = true;
+            }
+        }
+        return atomic_value.get();
+    }
+
+
+    public static ArrayList<DirectionsRoute> getMultiPointDirectionRoute(
+            String api_key,
+            com.google.maps.model.LatLng origin,
+            ArrayList<com.google.maps.model.LatLng> destination
+    ){
+        boolean return_boolean = false;
+        AtomicBoolean finished_boolean = new AtomicBoolean(false);
+        AtomicReference<ArrayList<DirectionsRoute>> atomic_value = new AtomicReference<>(null);
+
+        getMultiPointDirectionRoute_System(
+                api_key,
+                origin,
+                destination,
+                TravelMode.DRIVING,
+                new ArrayList<>(),
+                Instant.now(),
+                atomic_value,
+                finished_boolean
+        );
+        while(!return_boolean){
+            if(!finished_boolean.get()){
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }else{
+                return_boolean = true;
+            }
+        }
+        return atomic_value.get();
+    }
+
+
+    private static void getMultiPointDirectionRoute_System(
+            String api_key,
+            com.google.maps.model.LatLng origin,
+            ArrayList<com.google.maps.model.LatLng> destination,
+            TravelMode travel_mode,
+            ArrayList<DirectionsApi.RouteRestriction> route_restriction,
+            Instant departure_time,
+            AtomicReference<ArrayList<DirectionsRoute>> atomic_value,
+            AtomicBoolean finish_boolean) {
+
+        // Initialize the context once
+        GeoApiContext geoApiContext = new GeoApiContext.Builder()
+                .apiKey(api_key)
+                .build();
+
+        // Initialize the atomic reference if it is null
+        if (atomic_value.get() == null) {
+            atomic_value.set(new ArrayList<>());
+        }
+
+        // Countdown latch to ensure all requests complete
+        CountDownLatch latch = new CountDownLatch(destination.size());
+
+        // Loop through each destination and create requests
+        for (int index = 0; index < destination.size(); index++) {
+            LatLng current_origin;
+            if(index == 0){
+                current_origin = origin;
+            }else{
+                current_origin = destination.get(index-1);
+            }
+
+            LatLng current_destination = destination.get(index);
+            DirectionsApiRequest request = DirectionsApi.newRequest(geoApiContext)
+                    .origin(current_origin)
+                    .destination(current_destination)
+                    .mode(travel_mode)
+                    .departureTime(departure_time)
+                    .trafficModel(TrafficModel.BEST_GUESS);
+
+            for (DirectionsApi.RouteRestriction restriction : route_restriction) {
+                request.avoid(restriction);
+            }
+
+            request.setCallback(new PendingResult.Callback<DirectionsResult>() {
+                @Override
+                public void onResult(DirectionsResult result) {
+                    DirectionsRoute route = result.routes[0];
+                    atomic_value.get().add(route);
+                    latch.countDown();
+                }
+
+                @Override
+                public void onFailure(Throwable e) {
+                    e.printStackTrace();
+                    latch.countDown();
+                }
+            });
+        }
+
+        try {
+            // Wait for all requests to complete
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            Thread.currentThread().interrupt();
+        } finally {
+            // Mark as finished
+            finish_boolean.set(true);
+        }
+    }
+
+
+
+
+    protected static double distanceBetweenPoints(com.google.maps.model.LatLng point1, com.google.maps.model.LatLng point2) {
         double R = 6371000; // Radius of the Earth in meters
         double lat1 = Math.toRadians(point1.lat);
         double lon1 = Math.toRadians(point1.lng);
