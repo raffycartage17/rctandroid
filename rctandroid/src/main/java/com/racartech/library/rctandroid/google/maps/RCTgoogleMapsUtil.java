@@ -351,6 +351,16 @@ public class RCTgoogleMapsUtil {
         return polylineOptions;
     }
 
+    public static PolylineOptions getDirectionRoutePolylineOptions(
+            List<com.google.android.gms.maps.model.LatLng> path
+    ) {
+        PolylineOptions polylineOptions = new PolylineOptions()
+                .addAll(path)
+                .color(Color.BLUE)
+                .width(10);
+        return polylineOptions;
+    }
+
 
     public static List<com.google.android.gms.maps.model.LatLng> getDirectionRoutePaths(
             DirectionsRoute direction_route
@@ -550,6 +560,17 @@ public class RCTgoogleMapsUtil {
 
         return R * c;
     }
+
+    public ArrayList<com.google.android.gms.maps.model.LatLng> getDirectionRoutesPaths(ArrayList<DirectionsRoute> routes){
+        ArrayList<com.google.android.gms.maps.model.LatLng> all_paths = new ArrayList<>();
+        for(int index = 0; index<routes.size(); index++){
+            List<com.google.android.gms.maps.model.LatLng> new_paths = getDirectionRoutePaths(routes.get(index));
+            all_paths.addAll(new_paths);
+        }
+        return all_paths;
+    }
+
+
 
 
 

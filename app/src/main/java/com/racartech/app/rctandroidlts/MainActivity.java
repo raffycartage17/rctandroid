@@ -400,26 +400,19 @@ public class MainActivity extends AppCompatActivity {
                         long end = System.currentTimeMillis();
                         long elapsed_time = end-start;
 
-                        System.out.println("----------------------------------------------------------------------");
-                        System.out.println("Driving Distance : ".concat(String.valueOf(driving_distance)));
-                        System.out.println("Driving Time     : ".concat(String.valueOf(driving_time)));
-                        System.out.println("Elapsed Time     : ".concat(String.valueOf(elapsed_time)));
-                        System.out.println("----------------------------------------------------------------------");
 
-
+                        System.out.println("----------------------------------------------------------------------");
+                        System.out.println("GOOGLE MAPS DIRECTIONS API RESULT");
+                        System.out.println("----------------------------------------------------------------------");
+                        System.out.println("Driving Distance : ".concat(String.valueOf(driving_distance)).concat(" KM"));
+                        System.out.println("Driving Time     : ".concat(String.valueOf(driving_time)).concat(" seconds"));
+                        System.out.println("Elapsed Time     : ".concat(String.valueOf(elapsed_time)).concat(" ms"));
                         System.out.println("----------------------------------------------------------------------");
                         RCTsecondsToTimeData seconds_time = new RCTsecondsToTimeData(driving_time);
                         System.out.println("ST Day     : ".concat(String.valueOf(seconds_time.DAYS)));
                         System.out.println("ST Hour    : ".concat(String.valueOf(seconds_time.HOURS)));
                         System.out.println("ST Minute  : ".concat(String.valueOf(seconds_time.MINUTES)));
                         System.out.println("ST Seconds : ".concat(String.valueOf(seconds_time.SECONDS)));
-                        System.out.println("----------------------------------------------------------------------");
-                        RCTmillisecondToTimeData ms_time = new RCTmillisecondToTimeData((driving_time*1000)+240);
-                        System.out.println("MST Day     : ".concat(String.valueOf(ms_time.DAYS)));
-                        System.out.println("MST Hour    : ".concat(String.valueOf(ms_time.HOURS)));
-                        System.out.println("MST Minute  : ".concat(String.valueOf(ms_time.MINUTES)));
-                        System.out.println("MST Seconds : ".concat(String.valueOf(ms_time.SECONDS)));
-                        System.out.println("MST Millise : ".concat(String.valueOf(ms_time.MILLISECONDS)));
                         System.out.println("----------------------------------------------------------------------");
 
 
