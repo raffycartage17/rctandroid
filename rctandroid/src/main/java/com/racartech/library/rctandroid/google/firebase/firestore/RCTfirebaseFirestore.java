@@ -34,6 +34,67 @@ public class RCTfirebaseFirestore {
         return FirebaseFirestore.getInstance();
     }
 
+
+    public static boolean setDocumentData_WaitProgress(
+            FirebaseFirestore instance,
+            String collection_path,
+            String document_path,
+            HashMap<String, Object> document_data,
+            long thread_wait){
+        boolean return_boolean = false;
+        AtomicBoolean finished_boolean = new AtomicBoolean(false);
+        AtomicBoolean success_boolean = new AtomicBoolean(false);
+        FirestoreUtil.createDocument_WaitProgress(
+                instance,
+                collection_path,
+                document_path,
+                document_data,
+                finished_boolean,
+                success_boolean);
+        while(!return_boolean){
+            if(!finished_boolean.get()){
+                try {
+                    Thread.sleep(thread_wait);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }else{
+                return_boolean = true;
+            }
+        }
+        return success_boolean.get();
+    }
+
+    public static boolean setDocumentData_WaitProgress(
+            FirebaseFirestore instance,
+            String collection_path,
+            String document_path,
+            long thread_wait){
+        boolean return_boolean = false;
+        AtomicBoolean finished_boolean = new AtomicBoolean(false);
+        AtomicBoolean success_boolean = new AtomicBoolean(false);
+        FirestoreUtil.createDocument_WaitProgress(
+                instance,
+                collection_path,
+                document_path,
+                finished_boolean,
+                success_boolean);
+        while(!return_boolean){
+            if(!finished_boolean.get()){
+                try {
+                    Thread.sleep(thread_wait);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }else{
+                return_boolean = true;
+            }
+        }
+        return success_boolean.get();
+    }
+
+
+
     public static boolean doesFieldExist(
             FirebaseFirestore instance,
             String collection_path,
@@ -255,14 +316,20 @@ public class RCTfirebaseFirestore {
                 document_data);
     }
 
-    public static void createDocument_WaitProgress(
+    public static boolean createDocument_WaitProgress(
             FirebaseFirestore instance,
             String collection_path,
             String document_path,
             long thread_wait){
             boolean return_boolean = false;
             AtomicBoolean finished_boolean = new AtomicBoolean(false);
-            FirestoreUtil.createDocument_WaitProgress(instance,collection_path,document_path,finished_boolean);
+            AtomicBoolean success_boolean = new AtomicBoolean(false);
+            FirestoreUtil.createDocument_WaitProgress(
+                    instance,
+                    collection_path,
+                    document_path,
+                    finished_boolean,
+                    success_boolean);
             while(!return_boolean){
                 if(!finished_boolean.get()){
                     try {
@@ -274,9 +341,10 @@ public class RCTfirebaseFirestore {
                     return_boolean = true;
                 }
             }
+            return success_boolean.get();
     }
 
-    public static void createDocument_WaitProgress(
+    public static boolean createDocument_WaitProgress(
             FirebaseFirestore instance,
             String collection_path,
             String document_path,
@@ -284,12 +352,14 @@ public class RCTfirebaseFirestore {
             long thread_wait){
         boolean return_boolean = false;
         AtomicBoolean finished_boolean = new AtomicBoolean(false);
+        AtomicBoolean success_boolean = new AtomicBoolean(false);
         FirestoreUtil.createDocument_WaitProgress(
                 instance,
                 collection_path,
                 document_path,
                 document_data,
-                finished_boolean);
+                finished_boolean,
+                success_boolean);
         while(!return_boolean){
             if(!finished_boolean.get()){
                 try {
@@ -301,6 +371,7 @@ public class RCTfirebaseFirestore {
                 return_boolean = true;
             }
         }
+        return success_boolean.get();
     }
 
 
@@ -587,7 +658,13 @@ public class RCTfirebaseFirestore {
 
         }
 
-        protected static void createDocument_WaitProgress(FirebaseFirestore instance,String collection_path, String document_path, AtomicBoolean finished_bool) {
+        protected static void createDocument_WaitProgress(
+                FirebaseFirestore instance,
+                String collection_path,
+                String document_path,
+                AtomicBoolean finished_bool,
+                AtomicBoolean success_bool
+        ) {
 
             new Thread(new Runnable() {
                 @Override
@@ -600,21 +677,25 @@ public class RCTfirebaseFirestore {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     finished_bool.set(true);
+                                    success_bool.set(true);
                                 }
                             }).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
                                     finished_bool.set(true);
+                                    success_bool.set(true);
                                 }
                             }).addOnCanceledListener(new OnCanceledListener() {
                                 @Override
                                 public void onCanceled() {
                                     finished_bool.set(true);
+                                    success_bool.set(false);
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
                                     finished_bool.set(true);
+                                    success_bool.set(false);
                                 }
                             });
 
@@ -629,7 +710,9 @@ public class RCTfirebaseFirestore {
                 String collection_path,
                 String document_path,
                 HashMap<String, Object> document_data,
-                AtomicBoolean finished_bool) {
+                AtomicBoolean finished_bool,
+                AtomicBoolean success_bool
+        ) {
 
             new Thread(new Runnable() {
                 @Override
@@ -641,21 +724,25 @@ public class RCTfirebaseFirestore {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     finished_bool.set(true);
+                                    success_bool.set(true);
                                 }
                             }).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
                                     finished_bool.set(true);
+                                    success_bool.set(true);
                                 }
                             }).addOnCanceledListener(new OnCanceledListener() {
                                 @Override
                                 public void onCanceled() {
                                     finished_bool.set(true);
+                                    success_bool.set(false);
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
                                     finished_bool.set(true);
+                                    success_bool.set(false);
                                 }
                             });
 

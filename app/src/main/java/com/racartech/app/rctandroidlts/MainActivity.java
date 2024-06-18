@@ -32,6 +32,7 @@ import com.google.maps.model.DirectionsRoute;
 import com.google.maps.model.LatLng;
 import com.google.maps.model.TravelMode;
 import com.racartech.app.rctandroidlts.api.ApiKeyManager;
+import com.racartech.app.rctandroidlts.firebase.FirestoreTest;
 import com.racartech.app.rctandroidlts.functionbuttons.FunctionFive;
 import com.racartech.app.rctandroidlts.functionbuttons.FunctionThree;
 import com.racartech.app.rctandroidlts.functionbuttons.FunctionTwo;
@@ -316,7 +317,8 @@ public class MainActivity extends AppCompatActivity {
         f9.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MapsUtilTest.multiDestinationRouteWithInterval();
+                //MapsUtilTest.multiDestinationRouteWithInterval();
+                FirestoreTest.test001();
             }
         });
 
