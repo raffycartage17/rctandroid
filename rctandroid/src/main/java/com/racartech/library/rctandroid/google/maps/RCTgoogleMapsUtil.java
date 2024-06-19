@@ -281,6 +281,24 @@ public class RCTgoogleMapsUtil {
 
 
 
+
+    public static double getDrivingDistance_M(ArrayList<DirectionsRoute> direction_routes){
+        double total_driving_distance = 0.0;
+        for(int index = 0; index<direction_routes.size(); index++){
+            total_driving_distance += getDrivingDistance_M(direction_routes.get(index));
+        }
+        return total_driving_distance;
+    }
+
+    public static long getDrivingTime_Seconds(ArrayList<DirectionsRoute> direction_routes){
+        long total_driving_distance = 0L;
+        for(int index = 0; index<direction_routes.size(); index++){
+            total_driving_distance += getDrivingTime_Seconds(direction_routes.get(index));
+        }
+        return total_driving_distance;
+    }
+
+
     public static double getDrivingDistance_M(
             DirectionsRoute direction_route
     ) {
@@ -313,7 +331,7 @@ public class RCTgoogleMapsUtil {
     public static long getDrivingTime_Seconds(DirectionsRoute direction_route){
         DirectionsRoute route = direction_route;
         if (route.legs != null && route.legs.length > 0) {
-            long estimatedTimeInSeconds = 0;
+            long estimatedTimeInSeconds = 0L;
             for (com.google.maps.model.DirectionsLeg leg : route.legs) {
                 if (leg.duration != null) {
                     estimatedTimeInSeconds += leg.duration.inSeconds;
@@ -324,6 +342,63 @@ public class RCTgoogleMapsUtil {
             return -1;
         }
     }
+
+
+    public static PolylineOptions getDirectionRoutePolylineOptions(
+            ArrayList<DirectionsRoute> direction_route
+    ){
+        ArrayList<com.google.android.gms.maps.model.LatLng> coordinates = new ArrayList<>();
+        for(int index = 0; index<direction_route.size(); index++){
+            coordinates.addAll(getDirectionRoutePaths(direction_route.get(index)));
+        }
+        return getDirectionRoutePolylineOptions(coordinates);
+    }
+
+    public static PolylineOptions getDirectionRoutePolylineOptions(
+            ArrayList<DirectionsRoute> direction_route,
+            int polyline_color
+    ){
+        ArrayList<com.google.android.gms.maps.model.LatLng> coordinates = new ArrayList<>();
+        for(int index = 0; index<direction_route.size(); index++){
+            coordinates.addAll(getDirectionRoutePaths(direction_route.get(index)));
+        }
+        return getDirectionRoutePolylineOptions(coordinates,polyline_color);
+    }
+
+    public static ArrayList<PolylineOptions> getDirectionRoutePolylineOptions(
+            ArrayList<DirectionsRoute> direction_route,
+            ArrayList<Integer> polyline_colors
+    ){
+        ArrayList<PolylineOptions> polyline_options = new ArrayList<>();
+
+
+        System.out.println("------------------------------------------------------------");
+        System.out.println("Method");
+        for(int index = 0; index<polyline_colors.size(); index++){
+            System.out.println("Color : ".concat(String.valueOf(polyline_colors.get(index))));
+        }
+        System.out.println("------------------------------------------------------------");
+
+        for(int index = 0; index<direction_route.size(); index++){
+            int the_color;
+            if(index < polyline_colors.size()){
+                the_color = polyline_colors.get(index);
+            }else{
+                the_color = polyline_colors.get(polyline_colors.size()-1);
+            }
+
+            System.out.println("The Color : ".concat(String.valueOf(the_color)));
+
+            polyline_options.add(
+                    getDirectionRoutePolylineOptions(
+                            direction_route.get(index),
+                            the_color
+                    )
+            );
+        }
+        return polyline_options;
+    }
+
 
     public static PolylineOptions getDirectionRoutePolylineOptions(
             DirectionsRoute direction_route
@@ -360,6 +435,53 @@ public class RCTgoogleMapsUtil {
                 .width(10);
         return polylineOptions;
     }
+
+
+
+
+    public static PolylineOptions getDirectionRoutePolylineOptions(
+            DirectionsRoute direction_route, int polyline_color
+    ) {
+        List<com.google.android.gms.maps.model.LatLng> path = new ArrayList<>();
+        DirectionsRoute route = direction_route;
+        DirectionsLeg[] legs = route.legs;
+        for (int i = 0; i < legs.length; i++) {
+            DirectionsLeg leg = legs[i];
+            DirectionsStep[] steps = leg.steps;
+            for (int j = 0; j < steps.length; j++) {
+                DirectionsStep step = steps[j];
+                List<com.google.maps.model.LatLng> decodePath = step.polyline.decodePath();
+                for (int k = 0; k < decodePath.size(); k++) {
+                    com.google.maps.model.LatLng point = decodePath.get(k);
+                    path.add(new com.google.android.gms.maps.model.LatLng(point.lat,point.lng));
+                }
+            }
+        }
+        PolylineOptions polylineOptions = new PolylineOptions()
+                .addAll(path)
+                .color(polyline_color)
+                .width(10);
+
+        return polylineOptions;
+    }
+
+    public static PolylineOptions getDirectionRoutePolylineOptions(
+            List<com.google.android.gms.maps.model.LatLng> path,
+            int polyline_color
+    ) {
+        PolylineOptions polylineOptions = new PolylineOptions()
+                .addAll(path)
+                .color(polyline_color)
+                .width(10);
+        return polylineOptions;
+    }
+
+
+
+
+
+
+
 
 
     public static List<com.google.android.gms.maps.model.LatLng> getDirectionRoutePaths(

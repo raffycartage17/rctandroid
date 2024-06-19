@@ -14,15 +14,17 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.maps.DirectionsApi;
+import com.google.maps.model.DirectionsRoute;
 import com.google.maps.model.LatLng;
 import com.google.maps.model.TravelMode;
 import com.racartech.app.rctandroidlts.R;
 import com.racartech.app.rctandroidlts.api.ApiKeyManager;
 import com.racartech.library.rctandroid.file.RCTfile;
-import com.racartech.library.rctandroid.google.maps.RCTgoogleMaps;
 import com.racartech.library.rctandroid.google.maps.RCTgoogleMapsUtil;
+import com.racartech.library.rctandroid.google.maps.RCTgoogleMapsView;
 import com.racartech.library.rctandroid.location.RCTfacingDirectionListener;
 import com.racartech.library.rctandroid.logging.RCTloggingLocationData;
 
@@ -31,12 +33,12 @@ import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class MapsTestActivity extends AppCompatActivity implements
-        RCTgoogleMaps.OnPinDropListener,
+        RCTgoogleMapsView.OnPinDropListener,
         RCTfacingDirectionListener.FacingDirectionListener
 {
 
     private FrameLayout mapContainer;
-    private RCTgoogleMaps googleMaps = null;
+    private RCTgoogleMapsView googleMaps = null;
     private Button
             add_map_view_button,
             get_directions_button,
@@ -106,17 +108,23 @@ public class MapsTestActivity extends AppCompatActivity implements
             @Override
             public void onClick(View view) {
 
+
+
+
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
+
+
+                        /*
 
                         String api_key = ApiKeyManager.getGoogleApiKey(firestore_instance);
                         LatLng origin_coordinates = new LatLng(
                                 googleMaps.CURRENT_LOCATION_LATITUDE.get(),
                                 googleMaps.CURRENT_LOCATION_LONGITUDE.get());
 
-                        double total_driving_distance =
-                                RCTgoogleMapsUtil.getDrivingDistance_M(RCTgoogleMapsUtil.getDirectionRoute(api_key,origin_coordinates,PIN_POINTS.get().get(0)));
+                        double total_driving_distance = googleMaps.CURRENT_DIRECTIONS_TOTAL_DISTANCE.get();
+
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run(){
@@ -125,39 +133,12 @@ public class MapsTestActivity extends AppCompatActivity implements
                                         Toast.LENGTH_SHORT).show();
                             }
                         });
+
+                         */
                     }
                 }).start();
 
-                /*
-                LatLng origin_coordinates = new LatLng(
-                        googleMaps.CURRENT_LOCATION_LATITUDE.get(),
-                        googleMaps.CURRENT_LOCATION_LONGITUDE.get()
-                );
 
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        String api_key = ApiKeyManager.getGoogleApiKey(firestore_instance);
-                        ArrayList<DirectionsApi.RouteRestriction> route_restrictions = new ArrayList<>();
-                        route_restrictions.add(DirectionsApi.RouteRestriction.TOLLS);
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run(){
-
-                                googleMaps.getDirections(
-                                        api_key,
-                                        origin_coordinates,
-                                        PIN_POINTS.get(),
-                                        TravelMode.DRIVING,
-                                        route_restrictions,
-                                        Instant.ofEpochMilli(System.currentTimeMillis())
-                                );
-                            }
-                        });
-                    }
-                }).start();
-                 */
 
 
             }
@@ -168,31 +149,63 @@ public class MapsTestActivity extends AppCompatActivity implements
             @Override
             public void onClick(View view) {
 
-
-                LatLng origin_coordinates = new LatLng(
-                        googleMaps.CURRENT_LOCATION_LATITUDE.get(),
-                        googleMaps.CURRENT_LOCATION_LONGITUDE.get()
-                );
-
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
 
+                        LatLng origin_coordinates = new LatLng(
+                                googleMaps.CURRENT_LOCATION_LATITUDE.get(),
+                                googleMaps.CURRENT_LOCATION_LONGITUDE.get()
+                        );
+
                         String api_key = ApiKeyManager.getGoogleApiKey(firestore_instance);
                         ArrayList<DirectionsApi.RouteRestriction> route_restrictions = new ArrayList<>();
                         route_restrictions.add(DirectionsApi.RouteRestriction.TOLLS);
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run(){
 
-                                googleMaps.getDirections(
+                        ArrayList<DirectionsRoute> direction_routes =
+                                RCTgoogleMapsUtil.getMultiPointDirectionRoute(
                                         api_key,
                                         origin_coordinates,
                                         PIN_POINTS.get(),
                                         TravelMode.DRIVING,
                                         route_restrictions,
                                         Instant.ofEpochMilli(System.currentTimeMillis())
+
                                 );
+
+                        ArrayList<Integer> polyline_colors = new ArrayList<>();
+                        polyline_colors.add(Color.BLUE);
+                        polyline_colors.add(Color.YELLOW);
+                        polyline_colors.add(Color.GREEN);
+                        polyline_colors.add(Color.RED);
+                        polyline_colors.add(MapsTestActivity.this.getColor(R.color.brown));
+                        polyline_colors.add(MapsTestActivity.this.getColor(R.color.pink));
+                        polyline_colors.add(MapsTestActivity.this.getColor(R.color.light_blue));
+
+                        ArrayList<PolylineOptions> polyline_options = RCTgoogleMapsUtil.getDirectionRoutePolylineOptions(
+                                direction_routes,
+                                polyline_colors
+                        );
+
+
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run(){
+
+
+
+
+                                System.out.println("------------------------------------------------------------");
+                                System.out.println("Initialized");
+                                for(int index = 0; index<polyline_colors.size(); index++){
+                                    System.out.println("Color : ".concat(String.valueOf(polyline_colors.get(index))));
+                                }
+                                System.out.println("------------------------------------------------------------");
+
+
+                                googleMaps.drawDirectionRoutes_01(direction_routes,polyline_options);
+
                             }
                         });
                     }
@@ -216,7 +229,7 @@ public class MapsTestActivity extends AppCompatActivity implements
             googleMaps = null;
         }
 
-        googleMaps = new RCTgoogleMaps(
+        googleMaps = new RCTgoogleMapsView(
                 MapsTestActivity.this,
                 MapsTestActivity.this,
                 500,
@@ -228,7 +241,7 @@ public class MapsTestActivity extends AppCompatActivity implements
         googleMaps.setDefaultMaxZoom(17.0F);
         googleMaps.setFirstAutoLocationUpdateFollowCamera(true);
 
-        googleMaps.setOnCurrentDirectionsTotalDistanceCalculated(new RCTgoogleMaps.OnCurrentDirectionsTotalDistanceCalculatedListener() {
+        googleMaps.setOnCurrentDirectionsTotalDistanceCalculated(new RCTgoogleMapsView.OnCurrentDirectionsTotalDistanceCalculatedListener() {
             @Override
             public void OnCurrentDirectionsTotalDistanceCalculatedListener(double total_distance) {
                 System.out.println("--------------------------------------------");
@@ -238,7 +251,7 @@ public class MapsTestActivity extends AppCompatActivity implements
             }
         });
 
-        googleMaps.setOnCurrentLocationUpdated(new RCTgoogleMaps.OnCurrentLocationUpdated() {
+        googleMaps.setOnCurrentLocationUpdated(new RCTgoogleMapsView.OnCurrentLocationUpdated() {
             @Override
             public void OnCurrentLocationUpdated(double latitude, double longitude) {
                 System.out.println("----------------------------------------------------");
