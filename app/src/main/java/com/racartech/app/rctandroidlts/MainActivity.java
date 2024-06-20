@@ -39,6 +39,7 @@ import com.racartech.app.rctandroidlts.functionbuttons.FunctionTwo;
 import com.racartech.app.rctandroidlts.maps.MapsTestActivity;
 import com.racartech.app.rctandroidlts.maps.MapsUtilTest;
 import com.racartech.app.rctandroidlts.maps.TextToSpeechActivity;
+import com.racartech.app.rctandroidlts.othertest.TestQRCodeActivity;
 import com.racartech.app.rctandroidlts.resources.BuildConfig;
 import com.racartech.app.rctandroidlts.window1.Window1;
 import com.racartech.app.rctandroidlts.window1.Window2;
@@ -133,13 +134,21 @@ public class MainActivity extends AppCompatActivity {
         int button_pressed_color = MainActivity.this.getResources().getColor(R.color.yellow,null);
 
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            RCTpermission.allowPermissions(this,new String[]{
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.MANAGE_EXTERNAL_STORAGE
 
+            },0);
+        }
 
-
-        RCTpermission.allowPermissions(this,new String[]{
-                Manifest.permission.CAMERA,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION
-
-        },0);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if(!Environment.isExternalStorageManager()){
+                RCTpermission.allowPermission_MANAGE_EXTERNAL_STORAGE(MainActivity.this, 200);
+            }
+        }
         promptUserAllowPermission();
 
 
@@ -222,40 +231,8 @@ public class MainActivity extends AppCompatActivity {
         f7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("----------------------------------------------------------------");
-                long cached_current_millis = System.currentTimeMillis();
-
-                RCTdateTimeData dt_data = new RCTdateTimeData(cached_current_millis);
-                // Print out every variable from dt_data object
-                System.out.println("Year: " + dt_data.YEAR);
-                System.out.println("Month: " + dt_data.MONTH);
-                System.out.println("Date: " + dt_data.DATE);
-                System.out.println("Hour: " + dt_data.HOUR);
-                System.out.println("Minute: " + dt_data.MINUTE);
-                System.out.println("Second: " + dt_data.SECOND);
-                System.out.println("Millisecond: " + dt_data.MILLISECOND);
-                System.out.println("Unix Epoch Millisecond: " + dt_data.UNIX_EPOCH_MILLISECOND);
-                System.out.println("----------------------------------------------------------------");
-                RCTdateTimeData new_data = new RCTdateTimeData(
-                        dt_data.YEAR,
-                        dt_data.MONTH,
-                        dt_data.DATE,
-                        dt_data.HOUR,
-                        dt_data.MINUTE,
-                        dt_data.SECOND,
-                        dt_data.MILLISECOND
-                );
-                System.out.println("Year: " + new_data.YEAR);
-                System.out.println("Month: " + new_data.MONTH);
-                System.out.println("Date: " + new_data.DATE);
-                System.out.println("Hour: " + new_data.HOUR);
-                System.out.println("Minute: " + new_data.MINUTE);
-                System.out.println("Second: " + new_data.SECOND);
-                System.out.println("Millisecond: " + new_data.MILLISECOND);
-                System.out.println("Unix Epoch Millisecond: " + new_data.UNIX_EPOCH_MILLISECOND);
-
-
-                System.out.println("----------------------------------------------------------------");
+                Intent qrcode_intent = new Intent(MainActivity.this, TestQRCodeActivity.class);
+                startActivity(qrcode_intent);
             }
         });
 
@@ -351,8 +328,19 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void promptUserAllowPermission(){
+        System.out.println("--------------------------------------------");
+        System.out.println("promptUserAllowPermission");
+        System.out.println("--------------------------------------------");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            System.out.println("--------------------------------------------");
+            System.out.println("Build.VERSION.SDK_INT >= Build.VERSION_CODES.R");
+            System.out.println("--------------------------------------------");
+            System.out.println("isExternalStorageManager : ".concat(String.valueOf(Environment.isExternalStorageManager())));
+            System.out.println("--------------------------------------------");
             if(!Environment.isExternalStorageManager()){
+                System.out.println("--------------------------------------------");
+                System.out.println("Environment.isExternalStorageManager()");
+                System.out.println("--------------------------------------------");
                 Context app_context = MainActivity.this;
                 Dialog request_dialog = new Dialog(app_context);
                 request_dialog.setContentView(R.layout.standard_dialog_box);
@@ -400,6 +388,8 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+
+
 
 
 }

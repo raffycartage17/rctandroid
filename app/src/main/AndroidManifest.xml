@@ -47,6 +47,11 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="${prod_google_api_key}" />
 
+
+        <activity
+            android:name=".othertest.TestQRCodeActivity"
+            android:exported="false"
+            android:launchMode="singleTask"/>
         <activity
             android:name=".window1.Window1"
             android:exported="false"
