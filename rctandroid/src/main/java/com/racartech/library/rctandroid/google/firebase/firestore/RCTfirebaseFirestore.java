@@ -28,12 +28,13 @@ public class RCTfirebaseFirestore {
 
 
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 
     public static FirebaseFirestore getInstance(){
         return FirebaseFirestore.getInstance();
     }
-
 
     public static boolean setDocumentData_WaitProgress(
             FirebaseFirestore instance,
