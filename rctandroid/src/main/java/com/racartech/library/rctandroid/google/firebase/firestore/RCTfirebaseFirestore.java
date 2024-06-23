@@ -27,7 +27,6 @@ import java.util.concurrent.atomic.AtomicReference;
 public class RCTfirebaseFirestore {
 
 
-
     public static boolean doesFieldExist(HashMap<String, Object> document_data, String field_name, boolean ignore_case){
         ArrayList<String> keyset = getFields(document_data);
         boolean do_exist = false;
@@ -51,6 +50,19 @@ public class RCTfirebaseFirestore {
 
     public static ArrayList<String> getFields(HashMap<String, Object> document_data){
         return new ArrayList<>(document_data.keySet());
+    }
+
+    public static String readField(HashMap<String, Object> document_data, String field_name, boolean field_name_ignore_case){
+        boolean does_field_exist = doesFieldExist(document_data,field_name,field_name_ignore_case);
+        if(does_field_exist){
+            try {
+                return Objects.requireNonNull(document_data.get(field_name)).toString();
+            }catch(NullPointerException ignored){
+                return null;
+            }
+        }else{
+            return null;
+        }
     }
 
 
