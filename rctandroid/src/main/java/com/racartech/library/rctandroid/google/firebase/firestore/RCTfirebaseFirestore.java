@@ -28,6 +28,32 @@ public class RCTfirebaseFirestore {
 
 
 
+    public static boolean doesFieldExist(HashMap<String, Object> document_data, String field_name, boolean ignore_case){
+        ArrayList<String> keyset = getFields(document_data);
+        boolean do_exist = false;
+        if(ignore_case){
+            for(int index = 0; index<keyset.size(); index++){
+                if(keyset.get(index).equalsIgnoreCase(field_name)){
+                    do_exist = true;
+                    break;
+                }
+            }
+        }else{
+            for(int index = 0; index<keyset.size(); index++){
+                if(keyset.get(index).equals(field_name)){
+                    do_exist = true;
+                    break;
+                }
+            }
+        }
+        return do_exist;
+    }
+
+    public static ArrayList<String> getFields(HashMap<String, Object> document_data){
+        return new ArrayList<>(document_data.keySet());
+    }
+
+
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
 
