@@ -58,6 +58,8 @@ dependencies {
     implementation 'com.google.zxing:core:3.3.3'
     implementation 'com.journeyapps:zxing-android-embedded:4.3.0'
 
+    implementation 'com.google.cloud:google-cloud-vision:3.44.0'
+
 
     implementation 'commons-io:commons-io:2.16.1' //2.13.0
 

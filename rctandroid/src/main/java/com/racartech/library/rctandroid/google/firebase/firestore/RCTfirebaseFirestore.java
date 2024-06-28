@@ -27,6 +27,44 @@ import java.util.concurrent.atomic.AtomicReference;
 public class RCTfirebaseFirestore {
 
 
+
+
+    public static void createField(
+            FirebaseFirestore instance,
+            String collection_path,
+            String document_path,
+            String field_name,
+            Object field_value){
+        FirestoreUtil.createField(instance,collection_path,document_path,field_name,field_value);
+    }
+
+    public static void createField_WaitProgress(
+            FirebaseFirestore instance,
+            String collection_path,
+            String document_path,
+            String field_name,
+            Object field_value,
+            long thread_wait){
+        boolean return_boolean = false;
+        AtomicBoolean finished_boolean = new AtomicBoolean(false);
+        FirestoreUtil.createField_WaitProgress(instance,collection_path,document_path,field_name,field_value,finished_boolean);
+        while(!return_boolean){
+            if(!finished_boolean.get()){
+                try {
+                    Thread.sleep(thread_wait);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }else{
+                return_boolean = true;
+            }
+        }
+    }
+
+
+
+
+
     public static boolean doesFieldExist(HashMap<String, Object> document_data, String field_name, boolean ignore_case){
         ArrayList<String> keyset = getFields(document_data);
         boolean do_exist = false;
@@ -422,6 +460,38 @@ public class RCTfirebaseFirestore {
         return readField(collection_path, document_path, field_name, thread_wait, instance);
     }
 
+
+
+    public static Object readField_asObject(
+            FirebaseFirestore instance,
+            String collection_path,
+            String document_path,
+            String field_name,
+            long thread_wait){
+
+        boolean return_boolean = false;
+        AtomicBoolean finished_boolean = new AtomicBoolean(false);
+        AtomicReference<Object> atomic_value = new AtomicReference<>(null);
+        FirestoreUtil.readField_asObject(
+                instance,
+                collection_path,
+                document_path,
+                field_name,
+                finished_boolean,
+                atomic_value);
+        while(!return_boolean){
+            if(!finished_boolean.get()){
+                try {
+                    Thread.sleep(thread_wait);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }else{
+                return_boolean = true;
+            }
+        }
+        return atomic_value.get();
+    }
 
     public static String readField(
             String collection_path,
@@ -966,6 +1036,56 @@ public class RCTfirebaseFirestore {
                                 if (documentSnapshot.contains(fieldName)) {
                                     try {
                                         String field_value = Objects.requireNonNull(documentSnapshot.get(fieldName)).toString();
+                                        atomic_value.set(field_value);
+                                    }catch(Exception ignored){}
+                                    finished_boolean.set(true);
+                                } else {
+                                    finished_boolean.set(true);
+                                }
+                            } else {
+                                finished_boolean.set(true);
+                            }
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            finished_boolean.set(true);
+                        }
+                    }).addOnCanceledListener(new OnCanceledListener() {
+                        @Override
+                        public void onCanceled() {
+                            finished_boolean.set(true);
+                        }
+                    });
+
+                }
+            }).start();
+
+
+        }
+
+
+        public static void readField_asObject(
+                FirebaseFirestore instance,
+                String collection_path,
+                String document_path,
+                String fieldName,
+                AtomicBoolean finished_boolean,
+                AtomicReference<Object> atomic_value) {
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+
+                    Task<DocumentSnapshot> documentSnapshotTask = instance.collection(collection_path).document(document_path).get();
+                    documentSnapshotTask.addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            if (documentSnapshot.exists()) {
+                                // Document exists, you can now access the specified field
+                                if (documentSnapshot.contains(fieldName)) {
+                                    try {
+                                        Object field_value = Objects.requireNonNull(documentSnapshot.get(fieldName));
                                         atomic_value.set(field_value);
                                     }catch(Exception ignored){}
                                     finished_boolean.set(true);

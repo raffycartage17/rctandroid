@@ -44,6 +44,7 @@ import com.racartech.app.rctandroidlts.resources.BuildConfig;
 import com.racartech.app.rctandroidlts.window1.Window1;
 import com.racartech.app.rctandroidlts.window1.Window2;
 import com.racartech.library.rctandroid.file.RCTfile;
+import com.racartech.library.rctandroid.google.firebase.firestore.RCTfirebaseFirestore;
 import com.racartech.library.rctandroid.google.firebase.storage.RCTfirebaseStorageTextFileWriter;
 import com.racartech.library.rctandroid.google.maps.RCTgoogleMapsUtil;
 import com.racartech.library.rctandroid.json.RCTorgJSON;
@@ -58,6 +59,7 @@ import com.racartech.library.rctandroid.time.RCTsecondsToTimeData;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -201,30 +203,67 @@ public class MainActivity extends AppCompatActivity {
         f5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
-                Intent intent = new Intent(MainActivity.this, FunctionFive.class);
-                startActivity(intent);
+
+
+                String collection = "test_collection";
+                String document = "test_document";
+                String field_name = "test_field_object";
+                new Thread(new Runnable(){
+                    @Override
+                    public void run(){
+                        TestObjectRCT test_object = new TestObjectRCT(
+                                100,
+                                "Rafael",
+                                "Andaya",
+                                "Cartagena",
+                                new RCTdateTimeData(2000,4,25).UNIX_EPOCH_MILLISECOND,
+                                27.1
+                        );
+
+                        try {
+                            RCTfirebaseFirestore.createField(
+                                    FirebaseFirestore.getInstance(),
+                                    collection,
+                                    document,
+                                    field_name,
+                                    test_object
+                            );
+                        }catch (Exception ex){
+                            ex.printStackTrace();
+                        }
+                    }
+                }).start();
             }
         });
 
         f6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
-                ArrayList<Integer> initial_arraylist = new ArrayList<>();
-                initial_arraylist.add(5);
-                initial_arraylist.add(108);
-                initial_arraylist.add(100);
-                String json_string = RCTorgJSON.arrayListIntegerToJSONString(initial_arraylist);
-                System.out.println("--------------------------------------------");
-                System.out.println("JSON String : ".concat(json_string));
+                String collection = "test_collection";
+                String document = "test_document";
+                String field_name = "test_field_object";
+                new Thread(new Runnable(){
+                    @Override
+                    public void run(){
+                        HashMap<String, Object> test_return = (HashMap<String, Object>) RCTfirebaseFirestore.readField_asObject(
+                                FirebaseFirestore.getInstance(),
+                                collection,
+                                document,
+                                field_name,
+                                100
+                        );
 
-                ArrayList<Integer> parsed_array = RCTorgJSON.jsonStringToArrayListInteger(json_string);
-                for(int index = 0; index<parsed_array.size(); index++){
-                    System.out.println("Index (".
-                            concat(String.valueOf(index).
-                                    concat(") : ").
-                                    concat(String.valueOf(parsed_array.get(index)))));
-                }
-                System.out.println("--------------------------------------------");
+                        RCTdateTimeData birth_date = new RCTdateTimeData(Long.parseLong(test_return.get("BIRTH_DATE").toString()));
+                        System.out.println("ID           : ".concat(String.valueOf(test_return.get("ID"))));
+                        System.out.println("First  Name  : ".concat(test_return.get("FIRST_NAME").toString()));
+                        System.out.println("First  Name  : ".concat(test_return.get("MIDDLE_NAME").toString()));
+                        System.out.println("First  Name  : ".concat(test_return.get("LAST_NAME").toString()));
+                        System.out.println("Birth Year   : ".concat(String.valueOf(birth_date.YEAR)));
+                        System.out.println("Birth Month  : ".concat(String.valueOf(birth_date.MONTH)));
+                        System.out.println("Birth Day    : ".concat(String.valueOf(birth_date.DATE)));
+                        System.out.println("BMI          : ".concat(String.valueOf(test_return.get("BMI"))));
+                    }
+                }).start();
             }
         });
 
