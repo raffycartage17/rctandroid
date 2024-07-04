@@ -7,7 +7,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Address;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,37 +27,25 @@ import androidx.core.content.ContextCompat;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.maps.DirectionsApi;
-import com.google.maps.model.DirectionsRoute;
-import com.google.maps.model.LatLng;
-import com.google.maps.model.TravelMode;
-import com.racartech.app.rctandroidlts.api.ApiKeyManager;
 import com.racartech.app.rctandroidlts.firebase.FirestoreTest;
-import com.racartech.app.rctandroidlts.functionbuttons.FunctionFive;
 import com.racartech.app.rctandroidlts.functionbuttons.FunctionThree;
 import com.racartech.app.rctandroidlts.functionbuttons.FunctionTwo;
 import com.racartech.app.rctandroidlts.maps.MapsTestActivity;
-import com.racartech.app.rctandroidlts.maps.MapsUtilTest;
 import com.racartech.app.rctandroidlts.maps.TextToSpeechActivity;
-import com.racartech.app.rctandroidlts.othertest.TestQRCodeActivity;
 import com.racartech.app.rctandroidlts.resources.BuildConfig;
+import com.racartech.app.rctandroidlts.util.MiscellaneousDataUtil;
 import com.racartech.app.rctandroidlts.window1.Window1;
 import com.racartech.app.rctandroidlts.window1.Window2;
 import com.racartech.library.rctandroid.file.RCTfile;
 import com.racartech.library.rctandroid.google.firebase.firestore.RCTfirebaseFirestore;
 import com.racartech.library.rctandroid.google.firebase.storage.RCTfirebaseStorageTextFileWriter;
-import com.racartech.library.rctandroid.google.maps.RCTgoogleMapsUtil;
-import com.racartech.library.rctandroid.json.RCTorgJSON;
-import com.racartech.library.rctandroid.location.RCTLocationData;
-import com.racartech.library.rctandroid.location.RCTdistance;
+import com.racartech.library.rctandroid.media.RCTbitmap;
+import com.racartech.library.rctandroid.media.image.RCTtranscribeImageToText;
 import com.racartech.library.rctandroid.net.RCTinternet;
 import com.racartech.library.rctandroid.notifications.RCTnotifications;
 import com.racartech.library.rctandroid.permission.RCTpermission;
 import com.racartech.library.rctandroid.time.RCTdateTimeData;
-import com.racartech.library.rctandroid.time.RCTmillisecondToTimeData;
-import com.racartech.library.rctandroid.time.RCTsecondsToTimeData;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -87,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
     private static String TEST_FILE_URL = "https://www.dropbox.com/home?preview=halalife_plant_database.txt";
 
 
+    RCTtranscribeImageToText transcriber = null;
 
 
     @Override
@@ -270,8 +259,54 @@ public class MainActivity extends AppCompatActivity {
         f7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent qrcode_intent = new Intent(MainActivity.this, TestQRCodeActivity.class);
-                startActivity(qrcode_intent);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+
+
+                        String sd_card_root = RCTfile.getExternalSdCardPath(MainActivity.this);
+
+                        String download_url =  MiscellaneousDataUtil.
+                                getLanguageTrainedModel_English(FirebaseStorage.getInstance());
+
+
+                        String test_image_path = RCTfile.getDir_ExternalStorageRoot().concat("/apath/test_2.png");
+                        Bitmap test_bitmap = RCTbitmap.getBitmapForFile(test_image_path);
+
+                        long start = System.currentTimeMillis();
+                        if(transcriber == null) {
+                            System.out.println("Transcriber is NULL");
+                            /*
+                            transcriber = new RCTtranscribeImageToText(
+                                    MainActivity.this,
+                                    download_url,
+                                    RCTtranscribeImageToText.LANGUAGE_ENGLISH
+                            );
+                             */
+
+                            //RCTfile.getDir_ExternalStorageRoot()
+                            transcriber = new RCTtranscribeImageToText(
+                                    download_url,
+                                    RCTtranscribeImageToText.LANGUAGE_ENGLISH,
+                                    sd_card_root.concat("/bpath")
+                            );
+                        }
+                        String extractedText = transcriber.getTextFromBitmap(test_bitmap);
+                        long end = System.currentTimeMillis();
+                        long elapsed_time = end-start;
+
+                        System.out.println("--------------------------------------------------------");
+                        System.out.println(extractedText);
+                        System.out.println("--------------------------------------------------------");
+                        System.out.println("Elapsed Time : ".concat(String.valueOf(elapsed_time)));
+                        System.out.println("--------------------------------------------------------");
+
+                        //transcriber.close();
+
+
+
+                    }
+                }).start();
             }
         });
 
