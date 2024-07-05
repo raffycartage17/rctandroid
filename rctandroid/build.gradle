@@ -7,7 +7,7 @@ android {
     namespace 'com.racartech.library.rctandroid'
     compileSdk 34
     group 'com.racartech.library'
-    version '0.7.25.03'
+    version '0.7.25.05'
 
     defaultConfig {
         minSdk 27
@@ -29,6 +29,7 @@ android {
      */
     buildTypes {
         release {
+            minifyEnabled false
             proguardFiles(
                     getDefaultProguardFile("proguard-android-optimize.txt"),
                     "proguard-rules.pro"
@@ -102,15 +103,21 @@ dependencies {
 
 
 
+
+
+
 afterEvaluate{
     android.libraryVariants.each{variant->
         publishing.publications.create(variant.name, MavenPublication){
             from components.findByName(variant.name)
             groupId = 'com.racartech.library'
             artifactId = 'rctandroid'
-            version = '0.7.25.03'
+            version = '0.7.25.05'
         }
     }
+
 }
+
+
 
 

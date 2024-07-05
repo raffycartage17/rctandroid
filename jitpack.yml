@@ -10,3 +10,7 @@ before_install:
   - sdk use java 17.0.11-open
   - mkdir -p $HOME/.android && touch $HOME/.android/repositories.cfg
   - mkdir -p src/main/assets
+  - ./gradlew clean
+
+install:
+  - ./gradlew build
