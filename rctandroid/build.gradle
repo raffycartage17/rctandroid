@@ -99,6 +99,8 @@ dependencies {
 }
 
 
+
+
 afterEvaluate{
     android.libraryVariants.each{variant->
         publishing.publications.create(variant.name, MavenPublication){
@@ -106,7 +108,6 @@ afterEvaluate{
             groupId = 'com.racartech.library'
             artifactId = 'rctandroid'
             version = '0.7.25.03'
-            artifact("$buildDir/outputs/aar/${project.name}-release.aar")
         }
     }
 }
