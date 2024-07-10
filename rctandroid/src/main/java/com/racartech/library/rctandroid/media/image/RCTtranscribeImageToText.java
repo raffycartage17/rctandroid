@@ -26,6 +26,8 @@ public class RCTtranscribeImageToText {
         String model_file_path = directory.getAbsolutePath().concat("/").concat(language).concat(".traineddata");
         if(!RCTfile.doesFileExist(model_file_path)){
             RCTinternet.downloadFile(download_url,model_file_path,1048576);
+
+
         }
 
         // Initialize Tesseract with the data path and language
