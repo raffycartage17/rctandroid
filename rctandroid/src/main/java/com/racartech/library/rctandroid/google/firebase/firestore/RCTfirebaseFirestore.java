@@ -28,6 +28,155 @@ public class RCTfirebaseFirestore {
 
 
 
+    public static long getDocumentSize(
+            HashMap<String, Object> document_data
+    ) {
+
+        if (document_data == null) {
+            return 0;
+        }
+
+        // Calculate the size of the document
+        long documentSize = 0;
+
+        for (Map.Entry<String, Object> entry : document_data.entrySet()) {
+            try {
+                String key = entry.getKey();
+                Object value = entry.getValue();
+
+                // Key size: 1 byte per character + 1 byte overhead
+                documentSize += key.length() + 1;
+
+                // Value size based on type
+                if (value instanceof String) {
+                    // Strings: 1 byte per character + 1 byte overhead
+                    documentSize += ((String) value).length() + 1;
+                } else if (value instanceof Long || value instanceof Double) {
+                    // Numbers: 8 bytes + 1 byte overhead
+                    documentSize += 8 + 1;
+                } else if (value instanceof Boolean) {
+                    // Booleans: 1 byte + 1 byte overhead
+                    documentSize += 1 + 1;
+                } else if (value instanceof Map) {
+                    // Map (nested document): Recursive call
+                    documentSize += getMapSize((Map<String, Object>) value);
+                } else if (value instanceof List) {
+                    // Array: Recursive call for each element
+                    documentSize += getListSize((List<Object>) value);
+                } else if (value instanceof byte[]) {
+                    // Binary: size of array + 1 byte overhead
+                    documentSize += ((byte[]) value).length + 1;
+                }
+
+            }catch (Exception ignored){}
+        }
+
+        return documentSize;
+    }
+
+
+    public static long getDocumentSize(
+            FirebaseFirestore fs_instance,
+            String collection,
+            String document,
+            long thread_wait
+    ) {
+        // Read the document data using the provided method
+        HashMap<String, Object> documentData = RCTfirebaseFirestore.readDocument(fs_instance, collection, document, thread_wait);
+
+        if (documentData == null) {
+            return 0;
+        }
+
+        // Calculate the size of the document
+        long documentSize = 0;
+
+        for (Map.Entry<String, Object> entry : documentData.entrySet()) {
+            try {
+                String key = entry.getKey();
+                Object value = entry.getValue();
+
+                // Key size: 1 byte per character + 1 byte overhead
+                documentSize += key.length() + 1;
+
+                // Value size based on type
+                if (value instanceof String) {
+                    // Strings: 1 byte per character + 1 byte overhead
+                    documentSize += ((String) value).length() + 1;
+                } else if (value instanceof Long || value instanceof Double) {
+                    // Numbers: 8 bytes + 1 byte overhead
+                    documentSize += 8 + 1;
+                } else if (value instanceof Boolean) {
+                    // Booleans: 1 byte + 1 byte overhead
+                    documentSize += 1 + 1;
+                } else if (value instanceof Map) {
+                    // Map (nested document): Recursive call
+                    documentSize += getMapSize((Map<String, Object>) value);
+                } else if (value instanceof List) {
+                    // Array: Recursive call for each element
+                    documentSize += getListSize((List<Object>) value);
+                } else if (value instanceof byte[]) {
+                    // Binary: size of array + 1 byte overhead
+                    documentSize += ((byte[]) value).length + 1;
+                }
+
+            }catch (Exception ignored){}
+        }
+
+        return documentSize;
+    }
+
+    private static long getMapSize(Map<String, Object> map) {
+        long size = 0;
+
+        try {
+            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                String key = entry.getKey();
+                Object value = entry.getValue();
+
+                // Key size: 1 byte per character + 1 byte overhead
+                size += key.length() + 1;
+
+                // Value size based on type
+                if (value instanceof String) {
+                    size += ((String) value).length() + 1;
+                } else if (value instanceof Long || value instanceof Double) {
+                    size += 8 + 1;
+                } else if (value instanceof Boolean) {
+                    size += 1 + 1;
+                } else if (value instanceof Map) {
+                    size += getMapSize((Map<String, Object>) value);
+                } else if (value instanceof List) {
+                    size += getListSize((List<Object>) value);
+                } else if (value instanceof byte[]) {
+                    size += ((byte[]) value).length + 1;
+                }
+            }
+        }catch (Exception ignored){}
+        return size;
+    }
+
+    private static long getListSize(List<Object> list) {
+        long size = 0;
+        for (Object value : list) {
+            // Value size based on type
+            if (value instanceof String) {
+                size += ((String) value).length() + 1;
+            } else if (value instanceof Long || value instanceof Double) {
+                size += 8 + 1;
+            } else if (value instanceof Boolean) {
+                size += 1 + 1;
+            } else if (value instanceof Map) {
+                size += getMapSize((Map<String, Object>) value);
+            } else if (value instanceof List) {
+                size += getListSize((List<Object>) value);
+            } else if (value instanceof byte[]) {
+                size += ((byte[]) value).length + 1;
+            }
+        }
+        return size;
+    }
+
 
     public static void createField(
             FirebaseFirestore instance,

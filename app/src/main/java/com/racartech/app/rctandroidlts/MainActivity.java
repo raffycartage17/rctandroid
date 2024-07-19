@@ -318,45 +318,40 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
 
-                        String storage_dir = "test_write";
-                        String storage_file = "aaa.txt";
+                        long start = System.currentTimeMillis();
+
+                        String collection = "Bulacan";
+                        String document = "Cities";
+                        String field = "Baliwag";
+
+                        /*
+                        String field_value = RCTfirebaseFirestore.readField(FirebaseFirestore.getInstance(),
+                                collection,document,field,100);
+                        System.out.println("-------------------------------------------------------------------------");
+                        System.out.println("Field Value : ".concat(field_value));
+                        System.out.println("-------------------------------------------------------------------------");
+
+                         */
 
 
-                        RCTfirebaseStorageTextFileWriter storage_writer = new RCTfirebaseStorageTextFileWriter(
-                                FirebaseStorage.getInstance(),
-                                MainActivity.this,
-                                storage_dir,
-                                storage_file,
-                                100,
-                                RCTinternet.BYTES_IN_1MB,
-                                60000,
-                                60000
-                        );
+                        long document_size = RCTfirebaseFirestore.getDocumentSize(
+                                FirebaseFirestore.getInstance(),
+                                collection,document,
+                                100);
 
-                        storage_writer.initialize();
+                        long end = System.currentTimeMillis();
+                        long elapsed_time = end-start;
+
+                        System.out.println("-------------------------------------------------------------------------");
+                        System.out.println("Document Size (Bytes) : ".concat(String.valueOf(document_size)));
+                        System.out.println("-------------------------------------------------------------------------");
+                        System.out.println("Elapse Time (ms)      : ".concat(String.valueOf(elapsed_time)));
+                        System.out.println("--------------------------------------------------------------------------");
 
 
-                        if(!textbox.getText().toString().isEmpty()) {
-                            ArrayList<String> file_contents = storage_writer.getFileContents();
-                            file_contents.add(textbox.getText().toString());
 
-                            System.out.println("--------------------------------------------");
-                            System.out.println(">>>>>>>> F8 File Contents <<<<<<<<");
-                            for(int index = 0; index< file_contents.size(); index++){
-                                System.out.println(file_contents.get(index));
-                            }
-                            System.out.println("--------------------------------------------");
-                            System.out.println("Override : ".concat(
-                                    String.valueOf(storage_writer.override(file_contents))));
-                            System.out.println("Save : ".concat(
-                                    String.valueOf(storage_writer.save())));
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    textbox.setText("");
-                                }
-                            });
-                        }
+
+
                     }
                 }).start();
 
