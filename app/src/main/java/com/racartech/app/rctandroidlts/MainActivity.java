@@ -39,6 +39,7 @@ import com.racartech.app.rctandroidlts.window1.Window2;
 import com.racartech.library.rctandroid.file.RCTfile;
 import com.racartech.library.rctandroid.google.firebase.firestore.RCTfirebaseFirestore;
 import com.racartech.library.rctandroid.google.firebase.storage.RCTfirebaseStorageTextFileWriter;
+import com.racartech.library.rctandroid.json.RCTgoogleGSON;
 import com.racartech.library.rctandroid.media.RCTbitmap;
 import com.racartech.library.rctandroid.media.image.RCTtranscribeImageToText;
 import com.racartech.library.rctandroid.net.RCTinternet;
@@ -48,6 +49,7 @@ import com.racartech.library.rctandroid.time.RCTdateTimeData;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -228,16 +230,41 @@ public class MainActivity extends AppCompatActivity {
         f6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
-                String collection = "test_collection";
-                String document = "test_document";
-                String field_name = "test_field_object";
                 new Thread(new Runnable(){
                     @Override
                     public void run(){
-                        RCTdateTimeData datetime = new RCTdateTimeData(2000,4,25,12);
-                        System.out.println("----------------------------------------------------------------");
-                        System.out.println("Millis : ".concat(String.valueOf(datetime.UNIX_EPOCH_MILLISECOND)));
-                        System.out.println("----------------------------------------------------------------");
+                        ArrayList<String> test_list_string = new ArrayList<>();
+                        test_list_string.add("zero");
+                        test_list_string.add("one");
+                        test_list_string.add("two");
+                        test_list_string.add("three");
+                        test_list_string.add("four");
+                        test_list_string.add("five");
+                        ArrayList<Integer> test_list_int = new ArrayList<>();
+                        test_list_int.add(0);
+                        test_list_int.add(1);
+                        test_list_int.add(2);
+                        test_list_int.add(3);
+                        test_list_int.add(4);
+
+                        Map<String, Object> document_data = new HashMap<>();
+                        document_data.put("id", 10);
+                        document_data.put("first_name", "Rafael");
+                        document_data.put("middle_name", "Andaya");
+                        document_data.put("last_name", "Cartagena");
+                        document_data.put("birth_ms", 956635200000L);
+                        document_data.put("test_list_string",test_list_string);
+                        document_data.put("test_list_integer",test_list_int);
+                        document_data.put("test_null", null);
+
+
+                        String json_string = RCTgoogleGSON.mapToJsonString(document_data);
+                        HashMap<String, Object> desir_map = RCTgoogleGSON.jsonStringToHashMap(json_string);
+                        System.out.println("--------------------------------------------------");
+                        System.out.println("JSON String : ".concat(json_string));
+                        System.out.println("--------------------------------------------------");
+
+
                     }
                 }).start();
             }
