@@ -1,7 +1,7 @@
 package com.racartech.library.rctandroid.data;
 
 import com.racartech.library.rctandroid.file.RCTfile;
-import com.racartech.library.rctandroid.json.RCTjson;
+import com.racartech.library.rctandroid.json.RCTgoogleGSON;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ public class RCTquickSave{
         ArrayList<String> json_contents = new ArrayList<>();
         json_contents.add(name);
         json_contents.add(value);
-        String json_string = RCTjson.convertArrayListToString(json_contents);
+        String json_string = RCTgoogleGSON.convertArrayListToString(json_contents);
 
         ArrayList<String> file_contents = getFileContents();
         int name_position = getPosition(file_contents, name);
@@ -36,7 +36,7 @@ public class RCTquickSave{
         ArrayList<String> json_contents = new ArrayList<>();
         json_contents.add(name);
         json_contents.add(String.valueOf(value));
-        String json_string = RCTjson.convertArrayListToString(json_contents);
+        String json_string = RCTgoogleGSON.convertArrayListToString(json_contents);
 
         ArrayList<String> file_contents = getFileContents();
         int name_position = getPosition(file_contents, name);
@@ -52,7 +52,7 @@ public class RCTquickSave{
         ArrayList<String> json_contents = new ArrayList<>();
         json_contents.add(name);
         json_contents.add(String.valueOf(value));
-        String json_string = RCTjson.convertArrayListToString(json_contents);
+        String json_string = RCTgoogleGSON.convertArrayListToString(json_contents);
 
         ArrayList<String> file_contents = getFileContents();
         int name_position = getPosition(file_contents, name);
@@ -68,7 +68,7 @@ public class RCTquickSave{
         ArrayList<String> json_contents = new ArrayList<>();
         json_contents.add(name);
         json_contents.add(String.valueOf(value));
-        String json_string = RCTjson.convertArrayListToString(json_contents);
+        String json_string = RCTgoogleGSON.convertArrayListToString(json_contents);
 
         ArrayList<String> file_contents = getFileContents();
         int name_position = getPosition(file_contents, name);
@@ -84,7 +84,7 @@ public class RCTquickSave{
         ArrayList<String> json_contents = new ArrayList<>();
         json_contents.add(name);
         json_contents.add(String.valueOf(value));
-        String json_string = RCTjson.convertArrayListToString(json_contents);
+        String json_string = RCTgoogleGSON.convertArrayListToString(json_contents);
 
         ArrayList<String> file_contents = getFileContents();
         int name_position = getPosition(file_contents, name);
@@ -100,7 +100,7 @@ public class RCTquickSave{
         ArrayList<String> json_contents = new ArrayList<>();
         json_contents.add(name);
         json_contents.add(String.valueOf(value));
-        String json_string = RCTjson.convertArrayListToString(json_contents);
+        String json_string = RCTgoogleGSON.convertArrayListToString(json_contents);
 
         ArrayList<String> file_contents = getFileContents();
         int name_position = getPosition(file_contents, name);
@@ -116,7 +116,7 @@ public class RCTquickSave{
         ArrayList<String> json_contents = new ArrayList<>();
         json_contents.add(name);
         json_contents.add(String.valueOf(value));
-        String json_string = RCTjson.convertArrayListToString(json_contents);
+        String json_string = RCTgoogleGSON.convertArrayListToString(json_contents);
 
         ArrayList<String> file_contents = getFileContents();
         int name_position = getPosition(file_contents, name);
@@ -132,7 +132,7 @@ public class RCTquickSave{
         ArrayList<String> json_contents = new ArrayList<>();
         json_contents.add(name);
         json_contents.add(String.valueOf(value));
-        String json_string = RCTjson.convertArrayListToString(json_contents);
+        String json_string = RCTgoogleGSON.convertArrayListToString(json_contents);
 
         ArrayList<String> file_contents = getFileContents();
         int name_position = getPosition(file_contents, name);
@@ -148,7 +148,7 @@ public class RCTquickSave{
         ArrayList<String> json_contents = new ArrayList<>();
         json_contents.add(name);
         json_contents.add(String.valueOf(value));
-        String json_string = RCTjson.convertArrayListToString(json_contents);
+        String json_string = RCTgoogleGSON.convertArrayListToString(json_contents);
 
         ArrayList<String> file_contents = getFileContents();
         int name_position = getPosition(file_contents, name);
@@ -164,7 +164,7 @@ public class RCTquickSave{
         ArrayList<String> file_contents = getFileContents();
         int name_position = getPosition(file_contents, name);
         if(name_position >= 0){
-            ArrayList<String> json_contents = RCTjson.convertStringToArrayList(file_contents.get(name_position));
+            ArrayList<String> json_contents = RCTgoogleGSON.convertStringToArrayList(file_contents.get(name_position));
             return json_contents.get(1);
         }else{
             return null;
@@ -175,7 +175,7 @@ public class RCTquickSave{
         ArrayList<String> file_contents = getFileContents();
         int name_position = getPosition(file_contents, name);
         if(name_position >= 0){
-            ArrayList<String> json_contents = RCTjson.convertStringToArrayList(file_contents.get(name_position));
+            ArrayList<String> json_contents = RCTgoogleGSON.convertStringToArrayList(file_contents.get(name_position));
             return Integer.parseInt(json_contents.get(1));
         }else{
             return default_value;
@@ -186,7 +186,7 @@ public class RCTquickSave{
         ArrayList<String> file_contents = getFileContents();
         int name_position = getPosition(file_contents, name);
         if(name_position >= 0){
-            ArrayList<String> json_contents = RCTjson.convertStringToArrayList(file_contents.get(name_position));
+            ArrayList<String> json_contents = RCTgoogleGSON.convertStringToArrayList(file_contents.get(name_position));
             return Double.parseDouble(json_contents.get(1));
         }else{
             return default_value;
@@ -197,7 +197,7 @@ public class RCTquickSave{
         ArrayList<String> file_contents = getFileContents();
         int name_position = getPosition(file_contents, name);
         if(name_position >= 0){
-            ArrayList<String> json_contents = RCTjson.convertStringToArrayList(file_contents.get(name_position));
+            ArrayList<String> json_contents = RCTgoogleGSON.convertStringToArrayList(file_contents.get(name_position));
             return Float.parseFloat(json_contents.get(1));
         }else{
             return default_value;
@@ -208,7 +208,7 @@ public class RCTquickSave{
         ArrayList<String> file_contents = getFileContents();
         int name_position = getPosition(file_contents, name);
         if(name_position >= 0){
-            ArrayList<String> json_contents = RCTjson.convertStringToArrayList(file_contents.get(name_position));
+            ArrayList<String> json_contents = RCTgoogleGSON.convertStringToArrayList(file_contents.get(name_position));
             return Long.parseLong(json_contents.get(1));
         }else{
             return default_value;
@@ -219,7 +219,7 @@ public class RCTquickSave{
         ArrayList<String> file_contents = getFileContents();
         int name_position = getPosition(file_contents, name);
         if(name_position >= 0){
-            ArrayList<String> json_contents = RCTjson.convertStringToArrayList(file_contents.get(name_position));
+            ArrayList<String> json_contents = RCTgoogleGSON.convertStringToArrayList(file_contents.get(name_position));
             return Short.parseShort(json_contents.get(1));
         }else{
             return default_value;
@@ -230,7 +230,7 @@ public class RCTquickSave{
         ArrayList<String> file_contents = getFileContents();
         int name_position = getPosition(file_contents, name);
         if(name_position >= 0){
-            ArrayList<String> json_contents = RCTjson.convertStringToArrayList(file_contents.get(name_position));
+            ArrayList<String> json_contents = RCTgoogleGSON.convertStringToArrayList(file_contents.get(name_position));
             return Byte.parseByte(json_contents.get(1));
         }else{
             return default_value;
@@ -241,7 +241,7 @@ public class RCTquickSave{
         ArrayList<String> file_contents = getFileContents();
         int name_position = getPosition(file_contents, name);
         if(name_position >= 0){
-            ArrayList<String> json_contents = RCTjson.convertStringToArrayList(file_contents.get(name_position));
+            ArrayList<String> json_contents = RCTgoogleGSON.convertStringToArrayList(file_contents.get(name_position));
             return Boolean.parseBoolean(json_contents.get(1));
         }else{
             return default_value;
@@ -252,7 +252,7 @@ public class RCTquickSave{
         ArrayList<String> file_contents = getFileContents();
         int name_position = getPosition(file_contents, name);
         if(name_position >= 0){
-            ArrayList<String> json_contents = RCTjson.convertStringToArrayList(file_contents.get(name_position));
+            ArrayList<String> json_contents = RCTgoogleGSON.convertStringToArrayList(file_contents.get(name_position));
             return json_contents.get(1).toCharArray()[0];
         }else{
             return default_value;
@@ -297,7 +297,7 @@ public class RCTquickSave{
         try {
             ArrayList<String> file_contents = RCTfile.readFile_ArrayList(this.SAVE_FILE_PATH);
             for (int index = 0; index <file_contents.size(); index++) {
-                ArrayList<String> json_contents = RCTjson.convertStringToArrayList(file_contents.get(index));
+                ArrayList<String> json_contents = RCTgoogleGSON.convertStringToArrayList(file_contents.get(index));
                 String current_name = json_contents.get(0);
                 if(current_name.equals(name)){
                     position = index;
@@ -311,7 +311,7 @@ public class RCTquickSave{
     public int getPosition(ArrayList<String> file_contents, String name){
         int position = -1;
         for (int index = 0; index <file_contents.size(); index++) {
-            ArrayList<String> json_contents = RCTjson.convertStringToArrayList(file_contents.get(index));
+            ArrayList<String> json_contents = RCTgoogleGSON.convertStringToArrayList(file_contents.get(index));
             String current_name = json_contents.get(0);
             if(current_name.equals(name)){
                 position = index;

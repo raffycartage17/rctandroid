@@ -1,6 +1,6 @@
 package com.racartech.library.rctandroid.weather.openweathermap;
 
-import com.racartech.library.rctandroid.json.RCTjson;
+import com.racartech.library.rctandroid.json.RCTgoogleGSON;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -113,7 +113,7 @@ public class OWM_3HR40P_Data {
 
 
     public OWM_3HR40P_Data(String json_string){
-        ArrayList<String> json_contents = RCTjson.convertStringToArrayList(json_string);
+        ArrayList<String> json_contents = RCTgoogleGSON.convertStringToArrayList(json_string);
 
         this.DATE_MS = Long.parseLong(json_contents.get(0));
         this.DT = Long.parseLong(json_contents.get(1));

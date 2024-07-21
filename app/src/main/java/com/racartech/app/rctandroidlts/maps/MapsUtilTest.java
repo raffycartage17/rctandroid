@@ -7,7 +7,7 @@ import com.google.maps.model.LatLng;
 import com.google.maps.model.TravelMode;
 import com.racartech.app.rctandroidlts.api.ApiKeyManager;
 import com.racartech.library.rctandroid.google.maps.RCTgoogleMapsUtil;
-import com.racartech.library.rctandroid.json.RCTjson;
+import com.racartech.library.rctandroid.json.RCTgoogleGSON;
 import com.racartech.library.rctandroid.time.RCTsecondsToTimeData;
 
 import java.time.Instant;
@@ -164,7 +164,7 @@ public class MapsUtilTest {
                             concat(String.valueOf(current_point.longitude)).concat(")")
                     );
                 }
-                String json_string = RCTjson.convertArrayListToString(string_paths);
+                String json_string = RCTgoogleGSON.convertArrayListToString(string_paths);
                 System.out.println("JSON String Length : ".concat(String.valueOf(json_string.length())));
                 System.out.println("----------------------------------------------------------------------");
 

@@ -1,6 +1,6 @@
 package com.racartech.library.rctandroid.weather.openweathermap;
 
-import com.racartech.library.rctandroid.json.RCTjson;
+import com.racartech.library.rctandroid.json.RCTgoogleGSON;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,7 +45,7 @@ public class OWM_3HR40P_DataUtil {
         json_contents.add(weather_data_x.DT_TEXT);  //23
         json_contents.add(String.valueOf(weather_data_x.LOCATION_LAT)); //24
         json_contents.add(String.valueOf(weather_data_x.LOCATION_LONG)); //25
-        return RCTjson.convertArrayListToString(json_contents);
+        return RCTgoogleGSON.convertArrayListToString(json_contents);
     }
 
 
@@ -54,11 +54,11 @@ public class OWM_3HR40P_DataUtil {
         for(int index = 0; index<weather_data.size(); index++){
             json_contents.add(toJSONString(weather_data.get(index)));
         }
-        return RCTjson.convertArrayListToString(json_contents);
+        return RCTgoogleGSON.convertArrayListToString(json_contents);
     }
 
     public static ArrayList<OWM_3HR40P_Data> convertJSONStringToArray(String weather_datax_array_json_string){
-        ArrayList<String> json_contents = RCTjson.convertStringToArrayList(weather_datax_array_json_string);
+        ArrayList<String> json_contents = RCTgoogleGSON.convertStringToArrayList(weather_datax_array_json_string);
         ArrayList<OWM_3HR40P_Data> weather_data = new ArrayList<>();
         for(int index = 0; index<json_contents.size(); index++){
             weather_data.add(new OWM_3HR40P_Data(json_contents.get(index)));

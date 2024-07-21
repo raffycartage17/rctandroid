@@ -3,7 +3,6 @@ package com.racartech.library.rctandroid.json;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -17,8 +16,54 @@ import com.google.gson.reflect.TypeToken;
 import com.racartech.library.rctandroid.file.RCTfile;
 
 import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.Map;
 
-public class RCTjson {
+public class RCTgoogleGSON {
+
+
+
+    /**
+     * Converts a JSON string to a Map.
+     *
+     * @param jsonString the JSON string to convert
+     * @return a Map containing the data from the JSON string
+     */
+    public static Map<String, Object> jsonStringToMap(String jsonString) {
+        Type type = new TypeToken<Map<String, Object>>() {}.getType();
+        return new Gson().fromJson(jsonString, type);
+    }
+
+    /**
+     * Converts a JSON string to a Map.
+     *
+     * @param jsonString the JSON string to convert
+     * @return a Map containing the data from the JSON string
+     */
+    public static HashMap<String, Object> jsonStringToHashMap(String jsonString) {
+        Type type = new TypeToken<Map<String, Object>>() {}.getType();
+        return new Gson().fromJson(jsonString, type);
+    }
+
+    /**
+     * Converts a Map to a JSON string.
+     *
+     * @param map the Map to convert
+     * @return a JSON string representing the data in the Map
+     */
+    public static String mapToJsonString(Map<String, Object> map) {
+        return new Gson().toJson(map);
+    }
+
+    /**
+     * Converts a Map to a JSON string.
+     *
+     * @param map the Map to convert
+     * @return a JSON string representing the data in the Map
+     */
+    public static String mapToJsonString(HashMap<String, Object> map) {
+        return new Gson().toJson(map);
+    }
 
 
 

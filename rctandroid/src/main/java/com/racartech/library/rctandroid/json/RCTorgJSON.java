@@ -5,8 +5,31 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class RCTorgJSON {
+
+
+
+    public static Map<String, Object> jsonStringToMap(String jsonString) throws JSONException {
+        JSONObject jsonObject = new JSONObject(jsonString);
+        Map<String, Object> map = new HashMap<>();
+
+        Iterator<String> keys = jsonObject.keys();
+        while (keys.hasNext()) {
+            String key = keys.next();
+            map.put(key, jsonObject.get(key));
+        }
+        return map;
+    }
+
+    public static String mapToJsonString(Map<String, Object> map) {
+        JSONObject jsonObject = new JSONObject(map);
+        return jsonObject.toString();
+    }
+
 
 
 

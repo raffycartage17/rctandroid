@@ -23,7 +23,7 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
-import com.racartech.library.rctandroid.json.RCTjson;
+import com.racartech.library.rctandroid.json.RCTgoogleGSONleGSON;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -960,7 +960,7 @@ public class RCTfirebaseFirestore {
                                                 for (Map.Entry<String, Object> entry : data_map.entrySet()) {
                                                     String key = entry.getKey();
                                                     String value = entry.getValue().toString();
-                                                    ArrayList<String> value_array = RCTjson.convertStringToArrayList(value);
+                                                    ArrayList<String> value_array = RCTgoogleGSON.convertStringToArrayList(value);
                                                     if(value_array.get(json_array_index).equals(value_filter)){
                                                         filtered_map.put(key,value);
                                                     }

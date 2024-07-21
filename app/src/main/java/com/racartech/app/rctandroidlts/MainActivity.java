@@ -234,23 +234,10 @@ public class MainActivity extends AppCompatActivity {
                 new Thread(new Runnable(){
                     @Override
                     public void run(){
-                        HashMap<String, Object> test_return = (HashMap<String, Object>) RCTfirebaseFirestore.readField_asObject(
-                                FirebaseFirestore.getInstance(),
-                                collection,
-                                document,
-                                field_name,
-                                100
-                        );
-
-                        RCTdateTimeData birth_date = new RCTdateTimeData(Long.parseLong(test_return.get("BIRTH_DATE").toString()));
-                        System.out.println("ID           : ".concat(String.valueOf(test_return.get("ID"))));
-                        System.out.println("First  Name  : ".concat(test_return.get("FIRST_NAME").toString()));
-                        System.out.println("First  Name  : ".concat(test_return.get("MIDDLE_NAME").toString()));
-                        System.out.println("First  Name  : ".concat(test_return.get("LAST_NAME").toString()));
-                        System.out.println("Birth Year   : ".concat(String.valueOf(birth_date.YEAR)));
-                        System.out.println("Birth Month  : ".concat(String.valueOf(birth_date.MONTH)));
-                        System.out.println("Birth Day    : ".concat(String.valueOf(birth_date.DATE)));
-                        System.out.println("BMI          : ".concat(String.valueOf(test_return.get("BMI"))));
+                        RCTdateTimeData datetime = new RCTdateTimeData(2000,4,25,12);
+                        System.out.println("----------------------------------------------------------------");
+                        System.out.println("Millis : ".concat(String.valueOf(datetime.UNIX_EPOCH_MILLISECOND)));
+                        System.out.println("----------------------------------------------------------------");
                     }
                 }).start();
             }
