@@ -54,7 +54,7 @@ public class RCTgoogleGSON {
      * @return a JSON string representing the data in the Map
      */
     public static String mapToJsonString(Map<String, Object> map) {
-        return new Gson().toJson(map);
+        return new GsonBuilder().serializeNulls().create().toJson(map);
     }
 
     /**
@@ -64,7 +64,7 @@ public class RCTgoogleGSON {
      * @return a JSON string representing the data in the Map
      */
     public static String mapToJsonString(HashMap<String, Object> map) {
-        return new Gson().toJson(map);
+        return new GsonBuilder().serializeNulls().create().toJson(map);
     }
 
 
