@@ -24,6 +24,96 @@ public class RCTgoogleGSON {
 
 
 
+
+    public static String valueToString(Object value){
+        try{
+            String converted_value = value.toString();
+            return converted_value;
+        }catch (Exception ignored){
+            return null;
+        }
+    }
+
+    public static long valueToInteger(Object value, int default_value){
+        try {
+            String converted_to_string = valueToString(value);
+            return Integer.parseInt(converted_to_string);
+        }catch (Exception ignored){
+            return default_value;
+        }
+    }
+
+    public static double valueToDouble(Object value, double default_value){
+        try {
+            String converted_to_string = valueToString(value);
+            return Double.parseDouble(converted_to_string);
+        }catch (Exception ignored){
+            return default_value;
+        }
+    }
+
+    public static float valueToFloat(Object value, float default_value) {
+        try {
+            String converted_to_string = valueToString(value);
+            return Float.parseFloat(converted_to_string);
+        } catch (Exception ignored) {
+            return default_value;
+        }
+    }
+
+
+    public static long valueToLong(Object value, long default_value){
+        try {
+            String converted_to_string = valueToString(value);
+            return Long.parseLong(converted_to_string);
+        }catch (Exception ignored){
+            return default_value;
+        }
+    }
+
+    public static short valueToShort(Object value, short default_value) {
+        try {
+            String converted_to_string = valueToString(value);
+            return Short.parseShort(converted_to_string);
+        } catch (Exception ignored) {
+            return default_value;
+        }
+    }
+
+    public static byte valueToByte(Object value, byte default_value) {
+        try {
+            String converted_to_string = valueToString(value);
+            return Byte.parseByte(converted_to_string);
+        } catch (Exception ignored) {
+            return default_value;
+        }
+    }
+
+    public static boolean valueToBoolean(Object value, boolean default_value) {
+        try {
+            String converted_to_string = valueToString(value);
+            return Boolean.parseBoolean(converted_to_string);
+        } catch (Exception ignored) {
+            return default_value;
+        }
+    }
+
+    public static char valueToChar(Object value, char default_value) {
+        try {
+            String converted_to_string = valueToString(value);
+            // Ensure that the string has at least one character
+            if (converted_to_string != null && !converted_to_string.isEmpty()) {
+                return converted_to_string.charAt(0);
+            } else {
+                return default_value;
+            }
+        } catch (Exception ignored) {
+            return default_value;
+        }
+    }
+
+
+
     /**
      * Converts a JSON string to a Map.
      *
