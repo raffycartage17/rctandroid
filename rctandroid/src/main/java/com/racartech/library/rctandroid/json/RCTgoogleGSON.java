@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -31,7 +32,7 @@ public class RCTgoogleGSON {
      */
     public static Map<String, Object> jsonStringToMap(String jsonString) {
         Type type = new TypeToken<Map<String, Object>>() {}.getType();
-        return new Gson().fromJson(jsonString, type);
+        return new GsonBuilder().serializeNulls().create().fromJson(jsonString, type);
     }
 
     /**
@@ -42,7 +43,7 @@ public class RCTgoogleGSON {
      */
     public static HashMap<String, Object> jsonStringToHashMap(String jsonString) {
         Type type = new TypeToken<Map<String, Object>>() {}.getType();
-        return new Gson().fromJson(jsonString, type);
+        return new GsonBuilder().serializeNulls().create().fromJson(jsonString, type);
     }
 
     /**
@@ -52,7 +53,7 @@ public class RCTgoogleGSON {
      * @return a JSON string representing the data in the Map
      */
     public static String mapToJsonString(Map<String, Object> map) {
-        return new Gson().toJson(map);
+        return new GsonBuilder().serializeNulls().create().toJson(map);
     }
 
     /**
@@ -62,28 +63,28 @@ public class RCTgoogleGSON {
      * @return a JSON string representing the data in the Map
      */
     public static String mapToJsonString(HashMap<String, Object> map) {
-        return new Gson().toJson(map);
+        return new GsonBuilder().serializeNulls().create().toJson(map);
     }
 
 
 
     public static ArrayList<String> getKeySet_JsonObject(String json_object_string){
-        JsonElement jsonElement = new Gson().fromJson(json_object_string, JsonElement.class);
+        JsonElement jsonElement = new GsonBuilder().serializeNulls().create().fromJson(json_object_string, JsonElement.class);
         JsonObject response_object = jsonElement.getAsJsonObject();
         return new ArrayList<>(response_object.keySet());
     }
     public static JsonObject toJsonObject(String json_object_string){
-        JsonElement jsonElement = new Gson().fromJson(json_object_string, JsonElement.class);
+        JsonElement jsonElement = new GsonBuilder().serializeNulls().create().fromJson(json_object_string, JsonElement.class);
         return jsonElement.getAsJsonObject();
     }
 
     public static JsonElement toJsonElement(String json_object_string){
-        return new Gson().fromJson(json_object_string, JsonElement.class);
+        return new GsonBuilder().serializeNulls().create().fromJson(json_object_string, JsonElement.class);
     }
 
 
     public static JsonObject stringToJsonObject(String json_object_string){
-        return new Gson().fromJson(json_object_string, JsonElement.class).getAsJsonObject();
+        return new GsonBuilder().serializeNulls().create().fromJson(json_object_string, JsonElement.class).getAsJsonObject();
     }
 
     public static JsonObject[] jsonArrayToJsonObjectArray(String json_array_string){
@@ -101,7 +102,7 @@ public class RCTgoogleGSON {
 
 
     public static String jsonObjectToString(JsonObject jsonObject) {
-        return new Gson().toJson(jsonObject);
+        return new GsonBuilder().serializeNulls().create().toJson(jsonObject);
     }
 
     public static String jsonArrayToString(JsonArray jsonArray) {
@@ -112,7 +113,7 @@ public class RCTgoogleGSON {
 
     public static String convertArrayListToString_Integer(ArrayList<Integer> arrayList) {
         // Create a Gson object
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().serializeNulls().create();
 
         // Convert the ArrayList to JSON
         String json = gson.toJson(arrayList);
@@ -123,7 +124,7 @@ public class RCTgoogleGSON {
 
     public static String convertArrayListToString_Double(ArrayList<Double> arrayList) {
         // Create a Gson object
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().serializeNulls().create();
 
         // Convert the ArrayList to JSON
         String json = gson.toJson(arrayList);
@@ -134,7 +135,7 @@ public class RCTgoogleGSON {
 
     public static String convertArrayListToString_Short(ArrayList<Short> arrayList) {
         // Create a Gson object
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().serializeNulls().create();
 
         // Convert the ArrayList to JSON
         String json = gson.toJson(arrayList);
@@ -145,7 +146,7 @@ public class RCTgoogleGSON {
 
     public static String convertArrayListToString_Long(ArrayList<Long> arrayList) {
         // Create a Gson object
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().serializeNulls().create();
 
         // Convert the ArrayList to JSON
         String json = gson.toJson(arrayList);
@@ -156,7 +157,7 @@ public class RCTgoogleGSON {
 
     public static String convertArrayListToString_Boolean(ArrayList<Boolean> arrayList) {
         // Create a Gson object
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().serializeNulls().create();
 
         // Convert the ArrayList to JSON
         String json = gson.toJson(arrayList);
@@ -167,7 +168,7 @@ public class RCTgoogleGSON {
 
     public static String convertArrayListToString_Float(ArrayList<Float> arrayList) {
         // Create a Gson object
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().serializeNulls().create();
 
         // Convert the ArrayList to JSON
         String json = gson.toJson(arrayList);
@@ -177,7 +178,7 @@ public class RCTgoogleGSON {
     }
     public static String convertArrayListToString_Byte(ArrayList<Byte> arrayList) {
         // Create a Gson object
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().serializeNulls().create();
 
         // Convert the ArrayList to JSON
         String json = gson.toJson(arrayList);
@@ -188,7 +189,7 @@ public class RCTgoogleGSON {
 
     public static String convertArrayListToString_Char(ArrayList<Character> arrayList) {
         // Create a Gson object
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().serializeNulls().create();
 
         // Convert the ArrayList to JSON
         String json = gson.toJson(arrayList);
@@ -198,14 +199,14 @@ public class RCTgoogleGSON {
     }
 
     public static String convertArrayListToString(ArrayList<String> arrayList) {
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().serializeNulls().create();
         String json = gson.toJson(arrayList);
         return json;
     }
 
     public static ArrayList<String> convertStringToArrayList(String jsonString) {
         // Create a Gson object
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().serializeNulls().create();
 
         // Convert the JSON string to ArrayList
         Type type = new TypeToken<ArrayList<String>>(){}.getType();
@@ -217,7 +218,7 @@ public class RCTgoogleGSON {
 
     public static ArrayList<Integer> convertStringToArrayListInteger(String jsonString) {
         // Create a Gson object
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().serializeNulls().create();
 
         // Convert the JSON string to ArrayList
         Type type = new TypeToken<ArrayList<Integer>>(){}.getType();
@@ -229,7 +230,7 @@ public class RCTgoogleGSON {
 
     public static ArrayList<Double> convertStringToArrayListDouble(String jsonString) {
         // Create a Gson object
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().serializeNulls().create();
 
         // Convert the JSON string to ArrayList
         Type type = new TypeToken<ArrayList<Double>>(){}.getType();
@@ -241,7 +242,7 @@ public class RCTgoogleGSON {
 
     public static ArrayList<Short> convertStringToArrayListShort(String jsonString) {
         // Create a Gson object
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().serializeNulls().create();
 
         // Convert the JSON string to ArrayList
         Type type = new TypeToken<ArrayList<Short>>(){}.getType();
@@ -253,7 +254,7 @@ public class RCTgoogleGSON {
 
     public static ArrayList<Float> convertStringToArrayListFloat(String jsonString) {
         // Create a Gson object
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().serializeNulls().create();
 
         // Convert the JSON string to ArrayList
         Type type = new TypeToken<ArrayList<Float>>(){}.getType();
@@ -265,7 +266,7 @@ public class RCTgoogleGSON {
 
     public static ArrayList<Long> convertStringToArrayListLong(String jsonString) {
         // Create a Gson object
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().serializeNulls().create();
 
         // Convert the JSON string to ArrayList
         Type type = new TypeToken<ArrayList<Long>>(){}.getType();
@@ -277,7 +278,7 @@ public class RCTgoogleGSON {
 
     public static ArrayList<Byte> convertStringToArrayListByte(String jsonString) {
         // Create a Gson object
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().serializeNulls().create();
 
         // Convert the JSON string to ArrayList
         Type type = new TypeToken<ArrayList<Byte>>(){}.getType();
@@ -289,7 +290,7 @@ public class RCTgoogleGSON {
 
     public static ArrayList<Boolean> convertStringToArrayListBoolean(String jsonString) {
         // Create a Gson object
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().serializeNulls().create();
 
         // Convert the JSON string to ArrayList
         Type type = new TypeToken<ArrayList<Boolean>>(){}.getType();
@@ -301,7 +302,7 @@ public class RCTgoogleGSON {
 
     public static ArrayList<Character> convertStringToArrayListCharacter(String jsonString) {
         // Create a Gson object
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().serializeNulls().create();
 
         // Convert the JSON string to ArrayList
         Type type = new TypeToken<ArrayList<Character>>(){}.getType();
@@ -363,7 +364,7 @@ public class RCTgoogleGSON {
             RCTfile.createFile(file_path);
         }
         // Create a Gson object
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().serializeNulls().create();
 
         // Convert the list to JSON
         String json = gson.toJson(list);
@@ -385,7 +386,7 @@ public class RCTgoogleGSON {
             RCTfile.createFile(file_path);
         }
         // Create a Gson object
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().serializeNulls().create();
 
         // Convert the list to JSON
         String json = gson.toJson(list);
