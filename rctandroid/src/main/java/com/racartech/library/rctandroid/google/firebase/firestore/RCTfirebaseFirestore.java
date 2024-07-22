@@ -36,7 +36,13 @@ public class RCTfirebaseFirestore {
             String field_name,
             String field_value
             ){
-        createField(instance,collection,document,field_name,field_value);
+        createField(
+                instance,
+                collection,
+                document,
+                field_name,
+                field_value
+        );
     }
 
     public static void setField(
@@ -46,7 +52,13 @@ public class RCTfirebaseFirestore {
             String field_name,
             Object field_value
     ){
-        createField(instance,collection,document,field_name,field_value);
+        createField(
+                instance,
+                collection,
+                document,
+                field_name,
+                field_value
+        );
     }
 
     public static void setField_WaitProgress(
@@ -57,7 +69,14 @@ public class RCTfirebaseFirestore {
             String field_value,
             long thread_wait
     ){
-        createField_WaitProgress(instance,collection,document,field_name,field_value,thread_wait);
+        createField_WaitProgress(
+                instance,
+                collection,
+                document,
+                field_name,
+                field_value,
+                thread_wait
+        );
     }
 
     public static void setField_WaitProgress(
@@ -68,7 +87,14 @@ public class RCTfirebaseFirestore {
             Object field_value,
             long thread_wait
     ){
-        createField_WaitProgress(instance,collection,document,field_name,field_value,thread_wait);
+        createField_WaitProgress(
+                instance,
+                collection,
+                document,
+                field_name,
+                field_value,
+                thread_wait
+        );
     }
 
 
@@ -78,7 +104,12 @@ public class RCTfirebaseFirestore {
             String document,
             HashMap<String, Object> document_data
     ){
-        createDocument(instance,collection,document,document_data);
+        createDocument(
+                instance,
+                collection,
+                document,
+                document_data
+        );
     }
 
     public static void setDocument_WaitProgress(
