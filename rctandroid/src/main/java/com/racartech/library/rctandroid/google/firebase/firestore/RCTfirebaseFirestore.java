@@ -28,6 +28,80 @@ public class RCTfirebaseFirestore {
 
 
 
+
+    public static void setField(
+            FirebaseFirestore instance,
+            String collection,
+            String document,
+            String field_name,
+            String field_value
+            ){
+        createField(instance,collection,document,field_name,field_value);
+    }
+
+    public static void setField(
+            FirebaseFirestore instance,
+            String collection,
+            String document,
+            String field_name,
+            Object field_value
+    ){
+        createField(instance,collection,document,field_name,field_value);
+    }
+
+    public static void setField_WaitProgress(
+            FirebaseFirestore instance,
+            String collection,
+            String document,
+            String field_name,
+            String field_value,
+            long thread_wait
+    ){
+        createField_WaitProgress(instance,collection,document,field_name,field_value,thread_wait);
+    }
+
+    public static void setField_WaitProgress(
+            FirebaseFirestore instance,
+            String collection,
+            String document,
+            String field_name,
+            Object field_value,
+            long thread_wait
+    ){
+        createField_WaitProgress(instance,collection,document,field_name,field_value,thread_wait);
+    }
+
+
+    public static void setDocument(
+            FirebaseFirestore instance,
+            String collection,
+            String document,
+            HashMap<String, Object> document_data
+    ){
+        createDocument(instance,collection,document,document_data);
+    }
+
+    public static void setDocument_WaitProgress(
+            FirebaseFirestore instance,
+            String collection,
+            String document,
+            HashMap<String, Object> document_data,
+            long thread_wait
+    ){
+        createDocument_WaitProgress(
+                instance,
+                collection,
+                document,
+                document_data,
+                thread_wait
+        );
+    }
+
+
+
+
+
+
     public static long getDocumentSize(
             HashMap<String, Object> document_data
     ) {
