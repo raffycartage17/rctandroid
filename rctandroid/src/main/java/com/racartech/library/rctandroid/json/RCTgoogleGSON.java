@@ -34,6 +34,15 @@ public class RCTgoogleGSON {
         }
     }
 
+    public static String valueToString(Object value, String default_value){
+        try{
+            String converted_value = value.toString();
+            return converted_value;
+        }catch (Exception ignored){
+            return default_value;
+        }
+    }
+
     public static long valueToInteger(Object value, int default_value){
         try {
             String converted_to_string = valueToString(value);
@@ -111,6 +120,100 @@ public class RCTgoogleGSON {
             return default_value;
         }
     }
+
+
+
+    public static ArrayList<String> valueToArrayListString(Object value, ArrayList<String> default_value) {
+        try {
+            Gson gson = new GsonBuilder().serializeNulls().create();
+            String jsonString = gson.toJson(value);
+            Type type = new TypeToken<ArrayList<String>>() {}.getType();
+            return gson.fromJson(jsonString, type);
+        } catch (Exception ignored) {
+            return default_value;
+        }
+    }
+
+    public static ArrayList<Integer> valueToArrayListInteger(Object value, ArrayList<Integer> default_value) {
+        try {
+            Gson gson = new GsonBuilder().serializeNulls().create();
+            String jsonString = gson.toJson(value);
+            Type type = new TypeToken<ArrayList<Integer>>() {}.getType();
+            return gson.fromJson(jsonString, type);
+        } catch (Exception ignored) {
+            return default_value;
+        }
+    }
+
+    public static ArrayList<Double> valueToArrayListDouble(Object value, ArrayList<Double> default_value) {
+        try {
+            Gson gson = new GsonBuilder().serializeNulls().create();
+            String jsonString = gson.toJson(value);
+            Type type = new TypeToken<ArrayList<Double>>() {}.getType();
+            return gson.fromJson(jsonString, type);
+        } catch (Exception ignored) {
+            return default_value;
+        }
+    }
+
+    public static ArrayList<Float> valueToArrayListFloat(Object value, ArrayList<Float> default_value) {
+        try {
+            Gson gson = new GsonBuilder().serializeNulls().create();
+            String jsonString = gson.toJson(value);
+            Type type = new TypeToken<ArrayList<Float>>() {}.getType();
+            return gson.fromJson(jsonString, type);
+        } catch (Exception ignored) {
+            return default_value;
+        }
+    }
+
+    public static ArrayList<Short> valueToArrayListShort(Object value, ArrayList<Short> default_value) {
+        try {
+            Gson gson = new GsonBuilder().serializeNulls().create();
+            String jsonString = gson.toJson(value);
+            Type type = new TypeToken<ArrayList<Short>>() {}.getType();
+            return gson.fromJson(jsonString, type);
+        } catch (Exception ignored) {
+            return default_value;
+        }
+    }
+
+    public static ArrayList<Byte> valueToArrayListByte(Object value, ArrayList<Byte> default_value) {
+        try {
+            Gson gson = new GsonBuilder().serializeNulls().create();
+            String jsonString = gson.toJson(value);
+            Type type = new TypeToken<ArrayList<Byte>>() {}.getType();
+            return gson.fromJson(jsonString, type);
+        } catch (Exception ignored) {
+            return default_value;
+        }
+    }
+
+    public static ArrayList<Character> valueToArrayListChar(Object value, ArrayList<Character> default_value) {
+        try {
+            Gson gson = new GsonBuilder().serializeNulls().create();
+            String jsonString = gson.toJson(value);
+            Type type = new TypeToken<ArrayList<Character>>() {}.getType();
+            return gson.fromJson(jsonString, type);
+        } catch (Exception ignored) {
+            return default_value;
+        }
+    }
+
+    public static ArrayList<Boolean> valueToArrayListBoolean(Object value, ArrayList<Boolean> default_value) {
+        try {
+            Gson gson = new GsonBuilder().serializeNulls().create();
+            String jsonString = gson.toJson(value);
+            Type type = new TypeToken<ArrayList<Boolean>>() {}.getType();
+            return gson.fromJson(jsonString, type);
+        } catch (Exception ignored) {
+            return default_value;
+        }
+    }
+
+
+
+
 
 
 
