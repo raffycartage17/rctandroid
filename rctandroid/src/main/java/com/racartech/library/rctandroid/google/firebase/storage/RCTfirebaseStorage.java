@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
+
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
 
 import androidx.annotation.NonNull;
@@ -18,7 +21,12 @@ import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.racartech.library.rctandroid.file.RCTdirectory;
+import com.racartech.library.rctandroid.file.RCTfile;
 import com.racartech.library.rctandroid.google.firebase.firestore.RCTfirebaseFirestore;
+import com.racartech.library.rctandroid.media.RCTbitmap;
+import com.racartech.library.rctandroid.net.RCTinternet;
+import com.racartech.library.rctandroid.security.RCThashing;
 
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +38,325 @@ public class RCTfirebaseStorage {
 
 
     public final static String NULL_RESULT_IDENTIFIER = "NULL";
+
+    public static AtomicReference<String> DEFAULT_CACHE_DIRECTORY = new AtomicReference<>(null);
+
+
+    public static String initializeCachingSystem(Context context){
+        String root_dir = RCTfile.getDir_IntAppFiles(context).concat("/");
+        String parent_dir = "rctjava_firebase_storage_cache";
+        String final_dir = root_dir.concat(parent_dir);
+        DEFAULT_CACHE_DIRECTORY.set(final_dir);
+        RCTdirectory.createDirectory(final_dir);
+        return final_dir;
+    }
+
+
+
+
+
+
+
+
+
+    public static String cacheFileDefault(Context context, String download_url){
+        try {
+            String parent_dir = null;
+            if(DEFAULT_CACHE_DIRECTORY.get() != null){
+                parent_dir = DEFAULT_CACHE_DIRECTORY.get();
+            }else{
+                parent_dir = initializeCachingSystem(context);
+            }
+            String hashname = RCThashing.sha256(download_url);
+            String save_file_path = parent_dir.concat("/").concat(hashname);
+
+            if(!RCTfile.doesFileExist(save_file_path)){
+                RCTinternet.downloadFile(download_url,save_file_path);
+            }
+            return save_file_path;
+        }catch (Exception ignored){
+            return null;
+        }
+    }
+
+    public static String cacheFileDefault(
+            Context context,
+            FirebaseStorage storage_instance,
+            String firebase_storage_parent_dir,
+            String firebase_storage_filename,
+            long thread_wait
+    ){
+
+
+
+        try {
+
+            String download_url = getDownloadURL(
+                    storage_instance,
+                    firebase_storage_parent_dir,
+                    firebase_storage_filename,
+                    thread_wait
+            );
+
+            String parent_dir = null;
+            if(DEFAULT_CACHE_DIRECTORY.get() != null){
+                parent_dir = DEFAULT_CACHE_DIRECTORY.get();
+            }else{
+                parent_dir = initializeCachingSystem(context);
+            }
+            String hashname = RCThashing.sha256(download_url);
+            String save_file_path = parent_dir.concat("/").concat(hashname);
+
+            if(!RCTfile.doesFileExist(save_file_path)){
+                RCTinternet.downloadFile(download_url,save_file_path);
+            }
+            return save_file_path;
+        }catch (Exception ignored){
+            return null;
+        }
+    }
+
+
+    public static String getCachedFilePathDefault(
+            Context context,
+            FirebaseStorage storage_instance,
+            String firebase_storage_parent_dir,
+            String firebase_storage_filename,
+            long thread_wait
+    ){
+
+
+        try {
+
+            String download_url = getDownloadURL(
+                    storage_instance,
+                    firebase_storage_parent_dir,
+                    firebase_storage_filename,
+                    thread_wait
+            );
+
+            String parent_dir = null;
+            if(DEFAULT_CACHE_DIRECTORY.get() != null){
+                parent_dir = DEFAULT_CACHE_DIRECTORY.get();
+            }else{
+                parent_dir = initializeCachingSystem(context);
+            }
+            String hashname = RCThashing.sha256(download_url);
+            String save_file_path = parent_dir.concat("/").concat(hashname);
+
+            return save_file_path;
+        }catch (Exception ignored){
+            return null;
+        }
+    }
+
+
+
+
+
+
+
+
+    public static String cacheFileDefault(
+            Context context,
+            String download_url,
+            String file_extension){
+
+        try {
+            String parent_dir = null;
+            if(DEFAULT_CACHE_DIRECTORY.get() != null){
+                parent_dir = DEFAULT_CACHE_DIRECTORY.get();
+            }else{
+                parent_dir = initializeCachingSystem(context);
+            }
+
+
+            file_extension = file_extension.replace(".", "");
+
+            String hashname = RCThashing.sha256(download_url);
+            String save_file_path = parent_dir.
+                    concat("/").
+                    concat(hashname).
+                    concat(".").
+                    concat(file_extension);
+            if(!RCTfile.doesFileExist(save_file_path)){
+                RCTinternet.downloadFile(download_url,save_file_path);
+            }
+            return save_file_path;
+        }catch (Exception ignored){
+            return null;
+        }
+    }
+
+
+    public static String cacheFileDefault(
+            Context context,
+            FirebaseStorage storage_instance,
+            String firebase_storage_parent_dir,
+            String firebase_storage_filename,
+            String file_extension,
+            long thread_wait){
+
+        try {
+
+            String download_url = getDownloadURL(
+                    storage_instance,
+                    firebase_storage_parent_dir,
+                    firebase_storage_filename,
+                    thread_wait
+            );
+
+            String parent_dir = null;
+            if(DEFAULT_CACHE_DIRECTORY.get() != null){
+                parent_dir = DEFAULT_CACHE_DIRECTORY.get();
+            }else{
+                parent_dir = initializeCachingSystem(context);
+            }
+
+
+            file_extension = file_extension.replace(".", "");
+
+            String hashname = RCThashing.sha256(download_url);
+            String save_file_path = parent_dir.
+                    concat("/").
+                    concat(hashname).
+                    concat(".").
+                    concat(file_extension);
+            if(!RCTfile.doesFileExist(save_file_path)){
+                RCTinternet.downloadFile(download_url,save_file_path);
+            }
+            return save_file_path;
+        }catch (Exception ignored){
+            return null;
+        }
+    }
+
+
+    public static String getCachedFilePathDefault(
+            Context context,
+            FirebaseStorage storage_instance,
+            String firebase_storage_parent_dir,
+            String firebase_storage_filename,
+            String file_extension,
+            long thread_wait){
+
+        try {
+
+            String download_url = getDownloadURL(
+                    storage_instance,
+                    firebase_storage_parent_dir,
+                    firebase_storage_filename,
+                    thread_wait
+            );
+
+            String parent_dir = null;
+            if(DEFAULT_CACHE_DIRECTORY.get() != null){
+                parent_dir = DEFAULT_CACHE_DIRECTORY.get();
+            }else{
+                parent_dir = initializeCachingSystem(context);
+            }
+
+
+            file_extension = file_extension.replace(".", "");
+
+            String hashname = RCThashing.sha256(download_url);
+            String save_file_path = parent_dir.
+                    concat("/").
+                    concat(hashname).
+                    concat(".").
+                    concat(file_extension);
+            return save_file_path;
+        }catch (Exception ignored){
+            return null;
+        }
+    }
+
+    public static String getCachedFilePathDefault(Context context, String download_url){
+        try {
+            String parent_dir = null;
+            if(DEFAULT_CACHE_DIRECTORY.get() != null){
+                parent_dir = DEFAULT_CACHE_DIRECTORY.get();
+            }else{
+                parent_dir = initializeCachingSystem(context);
+            }
+            String hashname = RCThashing.sha256(download_url);
+            String save_file_path = parent_dir.concat("/").concat(hashname);
+
+            return save_file_path;
+        }catch (Exception ignored){
+            return null;
+        }
+    }
+
+    public static String getCachedFilePathDefault(
+            Context context,
+            String download_url,
+            String file_extension){
+
+        try {
+            String parent_dir = null;
+            if(DEFAULT_CACHE_DIRECTORY.get() != null){
+                parent_dir = DEFAULT_CACHE_DIRECTORY.get();
+            }else{
+                parent_dir = initializeCachingSystem(context);
+            }
+
+
+            file_extension = file_extension.replace(".", "");
+
+            String hashname = RCThashing.sha256(download_url);
+            String save_file_path = parent_dir.
+                    concat("/").
+                    concat(hashname).
+                    concat(".").
+                    concat(file_extension);
+
+            return save_file_path;
+        }catch (Exception ignored){
+            return null;
+        }
+    }
+
+
+
+
+
+
+    public static Bitmap getBitmapForFileURL(String download_url){
+        return RCTbitmap.getBitmapForURL(download_url);
+    }
+
+    public static Bitmap getBitmapForFile(
+            FirebaseStorage storage_instance,
+            String file_name,
+            long thread_wait
+    ){
+        try {
+            String download_url = getDownloadURL(storage_instance, file_name, thread_wait);
+            return RCTbitmap.getBitmapForURL(download_url);
+        }catch (Exception ignored){
+            return null;
+        }
+    }
+
+    public static Bitmap getBitmapForFile(
+            FirebaseStorage storage_instance,
+            String directory,
+            String file_name,
+            long thread_wait
+    ){
+        try {
+            String download_url = getDownloadURL(
+                    storage_instance,
+                    directory,
+                    file_name,
+                    thread_wait
+            );
+            return RCTbitmap.getBitmapForURL(download_url);
+        }catch(Exception ignored){
+            return null;
+        }
+    }
 
 
     /**
