@@ -1,4 +1,4 @@
-package com.racartech.app.rctandroidlts.window1;
+package com.racartech.app.rctandroidlts.windows;
 
 import android.app.Dialog;
 import android.content.Intent;

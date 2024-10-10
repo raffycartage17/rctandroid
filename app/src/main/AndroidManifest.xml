@@ -53,7 +53,7 @@
             android:exported="false"
             android:launchMode="singleTask"/>
         <activity
-            android:name=".window1.Window1"
+            android:name=".windows.Window1"
             android:exported="false"
             android:launchMode="singleTask"/>
         <activity
@@ -65,7 +65,7 @@
             android:exported="false"
             android:launchMode="singleTask"/>
         <activity
-            android:name=".window1.Window2"
+            android:name=".windows.Window2"
             android:exported="false"
             android:launchMode="singleTask"/>
         <activity
