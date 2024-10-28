@@ -1,13 +1,4 @@
-package com.racartech.app.rctandroidlts.window1;
-
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.nsd.NsdManager;
-import android.net.nsd.NsdServiceInfo;
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
+package com.racartech.app.rctandroidlts.windows;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
