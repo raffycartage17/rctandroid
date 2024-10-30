@@ -330,36 +330,22 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
 
-                        long start = System.currentTimeMillis();
+                        try {
+                            String the_path = "/first_col/first_docu/second_col/second_docu";
 
-                        String collection = "Bulacan";
-                        String document = "Cities";
-                        String field = "Baliwag";
+                            String collection_path = RCTfirebaseFirestore.getCollectionPath(the_path);
+                            String collection_name = RCTfirebaseFirestore.getCollectionNameFromPath(the_path);
+                            String docu_name = RCTfirebaseFirestore.getDocumentNameFromPath(the_path);
 
-                        /*
-                        String field_value = RCTfirebaseFirestore.readField(FirebaseFirestore.getInstance(),
-                                collection,document,field,100);
-                        System.out.println("-------------------------------------------------------------------------");
-                        System.out.println("Field Value : ".concat(field_value));
-                        System.out.println("-------------------------------------------------------------------------");
-
-                         */
-
-
-                        long document_size = RCTfirebaseFirestore.getDocumentSize(
-                                FirebaseFirestore.getInstance(),
-                                collection,document,
-                                100);
-
-                        long end = System.currentTimeMillis();
-                        long elapsed_time = end-start;
-
-                        System.out.println("-------------------------------------------------------------------------");
-                        System.out.println("Document Size (Bytes) : ".concat(String.valueOf(document_size)));
-                        System.out.println("-------------------------------------------------------------------------");
-                        System.out.println("Elapse Time (ms)      : ".concat(String.valueOf(elapsed_time)));
-                        System.out.println("--------------------------------------------------------------------------");
-
+                            System.out.println("-------------------------------------");
+                            System.out.println("Raw Path        : ".concat(the_path));
+                            System.out.println("Collection Path : ".concat(collection_path));
+                            System.out.println("Collection Name : ".concat(collection_name));
+                            System.out.println("Document Name   : ".concat(docu_name));
+                            System.out.println("-------------------------------------");
+                        }catch (Exception ex){
+                            ex.printStackTrace();
+                        }
 
 
 

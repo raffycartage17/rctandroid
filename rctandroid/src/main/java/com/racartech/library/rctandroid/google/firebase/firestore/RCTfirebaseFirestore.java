@@ -28,6 +28,103 @@ public class RCTfirebaseFirestore {
 
 
 
+    public static HashMap<String, Object> readDocument(
+            FirebaseFirestore fs_instance,
+            String document_path,
+            long thread_wait
+    ){
+        String collection_path = getCollectionPath(document_path);
+        String document_name = getDocumentNameFromPath(document_path);
+        return readDocument(fs_instance, collection_path, document_name, thread_wait);
+    }
+
+    public static void createDocument(
+            FirebaseFirestore fs_instance,
+            String document_path
+    ){
+        String collection_path = getCollectionPath(document_path);
+        String document_name = getDocumentNameFromPath(document_path);
+        createDocument(fs_instance, collection_path, document_name);
+    }
+
+    public static void createDocument_WaitProgress(
+            FirebaseFirestore fs_instance,
+            String document_path,
+            long thread_wait
+    ){
+        String collection_path = getCollectionPath(document_path);
+        String document_name = getDocumentNameFromPath(document_path);
+        createDocument_WaitProgress(fs_instance, collection_path, document_name, thread_wait);
+    }
+
+
+
+    public static String readField(
+            FirebaseFirestore fs_instance,
+            String document_path,
+            String field_name,
+            long thread_wait
+    ){
+        String collection_path = getCollectionPath(document_path);
+        String document_name = getDocumentNameFromPath(document_path);
+
+        return readField(
+                fs_instance,
+                collection_path,
+                document_name,
+                field_name,
+                thread_wait
+        );
+    }
+
+    public static Object readField_asObject(
+            FirebaseFirestore fs_instance,
+            String document_path,
+            String field_name,
+            long thread_wait
+    ){
+        String collection_path = getCollectionPath(document_path);
+        String document_name = getDocumentNameFromPath(document_path);
+        return readField_asObject(fs_instance, collection_path, document_name,thread_wait);
+    }
+
+    public static void createField(
+            FirebaseFirestore fs_instance,
+            String document_path,
+            String field_name,
+            String field_value
+    ){
+        String collection_path = getCollectionPath(document_path);
+        String document_name = getDocumentNameFromPath(document_path);
+        createField(fs_instance, collection_path, document_name, field_name, field_value);
+    }
+
+    public static void createField_WaitProgress(
+            FirebaseFirestore fs_instance,
+            String document_path,
+            String field_name,
+            String field_value,
+            long thread_wait
+    ){
+        String collection_path = getCollectionPath(document_path);
+        String document_name = getDocumentNameFromPath(document_path);
+
+        createField_WaitProgress(
+                fs_instance,
+                collection_path,
+                document_name,
+                field_name,
+                field_value,
+                thread_wait
+        );
+    }
+
+
+
+
+
+
+
 
     public static void setField(
             FirebaseFirestore instance,
@@ -400,7 +497,8 @@ public class RCTfirebaseFirestore {
             FirebaseFirestore instance,
             String collection_path,
             String document_path,
-            long thread_wait){
+            long thread_wait
+    ){
         boolean return_boolean = false;
         AtomicBoolean finished_boolean = new AtomicBoolean(false);
         AtomicBoolean success_boolean = new AtomicBoolean(false);
@@ -1915,6 +2013,56 @@ public class RCTfirebaseFirestore {
 
 
 
+    // Method to get the whole collection path from a document path
+    public static String getCollectionPath(String path) {
+        String[] pathSegments = path.split("/");
+        // If the path has at least two segments, return all but the last segment
+        if (pathSegments.length >= 2) {
+            StringBuilder collectionPath = new StringBuilder();
+            for (int i = 0; i < pathSegments.length - 1; i++) {
+                collectionPath.append(pathSegments[i]);
+                if (i < pathSegments.length - 2) {
+                    collectionPath.append("/"); // Append slash between segments
+                }
+            }
+            return collectionPath.toString();
+        }
+        return null; // Invalid path format
+    }
+
+    // Method to check if a path refers to a document
+    public static boolean isDocumentPath(String path) {
+        String[] pathSegments = path.split("/");
+        return pathSegments.length % 2 == 1; // Document path has an odd number of segments
+    }
+
+    // Method to check if a path refers to a collection
+    public static boolean isCollectionPath(String path) {
+        String[] pathSegments = path.split("/");
+        return pathSegments.length % 2 == 0; // Collection path has an even number of segments
+    }
+
+    // Method to get the collection name from a path
+    public static String getCollectionNameFromPath(String path) {
+        String[] pathSegments = path.split("/");
+        if (pathSegments.length % 2 == 1) {
+            return pathSegments[pathSegments.length - 2]; // Collection is before the document
+        } else if (pathSegments.length > 1) {
+            return pathSegments[pathSegments.length - 1]; // Last segment might be a collection
+        }
+        return null; // Invalid path format
+    }
+
+
+    public static String getDocumentNameFromPath(String path) {
+        String[] pathSegments = path.split("/");
+        if (pathSegments.length > 1 && pathSegments.length % 2 != 0) {
+            return pathSegments[pathSegments.length - 1]; // Last segment is the document
+        }
+        return null; // Invalid path format
+    }
+
+
 
 
 
@@ -1925,19 +2073,5 @@ public class RCTfirebaseFirestore {
 
 
 
-/*
-
-
-    new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-            }
-    }).start();
-
-
-
-
-     */
 
 
