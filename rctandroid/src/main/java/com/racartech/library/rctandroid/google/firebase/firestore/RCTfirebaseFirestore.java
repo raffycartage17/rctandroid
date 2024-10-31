@@ -88,6 +88,30 @@ public class RCTfirebaseFirestore {
         return readField_asObject(fs_instance, collection_path, document_name,thread_wait);
     }
 
+
+
+    public static void setField(
+            FirebaseFirestore fs_instance,
+            String document_path,
+            String field_name,
+            String field_value
+    ){
+        String collection_path = getCollectionPath(document_path);
+        String document_name = getDocumentNameFromPath(document_path);
+        createField(fs_instance, collection_path, document_name, field_name, field_value);
+    }
+
+    public static void setField(
+            FirebaseFirestore fs_instance,
+            String document_path,
+            String field_name,
+            Object field_value
+    ){
+        String collection_path = getCollectionPath(document_path);
+        String document_name = getDocumentNameFromPath(document_path);
+        createField(fs_instance, collection_path, document_name, field_name, field_value);
+    }
+
     public static void createField(
             FirebaseFirestore fs_instance,
             String document_path,
@@ -99,11 +123,66 @@ public class RCTfirebaseFirestore {
         createField(fs_instance, collection_path, document_name, field_name, field_value);
     }
 
+    public static void createField(
+            FirebaseFirestore fs_instance,
+            String document_path,
+            String field_name,
+            Object field_value
+    ){
+        String collection_path = getCollectionPath(document_path);
+        String document_name = getDocumentNameFromPath(document_path);
+        createField(fs_instance, collection_path, document_name, field_name, field_value);
+
+    }
+
+
+
+
+    public static void setField_WaitProgress(
+            FirebaseFirestore fs_instance,
+            String document_path,
+            String field_name,
+            String field_value,
+            long thread_wait
+    ){
+        String collection_path = getCollectionPath(document_path);
+        String document_name = getDocumentNameFromPath(document_path);
+
+        createField_WaitProgress(
+                fs_instance,
+                collection_path,
+                document_name,
+                field_name,
+                field_value,
+                thread_wait
+        );
+    }
+
     public static void createField_WaitProgress(
             FirebaseFirestore fs_instance,
             String document_path,
             String field_name,
             String field_value,
+            long thread_wait
+    ){
+        String collection_path = getCollectionPath(document_path);
+        String document_name = getDocumentNameFromPath(document_path);
+
+        createField_WaitProgress(
+                fs_instance,
+                collection_path,
+                document_name,
+                field_name,
+                field_value,
+                thread_wait
+        );
+    }
+
+    public static void createField_WaitProgress(
+            FirebaseFirestore fs_instance,
+            String document_path,
+            String field_name,
+            Object field_value,
             long thread_wait
     ){
         String collection_path = getCollectionPath(document_path);
@@ -223,7 +302,203 @@ public class RCTfirebaseFirestore {
                 document_data,
                 thread_wait
         );
+
     }
+
+
+    public static long getDocumentSize(
+            FirebaseFirestore fs_instance,
+            String document_path,
+            long thread_wait
+    ){
+        String collection_path = getCollectionPath(document_path);
+        String document_name = getDocumentNameFromPath(document_path);
+        return getDocumentSize(fs_instance,collection_path, document_name, thread_wait);
+    }
+
+    public static void renameDocument(
+            FirebaseFirestore fs_instance,
+            String document_path,
+            String new_document_name
+    ){
+        String collection_path = getCollectionPath(document_path);
+        String document_name = getDocumentNameFromPath(document_path);
+        renameDocument(fs_instance,collection_path, document_name,new_document_name);
+    }
+
+    public static void renameDocument_WaitProgress(
+            FirebaseFirestore fs_instance,
+            String document_path,
+            String new_document_name,
+            long thread_wait
+    ){
+        String collection_path = getCollectionPath(document_path);
+        String document_name = getDocumentNameFromPath(document_path);
+
+        renameDocument_WaitProgress(
+                fs_instance,
+                collection_path,
+                document_name,
+                new_document_name,
+                thread_wait
+        );
+
+    }
+
+    public static void deleteDocument(
+            FirebaseFirestore fs_instance,
+            String document_path
+    ){
+        String collection_path = getCollectionPath(document_path);
+        String document_name = getDocumentNameFromPath(document_path);
+        deleteDocument(fs_instance,collection_path, document_name);
+    }
+
+    public static void deleteDocument_WaitProgress(
+            FirebaseFirestore fs_instance,
+            String document_path,
+            long thread_wait
+    ){
+        String collection_path = getCollectionPath(document_path);
+        String document_name = getDocumentNameFromPath(document_path);
+        deleteDocument_WaitProgress(fs_instance,collection_path, document_name, thread_wait);
+    }
+
+    public static void readDocument_WithJSONStringArrayValue(
+            FirebaseFirestore fs_instance,
+            String document_path,
+            int json_array_index,
+            String value_filter,
+            long thread_wait
+    ){
+        String collection_path = getCollectionPath(document_path);
+        String document_name = getDocumentNameFromPath(document_path);
+
+        readDocument_WithJSONStringArrayValue(
+                fs_instance,
+                collection_path,
+                document_name,
+                json_array_index,
+                value_filter,
+                thread_wait
+        );
+    }
+
+    public static void createDocument(
+            FirebaseFirestore fs_instance,
+            String document_path,
+            HashMap<String, Object> document_data
+    ){
+        String collection_path = getCollectionPath(document_path);
+        String document_name = getDocumentNameFromPath(document_path);
+        createDocument(fs_instance, collection_path, document_name, document_data);
+    }
+
+    public static void createDocument_WaitProgress(
+            FirebaseFirestore fs_instance,
+            String document_path,
+            HashMap<String, Object> document_data,
+            long thread_wait
+    ){
+        String collection_path = getCollectionPath(document_path);
+        String document_name = getDocumentNameFromPath(document_path);
+        createDocument_WaitProgress(
+                fs_instance,
+                collection_path,
+                document_name,
+                document_data,
+                thread_wait
+        );
+    }
+
+    public static void deleteField(
+            FirebaseFirestore fs_instance,
+            String document_path,
+            String field_name
+    ){
+        String collection_path = getCollectionPath(document_path);
+        String document_name = getDocumentNameFromPath(document_path);
+        deleteField(fs_instance,collection_path, document_name, field_name);
+    }
+
+    public static void deleteField_WaitProgress(
+            FirebaseFirestore fs_instance,
+            String document_path,
+            String field_name,
+            long thread_wait
+    ){
+        String collection_path = getCollectionPath(document_path);
+        String document_name = getDocumentNameFromPath(document_path);
+        deleteField_WaitProgress(fs_instance,collection_path, document_name, field_name, thread_wait);
+
+
+    }
+
+
+    public static void renameField(
+            FirebaseFirestore fs_instance,
+            String document_path,
+            String field_name,
+            String new_field_name
+    ){
+        String collection_path = getCollectionPath(document_path);
+        String document_name = getDocumentNameFromPath(document_path);
+
+        renameField(fs_instance, collection_path, document_name,field_name,new_field_name);
+    }
+
+    public static void renameField_WaitProgress(
+            FirebaseFirestore fs_instance,
+            String document_path,
+            String field_name,
+            String new_field_name,
+            long thread_wait
+    ){
+        String collection_path = getCollectionPath(document_path);
+        String document_name = getDocumentNameFromPath(document_path);
+
+        renameField_WaitProgress(fs_instance, collection_path, document_name,field_name,new_field_name, thread_wait);
+    }
+
+    public static void setField_WaitProgress(
+            FirebaseFirestore fs_instance,
+            String document_path,
+            String field_name,
+            Object field_value,
+            long thread_wait
+    ){
+        String collection_path = getCollectionPath(document_path);
+        String document_name = getDocumentNameFromPath(document_path);
+
+        createField_WaitProgress(
+                fs_instance,
+                collection_path,
+                document_name,
+                field_name,
+                field_value,
+                thread_wait
+        );
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
