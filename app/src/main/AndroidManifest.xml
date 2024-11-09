@@ -64,6 +64,11 @@
             android:name=".functionbuttons.FunctionFive"
             android:exported="false"
             android:launchMode="singleTask"/>
+
+        <activity
+            android:name=".windows.window3.Window3"
+            android:exported="false"
+            android:launchMode="singleTask"/>
         <activity
             android:name=".windows.Window2"
             android:exported="false"

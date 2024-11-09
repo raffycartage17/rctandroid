@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/aw3_root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/aw3_f2_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Function 2"
+        app:layout_constraintEnd_toEndOf="@+id/aw3_center_horizontal_divider"
+        app:layout_constraintStart_toStartOf="@+id/aw3_center_horizontal_divider"
+        app:layout_constraintTop_toTopOf="@+id/aw3_f1_button" />
+
+    <View
+        android:id="@+id/aw3_center_horizontal_divider"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/aw3_f1_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:text="Function 1"
+        app:layout_constraintEnd_toStartOf="@+id/aw3_f2_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/aw3_f3_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Function 3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/aw3_f2_button"
+        app:layout_constraintTop_toTopOf="@+id/aw3_f2_button" />
+</androidx.constraintlayout.widget.ConstraintLayout>

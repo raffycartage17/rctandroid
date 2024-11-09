@@ -36,8 +36,10 @@ import com.racartech.app.rctandroidlts.resources.BuildConfig;
 import com.racartech.app.rctandroidlts.util.MiscellaneousDataUtil;
 import com.racartech.app.rctandroidlts.windows.Window1;
 import com.racartech.app.rctandroidlts.windows.Window2;
+import com.racartech.app.rctandroidlts.windows.window3.Window3;
 import com.racartech.library.rctandroid.file.RCTfile;
 import com.racartech.library.rctandroid.google.firebase.firestore.RCTfirebaseFirestore;
+import com.racartech.library.rctandroid.google.firebase.storage.RCTfirebaseStorage;
 import com.racartech.library.rctandroid.json.RCTgoogleGSON;
 import com.racartech.library.rctandroid.media.RCTbitmap;
 import com.racartech.library.rctandroid.media.image.RCTtranscribeImageToText;
@@ -84,6 +86,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         FirebaseApp.initializeApp(MainActivity.this);
+
+        //TODO Firebase Storage
+        //TODO - rename, move, copy (for both single file and multiple file configuration)
+        //TODO - getDownloadURL for multiple files
+        //TODO - all methods should have a variant that support file paths aside from (directory, file_name) configuration
 
 
         f1 = findViewById(R.id.mm_f1_button);
@@ -382,6 +389,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, Window2.class);
+                startActivity(intent);
+            }
+        });
+        window_3_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, Window3.class);
                 startActivity(intent);
             }
         });

@@ -14,9 +14,9 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/mm_cons_layout"
-            android:background="@color/white"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/white">
 
             <TextView
                 android:id="@+id/mm_textview_1"
@@ -53,8 +53,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="F2"
                 android:background="@color/gray_alternate_1"
+                android:text="F2"
                 app:layout_constraintEnd_toEndOf="@+id/mm_verticaldivider_center"
                 app:layout_constraintStart_toStartOf="@+id/mm_verticaldivider_center"
                 app:layout_constraintTop_toBottomOf="@+id/mm_debug_textview" />
@@ -63,8 +63,8 @@
                 android:id="@+id/mm_f1_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="f1"
                 android:background="@color/gray_alternate_1"
+                android:text="f1"
                 app:layout_constraintEnd_toStartOf="@+id/mm_f2_button"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/mm_f2_button" />
@@ -73,8 +73,8 @@
                 android:id="@+id/mm_f3_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="F3"
                 android:background="@color/gray_alternate_1"
+                android:text="F3"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/mm_f2_button"
                 app:layout_constraintTop_toTopOf="@+id/mm_f2_button" />
@@ -132,8 +132,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:text="Window 1"
-                app:layout_constraintEnd_toStartOf="@+id/mm_verticaldivider_center"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/mm_f7_button"
+                app:layout_constraintStart_toStartOf="@+id/mm_f7_button"
                 app:layout_constraintTop_toBottomOf="@+id/mm_f8_button" />
 
             <Button
@@ -142,8 +142,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:text="Window 2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/mm_verticaldivider_center"
+                app:layout_constraintEnd_toEndOf="@+id/mm_f8_button"
+                app:layout_constraintStart_toStartOf="@+id/mm_f8_button"
                 app:layout_constraintTop_toBottomOf="@+id/mm_f8_button" />
 
             <Button
@@ -152,8 +152,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Window 3"
-                app:layout_constraintEnd_toStartOf="@+id/mm_verticaldivider_center"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/mm_window1_button"
+                app:layout_constraintStart_toStartOf="@+id/mm_window1_button"
                 app:layout_constraintTop_toBottomOf="@+id/mm_window1_button" />
 
             <Button
@@ -162,8 +162,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Window 4"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/mm_verticaldivider_center"
+                app:layout_constraintEnd_toEndOf="@+id/mm_window2_button"
+                app:layout_constraintStart_toStartOf="@+id/mm_window2_button"
                 app:layout_constraintTop_toBottomOf="@+id/mm_window2_button" />
 
             <EditText
@@ -173,10 +173,10 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:ems="10"
+                android:hint="Enter here"
                 android:inputType="textPersonName"
                 android:textColor="@color/black"
-                android:hint = "Enter here"
-                android:textColorHint= "@color/gray"
+                android:textColorHint="@color/gray"
                 app:layout_constraintBottom_toBottomOf="@+id/mm_textbox_enter_button"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/mm_textbox_enter_button"
@@ -231,8 +231,8 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:gravity="left"
-                android:text="Empty"
                 android:maxLines="10"
+                android:text="Empty"
                 android:textColor="@color/blue"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -247,10 +247,28 @@
                 android:layout_marginTop="16dp"
                 android:background="@null"
                 android:scaleType="fitCenter"
-                app:layout_constraintEnd_toEndOf="@+id/mm_f2_button"
-                app:layout_constraintStart_toStartOf="@+id/mm_f2_button"
+                app:layout_constraintEnd_toEndOf="@+id/mm_f3_button"
+                app:layout_constraintStart_toStartOf="@+id/mm_f1_button"
                 app:layout_constraintTop_toBottomOf="@+id/mm_f2_button"
                 app:srcCompat="@drawable/debug_logo" />
+
+            <Button
+                android:id="@+id/mm_window5_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Window 5"
+                app:layout_constraintEnd_toEndOf="@+id/mm_f9_button"
+                app:layout_constraintStart_toStartOf="@+id/mm_f9_button"
+                app:layout_constraintTop_toTopOf="@+id/mm_window2_button" />
+
+            <Button
+                android:id="@+id/mm_window6_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Window 6"
+                app:layout_constraintEnd_toEndOf="@+id/mm_window5_button"
+                app:layout_constraintStart_toStartOf="@+id/mm_window5_button"
+                app:layout_constraintTop_toTopOf="@+id/mm_window4_button" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

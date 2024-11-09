@@ -37,7 +37,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class RCTfirebaseStorage {
 
 
-    public final static String NULL_RESULT_IDENTIFIER = "NULL";
+    private final static String NULL_RESULT_IDENTIFIER = "NULL";
 
     public static AtomicReference<String> DEFAULT_CACHE_DIRECTORY = new AtomicReference<>(null);
 
@@ -796,6 +796,36 @@ public class RCTfirebaseStorage {
     }
 
 
+    public static String uploadFile(
+            FirebaseStorage instance,
+            String local_file_path,
+            String uploaded_file_name,
+            long thread_wait
+    ){
+        return uploadFile(
+                instance,
+                local_file_path,
+                null,
+                uploaded_file_name,
+                thread_wait
+        );
+    }
+
+    public static ArrayList<String> uploadFiles(
+            FirebaseStorage instance,
+            ArrayList<String> local_file_paths,
+            ArrayList<String> uploaded_file_names,
+            long thread_wait
+    ){
+        return uploadFiles(
+                instance,
+                local_file_paths,
+                null,
+                uploaded_file_names,
+                100
+        );
+    }
+
 
 
 
@@ -808,14 +838,20 @@ public class RCTfirebaseStorage {
     ){
         boolean return_boolean = false;
         AtomicBoolean finished_boolean = new AtomicBoolean(false);
-        AtomicReference<String> atomic_string = new AtomicReference<>(null);
+        AtomicReference<String> download_url = new AtomicReference<>(null);
+
+        if(firebase_directory_path == null){
+            firebase_directory_path = "/";
+        }
+
+
         RCTfirebaseStorageUtil.uploadFile(
                 instance,
                 local_file_path,
                 firebase_directory_path,
                 uploaded_file_name,
                 finished_boolean,
-                atomic_string
+                download_url
         );
         while(!return_boolean){
             if(!finished_boolean.get()){
@@ -828,10 +864,10 @@ public class RCTfirebaseStorage {
                 return_boolean = true;
             }
         }
-        if(atomic_string.get().equalsIgnoreCase(NULL_RESULT_IDENTIFIER)) {
+        if(download_url.get().equalsIgnoreCase(NULL_RESULT_IDENTIFIER)) {
             return null;
         }else{
-            return atomic_string.get();
+            return download_url.get();
         }
     }
 
@@ -844,6 +880,12 @@ public class RCTfirebaseStorage {
             long thread_wait
     ){
         boolean return_boolean = false;
+
+        if(firebase_directory_path == null){
+            firebase_directory_path = "/";
+        }
+
+
         AtomicReference<ArrayList<String>> atomic_list = new AtomicReference<>(new ArrayList<>());
         RCTfirebaseStorageUtil.uploadMultipleFile(
                 instance,
