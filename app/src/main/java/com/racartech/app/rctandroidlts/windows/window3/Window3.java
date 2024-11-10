@@ -29,6 +29,7 @@ public class Window3 extends AppCompatActivity {
         firebase = FirebaseSingleton.getInstance();
 
         setClickListenerF1();
+        setClickListenerF2();
 
     }
 
@@ -103,6 +104,51 @@ public class Window3 extends AppCompatActivity {
 
 
 
+            }
+        });
+    }
+
+    private void setClickListenerF2(){
+        f2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        RCTfirebaseStorage.renameFile_WaitProgress(
+                                firebase.getStorage(),
+                                null,
+                                 "root_file_1.txt",
+                                "renamed_root_file_1.txt",
+                                50
+                        );
+
+                        RCTfirebaseStorage.renameFile(firebase.getStorage(),
+                                null,
+                                "root_file_2.txt",
+                                "renamed_root_file_2.txt"
+                        );
+
+                        RCTfirebaseStorage.renameFile_WaitProgress(
+                                firebase.getStorage(),
+                                "test_folder",
+                                "root_file_1.txt",
+                                "renamed_root_file_1.txt",
+                                50
+                        );
+
+                        RCTfirebaseStorage.renameFile(
+                                firebase.getStorage(),
+                                "test_folder",
+                                "root_file_2.txt",
+                                "renamed_root_file_2.txt"
+                        );
+
+
+
+                    }
+                }).start();
             }
         });
     }

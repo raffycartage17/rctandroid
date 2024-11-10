@@ -54,6 +54,63 @@ public class RCTfirebaseStorage {
 
 
 
+    public static void renameFile_WaitProgress(
+            FirebaseStorage instance,
+            String directory,
+            String old_file_name,
+            String new_file_name,
+            long thread_wait
+    ){
+        boolean return_boolean = false;
+        AtomicBoolean finished_boolean = new AtomicBoolean(false);
+
+        if(directory == null){
+            directory = "";
+        }
+
+
+        RCTfirebaseStorageUtil.renameFile_WaitProgress(
+                instance,
+                finished_boolean,
+                directory,
+                old_file_name,
+                new_file_name
+        );
+
+        while(!return_boolean){
+            if(!finished_boolean.get()){
+                try {
+                    Thread.sleep(thread_wait);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }else{
+                return_boolean = true;
+            }
+        }
+    }
+
+    public static void renameFile(
+            FirebaseStorage instance,
+            String directory,
+            String old_file_name,
+            String new_file_name
+    ){
+
+        if(directory == null){
+            directory = "";
+        }
+
+
+        RCTfirebaseStorageUtil.renameFile(
+                instance,
+                directory,
+                old_file_name,
+                new_file_name
+        );
+
+
+    }
 
 
 
@@ -841,7 +898,7 @@ public class RCTfirebaseStorage {
         AtomicReference<String> download_url = new AtomicReference<>(null);
 
         if(firebase_directory_path == null){
-            firebase_directory_path = "/";
+            firebase_directory_path = "";
         }
 
 
@@ -882,7 +939,7 @@ public class RCTfirebaseStorage {
         boolean return_boolean = false;
 
         if(firebase_directory_path == null){
-            firebase_directory_path = "/";
+            firebase_directory_path = "";
         }
 
 
@@ -2576,6 +2633,132 @@ public class RCTfirebaseStorage {
 
 
      }
+
+
+
+     public static void renameFile_WaitProgress(
+             FirebaseStorage instance,
+             AtomicBoolean is_finished,
+             String directory,
+             String old_file_name,
+             String new_file_name) {
+
+         new Thread(new Runnable() {
+             @Override
+             public void run() {
+                 // Initialize Firebase Storage
+                 StorageReference storageRef = instance.getReference();
+
+                 // Create the full paths for the old and new file locations within the specified directory
+                 StorageReference oldFileRef = storageRef.child(directory + "/" + old_file_name);
+                 StorageReference newFileRef = storageRef.child(directory + "/" + new_file_name);
+
+                 // Start the renaming process by copying the file
+                 oldFileRef.getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                     @Override
+                     public void onSuccess(byte[] bytes) {
+                         // Upload the file to the new location
+                         newFileRef.putBytes(bytes).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                             @Override
+                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                 // After copying to the new location, delete the old file
+                                 oldFileRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                     @Override
+                                     public void onSuccess(Void aVoid) {
+                                         // Renaming (copy + delete) succeeded
+                                         is_finished.set(true);
+                                     }
+                                 }).addOnFailureListener(new OnFailureListener() {
+                                     @Override
+                                     public void onFailure(@NonNull Exception e) {
+                                         // Failed to delete the old file
+                                         is_finished.set(true);
+                                     }
+                                 });
+                             }
+                         }).addOnFailureListener(new OnFailureListener() {
+                             @Override
+                             public void onFailure(@NonNull Exception e) {
+                                 // Failed to upload the file to the new location
+                                 is_finished.set(true);
+                             }
+                         });
+                     }
+                 }).addOnFailureListener(new OnFailureListener() {
+                     @Override
+                     public void onFailure(@NonNull Exception e) {
+                         // Failed to download the old file
+                         is_finished.set(true);
+                     }
+                 }).addOnCanceledListener(new OnCanceledListener() {
+                     @Override
+                     public void onCanceled() {
+                         is_finished.set(true);
+                     }
+                 });
+             }
+         }).start();
+     }
+
+
+     public static void renameFile(
+             FirebaseStorage instance,
+             String directory,
+             String old_file_name,
+             String new_file_name) {
+
+         new Thread(new Runnable() {
+             @Override
+             public void run() {
+                 // Initialize Firebase Storage
+                 StorageReference storageRef = instance.getReference();
+
+                 // Create the full paths for the old and new file locations within the specified directory
+                 StorageReference oldFileRef = storageRef.child(directory + "/" + old_file_name);
+                 StorageReference newFileRef = storageRef.child(directory + "/" + new_file_name);
+
+                 // Start the renaming process by copying the file
+                 oldFileRef.getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                     @Override
+                     public void onSuccess(byte[] bytes) {
+                         // Upload the file to the new location
+                         newFileRef.putBytes(bytes).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                             @Override
+                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                 // After copying to the new location, delete the old file
+                                 oldFileRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                     @Override
+                                     public void onSuccess(Void aVoid) {
+                                         // Renaming (copy + delete) succeeded
+                                     }
+                                 }).addOnFailureListener(new OnFailureListener() {
+                                     @Override
+                                     public void onFailure(@NonNull Exception e) {
+                                         // Failed to delete the old file
+                                     }
+                                 });
+                             }
+                         }).addOnFailureListener(new OnFailureListener() {
+                             @Override
+                             public void onFailure(@NonNull Exception e) {
+                                 // Failed to upload the file to the new location
+                             }
+                         });
+                     }
+                 }).addOnFailureListener(new OnFailureListener() {
+                     @Override
+                     public void onFailure(@NonNull Exception e) {
+                         // Failed to download the old file
+                     }
+                 }).addOnCanceledListener(new OnCanceledListener() {
+                     @Override
+                     public void onCanceled() {
+                     }
+                 });
+             }
+         }).start();
+     }
+
 
 
 
