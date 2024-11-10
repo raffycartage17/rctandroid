@@ -1,5 +1,8 @@
 package com.racartech.library.rctandroid.google.firebase.storage;
 
+import static com.racartech.library.rctandroid.google.firebase.storage.RCTfirebaseStorageUtil.getDirectoryPath;
+import static com.racartech.library.rctandroid.google.firebase.storage.RCTfirebaseStorageUtil.getFileName;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -51,6 +54,79 @@ public class RCTfirebaseStorage {
         return final_dir;
     }
 
+
+
+
+
+    public static void uploadFile_Path(
+            FirebaseStorage instance,
+            String local_file_path,
+            String storage_file_path,
+            long thread_wait
+    ){
+        String directory_path = getDirectoryPath(storage_file_path);
+        String storage_filename = getFileName(storage_file_path);
+
+        uploadFile(
+                instance,
+                local_file_path,
+                directory_path,
+                storage_filename,
+                thread_wait
+        );
+
+    }
+
+    public static void uploadFile_Path(
+            FirebaseStorage instance,
+            String local_file_path,
+            String storage_file_path
+    ){
+        String directory_path = getDirectoryPath(storage_file_path);
+        String storage_filename = getFileName(storage_file_path);
+
+        uploadFile(
+                instance,
+                local_file_path,
+                directory_path,
+                storage_filename
+        );
+
+    }
+
+
+    public static void renameFile_WaitProgress(
+            FirebaseStorage instance,
+            String file_path,
+            String new_file_name,
+            long thread_wait
+    ){
+
+        String directory_path = getDirectoryPath(file_path);
+        String old_file_name = getFileName(file_path);
+        renameFile_WaitProgress(
+                instance,
+                directory_path,
+                old_file_name,
+                new_file_name,
+                thread_wait
+        );
+    }
+
+    public static void renameFile(
+            FirebaseStorage instance,
+            String file_path,
+            String new_file_name
+    ){
+        String directory_path = getDirectoryPath(file_path);
+        String old_file_name = getFileName(file_path);
+        renameFile(
+                instance,
+                directory_path,
+                old_file_name,
+                new_file_name
+        );
+    }
 
 
 
@@ -884,6 +960,27 @@ public class RCTfirebaseStorage {
     }
 
 
+
+    public static void uploadFile(
+            FirebaseStorage instance,
+            String local_file_path,
+            String firebase_directory_path,
+            String uploaded_file_name
+    ){
+
+        if(firebase_directory_path == null){
+            firebase_directory_path = "";
+        }
+
+
+        RCTfirebaseStorageUtil.uploadFile(
+                instance,
+                local_file_path,
+                firebase_directory_path,
+                uploaded_file_name
+        );
+
+    }
 
 
     public static String uploadFile(
@@ -2533,6 +2630,90 @@ public class RCTfirebaseStorage {
     }
 
 
+
+     public static void uploadFile(
+             FirebaseStorage instance,
+             String local_file_path,
+             String firebase_directory_path,
+             String uploaded_file_name) {
+
+
+         new Thread(new Runnable() {
+             @Override
+             public void run() {
+
+                 // Initialize Firebase Storage
+                 StorageReference storageRef = instance.getReference();
+
+                 // Read the content of the local file into a byte array
+                 File localFile = new File(local_file_path);
+                 byte[] data;
+                 try {
+                     data = Files.readAllBytes(localFile.toPath());
+                 } catch (IOException e) {
+                     // Handle the error
+                     return;
+                 }
+
+                 // Get the root folder reference
+                 StorageReference folderRef = storageRef;
+
+                 // Create nested directories if they exist in the firebase_directory_path
+                 String[] folder_path_branches = firebase_directory_path.split("/");
+                 for (String folderName : folder_path_branches) {
+                     if (!folderName.isEmpty()) {
+                         // Create a reference to the next level folder
+                         folderRef = folderRef.child(folderName);
+                     }
+                 }
+
+                 // Create a reference to the file inside the final folder
+                 StorageReference fileRef = folderRef.child(uploaded_file_name);
+
+                 // Upload the file to Firebase Storage
+                 fileRef.putBytes(data)
+                         .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                             @Override
+                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                 // File upload successful
+                                 // Get the download URL of the uploaded file
+                                 Task<Uri> downloadUrlTask = taskSnapshot.getStorage().getDownloadUrl();
+                                 downloadUrlTask.addOnCompleteListener(new OnCompleteListener<Uri>() {
+                                     @Override
+                                     public void onComplete(@NonNull Task<Uri> task) {
+                                         if (task.isSuccessful()) {
+                                         } else {
+                                         }
+                                     }
+                                 }).addOnFailureListener(new OnFailureListener() {
+                                     @Override
+                                     public void onFailure(@NonNull Exception e) {
+                                     }
+                                 }).addOnCanceledListener(new OnCanceledListener() {
+                                     @Override
+                                     public void onCanceled() {
+                                     }
+                                 });
+                             }
+                         })
+                         .addOnFailureListener(new OnFailureListener() {
+                             @Override
+                             public void onFailure(@NonNull Exception e) {
+                                 // Handle the error
+                             }
+                         }).addOnCanceledListener(new OnCanceledListener() {
+                             @Override
+                             public void onCanceled() {
+                             }
+                         });
+
+             }
+         }).start();
+
+
+     }
+
+
      public static void uploadMultipleFile(
              FirebaseStorage instance,
              ArrayList<String> local_file_paths,
@@ -2790,6 +2971,32 @@ public class RCTfirebaseStorage {
 
 
      */
+
+     public static String getDirectoryPath(String filePath) {
+         if (filePath == null || !filePath.contains("/")) {
+             return ""; // Return empty string if there's no directory
+         }
+
+         int lastSlashIndex = filePath.lastIndexOf("/");
+         return filePath.substring(0, lastSlashIndex);
+     }
+
+
+     public static String getFileName(String filePath) {
+         if (filePath == null || !filePath.contains("/")) {
+             return filePath; // Return the full path if no directory separator is found
+         }
+
+         int lastSlashIndex = filePath.lastIndexOf("/");
+         return filePath.substring(lastSlashIndex + 1); // Extract filename after the last "/"
+     }
+
+     public static String fixDirectoryPath(String directoryPath) {
+         if (directoryPath == null || directoryPath.trim().equals("/")) {
+             return "";
+         }
+         return directoryPath.trim();
+     }
 
 
 
