@@ -1,7 +1,5 @@
 package com.racartech.library.rctandroid.google.firebase.storage;
 
-import static com.racartech.library.rctandroid.google.firebase.storage.RCTfirebaseStorageUtil.getDirectoryPath;
-import static com.racartech.library.rctandroid.google.firebase.storage.RCTfirebaseStorageUtil.getFileName;
 
 import java.io.File;
 import java.io.IOException;
@@ -54,6 +52,237 @@ public class RCTfirebaseStorage {
         return final_dir;
     }
 
+
+
+
+
+
+
+
+
+
+    public static HashMap<String,String> getDownloadURL(
+            FirebaseStorage instance,
+            ArrayList<String> file_paths,
+            long thread_wait
+    ){
+        boolean return_boolean = false;
+        AtomicBoolean finished_boolean = new AtomicBoolean(false);
+        AtomicReference<HashMap<String, String>> atomic_value = new AtomicReference<>(new HashMap<>());
+
+        RCTfirebaseStorageUtil.getDownloadURL(
+                instance,
+                file_paths,
+                finished_boolean,
+                atomic_value);
+
+        while(!return_boolean){
+            if(!finished_boolean.get()){
+                try {
+                    Thread.sleep(thread_wait);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }else{
+                return_boolean = true;
+            }
+        }
+
+        return atomic_value.get();
+    }
+
+    ///////////////////
+
+    public static void moveFile(
+            FirebaseStorage instance,
+            String directory,
+            String file_name,
+            String copy_to_directory
+    ){
+        RCTfirebaseStorageUtil.moveFile(
+                instance,
+                directory,
+                copy_to_directory,
+                file_name
+        );
+    }
+
+    public static void moveFile(
+            FirebaseStorage instance,
+            String file_path,
+            String copy_to_directory
+    ){
+
+        String source_directory = getDirectoryPath(file_path);
+        String file_name = getFileName(getFileName(file_path));
+        moveFile(
+                instance,
+                source_directory,
+                file_name,
+                copy_to_directory
+        );
+    }
+
+
+    public static boolean moveFile_WaitProgress(
+            FirebaseStorage instance,
+            String file_path,
+            String copy_to_directory,
+            long thread_wait
+    ){
+        String source_directory = getDirectoryPath(file_path);
+        String file_name = getFileName(getFileName(file_path));
+
+        return moveFile_WaitProgress(
+                instance,
+                source_directory,
+                file_name,
+                copy_to_directory,
+                thread_wait
+        );
+    }
+
+
+
+
+
+
+    public static boolean moveFile_WaitProgress(
+            FirebaseStorage instance,
+            String directory,
+            String file_name,
+            String copy_to_directory,
+            long thread_wait
+    ){
+        boolean return_boolean = false;
+        AtomicBoolean finished_boolean = new AtomicBoolean(false);
+        AtomicBoolean success_boolean = new AtomicBoolean(false);
+
+        if(directory == null){
+            directory = "";
+        }
+
+
+        RCTfirebaseStorageUtil.moveFile_WaitProgress(
+                instance,
+                finished_boolean,
+                success_boolean,
+                directory,
+                copy_to_directory,
+                file_name
+        );
+
+        while(!return_boolean){
+            if(!finished_boolean.get()){
+                try {
+                    Thread.sleep(thread_wait);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }else{
+                return_boolean = true;
+            }
+        }
+
+        return success_boolean.get();
+    }
+
+
+
+
+    ///////////////////
+
+
+    public static void copyFile(
+            FirebaseStorage instance,
+            String directory,
+            String file_name,
+            String copy_to_directory
+    ){
+        RCTfirebaseStorageUtil.copyFile(
+                instance,
+                directory,
+                copy_to_directory,
+                file_name
+        );
+    }
+
+    public static void copyFile(
+            FirebaseStorage instance,
+            String file_path,
+            String copy_to_directory
+    ){
+
+        String source_directory = getDirectoryPath(file_path);
+        String file_name = getFileName(getFileName(file_path));
+        copyFile(
+                instance,
+                source_directory,
+                file_name,
+                copy_to_directory
+        );
+    }
+
+
+    public static boolean copyFile_WaitProgress(
+            FirebaseStorage instance,
+            String file_path,
+            String copy_to_directory,
+            long thread_wait
+    ){
+        String source_directory = getDirectoryPath(file_path);
+        String file_name = getFileName(getFileName(file_path));
+
+        return copyFile_WaitProgress(
+                instance,
+                source_directory,
+                file_name,
+                copy_to_directory,
+                thread_wait
+        );
+    }
+
+
+
+    public static boolean copyFile_WaitProgress(
+            FirebaseStorage instance,
+            String directory,
+            String file_name,
+            String copy_to_directory,
+            long thread_wait
+    ){
+        boolean return_boolean = false;
+        AtomicBoolean finished_boolean = new AtomicBoolean(false);
+        AtomicBoolean success_boolean = new AtomicBoolean(false);
+
+        if(directory == null){
+            directory = "";
+        }
+
+
+        RCTfirebaseStorageUtil.copyFile_WaitProgress(
+                instance,
+                finished_boolean,
+                success_boolean,
+                directory,
+                copy_to_directory,
+                file_name
+        );
+
+        while(!return_boolean){
+            if(!finished_boolean.get()){
+                try {
+                    Thread.sleep(thread_wait);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }else{
+                return_boolean = true;
+            }
+        }
+
+        return success_boolean.get();
+    }
 
 
 
@@ -1071,7 +1300,6 @@ public class RCTfirebaseStorage {
 
         return processed_atomic_list;
     }
-    
 
 
 
@@ -1096,6 +1324,52 @@ public class RCTfirebaseStorage {
 
 
 
+
+
+    public static String getDirectoryPath(String filePath) {
+        if (filePath == null || !filePath.contains("/")) {
+            return ""; // Return empty string if there's no directory
+        }
+
+        int lastSlashIndex = filePath.lastIndexOf("/");
+        return filePath.substring(0, lastSlashIndex);
+    }
+
+
+    public static String getFileName(String filePath) {
+        if (filePath == null || !filePath.contains("/")) {
+            return filePath; // Return the full path if no directory separator is found
+        }
+
+        int lastSlashIndex = filePath.lastIndexOf("/");
+        return filePath.substring(lastSlashIndex + 1); // Extract filename after the last "/"
+    }
+
+    public static String fixDirectoryPath(String directoryPath) {
+        if (directoryPath == null || directoryPath.trim().equals("/") || directoryPath.trim().isEmpty()) {
+            return "/";
+        }
+        return directoryPath.trim();
+    }
+
+    public static String getFilePath(String directory, String fileName) {
+
+        directory = fixDirectoryPath(directory);
+
+        // Ensure directory and filename are non-empty and valid
+        if (directory == null || directory.isEmpty() || fileName == null || fileName.isEmpty()) {
+            throw new IllegalArgumentException("Directory and filename must not be empty");
+        }
+
+        // Firebase Storage paths do not allow certain characters like '/'. You can replace spaces with underscores or handle special chars.
+        String safeDirectory = directory;
+        String safeFileName = fileName;
+
+        // Combine the directory and filename to form the storage path
+        String filePath = safeDirectory + "/" + safeFileName;
+
+        return filePath;
+    }
 
 
 
@@ -2941,6 +3215,363 @@ public class RCTfirebaseStorage {
      }
 
 
+     public static void copyFile_WaitProgress(
+             FirebaseStorage instance,
+             AtomicBoolean is_finished,
+             AtomicBoolean is_success,
+             String sourceDirectory,
+             String destinationDirectory,
+             String fileName
+     ) {
+         new Thread(new Runnable() {
+             @Override
+             public void run() {
+                 // Initialize Firebase Storage
+                 StorageReference storageRef = instance.getReference();
+
+                 // Create the full paths for the source and destination file locations
+                 StorageReference sourceFileRef = storageRef.child(sourceDirectory + "/" + fileName);
+                 StorageReference destinationFileRef = storageRef.child(destinationDirectory + "/" + fileName);
+
+                 // Start the copying process by downloading the file bytes
+                 sourceFileRef.getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                     @Override
+                     public void onSuccess(byte[] bytes) {
+                         // Upload the file to the new location in the destination directory
+                         destinationFileRef.putBytes(bytes).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                             @Override
+                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                 // Copying succeeded, set is_finished to true
+                                 is_success.set(true);
+                                 is_finished.set(true);
+                             }
+                         }).addOnFailureListener(new OnFailureListener() {
+                             @Override
+                             public void onFailure(@NonNull Exception e) {
+                                 // Failed to upload the file to the destination directory
+                                 is_success.set(false);
+                                 is_finished.set(true);
+                             }
+                         });
+                     }
+                 }).addOnFailureListener(new OnFailureListener() {
+                     @Override
+                     public void onFailure(@NonNull Exception e) {
+                         // Failed to download the file from the source directory
+                         is_success.set(false);
+                         is_finished.set(true);
+                     }
+                 }).addOnCanceledListener(new OnCanceledListener() {
+                     @Override
+                     public void onCanceled() {
+                         // Operation was canceled
+                         is_success.set(false);
+                         is_finished.set(true);
+                     }
+                 });
+             }
+         }).start();
+     }
+
+     public static void copyFile (
+             FirebaseStorage instance,
+             String sourceDirectory,
+             String destinationDirectory,
+             String fileName
+     ) {
+         new Thread(new Runnable() {
+             @Override
+             public void run() {
+                 // Initialize Firebase Storage
+                 StorageReference storageRef = instance.getReference();
+
+                 // Create the full paths for the source and destination file locations
+                 StorageReference sourceFileRef = storageRef.child(sourceDirectory + "/" + fileName);
+                 StorageReference destinationFileRef = storageRef.child(destinationDirectory + "/" + fileName);
+
+                 // Start the copying process by downloading the file bytes
+                 sourceFileRef.getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                     @Override
+                     public void onSuccess(byte[] bytes) {
+                         // Upload the file to the new location in the destination directory
+                         destinationFileRef.putBytes(bytes).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                             @Override
+                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                 // Copying succeeded, set is_finished to true
+                             }
+                         }).addOnFailureListener(new OnFailureListener() {
+                             @Override
+                             public void onFailure(@NonNull Exception e) {
+                                 // Failed to upload the file to the destination directory
+                             }
+                         });
+                     }
+                 }).addOnFailureListener(new OnFailureListener() {
+                     @Override
+                     public void onFailure(@NonNull Exception e) {
+                         // Failed to download the file from the source directory
+                     }
+                 }).addOnCanceledListener(new OnCanceledListener() {
+                     @Override
+                     public void onCanceled() {
+                         // Operation was canceled
+                     }
+                 });
+             }
+         }).start();
+     }
+
+
+
+
+     public static void moveFile_WaitProgress(
+             FirebaseStorage instance,
+             AtomicBoolean is_finished,
+             AtomicBoolean is_success,
+             String sourceDirectory,
+             String destinationDirectory,
+             String fileName
+     ) {
+         new Thread(new Runnable() {
+             @Override
+             public void run() {
+                 // Initialize Firebase Storage
+                 StorageReference storageRef = instance.getReference();
+
+                 // Create the full paths for the source and destination file locations
+                 StorageReference sourceFileRef = storageRef.child(sourceDirectory + "/" + fileName);
+                 StorageReference destinationFileRef = storageRef.child(destinationDirectory + "/" + fileName);
+
+                 // Start the moving process by downloading the file bytes
+                 sourceFileRef.getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                     @Override
+                     public void onSuccess(byte[] bytes) {
+                         // Upload the file to the new location in the destination directory
+                         destinationFileRef.putBytes(bytes).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                             @Override
+                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                 // File uploaded to destination; now delete from source
+                                 sourceFileRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                     @Override
+                                     public void onSuccess(Void aVoid) {
+                                         // File successfully moved
+                                         is_success.set(true);
+                                         is_finished.set(true);
+                                     }
+                                 }).addOnFailureListener(new OnFailureListener() {
+                                     @Override
+                                     public void onFailure(@NonNull Exception e) {
+                                         // Failed to delete the file from the source directory
+                                         is_success.set(true); //Will still return true since the file is successfully moved
+                                         is_finished.set(true);
+                                     }
+                                 });
+                             }
+                         }).addOnFailureListener(new OnFailureListener() {
+                             @Override
+                             public void onFailure(@NonNull Exception e) {
+                                 // Failed to upload the file to the destination directory
+                                 is_success.set(false);
+                                 is_finished.set(true);
+                             }
+                         });
+                     }
+                 }).addOnFailureListener(new OnFailureListener() {
+                     @Override
+                     public void onFailure(@NonNull Exception e) {
+                         // Failed to download the file from the source directory
+                         is_success.set(false);
+                         is_finished.set(true);
+                     }
+                 }).addOnCanceledListener(new OnCanceledListener() {
+                     @Override
+                     public void onCanceled() {
+                         // Operation was canceled
+                         is_success.set(false);
+                         is_finished.set(true);
+                     }
+                 });
+             }
+         }).start();
+     }
+
+     public static void moveFile(
+             FirebaseStorage instance,
+             String sourceDirectory,
+             String destinationDirectory,
+             String fileName
+     ) {
+         new Thread(new Runnable() {
+             @Override
+             public void run() {
+                 // Initialize Firebase Storage
+                 StorageReference storageRef = instance.getReference();
+
+                 // Create the full paths for the source and destination file locations
+                 StorageReference sourceFileRef = storageRef.child(sourceDirectory + "/" + fileName);
+                 StorageReference destinationFileRef = storageRef.child(destinationDirectory + "/" + fileName);
+
+                 // Start the moving process by downloading the file bytes
+                 sourceFileRef.getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                     @Override
+                     public void onSuccess(byte[] bytes) {
+                         // Upload the file to the new location in the destination directory
+                         destinationFileRef.putBytes(bytes).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                             @Override
+                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                 // File uploaded to destination; now delete from source
+                                 sourceFileRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                     @Override
+                                     public void onSuccess(Void aVoid) {
+                                         // File successfully moved
+                                     }
+                                 }).addOnFailureListener(new OnFailureListener() {
+                                     @Override
+                                     public void onFailure(@NonNull Exception e) {
+                                         // Failed to delete the file from the source directory
+                                     }
+                                 });
+                             }
+                         }).addOnFailureListener(new OnFailureListener() {
+                             @Override
+                             public void onFailure(@NonNull Exception e) {
+                                 // Failed to upload the file to the destination directory
+                             }
+                         });
+                     }
+                 }).addOnFailureListener(new OnFailureListener() {
+                     @Override
+                     public void onFailure(@NonNull Exception e) {
+                         // Failed to download the file from the source directory
+                     }
+                 }).addOnCanceledListener(new OnCanceledListener() {
+                     @Override
+                     public void onCanceled() {
+                         // Operation was canceled
+                     }
+                 });
+             }
+         }).start();
+     }
+
+
+     public static void getDownloadURL(
+             FirebaseStorage instance,
+             ArrayList<String> file_paths,
+             AtomicBoolean finished_boolean,
+             AtomicReference<HashMap<String, String>> download_urls // This stores file paths and their URLs
+     ) {
+         new Thread(new Runnable() {
+             @Override
+             public void run() {
+                 //TODO - fix concurrency
+
+                 // Initialize Firebase Storage
+                 StorageReference storageRef = instance.getReference();
+
+                 // Counter to track the number of completed downloads
+                 AtomicInteger counter = new AtomicInteger(0);
+
+                 System.out.println("------------------------------");
+                 System.out.println("For Loop start");
+
+                 // Loop through each file path
+                 for (int index = 0; index < file_paths.size(); index++) {
+                     String path = file_paths.get(index);
+                     // Create a reference to the file
+                     StorageReference fileRef = storageRef.child(path);
+
+                     System.out.println("Loop Index : ".concat(String.valueOf(index)));
+
+                     // Get the download URL of the file
+                     fileRef.getDownloadUrl()
+                             .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                 @Override
+                                 public void onSuccess(Uri downloadUrl) {
+                                     // Store the URL in the map with the file path as the key
+                                     download_urls.get().put(path, downloadUrl.toString());
+
+
+                                 }
+                             })
+                             .addOnFailureListener(new OnFailureListener() {
+                                 @Override
+                                 public void onFailure(@NonNull Exception e) {
+                                     // Store a null identifier in case of failure
+                                     download_urls.get().put(path, NULL_RESULT_IDENTIFIER);
+
+
+                                 }
+                             })
+                             .addOnCanceledListener(new OnCanceledListener() {
+                                 @Override
+                                 public void onCanceled() {
+                                     // Store a null identifier in case of cancellation
+                                     download_urls.get().put(path, NULL_RESULT_IDENTIFIER);
+
+
+                                 }
+                             });
+                 }
+                 System.out.println("------------------------------");
+                 finished_boolean.set(true);
+                 System.out.println("End");
+                 System.out.println("------------------------------");
+             }
+         }).start();
+     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2972,31 +3603,7 @@ public class RCTfirebaseStorage {
 
      */
 
-     public static String getDirectoryPath(String filePath) {
-         if (filePath == null || !filePath.contains("/")) {
-             return ""; // Return empty string if there's no directory
-         }
 
-         int lastSlashIndex = filePath.lastIndexOf("/");
-         return filePath.substring(0, lastSlashIndex);
-     }
-
-
-     public static String getFileName(String filePath) {
-         if (filePath == null || !filePath.contains("/")) {
-             return filePath; // Return the full path if no directory separator is found
-         }
-
-         int lastSlashIndex = filePath.lastIndexOf("/");
-         return filePath.substring(lastSlashIndex + 1); // Extract filename after the last "/"
-     }
-
-     public static String fixDirectoryPath(String directoryPath) {
-         if (directoryPath == null || directoryPath.trim().equals("/")) {
-             return "";
-         }
-         return directoryPath.trim();
-     }
 
 
 

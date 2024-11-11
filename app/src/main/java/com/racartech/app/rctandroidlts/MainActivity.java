@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseApp.initializeApp(MainActivity.this);
 
         //TODO Firebase Storage
-        //TODO - rename, move, copy (for both single file and multiple file configuration)
+        //TODO - rename ---, move ---, copy --- (for both single file and multiple file configuration)
         //TODO - getDownloadURL for multiple files
         //TODO - all methods should have a variant that support file paths aside from (directory, file_name) configuration
 
