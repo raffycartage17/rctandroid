@@ -45,7 +45,7 @@ import com.google.maps.model.TrafficModel;
 import com.google.maps.model.TravelMode;
 import com.racartech.library.rctandroid.R;
 import com.racartech.library.rctandroid.file.RCTfile;
-import com.racartech.library.rctandroid.location.RCTLocationData;
+import com.racartech.library.rctandroid.location.RCTlocationData;
 import com.racartech.library.rctandroid.location.RCTfacingDirectionListener;
 import com.racartech.library.rctandroid.location.RCTlocation;
 import com.racartech.library.rctandroid.location.RCTlocationUpdateListener;
@@ -107,7 +107,7 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
 
     private volatile Circle CURRENT_LOCATION_CIRCLE = null;
 
-    public volatile AtomicReference<RCTLocationData> CURRENT_LOCATION_DATA = new AtomicReference<>(null);
+    public volatile AtomicReference<RCTlocationData> CURRENT_LOCATION_DATA = new AtomicReference<>(null);
 
     public volatile boolean CAMERA_FOLLOW_ON_LOCATION_UPDATE = true;
 
@@ -532,9 +532,9 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
     public void updateCurrentLocationData() {
         if(this.CURRENT_LOCATION_DATA != null) {
             try {
-                Address updated_location_address = new RCTLocationData(
+                Address updated_location_address = new RCTlocationData(
                         getContext(),
-                        RCTLocationData.MODE_CURRENT,
+                        RCTlocationData.MODE_CURRENT,
                         200).getAddress();
                 this.CURRENT_LOCATION_DATA.get().setAddress(RCTlocation.getAddress(
                         getContext(),
@@ -553,7 +553,7 @@ public class RCTgoogleMaps extends FrameLayout implements OnMapReadyCallback, RC
         CURRENT_LOCATION_LATITUDE.set(latitude);
         CURRENT_LOCATION_LONGITUDE.set(longitude);
         if(RCTgoogleMaps.this.CURRENT_LOCATION_DATA.get() == null) {
-            RCTgoogleMaps.this.CURRENT_LOCATION_DATA.set(new RCTLocationData(RCTlocation.getAddress(getContext(), latitude, longitude)));
+            RCTgoogleMaps.this.CURRENT_LOCATION_DATA.set(new RCTlocationData(RCTlocation.getAddress(getContext(), latitude, longitude)));
         }else{
             RCTgoogleMaps.this.CURRENT_LOCATION_DATA.get().setAddress(RCTlocation.getAddress(getContext(), latitude, longitude));
         }

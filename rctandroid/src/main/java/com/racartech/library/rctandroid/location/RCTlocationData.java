@@ -1,11 +1,5 @@
 package com.racartech.library.rctandroid.location;
 
-
-
-
-
-
-
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -24,28 +18,31 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class RCTLocationData {
+public class RCTlocationData{
 
     public static final int MODE_CURRENT = 0;
     public static final int MODE_LAST_KNOWN = 1;
 
+    private Location LOCATION = null;
     private Address ADDRESS = null;
+    private ArrayList<Address> LIKELY_ADDRESSES = new ArrayList<>();
 
 
 
-    public RCTLocationData(Context context, double lat, double lng){
+    public RCTlocationData(Context context, double lat, double lng){
         this.ADDRESS = RCTlocation.getAddress(context,lat,lng);
     }
 
-    public RCTLocationData(Address address){
+    public RCTlocationData(Address address){
         this.ADDRESS = address;
     }
 
-    public RCTLocationData(Context context, int mode, long thread_wait) {
+    public RCTlocationData(Context context, int mode, long thread_wait) {
 
         boolean progress_boolean = false;
         AtomicBoolean finished_boolean = new AtomicBoolean(false);
@@ -71,7 +68,10 @@ public class RCTLocationData {
                                         try {
                                             addresses = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1);
                                             if(addresses != null) {
-                                                RCTLocationData.this.ADDRESS = addresses.get(0);
+                                                RCTlocationData.this.LOCATION = location;
+                                                RCTlocationData.this.ADDRESS = addresses.get(0);
+                                                RCTlocationData.this.LIKELY_ADDRESSES.clear();
+                                                RCTlocationData.this.LIKELY_ADDRESSES.addAll(addresses);
                                                 finished_boolean.set(true);
                                             }
                                         } catch (IOException e) {
@@ -100,9 +100,16 @@ public class RCTLocationData {
                                 Geocoder geocoder = new Geocoder(context, Locale.getDefault());
                                 List<Address> addresses = null;
                                 try {
-                                    addresses = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1);
+                                    addresses = geocoder.getFromLocation(
+                                                    location.getLatitude(),
+                                                    location.getLongitude(),
+                                                    1
+                                                );
                                     if(addresses != null) {
-                                        RCTLocationData.this.ADDRESS = addresses.get(0);
+                                        RCTlocationData.this.LOCATION = location;
+                                        RCTlocationData.this.ADDRESS = addresses.get(0);
+                                        RCTlocationData.this.LIKELY_ADDRESSES.clear();
+                                        RCTlocationData.this.LIKELY_ADDRESSES.addAll(addresses);
                                         finished_boolean.set(true);
                                     }
                                 } catch (IOException e) {

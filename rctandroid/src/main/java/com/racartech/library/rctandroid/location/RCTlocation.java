@@ -29,6 +29,21 @@ public class RCTlocation{
         }
     }
 
+    public static List<Address> getAddresses(Context context,double latitude, double longitude){
+        try {
+            Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+            List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+            if(addresses != null){
+                return addresses;
+            }else{
+                return null;
+            }
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
     public static List<Address> searchAddress(
             Context context,
             String search_query,

@@ -8,9 +8,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.racartech.app.rctandroidlts.FirebaseSingleton;
 import com.racartech.app.rctandroidlts.R;
-import com.racartech.library.rctandroid.file.RCTfile;
-import com.racartech.library.rctandroid.google.firebase.firestore.RCTfirebaseFirestore;
 import com.racartech.library.rctandroid.google.firebase.storage.RCTfirebaseStorage;
+import com.racartech.library.rctandroid.location.RCTlocationData;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,6 +32,7 @@ public class Window3 extends AppCompatActivity {
 
         setClickListenerF1();
         setClickListenerF2();
+        setClickListenerF3();
 
     }
 
@@ -123,6 +123,37 @@ public class Window3 extends AppCompatActivity {
                 }).start();
             }
         });
+    }
+
+    private void setClickListenerF3(){
+
+        f3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+
+
+
+                        RCTlocationData current_location = new RCTlocationData(
+                                Window3.this,
+                                RCTlocationData.MODE_CURRENT,
+                                500);
+
+
+                        System.out.println("--------------------------------------------------------------");
+                        System.out.println("Lat : ".concat(String.valueOf(current_location.getAddress().getLatitude())));
+                        System.out.println("Lon : ".concat(String.valueOf(current_location.getAddress().getLongitude())));
+                        System.out.println("Add : ".concat(String.valueOf(current_location.getAddress().getAddressLine(0))));
+                        System.out.println("--------------------------------------------------------------");
+
+                    }
+                }).start();
+            }
+        });
+
+
     }
 
 

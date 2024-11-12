@@ -16,7 +16,7 @@ public class RCTdistance {
     private static final double FEET_TO_MILES = 5280.0;
 
 
-    public static double calculateDistance_KM(RCTLocationData location_a, RCTLocationData location_b){
+    public static double calculateDistance_KM(RCTlocationData location_a, RCTlocationData location_b){
         return (calculateDistance_M(location_a.getAddress(), location_b.getAddress())/1000.0);
     }
 
@@ -34,7 +34,7 @@ public class RCTdistance {
 
 
 
-    public static double calculateDistance_M(RCTLocationData location_a, RCTLocationData location_b){
+    public static double calculateDistance_M(RCTlocationData location_a, RCTlocationData location_b){
         return calculateDistance_M(location_a.getAddress(), location_b.getAddress());
     }
 
