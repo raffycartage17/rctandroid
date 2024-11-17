@@ -9,25 +9,24 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-public class RCTorgJSON {
+public class RCTjson {
 
 
 
-    public static Map<String, Object> jsonStringToMap(String jsonString) throws JSONException {
-        JSONObject jsonObject = new JSONObject(jsonString);
-        Map<String, Object> map = new HashMap<>();
-
-        Iterator<String> keys = jsonObject.keys();
+    public static HashMap<String, String> convertToHashmap(JSONObject json_object) {
+        HashMap<String, String> map = new HashMap<>();
+        Iterator<String> keys = json_object.keys();
         while (keys.hasNext()) {
             String key = keys.next();
-            map.put(key, jsonObject.get(key));
+            try {
+                map.put(key, json_object.getString(key));
+            } catch (JSONException ignored){}
         }
         return map;
     }
 
-    public static String mapToJsonString(Map<String, Object> map) {
-        JSONObject jsonObject = new JSONObject(map);
-        return jsonObject.toString();
+    public static JSONObject convertToJson(HashMap<String, String> map) {
+        return new JSONObject(map);
     }
 
 

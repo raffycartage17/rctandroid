@@ -38,6 +38,7 @@ import com.racartech.app.rctandroidlts.windows.Window1;
 import com.racartech.app.rctandroidlts.windows.Window2;
 import com.racartech.app.rctandroidlts.windows.window3.Window3;
 import com.racartech.library.rctandroid.file.RCTfile;
+import com.racartech.library.rctandroid.file.RCTzip;
 import com.racartech.library.rctandroid.google.firebase.firestore.RCTfirebaseFirestore;
 import com.racartech.library.rctandroid.google.firebase.storage.RCTfirebaseStorage;
 import com.racartech.library.rctandroid.json.RCTgoogleGSON;
@@ -47,6 +48,7 @@ import com.racartech.library.rctandroid.notifications.RCTnotifications;
 import com.racartech.library.rctandroid.permission.RCTpermission;
 import com.racartech.library.rctandroid.time.RCTdateTimeData;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -171,8 +173,65 @@ public class MainActivity extends AppCompatActivity {
         f2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        String src_file_path_1 = RCTfile.getDir_ExternalStorageRoot().concat("/apath/metadata.txt");
+                        String src_file_path_2 = RCTfile.getDir_ExternalStorageRoot().concat("/apath/plant_dictonary.txt");
+
+                        String compressed_file_path_1 = RCTfile.getDir_ExternalStorageRoot().concat("/apath/metadata.zip");
+                        String compressed_file_path_2 = RCTfile.getDir_ExternalStorageRoot().concat("/apath/plant_dictonary.zip");
+
+                        String bsrc_file_path_1 = RCTfile.getDir_ExternalStorageRoot().concat("/apath/metadata.txt");
+                        String bsrc_file_path_2 = RCTfile.getDir_ExternalStorageRoot().concat("/apath/plant_dictonary.txt");
+
+                        String bcompressed_file_path_1 = RCTfile.getDir_ExternalStorageRoot().concat("/apath/bmetadata.zip");
+                        String bcompressed_file_path_2 = RCTfile.getDir_ExternalStorageRoot().concat("/apath/bplant_dictonary.zip");
+
+                        String xzsrc_file_path_1 = RCTfile.getDir_ExternalStorageRoot().concat("/apath/metadata.txt");
+                        String xzsrc_file_path_2 = RCTfile.getDir_ExternalStorageRoot().concat("/apath/plant_dictonary.txt");
+
+                        String xzcompressed_file_path_1 = RCTfile.getDir_ExternalStorageRoot().concat("/apath/xzmetadata.zip");
+                        String xzcompressed_file_path_2 = RCTfile.getDir_ExternalStorageRoot().concat("/apath/xzplant_dictonary.zip");
+
+
+                        try {
+                            System.out.println("AAAAAAAAAAAAAA");
+                            long start_1 = System.currentTimeMillis();
+                            RCTzip.compress(src_file_path_1, compressed_file_path_1);
+                            RCTzip.compress(src_file_path_2, compressed_file_path_2);
+                            long end_1 = System.currentTimeMillis();
+                            System.out.println("BBBBBBBBBBBBBB");
+                            long start_2 = System.currentTimeMillis();
+                            RCTzip.compressFileToZip(bsrc_file_path_1, bcompressed_file_path_1);
+                            RCTzip.compressFileToZip(bsrc_file_path_2, bcompressed_file_path_2);
+                            long end_2 = System.currentTimeMillis();
+                            System.out.println("CCCCCCCCCCCCCCCCC");
+
+                            long elapsed_time_1 = end_1-start_1;
+                            long elapsed_time_2 = end_2-start_2;
+                            long time_dif = elapsed_time_2-elapsed_time_1;
+
+                            System.out.println("Elapsed Time 1 : ".concat(String.valueOf(elapsed_time_1)));
+                            System.out.println("Elapsed Time 2 : ".concat(String.valueOf(elapsed_time_2)));
+                            System.out.println("Difference     : ".concat(String.valueOf(time_dif)));
+
+                        }catch (Exception ex){
+                            ex.printStackTrace();
+                        }
+
+
+                    }
+                }).start();
+
+
+                /*
                 Intent intent = new Intent(MainActivity.this, FunctionTwo.class);
                 startActivity(intent);
+
+                 */
             }
         });
 

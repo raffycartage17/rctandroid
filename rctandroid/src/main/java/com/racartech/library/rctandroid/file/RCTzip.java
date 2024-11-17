@@ -15,13 +15,11 @@ public class RCTzip {
     private static final int BUFFER_SIZE = 4096;
 
     public static void compress(String[] file_dir_paths,String zip_file_path) throws IOException{
-        ZipUtility zipUtil = new ZipUtility();
-        zipUtil.zip(file_dir_paths,zip_file_path);
+        ZipUtility.zip(file_dir_paths,zip_file_path);
     }
 
     public static void compress(String target_path,String zip_file_path) throws IOException{
-        ZipUtility zipUtil = new ZipUtility();
-        zipUtil.zip(new String[]{target_path},zip_file_path);
+        ZipUtility.zip(new String[]{target_path},zip_file_path);
     }
 
 
@@ -65,7 +63,7 @@ public class RCTzip {
     }
 
 
-
+    @Deprecated
     public static void compressFilesToZip(String[] source_files_path, String zip_file_path) {
         String[] srcFiles = RCTfile.removeAllNonExistingFiles(source_files_path);
         try{
@@ -92,6 +90,7 @@ public class RCTzip {
     }
 
 
+    @Deprecated
     public static void compressFileToZip(String source_file_path, String zip_file_path) {
         if(RCTfile.doesFileExist(source_file_path)){
             String[] srcFiles = {source_file_path};
@@ -273,7 +272,7 @@ class ZipUtility {
      * @throws FileNotFoundException
      * @throws IOException
      */
-    public void zip(List<File> listFiles, String destZipFile) throws FileNotFoundException,
+    public static void zip(List<File> listFiles, String destZipFile) throws FileNotFoundException,
             IOException {
         ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(destZipFile));
         for (File file : listFiles) {
@@ -293,7 +292,7 @@ class ZipUtility {
      * @throws FileNotFoundException
      * @throws IOException
      */
-    public void zip(String[] files, String destZipFile) throws FileNotFoundException, IOException {
+    public static void zip(String[] files, String destZipFile) throws FileNotFoundException, IOException {
         List<File> listFiles = new ArrayList<File>();
         for (int i = 0; i < files.length; i++) {
             listFiles.add(new File(files[i]));
@@ -308,7 +307,7 @@ class ZipUtility {
      * @throws FileNotFoundException
      * @throws IOException
      */
-    private void zipDirectory(File folder, String parentFolder,
+    private static void zipDirectory(File folder, String parentFolder,
                               ZipOutputStream zos) throws FileNotFoundException, IOException {
         for (File file : folder.listFiles()) {
             if (file.isDirectory()) {
@@ -335,7 +334,7 @@ class ZipUtility {
      * @throws FileNotFoundException
      * @throws IOException
      */
-    private void zipFile(File file, ZipOutputStream zos)
+    private static void zipFile(File file, ZipOutputStream zos)
             throws FileNotFoundException, IOException {
         zos.putNextEntry(new ZipEntry(file.getName()));
         BufferedInputStream bis = new BufferedInputStream(new FileInputStream(
