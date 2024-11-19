@@ -123,6 +123,8 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+        FirebaseFirestore fs_instace = FirebaseFirestore.getInstance();
+        FirebaseStorage storage_instance = FirebaseStorage.getInstance();
 
 
 
@@ -178,49 +180,50 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
 
-                        String src_file_path_1 = RCTfile.getDir_ExternalStorageRoot().concat("/apath/metadata.txt");
-                        String src_file_path_2 = RCTfile.getDir_ExternalStorageRoot().concat("/apath/plant_dictonary.txt");
+//                        FirebaseFirestore instance,
+//                        String collection_path,
+//                        String field_name,
+//                        String field_value_equal_to,
+//                        long thread_wait
 
-                        String compressed_file_path_1 = RCTfile.getDir_ExternalStorageRoot().concat("/apath/metadata.zip");
-                        String compressed_file_path_2 = RCTfile.getDir_ExternalStorageRoot().concat("/apath/plant_dictonary.zip");
+                        String collection = "query_col";
+                        String field_name = "2";
+                        String equal_to = "ecija";
+                        long thread_wait = 100;
 
-                        String bsrc_file_path_1 = RCTfile.getDir_ExternalStorageRoot().concat("/apath/metadata.txt");
-                        String bsrc_file_path_2 = RCTfile.getDir_ExternalStorageRoot().concat("/apath/plant_dictonary.txt");
+                        long start = System.currentTimeMillis();
+                        HashMap<String, HashMap<String, Object>> document_datas =
+                                RCTfirebaseFirestore.queryDocumentPathWithFieldNotEqualTo(
+                                        fs_instace,
+                                        collection,
+                                        field_name,
+                                        equal_to,
+                                        thread_wait
+                                );
 
-                        String bcompressed_file_path_1 = RCTfile.getDir_ExternalStorageRoot().concat("/apath/bmetadata.zip");
-                        String bcompressed_file_path_2 = RCTfile.getDir_ExternalStorageRoot().concat("/apath/bplant_dictonary.zip");
+                        long end = System.currentTimeMillis();
+                        long elapsed_time = end-start;
+                        System.out.println("------------------------------------------");
+                        System.out.println("Elapsed Time : ".concat(String.valueOf(elapsed_time)));
 
-                        String xzsrc_file_path_1 = RCTfile.getDir_ExternalStorageRoot().concat("/apath/metadata.txt");
-                        String xzsrc_file_path_2 = RCTfile.getDir_ExternalStorageRoot().concat("/apath/plant_dictonary.txt");
+                        ArrayList<String> keyset = new ArrayList<>(document_datas.keySet());
 
-                        String xzcompressed_file_path_1 = RCTfile.getDir_ExternalStorageRoot().concat("/apath/xzmetadata.zip");
-                        String xzcompressed_file_path_2 = RCTfile.getDir_ExternalStorageRoot().concat("/apath/xzplant_dictonary.zip");
+                        System.out.println("------------------------------------------");
 
+                        for(int index = 0; index< keyset.size(); index++){
+                            String document_path = keyset.get(index);
+                            HashMap<String, Object> document_data = document_datas.get(keyset.get(index));
 
-                        try {
-                            System.out.println("AAAAAAAAAAAAAA");
-                            long start_1 = System.currentTimeMillis();
-                            RCTzip.compress(src_file_path_1, compressed_file_path_1);
-                            RCTzip.compress(src_file_path_2, compressed_file_path_2);
-                            long end_1 = System.currentTimeMillis();
-                            System.out.println("BBBBBBBBBBBBBB");
-                            long start_2 = System.currentTimeMillis();
-                            RCTzip.compressFileToZip(bsrc_file_path_1, bcompressed_file_path_1);
-                            RCTzip.compressFileToZip(bsrc_file_path_2, bcompressed_file_path_2);
-                            long end_2 = System.currentTimeMillis();
-                            System.out.println("CCCCCCCCCCCCCCCCC");
+                            System.out.println("Path  : ".concat(document_path));
+                            System.out.println("FName : ".concat(document_data.get("1").toString()));
+                            System.out.println("MName : ".concat(document_data.get("2").toString()));
+                            System.out.println("LName : ".concat(document_data.get("3").toString()));
+                            System.out.println("------------------------------------------");
 
-                            long elapsed_time_1 = end_1-start_1;
-                            long elapsed_time_2 = end_2-start_2;
-                            long time_dif = elapsed_time_2-elapsed_time_1;
-
-                            System.out.println("Elapsed Time 1 : ".concat(String.valueOf(elapsed_time_1)));
-                            System.out.println("Elapsed Time 2 : ".concat(String.valueOf(elapsed_time_2)));
-                            System.out.println("Difference     : ".concat(String.valueOf(time_dif)));
-
-                        }catch (Exception ex){
-                            ex.printStackTrace();
                         }
+                        System.out.println("------------------------------------------");
+
+
 
 
                     }

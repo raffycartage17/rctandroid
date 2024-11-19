@@ -12,6 +12,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.racartech.library.rctandroid.json.RCTgoogleGSON;
@@ -501,6 +502,75 @@ public class RCTfirebaseFirestore {
 
 
 
+
+
+
+    public static HashMap<String, HashMap<String, Object>> queryDocumentPathWithFieldEqualTo(
+            FirebaseFirestore instance,
+            String collection_path,
+            String field_name,
+            String field_value_equal_to,
+            long thread_wait
+    ){
+
+        boolean return_boolean = false;
+        AtomicBoolean finished_boolean = new AtomicBoolean(false);
+        AtomicReference<HashMap<String, HashMap<String, Object>>> atomic_value = new AtomicReference<>(new HashMap<>());
+        FirestoreUtil.queryDocumentPathWithFieldEqualsTo(
+                instance,
+                collection_path,
+                field_name,
+                field_value_equal_to,
+                atomic_value,
+                finished_boolean
+        );
+        while(!return_boolean){
+            if(!finished_boolean.get()){
+                try {
+                    Thread.sleep(thread_wait);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }else{
+                return_boolean = true;
+            }
+        }
+        return atomic_value.get();
+    }
+
+
+    public static HashMap<String, HashMap<String, Object>> queryDocumentPathWithFieldNotEqualTo(
+            FirebaseFirestore instance,
+            String collection_path,
+            String field_name,
+            String field_value_equal_to,
+            long thread_wait
+    ){
+
+        boolean return_boolean = false;
+        AtomicBoolean finished_boolean = new AtomicBoolean(false);
+        AtomicReference<HashMap<String, HashMap<String, Object>>> atomic_value = new AtomicReference<>(new HashMap<>());
+        FirestoreUtil.queryDocumentPathWithFieldNotEqualsTo(
+                instance,
+                collection_path,
+                field_name,
+                field_value_equal_to,
+                atomic_value,
+                finished_boolean
+        );
+        while(!return_boolean){
+            if(!finished_boolean.get()){
+                try {
+                    Thread.sleep(thread_wait);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }else{
+                return_boolean = true;
+            }
+        }
+        return atomic_value.get();
+    }
 
 
 
@@ -2259,6 +2329,100 @@ public class RCTfirebaseFirestore {
                             finished_boolean.set(true);
                         }
                     });
+                }
+            }).start();
+        }
+
+
+
+        protected static void queryDocumentPathWithFieldEqualsTo(
+                FirebaseFirestore instance,
+                String collection_path,
+                String field_name,
+                String field_value_equals_to,
+                AtomicReference<HashMap<String, HashMap<String, Object>>> atomic_value,
+                AtomicBoolean finished_boolean
+        ) {
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    // Get reference to the old document
+                    instance.collection(collection_path)
+                            .whereEqualTo(field_name, field_value_equals_to) // Replace "fieldName" with the name of the field
+                            .get()
+                            .addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        try {
+                                            atomic_value.get().put(
+                                                    document.getReference().getPath(),
+                                                    new HashMap<>(document.getData())
+                                            );
+                                        }catch (Exception ex){
+                                            ex.printStackTrace();
+                                        }
+                                    }
+                                    finished_boolean.set(true);
+                                }else{
+                                }
+                            }).addOnCanceledListener(new OnCanceledListener() {
+                                @Override
+                                public void onCanceled() {
+                                    finished_boolean.set(true);
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    finished_boolean.set(true);
+                                }
+                            });
+                }
+            }).start();
+        }
+
+        protected static void queryDocumentPathWithFieldNotEqualsTo(
+                FirebaseFirestore instance,
+                String collection_path,
+                String field_name,
+                String field_value_not_equals_to,
+                AtomicReference<HashMap<String, HashMap<String, Object>>> atomic_value,
+                AtomicBoolean finished_boolean
+        ) {
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    // Get reference to the old document
+                    instance.collection(collection_path)
+                            .whereNotEqualTo(field_name, field_value_not_equals_to) // Replace "fieldName" with the name of the field
+                            .get()
+                            .addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        try {
+                                            atomic_value.get().put(
+                                                    document.getReference().getPath(),
+                                                    new HashMap<>(document.getData())
+                                            );
+                                        }catch (Exception ex){
+                                            ex.printStackTrace();
+                                        }
+                                    }
+                                    finished_boolean.set(true);
+                                }else{
+                                }
+                            }).addOnCanceledListener(new OnCanceledListener() {
+                                @Override
+                                public void onCanceled() {
+                                    finished_boolean.set(true);
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    finished_boolean.set(true);
+                                }
+                            });
                 }
             }).start();
         }
