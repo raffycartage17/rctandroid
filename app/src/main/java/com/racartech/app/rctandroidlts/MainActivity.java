@@ -25,7 +25,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.firestore.Filter;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.racartech.app.rctandroidlts.firebase.FirestoreTest;
 import com.racartech.app.rctandroidlts.functionbuttons.FunctionThree;
@@ -39,6 +41,7 @@ import com.racartech.app.rctandroidlts.windows.Window2;
 import com.racartech.app.rctandroidlts.windows.window3.Window3;
 import com.racartech.library.rctandroid.file.RCTfile;
 import com.racartech.library.rctandroid.file.RCTzip;
+import com.racartech.library.rctandroid.google.firebase.firestore.ChainedQuery;
 import com.racartech.library.rctandroid.google.firebase.firestore.RCTfirebaseFirestore;
 import com.racartech.library.rctandroid.google.firebase.storage.RCTfirebaseStorage;
 import com.racartech.library.rctandroid.json.RCTgoogleGSON;
@@ -191,13 +194,16 @@ public class MainActivity extends AppCompatActivity {
                         String equal_to = "ecija";
                         long thread_wait = 100;
 
+
+                        ChainedQuery chained_query = new ChainedQuery(fs_instace,collection);
+
+                        chained_query.addWhereEqualTo("1","rafael");
+
+
                         long start = System.currentTimeMillis();
                         HashMap<String, HashMap<String, Object>> document_datas =
-                                RCTfirebaseFirestore.queryDocumentPathWithFieldNotEqualTo(
-                                        fs_instace,
-                                        collection,
-                                        field_name,
-                                        equal_to,
+                                RCTfirebaseFirestore.query(
+                                        chained_query,
                                         thread_wait
                                 );
 
@@ -218,6 +224,7 @@ public class MainActivity extends AppCompatActivity {
                             System.out.println("FName : ".concat(document_data.get("1").toString()));
                             System.out.println("MName : ".concat(document_data.get("2").toString()));
                             System.out.println("LName : ".concat(document_data.get("3").toString()));
+                            System.out.println("Town  : ".concat(document_data.get("4").toString()));
                             System.out.println("------------------------------------------");
 
                         }
