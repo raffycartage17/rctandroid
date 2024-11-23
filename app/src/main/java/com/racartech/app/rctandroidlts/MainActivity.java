@@ -199,7 +199,6 @@ public class MainActivity extends AppCompatActivity {
 
                         chained_query.addWhereEqualTo("1","rafael");
 
-
                         long start = System.currentTimeMillis();
                         HashMap<String, HashMap<String, Object>> document_datas =
                                 RCTfirebaseFirestore.query(
