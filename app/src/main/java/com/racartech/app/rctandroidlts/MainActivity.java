@@ -25,13 +25,16 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.firestore.Filter;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.maps.DirectionsApi;
+import com.google.maps.model.TrafficModel;
+import com.google.maps.model.TransitMode;
+import com.google.maps.model.TravelMode;
+import com.google.maps.model.Unit;
+import com.racartech.app.rctandroidlts.api.ApiKeyManager;
 import com.racartech.app.rctandroidlts.firebase.FirestoreTest;
-import com.racartech.app.rctandroidlts.functionbuttons.FunctionThree;
-import com.racartech.app.rctandroidlts.functionbuttons.FunctionTwo;
 import com.racartech.app.rctandroidlts.maps.MapsTestActivity;
 import com.racartech.app.rctandroidlts.maps.TextToSpeechActivity;
 import com.racartech.app.rctandroidlts.resources.BuildConfig;
@@ -40,10 +43,11 @@ import com.racartech.app.rctandroidlts.windows.Window1;
 import com.racartech.app.rctandroidlts.windows.Window2;
 import com.racartech.app.rctandroidlts.windows.window3.Window3;
 import com.racartech.library.rctandroid.file.RCTfile;
-import com.racartech.library.rctandroid.file.RCTzip;
 import com.racartech.library.rctandroid.google.firebase.firestore.ChainedQuery;
 import com.racartech.library.rctandroid.google.firebase.firestore.RCTfirebaseFirestore;
-import com.racartech.library.rctandroid.google.firebase.storage.RCTfirebaseStorage;
+import com.racartech.library.rctandroid.google.maps.distancematrix.DistanceMatrixResult;
+import com.racartech.library.rctandroid.google.maps.distancematrix.DistanceMatrixResults;
+import com.racartech.library.rctandroid.google.maps.distancematrix.RCTgcpDistanceMatrix;
 import com.racartech.library.rctandroid.json.RCTgoogleGSON;
 import com.racartech.library.rctandroid.media.RCTbitmap;
 import com.racartech.library.rctandroid.media.image.RCTtranscribeImageToText;
@@ -51,7 +55,7 @@ import com.racartech.library.rctandroid.notifications.RCTnotifications;
 import com.racartech.library.rctandroid.permission.RCTpermission;
 import com.racartech.library.rctandroid.time.RCTdateTimeData;
 
-import java.io.File;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -124,10 +128,11 @@ public class MainActivity extends AppCompatActivity {
 
         test_image_button_1 = findViewById(R.id.mm_test_image_button_1);
 
+        FirebaseSingleton firebase = FirebaseSingleton.getInstance();
 
 
-        FirebaseFirestore fs_instace = FirebaseFirestore.getInstance();
-        FirebaseStorage storage_instance = FirebaseStorage.getInstance();
+        FirebaseFirestore fs_instace = firebase.getFirestore();
+        FirebaseStorage storage_instance = firebase.getStorage();
 
 
 
@@ -248,8 +253,72 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(MainActivity.this, FunctionThree.class);
-                startActivity(intent);
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+                        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
+                        System.out.println(">>>>>>> 0");
+                        String api_key = ApiKeyManager.getGoogleApiKey(FirebaseFirestore.getInstance());
+
+                        System.out.println("API KEY : ".concat(api_key));
+
+                        System.out.println(">>>>>>> 1");
+
+                        ArrayList<LatLng> coords_points = new ArrayList<>();
+                        coords_points.add(new LatLng(14.780549635766455, 120.87858700829007));
+                        coords_points.add(new LatLng(14.607532688421545, 120.98538353822278));
+                        coords_points.add(new LatLng(14.58564008923913 , 121.11697404347491));
+                        coords_points.add(new LatLng(14.578548011165402, 121.05920893588527));
+                        coords_points.add(new LatLng(14.553967638762375, 120.99468742956759));
+                        coords_points.add(new LatLng(14.535629207188506, 121.04329141572153));
+                        coords_points.add(new LatLng(14.780549635766455, 120.87858700829007));
+
+
+                        try {
+                            DistanceMatrixResults the_result = RCTgcpDistanceMatrix.getDistanceMatrix_Departure(
+                                    api_key,
+                                    coords_points,
+                                    coords_points,
+                                    DirectionsApi.RouteRestriction.TOLLS,
+                                    TrafficModel.BEST_GUESS,
+                                    TravelMode.DRIVING, null, null,
+                                    Instant.now(),
+                                    Unit.METRIC,
+                                    100
+                            );
+
+                            System.out.println(">>>>>>> 2");
+                            System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+                            System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+                            System.out.println("HELLLLLLLLLLLLLO");
+                            ArrayList<DistanceMatrixResult> tsp = RCTgcpDistanceMatrix.getMostEfficientRoute_NearestNeighbor(
+                                    new LatLng(14.780549635766455, 120.87858700829007),
+                                    the_result.DISTANCE_MATRIX_RESULT,
+                                    new LatLng(14.780549635766455, 120.87858700829007)
+                            );
+
+                            RCTgcpDistanceMatrix.printTSP(MainActivity.this,tsp);
+
+                            System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+                            System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
+                            //the_result.print(MainActivity.this);
+                        }catch (Exception ex){
+                            ex.printStackTrace();
+                        }
+
+
+
+
+                    }
+                }).start();
+
+                //Intent intent = new Intent(MainActivity.this, FunctionThree.class);
+                //startActivity(intent);
 
             }
         });

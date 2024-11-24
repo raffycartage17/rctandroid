@@ -1,18 +1,21 @@
 package com.racartech.app.rctandroidlts.windows.window3;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.racartech.app.rctandroidlts.FirebaseSingleton;
 import com.racartech.app.rctandroidlts.R;
-import com.racartech.library.rctandroid.google.firebase.storage.RCTfirebaseStorage;
-import com.racartech.library.rctandroid.location.RCTlocationData;
+import com.racartech.app.rctandroidlts.api.ApiKeyManager;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.io.IOException;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class Window3 extends AppCompatActivity {
 
@@ -24,141 +27,77 @@ public class Window3 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_window3);
 
-        f1 = findViewById(R.id.aw3_f1_button);
-        f2 = findViewById(R.id.aw3_f2_button);
-        f3 = findViewById(R.id.aw3_f3_button);
-
-        firebase = FirebaseSingleton.getInstance();
-
-        setClickListenerF1();
-        setClickListenerF2();
-        setClickListenerF3();
-
-    }
-
-    private void setClickListenerF1(){
-        f1.setOnClickListener(new View.OnClickListener() {
+        new Thread(new Runnable() {
             @Override
-            public void onClick(View v){
+            public void run() {
+                FirebaseSingleton firebase = FirebaseSingleton.getInstance();
+                // Your Google Maps API Key
+                //String apiKey = ApiKeyManager.getGoogleApiKey(firebase.getFirestore());
 
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
+                String apiKey = "AIzaSyAcsGFBAasyrN6AYrGv8sK21eTtV11WJ0Y";
 
-                        ArrayList<String> storage_paths = new ArrayList<>();
-                        storage_paths.add(RCTfirebaseStorage.getFilePath("","root_file_1.txt"));
-                        storage_paths.add(RCTfirebaseStorage.getFilePath("","root_file_3.txt"));
-                        storage_paths.add(RCTfirebaseStorage.getFilePath("","root_file_4.txt"));
-                        storage_paths.add(RCTfirebaseStorage.getFilePath("","root_file_5.txt"));
-                        storage_paths.add(RCTfirebaseStorage.getFilePath("","root_file_6.txt"));
-                        storage_paths.add(RCTfirebaseStorage.getFilePath("","root_file_7.txt"));
+                System.out.println("API KEY : "+apiKey);
 
-                        for(int index = 0; index< storage_paths.size(); index++){
-                            System.out.println("Storage Path : ".concat(storage_paths.get(index)));
+                // Create the HTTP client
+                OkHttpClient client = new OkHttpClient();
+
+                // Build the request
+                String jsonRequest = "{\n" +
+                        "    \"origin\": {\"location\": {\"latLng\": {\n" +
+                        "        \"latitude\": 40.712776,\n" +
+                        "        \"longitude\": -74.005974\n" +
+                        "    }}},\n" +
+                        "    \"destination\": {\"location\": {\"latLng\": {\n" +
+                        "        \"latitude\": 34.052235,\n" +
+                        "        \"longitude\": -118.243683\n" +
+                        "    }}},\n" +
+                        "    \"travelMode\": \"DRIVE\"\n" +
+                        "}";
+
+                try {
+
+                    Request request = new Request.Builder()
+                            .url("https://routes.googleapis.com/directions/v2:computeRoutes?key=" + apiKey)
+                            .post(RequestBody.create(jsonRequest, MediaType.get("application/json")))
+                            .build();
+
+                    System.out.println("Request String : ".concat(request.toString()));
+
+                    // Execute the request
+                    try (Response response = client.newCall(request).execute()) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            System.out.println("--------------------------------------------");
+                            System.out.println("Response: " + response.body().string());
+                            System.out.println("--------------------------------------------");
+                        } else {
+                            System.out.println("--------------------------------------------");
+                            System.out.println("Request failed: " + response.code() + " " + response.message());
+                            System.out.println("--------------------------------------------");
                         }
-
-
-                        HashMap<String, String> downloads_urls = RCTfirebaseStorage.getDownloadURL(firebase.getStorage(),storage_paths, 100);
-                        ArrayList<String> keys = new ArrayList<>(downloads_urls.keySet());
-
-                        for(int index = 0; index<keys.size(); index++){
-                            System.out.println(keys.get(index).concat(" = ").concat(downloads_urls.get(keys.get(index))));
-                        }
-
-
-
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                }).start();
 
-
-
+                }catch (Exception exx){
+                    exx.printStackTrace();
+                }
 
 
 
 
             }
-        });
-    }
-
-    private void setClickListenerF2(){
-        f2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        RCTfirebaseStorage.renameFile_WaitProgress(
-                                firebase.getStorage(),
-                                null,
-                                 "root_file_1.txt",
-                                "renamed_root_file_1.txt",
-                                50
-                        );
-
-                        RCTfirebaseStorage.renameFile(firebase.getStorage(),
-                                null,
-                                "root_file_2.txt",
-                                "renamed_root_file_2.txt"
-                        );
-
-                        RCTfirebaseStorage.renameFile_WaitProgress(
-                                firebase.getStorage(),
-                                "test_folder",
-                                "root_file_1.txt",
-                                "renamed_root_file_1.txt",
-                                50
-                        );
-
-                        RCTfirebaseStorage.renameFile(
-                                firebase.getStorage(),
-                                "test_folder",
-                                "root_file_2.txt",
-                                "renamed_root_file_2.txt"
-                        );
-
-
-
-                    }
-                }).start();
-            }
-        });
-    }
-
-    private void setClickListenerF3(){
-
-        f3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-
-
-
-                        RCTlocationData current_location = new RCTlocationData(
-                                Window3.this,
-                                RCTlocationData.MODE_CURRENT,
-                                500);
-
-
-                        System.out.println("--------------------------------------------------------------");
-                        System.out.println("Lat : ".concat(String.valueOf(current_location.getAddress().getLatitude())));
-                        System.out.println("Lon : ".concat(String.valueOf(current_location.getAddress().getLongitude())));
-                        System.out.println("Add : ".concat(String.valueOf(current_location.getAddress().getAddressLine(0))));
-                        System.out.println("--------------------------------------------------------------");
-
-                    }
-                }).start();
-            }
-        });
+        }).start();
 
 
     }
-
-
-
-
-
 
 }
+
+
+
+
+
+
+
+
+

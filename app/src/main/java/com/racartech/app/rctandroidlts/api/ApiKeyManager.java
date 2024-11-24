@@ -8,7 +8,7 @@ public class ApiKeyManager {
     public static String getGoogleApiKey(FirebaseFirestore instance){
         String collection = "key";
         String document = "keys";
-        String field_name = "google_api";
+        String field_name = "gcp";
         return RCTfirebaseFirestore.readField(
                 collection,
                 document,
