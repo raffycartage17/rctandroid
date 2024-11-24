@@ -88,7 +88,34 @@ public class RCTgcpDistanceMatrix {
             }
         }
 
+        removedUnnecessaryLeg(orderedRoute);
         return orderedRoute;
+    }
+
+    private static void removedUnnecessaryLeg(ArrayList<DistanceMatrixResult> route_legs){
+
+        int unnecessaryLegIndex;
+
+        // Loop as long as there are unnecessary legs in the route
+        while ((unnecessaryLegIndex = doHaveUnnecessaryLeg(route_legs)) >= 0) {
+            // Remove the unnecessary leg from the list
+            route_legs.remove(unnecessaryLegIndex);
+        }
+
+    }
+
+    private static int doHaveUnnecessaryLeg(ArrayList<DistanceMatrixResult> route_legs){
+        for(int index = 0; index<route_legs.size(); index++){
+            DistanceMatrixResult current_leg = route_legs.get(index);
+            if(     (current_leg.origin.latitude == current_leg.destination.latitude &&
+                    current_leg.origin.longitude == current_leg.destination.longitude) ||
+                    current_leg.duration.inSeconds == 0 ||
+                    current_leg.distance.inMeters == 0
+            ){
+                return index;
+            }
+        }
+        return -1;
     }
 
 

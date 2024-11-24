@@ -269,13 +269,27 @@ public class MainActivity extends AppCompatActivity {
                         System.out.println(">>>>>>> 1");
 
                         ArrayList<LatLng> coords_points = new ArrayList<>();
-                        coords_points.add(new LatLng(14.780549635766455, 120.87858700829007));
-                        coords_points.add(new LatLng(14.607532688421545, 120.98538353822278));
-                        coords_points.add(new LatLng(14.58564008923913 , 121.11697404347491));
-                        coords_points.add(new LatLng(14.578548011165402, 121.05920893588527));
-                        coords_points.add(new LatLng(14.553967638762375, 120.99468742956759));
-                        coords_points.add(new LatLng(14.535629207188506, 121.04329141572153));
-                        coords_points.add(new LatLng(14.780549635766455, 120.87858700829007));
+                        coords_points.add(new LatLng(14.780549635766455, 120.87858700829007)); //Bulakan House
+                        coords_points.add(new LatLng(14.60753322210268, 120.98537947788945)); //Central Market, Recto Manila
+                        coords_points.add(new LatLng(14.553934398856514, 120.9946813975631)); //Triumph Tower, Gil Puyat, Makati
+                        coords_points.add(new LatLng(14.535621756384321, 121.04328452484178)); //Ey GDS Taguig
+                        coords_points.add(new LatLng(14.578543900528189, 121.05922551598768)); //Gold Loop Php 60 Parking, Ortigas
+                        coords_points.add(new LatLng(14.58564782575032, 121.11696542474726)); // Cainta Apartment
+                        coords_points.add(new LatLng(14.566913043022218, 121.02341474334251)); // PJL Corporate Center, Kalayaan Ave, Makati City
+                        coords_points.add(new LatLng(14.823065781993558, 120.90084950945985)); // STI College Balagtas
+                        coords_points.add(new LatLng(14.839696868627657, 120.86857903416946)); //Mark Justine Marasigan,RMM Garden Guiguinto Bulacan
+                        coords_points.add(new LatLng(14.792815889115987, 120.93038840605449)); //Jan Israel Lopez House
+                        //coords_points.add(new LatLng(14.760467997533768, 120.95833725974518)); //Russel Juanito House
+                        //coords_points.add(new LatLng(14.537244858228158, 120.98256259503691)); //MOA North Parking
+
+
+                        //Bulakan, San Fernando, Candaba, Baliwag,  Bulakan
+//                        coords_points.add(new LatLng(15.072667222039405, 120.75500538804285));
+//                        coords_points.add(new LatLng(14.780549635766455, 120.87858700829007));
+//                        coords_points.add(new LatLng(14.842019283854158, 120.81225125951276));
+//                        coords_points.add(new LatLng(14.963867465976588, 120.89716855079183));
+//                        coords_points.add(new LatLng(15.020763317440231, 120.69954225435109));
+//                        coords_points.add(new LatLng(15.019089057419626, 120.8646631561282));
 
 
                         try {
