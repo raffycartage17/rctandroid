@@ -368,7 +368,7 @@ public class RCTfirebaseFirestore {
         deleteDocument_WaitProgress(fs_instance,collection_path, document_name, thread_wait);
     }
 
-    public static void readDocument_WithJSONStringArrayValue(
+    public static HashMap<String, String> readDocument_WithJSONStringArrayValue(
             FirebaseFirestore fs_instance,
             String document_path,
             int json_array_index,
@@ -378,7 +378,7 @@ public class RCTfirebaseFirestore {
         String collection_path = getCollectionPath(document_path);
         String document_name = getDocumentNameFromPath(document_path);
 
-        readDocument_WithJSONStringArrayValue(
+        return readDocument_WithJSONStringArrayValue(
                 fs_instance,
                 collection_path,
                 document_name,
@@ -1076,6 +1076,34 @@ public class RCTfirebaseFirestore {
             return success_boolean.get();
     }
 
+
+
+    public static boolean createDocument_WaitProgress(
+            DocumentReference documentReference,
+            HashMap<String, Object> document_data,
+            long thread_wait){
+        boolean return_boolean = false;
+        AtomicBoolean finished_boolean = new AtomicBoolean(false);
+        AtomicBoolean success_boolean = new AtomicBoolean(false);
+        FirestoreUtil.createDocument_WaitProgress(
+                documentReference,
+                document_data,
+                finished_boolean,
+                success_boolean);
+        while(!return_boolean){
+            if(!finished_boolean.get()){
+                try {
+                    Thread.sleep(thread_wait);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }else{
+                return_boolean = true;
+            }
+        }
+        return success_boolean.get();
+    }
+
     public static boolean createDocument_WaitProgress(
             FirebaseFirestore instance,
             String collection_path,
@@ -1229,6 +1257,28 @@ public class RCTfirebaseFirestore {
     }
 
 
+
+    public static HashMap<String, Object> readDocument(
+            DocumentReference documentReference,
+            long thread_wait
+    ){
+        boolean return_boolean = false;
+        AtomicBoolean finished_boolean = new AtomicBoolean(false);
+        AtomicReference<HashMap<String,Object>> atomic_list = new AtomicReference<>(new HashMap<>());
+        FirestoreUtil.readDocument(documentReference,finished_boolean,atomic_list);
+        while(!return_boolean){
+            if(!finished_boolean.get()){
+                try {
+                    Thread.sleep(thread_wait);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }else{
+                return_boolean = true;
+            }
+        }
+        return atomic_list.get();
+    }
 
     public static HashMap<String, Object> readDocument(
             FirebaseFirestore instance,
@@ -1484,6 +1534,53 @@ public class RCTfirebaseFirestore {
 
                     DocumentReference docRef = instance.collection(collection_path).document(document_path);
                     docRef.set(document_data, SetOptions.merge())
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    finished_bool.set(true);
+                                    success_bool.set(true);
+                                }
+                            }).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    finished_bool.set(true);
+                                    success_bool.set(true);
+                                }
+                            }).addOnCanceledListener(new OnCanceledListener() {
+                                @Override
+                                public void onCanceled() {
+                                    finished_bool.set(true);
+                                    success_bool.set(false);
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    finished_bool.set(true);
+                                    success_bool.set(false);
+                                }
+                            });
+
+                }
+            }).start();
+
+
+        }
+
+
+
+
+        protected static void createDocument_WaitProgress(
+                DocumentReference documentReference,
+                HashMap<String, Object> document_data,
+                AtomicBoolean finished_bool,
+                AtomicBoolean success_bool
+        ) {
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+
+                    documentReference.set(document_data, SetOptions.merge())
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
@@ -1928,6 +2025,57 @@ public class RCTfirebaseFirestore {
                                     finished_boolean.set(true);
                                 }
                             });
+
+                }
+            }).start();
+
+
+        }
+
+
+        public static void readDocument(
+                DocumentReference documentReference,
+                AtomicBoolean finished_boolean,
+                AtomicReference<HashMap<String,Object>> atomic_list) {
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+
+                    documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists()) {
+                                    try {
+                                        HashMap<String,Object> data_map = (HashMap<String, Object>) document.getData();
+                                        atomic_list.get().clear();
+                                        if(data_map != null) {
+                                            atomic_list.get().putAll(data_map);
+                                        }
+                                    }catch (Exception ex){
+                                        ex.printStackTrace();
+                                    }
+                                    finished_boolean.set(true);
+                                } else {
+                                    finished_boolean.set(true);
+                                }
+                            } else {
+                                finished_boolean.set(true);
+                            }
+                        }
+                    }).addOnCanceledListener(new OnCanceledListener() {
+                        @Override
+                        public void onCanceled() {
+                            finished_boolean.set(true);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            finished_boolean.set(true);
+                        }
+                    });
 
                 }
             }).start();
