@@ -204,6 +204,7 @@ public class MainActivity extends AppCompatActivity {
                         String storage_file_path_d = "/test/ddd.jpg";
 
                         String local_file_path = RCTfile.getDir_ExternalStorageRoot().concat("/apath/test.jpg");
+                        String replacement_path = RCTfile.getDir_ExternalStorageRoot().concat("/apath/replacement.jpg");
 
                         String ext_dir = RCTfile.getDir_ExternalStorageRoot().concat("/apath");
 
@@ -221,8 +222,7 @@ public class MainActivity extends AppCompatActivity {
                                 100
                                 );
 
-
-
+                        //image_ref.replaceFile(storage_instance,replacement_path);
                         Bitmap image_bitmap = image_ref.getBitmap(storage_instance);
 
                         runOnUiThread(new Runnable() {

@@ -6,7 +6,6 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.racartech.library.rctandroid.array.RCTarray;
-import com.racartech.library.rctandroid.math.RCTdataSizeConverter;
 
 import org.apache.commons.io.FileUtils;
 
@@ -14,10 +13,6 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.net.URI;
-import java.nio.file.AccessDeniedException;
-import java.nio.file.DirectoryIteratorException;
-import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -842,7 +837,7 @@ public class RCTdirectory{
                     copyDirectoryContents(new File(sourceDir, children[i]).getPath(), destinationDir.getAbsolutePath());
                 }
             } else {
-                RCTfile.copyFile(src, dest);
+                RCTfile.copyFileToDirectory(src, dest);
             }
         }else{
             try {
@@ -871,7 +866,7 @@ public class RCTdirectory{
                             createDirectory(dest_file_path);
                             copyDirectory(file.getAbsolutePath(), dest_file_path);
                         } else {
-                            RCTfile.copyFile(file.getAbsolutePath(), dest_file_path);
+                            RCTfile.copyFileToDirectory(file.getAbsolutePath(), dest_file_path);
                         }
                     }
                 }

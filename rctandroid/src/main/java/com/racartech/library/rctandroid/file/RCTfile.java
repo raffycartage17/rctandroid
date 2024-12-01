@@ -1816,8 +1816,8 @@ public class RCTfile{
         return target_path.split("/");
     }
 
-    public static boolean copyFile(String src_dir,String src_filename,
-                                   String dest_dir){
+    public static boolean copyFileToDirectory(String src_dir, String src_filename,
+                                              String dest_dir){
         try {
             FileUtils.copyFileToDirectory(new File(src_dir,src_filename),new File(dest_dir));
             return true;
@@ -1826,9 +1826,18 @@ public class RCTfile{
         }
 
     }
-    public static boolean copyFile(String src_filepath,String dest_dir){
+    public static boolean copyFileToDirectory(String src_filepath, String dest_dir){
         try {
             FileUtils.copyFileToDirectory(new File(src_filepath),new File(dest_dir));
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    public static boolean copyFile(String src_filepath,String dest_filepath){
+        try {
+            FileUtils.copyFile(new File(src_filepath),new File(dest_filepath));
             return true;
         } catch (IOException e) {
             return false;
