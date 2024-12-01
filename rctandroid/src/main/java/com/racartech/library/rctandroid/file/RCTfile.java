@@ -65,6 +65,36 @@ public class RCTfile{
     public final static int FILE_TYPE_DOCUMENT = 3;
 
 
+    public static void saveAsFile(byte[] file_data, String directory, String filename, Context context) {
+        File dir = new File(directory, filename);
+        if (!dir.getParentFile().exists()) {
+            dir.getParentFile().mkdirs();
+        }
+        try (FileOutputStream fos = new FileOutputStream(dir)) {
+            fos.write(file_data);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public static void saveAsFile(byte[] file_data, String file_path) {
+        File file = new File(file_path);
+
+        File parentDir = file.getParentFile();
+        if (parentDir != null && !parentDir.exists()) {
+            parentDir.mkdirs();
+        }
+        try (FileOutputStream fos = new FileOutputStream(file)) {
+            fos.write(file_data);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
 
     public static int getFileType(String file_path){
         if(isFile_Image(file_path)){

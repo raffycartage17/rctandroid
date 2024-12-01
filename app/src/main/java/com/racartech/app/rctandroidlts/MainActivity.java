@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -46,6 +47,8 @@ import com.racartech.library.rctandroid.file.RCTfile;
 import com.racartech.library.rctandroid.google.firebase.firestore.ChainedQuery;
 import com.racartech.library.rctandroid.google.firebase.firestore.DocumentManager;
 import com.racartech.library.rctandroid.google.firebase.firestore.RCTfirebaseFirestore;
+import com.racartech.library.rctandroid.google.firebase.storage.FstorageImageReference;
+import com.racartech.library.rctandroid.google.firebase.storage.RCTfirebaseStorage;
 import com.racartech.library.rctandroid.google.maps.distancematrix.DistanceMatrixResult;
 import com.racartech.library.rctandroid.google.maps.distancematrix.DistanceMatrixResults;
 import com.racartech.library.rctandroid.google.maps.distancematrix.RCTgcpDistanceMatrix;
@@ -73,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
     TextView debug_textview;
     Switch switch_1,switch_2;
 
-    ImageButton test_image_button_1;
+    ImageView test_imageview;
 
 
     private static final int MANAGE_EXTERNAL_STORAGE_PERMISSION_CODE = 100;
@@ -127,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
         textview_1 = findViewById(R.id.mm_textview_1);
         textview_2 = findViewById(R.id.mm_textview_2);
 
-        test_image_button_1 = findViewById(R.id.mm_test_image_button_1);
+        test_imageview = findViewById(R.id.mm_imageview);
 
         FirebaseSingleton firebase = FirebaseSingleton.getInstance();
 
@@ -191,51 +194,45 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
 
-//                        FirebaseFirestore instance,
-//                        String collection_path,
-//                        String field_name,
-//                        String field_value_equal_to,
-//                        long thread_wait
+                        String storage_dir_a = "test";
+                        String file_name_a = "aaa.jpg";
 
-                        String collection = "query_col";
-                        String field_name = "2";
-                        String equal_to = "ecija";
-                        long thread_wait = 100;
+                        String storage_dir_b = "/test";
+                        String file_name_b = "bbb.jpg";
+
+                        String storage_file_path_c = "test/ccc.jpg";
+                        String storage_file_path_d = "/test/ddd.jpg";
+
+                        String local_file_path = RCTfile.getDir_ExternalStorageRoot().concat("/apath/test.jpg");
+
+                        String ext_dir = RCTfile.getDir_ExternalStorageRoot().concat("/apath");
+
+                        //RCTfirebaseStorage.uploadFile(storage_instance,local_file_path,storage_dir_a,file_name_a, 100);
+                        //RCTfirebaseStorage.uploadFile(storage_instance,local_file_path,storage_dir_b,file_name_b, 100);
+                        //RCTfirebaseStorage.uploadFile(storage_instance,local_file_path,storage_file_path_c,100);
+                        //RCTfirebaseStorage.uploadFile(storage_instance,local_file_path,storage_file_path_d,100);
 
 
-                        ChainedQuery chained_query = new ChainedQuery(fs_instace,collection);
-
-                        chained_query.addWhereEqualTo("1","rafael");
-
-                        long start = System.currentTimeMillis();
-                        HashMap<String, HashMap<String, Object>> document_datas =
-                                RCTfirebaseFirestore.query(
-                                        chained_query,
-                                        thread_wait
+                        FstorageImageReference image_ref = new FstorageImageReference(
+                                storage_instance,
+                                ext_dir,
+                                storage_file_path_d,
+                                true,
+                                100
                                 );
 
-                        long end = System.currentTimeMillis();
-                        long elapsed_time = end-start;
-                        System.out.println("------------------------------------------");
-                        System.out.println("Elapsed Time : ".concat(String.valueOf(elapsed_time)));
 
-                        ArrayList<String> keyset = new ArrayList<>(document_datas.keySet());
 
-                        System.out.println("------------------------------------------");
+                        Bitmap image_bitmap = image_ref.getBitmap(storage_instance);
 
-                        for(int index = 0; index< keyset.size(); index++){
-                            String document_path = keyset.get(index);
-                            HashMap<String, Object> document_data = document_datas.get(keyset.get(index));
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                test_imageview.setImageBitmap(image_bitmap);
+                            }
+                        });
 
-                            System.out.println("Path  : ".concat(document_path));
-                            System.out.println("FName : ".concat(document_data.get("1").toString()));
-                            System.out.println("MName : ".concat(document_data.get("2").toString()));
-                            System.out.println("LName : ".concat(document_data.get("3").toString()));
-                            System.out.println("Town  : ".concat(document_data.get("4").toString()));
-                            System.out.println("------------------------------------------");
 
-                        }
-                        System.out.println("------------------------------------------");
 
 
 

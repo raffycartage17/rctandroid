@@ -8,7 +8,9 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -53,8 +55,53 @@ public class RCTfirebaseStorage {
     }
 
 
+    public static byte[] loadFile(
+            FirebaseStorage instance,
+            String file_path,
+            long thread_wait
+    ){
+        return loadFile(
+                instance,
+                null,
+                file_path,
+                thread_wait
+        );
+    }
 
 
+
+    public static byte[] loadFile(
+            FirebaseStorage instance,
+            String directory,
+            String file_name,
+            long thread_wait
+    ){
+        boolean return_boolean = false;
+        AtomicBoolean finished_boolean = new AtomicBoolean(false);
+        AtomicReference<byte[]> atomic_value = new AtomicReference<>(null);
+
+        RCTfirebaseStorageUtil.loadFile(
+                instance,
+                directory,
+                file_name,
+                atomic_value,
+                finished_boolean
+        );
+
+        while(!return_boolean){
+            if(!finished_boolean.get()){
+                try {
+                    Thread.sleep(thread_wait);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }else{
+                return_boolean = true;
+            }
+        }
+
+        return atomic_value.get();
+    }
 
 
 
@@ -1161,14 +1208,14 @@ public class RCTfirebaseStorage {
     public static String uploadFile(
             FirebaseStorage instance,
             String local_file_path,
-            String uploaded_file_name,
+            String storage_file_path,
             long thread_wait
     ){
         return uploadFile(
                 instance,
                 local_file_path,
                 null,
-                uploaded_file_name,
+                storage_file_path,
                 thread_wait
         );
     }
@@ -3464,7 +3511,6 @@ public class RCTfirebaseStorage {
          new Thread(new Runnable() {
              @Override
              public void run() {
-                 //TODO - fix concurrency
 
                  // Initialize Firebase Storage
                  StorageReference storageRef = instance.getReference();
@@ -3472,16 +3518,11 @@ public class RCTfirebaseStorage {
                  // Counter to track the number of completed downloads
                  AtomicInteger counter = new AtomicInteger(0);
 
-                 System.out.println("------------------------------");
-                 System.out.println("For Loop start");
-
                  // Loop through each file path
                  for (int index = 0; index < file_paths.size(); index++) {
                      String path = file_paths.get(index);
                      // Create a reference to the file
                      StorageReference fileRef = storageRef.child(path);
-
-                     System.out.println("Loop Index : ".concat(String.valueOf(index)));
 
                      // Get the download URL of the file
                      fileRef.getDownloadUrl()
@@ -3513,12 +3554,54 @@ public class RCTfirebaseStorage {
                                  }
                              });
                  }
-                 System.out.println("------------------------------");
                  finished_boolean.set(true);
-                 System.out.println("End");
-                 System.out.println("------------------------------");
              }
          }).start();
+     }
+
+
+     public static void loadFile(
+             FirebaseStorage instance,
+             String directory,
+             String file_name,
+             AtomicReference<byte[]> atomic_value,
+             AtomicBoolean finished_boolean
+     ) {
+         StorageReference storageRef = null;
+         if (directory != null && file_name != null) {
+             storageRef = instance.getReference().child(directory.concat(file_name));
+         } else if (file_name != null) {
+             storageRef = instance.getReference().child(file_name);
+         } else if (directory != null) {
+             storageRef = instance.getReference().child(directory);
+         }
+
+         long MAX_SIZE = 5_497_558_138_880L;
+         try {
+             storageRef.getBytes(MAX_SIZE)
+                     .addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                         @Override
+                         public void onSuccess(byte[] bytes) {
+                             atomic_value.set(bytes);
+                             finished_boolean.set(true);
+                         }
+                     })
+                     .addOnFailureListener(new OnFailureListener() {
+                         @Override
+                         public void onFailure(Exception exception) {
+                             finished_boolean.set(true);
+                         }
+                     }).addOnCanceledListener(new OnCanceledListener() {
+                         @Override
+                         public void onCanceled() {
+                             finished_boolean.set(true);
+                         }
+                     });
+         }catch (Exception ex){
+             ex.printStackTrace();
+             finished_boolean.set(true);
+         }
+
      }
 
 

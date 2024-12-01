@@ -29,6 +29,11 @@ import java.net.URL;
 public class RCTbitmap{
 
 
+    public static Bitmap getBitmap(byte[] bytes){
+        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+    }
+
+
     public static Bitmap getBitmapForURI(Context context, Uri the_uri){
         try {
             return MediaStore.Images.Media.getBitmap(context.getContentResolver(), the_uri);
