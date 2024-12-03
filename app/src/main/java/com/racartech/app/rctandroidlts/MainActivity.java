@@ -43,6 +43,7 @@ import com.racartech.app.rctandroidlts.util.MiscellaneousDataUtil;
 import com.racartech.app.rctandroidlts.windows.Window1;
 import com.racartech.app.rctandroidlts.windows.Window2;
 import com.racartech.app.rctandroidlts.windows.window3.Window3;
+import com.racartech.library.rctandroid.file.RCTdirectory;
 import com.racartech.library.rctandroid.file.RCTfile;
 import com.racartech.library.rctandroid.google.firebase.firestore.ChainedQuery;
 import com.racartech.library.rctandroid.google.firebase.firestore.DocumentManager;
@@ -53,12 +54,14 @@ import com.racartech.library.rctandroid.google.maps.distancematrix.DistanceMatri
 import com.racartech.library.rctandroid.google.maps.distancematrix.DistanceMatrixResults;
 import com.racartech.library.rctandroid.google.maps.distancematrix.RCTgcpDistanceMatrix;
 import com.racartech.library.rctandroid.json.RCTgoogleGSON;
+import com.racartech.library.rctandroid.media.RCTbase64;
 import com.racartech.library.rctandroid.media.RCTbitmap;
 import com.racartech.library.rctandroid.media.image.RCTtranscribeImageToText;
 import com.racartech.library.rctandroid.notifications.RCTnotifications;
 import com.racartech.library.rctandroid.permission.RCTpermission;
 import com.racartech.library.rctandroid.time.RCTdateTimeData;
 
+import java.io.File;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -193,49 +196,22 @@ public class MainActivity extends AppCompatActivity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-
-                        String storage_dir_a = "test";
-                        String file_name_a = "aaa.jpg";
-
-                        String storage_dir_b = "/test";
-                        String file_name_b = "bbb.jpg";
-
-                        String storage_file_path_c = "test/ccc.jpg";
-                        String storage_file_path_d = "/test/ddd.jpg";
-
-                        String local_file_path = RCTfile.getDir_ExternalStorageRoot().concat("/apath/test.jpg");
-                        String replacement_path = RCTfile.getDir_ExternalStorageRoot().concat("/apath/replacement.jpg");
-
-                        String ext_dir = RCTfile.getDir_ExternalStorageRoot().concat("/apath");
-
-                        //RCTfirebaseStorage.uploadFile(storage_instance,local_file_path,storage_dir_a,file_name_a, 100);
-                        //RCTfirebaseStorage.uploadFile(storage_instance,local_file_path,storage_dir_b,file_name_b, 100);
-                        //RCTfirebaseStorage.uploadFile(storage_instance,local_file_path,storage_file_path_c,100);
-                        //RCTfirebaseStorage.uploadFile(storage_instance,local_file_path,storage_file_path_d,100);
-
-
-                        FstorageImageReference image_ref = new FstorageImageReference(
-                                storage_instance,
-                                ext_dir,
-                                storage_file_path_d,
-                                true,
-                                100
+                        String source_dir = RCTfile.getDir_ExternalStorageRoot().concat("/apath");
+                        ArrayList<String> the_files  = RCTdirectory.getImmediateImageFileList_ArrayList(source_dir);
+                        ArrayList<String> base64s = RCTfile.imageFileToBase64WT(the_files,true, 20);
+                        ArrayList<Bitmap> bitmaps = RCTbitmap.getBitmapWT(base64s,true);
+                        ArrayList<String> new_file_path =
+                                RCTfile.createPaths(
+                                        source_dir,
+                                        "zconverted_",
+                                        "jpg",
+                                        the_files.size(),
+                                        true
                                 );
 
-                        //image_ref.replaceFile(storage_instance,replacement_path);
-                        Bitmap image_bitmap = image_ref.getBitmap(storage_instance);
+                        System.out.println("New File Path Length : ".concat(String.valueOf(new_file_path.size())));
 
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                test_imageview.setImageBitmap(image_bitmap);
-                            }
-                        });
-
-
-
-
-
+                        RCTbitmap.saveBitmapAsFile(bitmaps,new_file_path);
 
                     }
                 }).start();

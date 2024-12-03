@@ -13,6 +13,7 @@ import android.os.storage.StorageManager;
 import android.os.storage.StorageVolume;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.webkit.MimeTypeMap;
 
 import androidx.core.content.ContextCompat;
@@ -20,6 +21,7 @@ import androidx.core.content.FileProvider;
 
 import com.racartech.library.rctandroid.array.RCTarray;
 import com.racartech.library.rctandroid.math.RCTdataSizeConverter;
+import com.racartech.library.rctandroid.media.RCTbase64;
 import com.racartech.library.rctandroid.notifications.RCTnotifications;
 
 import org.apache.commons.io.FileUtils;
@@ -27,6 +29,7 @@ import org.apache.commons.io.FileUtils;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -50,6 +53,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 public class RCTfile{
@@ -76,6 +80,102 @@ public class RCTfile{
             e.printStackTrace();
         }
     }
+
+    public static ArrayList<String> createPaths(
+            String parent_dir,
+            String root_name,
+            String extension,
+            int count,
+            boolean start_from_1
+    ){
+        ArrayList<String> file_paths = new ArrayList<>();
+        for(int index = 0; index<count; index++){
+            int number;
+            if(start_from_1){
+                number = index+1;
+            }else{
+                number = index;
+            }
+
+            file_paths.add(
+                    parent_dir.
+                            concat("/").
+                            concat(root_name).
+                            concat(String.valueOf(number)).
+                            concat(".").concat(extension)
+            );
+        }
+        return file_paths;
+    }
+
+
+
+
+    public static ArrayList<String> imageFileToBase64WT(
+            ArrayList<String> file_paths,
+            boolean include_fail_as_nulls,
+            int quality
+
+    ){
+        AtomicReference<ArrayList<String>> base64s = new AtomicReference<>(new ArrayList<>());
+        AtomicReference<Integer> progress = new AtomicReference<>(0);
+
+        for(int index = 0; index<file_paths.size(); index++){
+            String current_filepath = file_paths.get(index);
+
+            int finalIndex = index;
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try{
+                        String base64 = imageFileToBase64(new File(current_filepath));
+                        if(quality < 100){
+                            base64 = RCTbase64.compressBase64Image(base64,quality);
+                        }
+                        base64s.get().add(base64);
+                    }catch (Exception ex){
+                        if(include_fail_as_nulls){
+                            base64s.get().add(null);
+                        }
+                    }
+                    progress.set(progress.get()+1);
+                    System.out.println("AAA : ".concat(String.valueOf(finalIndex)));
+                }
+            }).start();
+        }
+        boolean first_loop = false;
+        while(progress.get() < file_paths.size()){
+            try {
+                if(first_loop) {
+                    Thread.sleep(200);
+                }else{
+                    Thread.sleep(500);
+                    first_loop = true;
+                }
+            }catch (Exception ignored){}
+        }
+        return base64s.get();
+    }
+
+
+
+
+    public static String imageFileToBase64(File imageFile) throws IOException {
+        byte[] fileBytes = fileToByteArray(imageFile);
+        return Base64.encodeToString(fileBytes, Base64.DEFAULT);
+    }
+    public static byte[] fileToByteArray(File file) throws IOException {
+        FileInputStream fis = new FileInputStream(file);
+        byte[] byteArray = new byte[(int) file.length()];
+        int bytesRead = fis.read(byteArray);
+        fis.close();
+
+        if (bytesRead != byteArray.length) {
+            throw new IOException("Error reading the entire file");
+        }
+        return byteArray;
+    }
+
 
 
     public static void saveAsFile(byte[] file_data, String file_path) {

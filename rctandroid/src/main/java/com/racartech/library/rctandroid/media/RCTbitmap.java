@@ -1,10 +1,12 @@
 package com.racartech.library.rctandroid.media;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
+import android.graphics.ImageDecoder;
 import android.graphics.Paint;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
@@ -12,12 +14,15 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Base64;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.racartech.library.rctandroid.file.RCTdirectory;
 import com.racartech.library.rctandroid.file.RCTfile;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -25,21 +30,128 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class RCTbitmap{
+
+
+    public static ArrayList<Bitmap> getBitmap(ArrayList<String> base64s, boolean include_fail_as_nulls){
+        ArrayList<Bitmap> bitmaps = new ArrayList<>();
+        for(int index = 0; index<base64s.size();index++){
+            try{
+                bitmaps.add(getBitmap(base64s.get(index)));
+            }catch (Exception ex){
+                if(include_fail_as_nulls){
+                    bitmaps.add(null);
+                }
+            }
+        }
+        return bitmaps;
+    }
+
+    public static ArrayList<Bitmap> getBitmapWT(ArrayList<String> base64s, boolean include_fail_as_nulls){
+        AtomicReference<ArrayList<Bitmap>> bitmaps = new AtomicReference<>(new ArrayList<>());
+        AtomicReference<Integer> progress = new AtomicReference<>(0);
+
+        for(int index = 0; index<base64s.size(); index++){
+            String current_base64 = base64s.get(index);
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try{
+                        bitmaps.get().add(getBitmap(current_base64));
+                    }catch (Exception ex){
+                        if(include_fail_as_nulls){
+                            bitmaps.get().add(null);
+                        }
+                    }
+                    progress.set(progress.get()+1);
+                }
+            }).start();
+        }
+        boolean first_loop = false;
+        while(progress.get() < base64s.size()){
+            try {
+                if(first_loop) {
+                    Thread.sleep(200);
+                }else{
+                    Thread.sleep(500);
+                    first_loop = true;
+                }
+            }catch (Exception ignored){}
+        }
+        return bitmaps.get();
+    }
+
+    public static ArrayList<String> toBase64(ArrayList<Bitmap> the_bitmaps, boolean include_fail_as_nulls){
+        AtomicReference<ArrayList<String>> bitmaps = new AtomicReference<>(new ArrayList<>());
+        AtomicReference<Integer> progress = new AtomicReference<>(0);
+
+        for(int index = 0; index<the_bitmaps.size(); index++){
+            Bitmap current_base64 = the_bitmaps.get(index);
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try{
+                        bitmaps.get().add(toBase64(current_base64));
+                    }catch (Exception ex){
+                        if(include_fail_as_nulls){
+                            bitmaps.get().add(null);
+                        }
+                    }
+                    progress.set(progress.get()+1);
+                }
+            }).start();
+        }
+        boolean first_loop = false;
+        while(progress.get() < the_bitmaps.size()){
+            try {
+                if(first_loop) {
+                    Thread.sleep(200);
+                }else{
+                    Thread.sleep(500);
+                    first_loop = true;
+                }
+            }catch (Exception ignored){}
+        }
+        return bitmaps.get();
+    }
+
+
+
+
+    public static Bitmap getBitmap(String base64) {
+        byte[] decodedBytes = Base64.decode(base64, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+    }
+
+
+    public static String toBase64(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
+    }
+
+
+    public static byte[] toByteArray(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
+    }
 
 
     public static Bitmap getBitmap(byte[] bytes){
         return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
     }
 
-
-    public static Bitmap getBitmapForURI(Context context, Uri the_uri){
-        try {
-            return MediaStore.Images.Media.getBitmap(context.getContentResolver(), the_uri);
-        }catch (IOException ignored){
-            return null;
-        }
+    public static Bitmap getBitmapFromUri(Context context, Uri uri) throws IOException {
+        ContentResolver contentResolver = context.getContentResolver();
+        return ImageDecoder.decodeBitmap(ImageDecoder.createSource(contentResolver, uri));
     }
 
 
@@ -89,6 +201,54 @@ public class RCTbitmap{
             //prompt the user or do something
         }
     }
+
+    public static void saveBitmapAsFile(
+            ArrayList<Bitmap> bitmaps,
+            ArrayList<String> file_paths,
+            AtomicInteger progress
+    ){
+        if(bitmaps.size() == file_paths.size()) {
+            for (int index = 0; index< bitmaps.size(); index++) {
+                if(bitmaps.get(index) != null && file_paths.get(index) != null){
+                    saveBitmapAsFile(
+                            bitmaps.get(index),
+                            file_paths.get(index)
+                    );
+                }
+                progress.set(progress.get()+1);
+            }
+        }else{
+            Log.d("ARRAY SIZE DONT MATCH","RCTbitmap.saveBitmapAsFile()");
+        }
+    }
+
+    public static void saveBitmapAsFile(
+            ArrayList<Bitmap> bitmaps,
+            ArrayList<String> file_paths
+    ){
+        if(bitmaps.size() == file_paths.size()) {
+            for (int index = 0; index< bitmaps.size(); index++) {
+                if(bitmaps.get(index) != null && file_paths.get(index) != null){
+                    int finalIndex = index;
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            saveBitmapAsFile(
+                                    bitmaps.get(finalIndex),
+                                    file_paths.get(finalIndex)
+                            );
+                            System.out.println("Here : ".concat(String.valueOf(finalIndex)));
+                        }
+                    }).start();
+                }
+            }
+        }else{
+            Log.d("ARRAY SIZE DONT MATCH","RCTbitmap.saveBitmapAsFile()");
+        }
+    }
+
+
+
 
     public static void saveBitmapAsFile(Bitmap bitmap, File bitmap_file_path) {
         if (isExternalStorageWritable()) {
