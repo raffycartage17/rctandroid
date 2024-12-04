@@ -25,6 +25,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.crazzyghost.alphavantage.AlphaVantage;
+import com.crazzyghost.alphavantage.AlphaVantageException;
+import com.crazzyghost.alphavantage.Config;
+import com.crazzyghost.alphavantage.Fetcher;
+import com.crazzyghost.alphavantage.parameters.Interval;
+import com.crazzyghost.alphavantage.parameters.OutputSize;
+import com.crazzyghost.alphavantage.timeseries.TimeSeries;
+import com.crazzyghost.alphavantage.timeseries.response.StockUnit;
+import com.crazzyghost.alphavantage.timeseries.response.TimeSeriesResponse;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -65,6 +74,7 @@ import java.io.File;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
@@ -317,11 +327,44 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(MainActivity.this, TextToSpeechActivity.class);
-                startActivity(intent);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        System.out.println(">>>>>>> AAAAA");
+
+                        Config cfg = Config.builder()
+                                .key("F7UDEJXW4A5FIEA4")
+                                .timeOut(10)
+                                .build();
+
+                        System.out.println(">>>>>>> BBBBB");
+
+                        AlphaVantage.api().init(cfg);
+
+                        TimeSeriesResponse  time_series_response = AlphaVantage.api().timeSeries()
+                                .daily()
+                                .forSymbol("INTC")
+                                .outputSize(OutputSize.FULL).fetchSync();
+
+                        List<StockUnit>  stock_units = time_series_response.getStockUnits();
+                        System.out.println("----------------------------------------------------------------------");
+                        System.out.println(">>>>>>>>>>> Stock Units 0       : ".concat(stock_units.get(0).toString()));
+                        System.out.println(">>>>>>>>>>> Stock Units End     : ".concat(stock_units.get(stock_units.size()-1).toString()));
+                        System.out.println(">>>>>>>>>>> Stock Units Size    : ".concat(String.valueOf(stock_units.size())));
+                        System.out.println("----------------------------------------------------------------------");
+
+
+
+                    }
+                }).start();
+
+
 
             }
         });
+
+
 
         f5.setOnClickListener(new View.OnClickListener() {
             @Override
