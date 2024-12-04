@@ -15,7 +15,6 @@ import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -25,28 +24,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.crazzyghost.alphavantage.AlphaVantage;
-import com.crazzyghost.alphavantage.AlphaVantageException;
-import com.crazzyghost.alphavantage.Config;
-import com.crazzyghost.alphavantage.Fetcher;
-import com.crazzyghost.alphavantage.parameters.Interval;
-import com.crazzyghost.alphavantage.parameters.OutputSize;
-import com.crazzyghost.alphavantage.timeseries.TimeSeries;
 import com.crazzyghost.alphavantage.timeseries.response.StockUnit;
-import com.crazzyghost.alphavantage.timeseries.response.TimeSeriesResponse;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.DirectionsApi;
 import com.google.maps.model.TrafficModel;
-import com.google.maps.model.TransitMode;
 import com.google.maps.model.TravelMode;
 import com.google.maps.model.Unit;
 import com.racartech.app.rctandroidlts.api.ApiKeyManager;
 import com.racartech.app.rctandroidlts.firebase.FirestoreTest;
 import com.racartech.app.rctandroidlts.maps.MapsTestActivity;
-import com.racartech.app.rctandroidlts.maps.TextToSpeechActivity;
 import com.racartech.app.rctandroidlts.resources.BuildConfig;
 import com.racartech.app.rctandroidlts.util.MiscellaneousDataUtil;
 import com.racartech.app.rctandroidlts.windows.Window1;
@@ -54,23 +43,21 @@ import com.racartech.app.rctandroidlts.windows.Window2;
 import com.racartech.app.rctandroidlts.windows.window3.Window3;
 import com.racartech.library.rctandroid.file.RCTdirectory;
 import com.racartech.library.rctandroid.file.RCTfile;
-import com.racartech.library.rctandroid.google.firebase.firestore.ChainedQuery;
-import com.racartech.library.rctandroid.google.firebase.firestore.DocumentManager;
+import com.racartech.library.rctandroid.finance.stock.alphavantage.RCTstockAlphaVantageDailyHistory;
 import com.racartech.library.rctandroid.google.firebase.firestore.RCTfirebaseFirestore;
-import com.racartech.library.rctandroid.google.firebase.storage.FstorageImageReference;
-import com.racartech.library.rctandroid.google.firebase.storage.RCTfirebaseStorage;
 import com.racartech.library.rctandroid.google.maps.distancematrix.DistanceMatrixResult;
 import com.racartech.library.rctandroid.google.maps.distancematrix.DistanceMatrixResults;
 import com.racartech.library.rctandroid.google.maps.distancematrix.RCTgcpDistanceMatrix;
 import com.racartech.library.rctandroid.json.RCTgoogleGSON;
-import com.racartech.library.rctandroid.media.RCTbase64;
 import com.racartech.library.rctandroid.media.RCTbitmap;
 import com.racartech.library.rctandroid.media.image.RCTtranscribeImageToText;
 import com.racartech.library.rctandroid.notifications.RCTnotifications;
 import com.racartech.library.rctandroid.permission.RCTpermission;
-import com.racartech.library.rctandroid.time.RCTdateTimeData;
 
-import java.io.File;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -331,28 +318,65 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
 
-                        System.out.println(">>>>>>> AAAAA");
+                        String save_file_path = RCTfile.getDir_ExternalStorageRoot().concat("/apath/stock_data.txt");
 
-                        Config cfg = Config.builder()
-                                .key("F7UDEJXW4A5FIEA4")
-                                .timeOut(10)
-                                .build();
+//                        String alpha_vantage_api_key = "F7UDEJXW4A5FIEA4";
+//
+//                        ArrayList<String> datas = new ArrayList<>();
+//
+//
+//
+//                        if(!RCTfile.doesFileExist(save_file_path)){
+//                            RCTfile.createFile(save_file_path);
+//                        }
+//
+//
+//
+//
+//                        String google_class_c_symbol = "GOOG";
+//                        String google_class_a_symbol = "GOOGL";
+//                        String microsoft_symbol = "MSFT";
+//                        String amazon_symbol = "AMZN";
+//                        String shopify_symbol = "SHOP";
+////                        String fedex_symbol = "FDX";
+////                        String ups_symbol = "UPS";
+////                        String netflix_symbol = "NFLX";
+////                        String tesla_symbol = "TSLA";
+//
+//                        if(RCTfile.doesFileExist(save_file_path)) {
+//                            System.out.println("0");
+//                            datas.add(RCTstockAlphaVantageDailyHistory.toJSONObject(google_class_c_symbol, RCTstockAlphaVantageDailyHistory.getHistory(alpha_vantage_api_key, google_class_c_symbol)).toString());
+//                            System.out.println("1");
+//                            datas.add(RCTstockAlphaVantageDailyHistory.toJSONObject(google_class_a_symbol, RCTstockAlphaVantageDailyHistory.getHistory(alpha_vantage_api_key, google_class_a_symbol)).toString());
+//                            System.out.println("2");
+//                            datas.add(RCTstockAlphaVantageDailyHistory.toJSONObject(microsoft_symbol, RCTstockAlphaVantageDailyHistory.getHistory(alpha_vantage_api_key, microsoft_symbol)).toString());
+//                            System.out.println("3");
+//                            datas.add(RCTstockAlphaVantageDailyHistory.toJSONObject(amazon_symbol, RCTstockAlphaVantageDailyHistory.getHistory(alpha_vantage_api_key, amazon_symbol)).toString());
+//                            System.out.println("4");
+//                            datas.add(RCTstockAlphaVantageDailyHistory.toJSONObject(shopify_symbol, RCTstockAlphaVantageDailyHistory.getHistory(alpha_vantage_api_key, shopify_symbol)).toString());
+//                            System.out.println("5");
+//                        }
+//
+//                        try {
+//                            RCTfile.overrideFile(save_file_path,datas);
+//                            System.out.println("finished");
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
 
-                        System.out.println(">>>>>>> BBBBB");
+                        try{
 
-                        AlphaVantage.api().init(cfg);
+                        ArrayList<String> save_contents = RCTfile.readFile_ArrayList(save_file_path);
 
-                        TimeSeriesResponse  time_series_response = AlphaVantage.api().timeSeries()
-                                .daily()
-                                .forSymbol("INTC")
-                                .outputSize(OutputSize.FULL).fetchSync();
 
-                        List<StockUnit>  stock_units = time_series_response.getStockUnits();
-                        System.out.println("----------------------------------------------------------------------");
-                        System.out.println(">>>>>>>>>>> Stock Units 0       : ".concat(stock_units.get(0).toString()));
-                        System.out.println(">>>>>>>>>>> Stock Units End     : ".concat(stock_units.get(stock_units.size()-1).toString()));
-                        System.out.println(">>>>>>>>>>> Stock Units Size    : ".concat(String.valueOf(stock_units.size())));
-                        System.out.println("----------------------------------------------------------------------");
+                            JSONObject microsoft_data = new JSONObject(save_contents.get(2));
+                            System.out.println(">>> Company : ".concat(microsoft_data.getString("company")));
+                            List<StockUnit> units = RCTstockAlphaVantageDailyHistory.toStockUnitList(microsoft_data);
+                            System.out.println("Microsoft Unit Size : ".concat(String.valueOf(units)));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
 
 
 
@@ -370,33 +394,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view){
 
-
-                String collection = "test_collection";
-                String document = "test_document";
-                String field_name = "test_field_object";
                 new Thread(new Runnable(){
                     @Override
                     public void run(){
-                        TestObjectRCT test_object = new TestObjectRCT(
-                                100,
-                                "Rafael",
-                                "Andaya",
-                                "Cartagena",
-                                new RCTdateTimeData(2000,4,25).UNIX_EPOCH_MILLISECOND,
-                                27.1
-                        );
 
-                        try {
-                            RCTfirebaseFirestore.createField(
-                                    FirebaseFirestore.getInstance(),
-                                    collection,
-                                    document,
-                                    field_name,
-                                    test_object
-                            );
-                        }catch (Exception ex){
-                            ex.printStackTrace();
-                        }
+
+
+
+
                     }
                 }).start();
             }
