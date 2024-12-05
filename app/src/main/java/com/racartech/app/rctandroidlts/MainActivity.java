@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.icu.util.TimeZone;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -53,13 +54,17 @@ import com.racartech.library.rctandroid.media.RCTbitmap;
 import com.racartech.library.rctandroid.media.image.RCTtranscribeImageToText;
 import com.racartech.library.rctandroid.notifications.RCTnotifications;
 import com.racartech.library.rctandroid.permission.RCTpermission;
+import com.racartech.library.rctandroid.time.RCTdateTime;
+import com.racartech.library.rctandroid.time.RCTdateTimeData;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -398,10 +403,17 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run(){
 
+                        long first_millis = System.currentTimeMillis();
+                        RCTdateTimeData time = new RCTdateTimeData(first_millis);
+                        String time_stamp = RCTdateTime.getTimestampYYYYMMDD_HHMMSS_SSS(time.UNIX_EPOCH_MILLISECOND, TimeZone.getDefault());
+                        try {
 
-
-
-
+                            RCTdateTimeData c_time = new RCTdateTimeData(time_stamp,TimeZone.getDefault());
+                            System.out.println("First  : ".concat(String.valueOf(first_millis)));
+                            System.out.println("Second : ".concat(String.valueOf(c_time.UNIX_EPOCH_MILLISECOND)));
+                        } catch (ParseException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                 }).start();
             }

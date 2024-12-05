@@ -152,4 +152,10 @@ public class RCTstockAlphaVantageDailyHistory {
     }
 
 
+
+    public static void firebaseStorageCaching(String root_dir, String json_object){
+
+    }
+
+
 }

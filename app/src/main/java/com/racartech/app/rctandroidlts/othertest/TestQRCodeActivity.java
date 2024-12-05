@@ -1,6 +1,7 @@
 package com.racartech.app.rctandroidlts.othertest;
 
 import android.graphics.Bitmap;
+import android.icu.util.TimeZone;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -59,8 +60,7 @@ public class TestQRCodeActivity extends AppCompatActivity {
                         System.out.println("Elapsed Time : ".concat(String.valueOf(elapsed_time)).concat(" ms"));
                         System.out.println("-----------------------------------------------------------------");
 
-                        String timestamp = RCTdateTime.getNumericalTimeStamp_YYYYMMDD_HHMMSS_12HR(
-                                new RCTdateTimeData(System.currentTimeMillis())
+                        String timestamp = RCTdateTime.getTimestampYYYYMMDD(System.currentTimeMillis(), TimeZone.getDefault()
                         );
                         String save_path = RCTfile.getDir_ExternalStorageRoot().concat("/bpath/").concat(timestamp).concat(".png");
                         save_path = save_path.replace('-','_');
