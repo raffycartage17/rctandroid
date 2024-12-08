@@ -44,7 +44,7 @@ import com.racartech.app.rctandroidlts.windows.Window2;
 import com.racartech.app.rctandroidlts.windows.window3.Window3;
 import com.racartech.library.rctandroid.file.RCTdirectory;
 import com.racartech.library.rctandroid.file.RCTfile;
-import com.racartech.library.rctandroid.finance.stock.alphavantage.RCTstockAlphaVantageDailyHistory;
+import com.racartech.library.rctandroid.finance.stock.alphavantage.DailyHistoryUtil;
 import com.racartech.library.rctandroid.google.firebase.firestore.RCTfirebaseFirestore;
 import com.racartech.library.rctandroid.google.maps.distancematrix.DistanceMatrixResult;
 import com.racartech.library.rctandroid.google.maps.distancematrix.DistanceMatrixResults;
@@ -57,14 +57,11 @@ import com.racartech.library.rctandroid.permission.RCTpermission;
 import com.racartech.library.rctandroid.time.RCTdateTime;
 import com.racartech.library.rctandroid.time.RCTdateTimeData;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -350,15 +347,15 @@ public class MainActivity extends AppCompatActivity {
 //
 //                        if(RCTfile.doesFileExist(save_file_path)) {
 //                            System.out.println("0");
-//                            datas.add(RCTstockAlphaVantageDailyHistory.toJSONObject(google_class_c_symbol, RCTstockAlphaVantageDailyHistory.getHistory(alpha_vantage_api_key, google_class_c_symbol)).toString());
+//                            datas.add(DailyHistoryUtil.toJSONObject(google_class_c_symbol, DailyHistoryUtil.getHistory(alpha_vantage_api_key, google_class_c_symbol)).toString());
 //                            System.out.println("1");
-//                            datas.add(RCTstockAlphaVantageDailyHistory.toJSONObject(google_class_a_symbol, RCTstockAlphaVantageDailyHistory.getHistory(alpha_vantage_api_key, google_class_a_symbol)).toString());
+//                            datas.add(DailyHistoryUtil.toJSONObject(google_class_a_symbol, DailyHistoryUtil.getHistory(alpha_vantage_api_key, google_class_a_symbol)).toString());
 //                            System.out.println("2");
-//                            datas.add(RCTstockAlphaVantageDailyHistory.toJSONObject(microsoft_symbol, RCTstockAlphaVantageDailyHistory.getHistory(alpha_vantage_api_key, microsoft_symbol)).toString());
+//                            datas.add(DailyHistoryUtil.toJSONObject(microsoft_symbol, DailyHistoryUtil.getHistory(alpha_vantage_api_key, microsoft_symbol)).toString());
 //                            System.out.println("3");
-//                            datas.add(RCTstockAlphaVantageDailyHistory.toJSONObject(amazon_symbol, RCTstockAlphaVantageDailyHistory.getHistory(alpha_vantage_api_key, amazon_symbol)).toString());
+//                            datas.add(DailyHistoryUtil.toJSONObject(amazon_symbol, DailyHistoryUtil.getHistory(alpha_vantage_api_key, amazon_symbol)).toString());
 //                            System.out.println("4");
-//                            datas.add(RCTstockAlphaVantageDailyHistory.toJSONObject(shopify_symbol, RCTstockAlphaVantageDailyHistory.getHistory(alpha_vantage_api_key, shopify_symbol)).toString());
+//                            datas.add(DailyHistoryUtil.toJSONObject(shopify_symbol, DailyHistoryUtil.getHistory(alpha_vantage_api_key, shopify_symbol)).toString());
 //                            System.out.println("5");
 //                        }
 //
@@ -376,7 +373,7 @@ public class MainActivity extends AppCompatActivity {
 
                             JSONObject microsoft_data = new JSONObject(save_contents.get(2));
                             System.out.println(">>> Company : ".concat(microsoft_data.getString("company")));
-                            List<StockUnit> units = RCTstockAlphaVantageDailyHistory.toStockUnitList(microsoft_data);
+                            List<StockUnit> units = DailyHistoryUtil.toStockUnitList(microsoft_data);
                             System.out.println("Microsoft Unit Size : ".concat(String.valueOf(units)));
                         } catch (Exception e) {
                             e.printStackTrace();

@@ -5,7 +5,6 @@ import com.crazzyghost.alphavantage.Config;
 import com.crazzyghost.alphavantage.parameters.OutputSize;
 import com.crazzyghost.alphavantage.timeseries.response.StockUnit;
 import com.crazzyghost.alphavantage.timeseries.response.TimeSeriesResponse;
-import com.google.gson.JsonObject;
 import com.racartech.library.rctandroid.time.RCTdateTimeData;
 
 import org.json.JSONArray;
@@ -14,7 +13,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RCTstockAlphaVantageDailyHistory {
+public class DailyHistoryUtil {
 
 
     /**
@@ -30,7 +29,7 @@ public class RCTstockAlphaVantageDailyHistory {
      * @param company_symbol The stock symbol of the company whose data is to be fetched.
      * @see <a href="https://www.alphavantage.co/query?function=LISTING_STATUS&apikey=demo">AlphaVantage: Listing Status</a>
      */
-    public static List<StockUnit> getHistory(String api_key, String company_symbol){
+    public static ArrayList<StockUnit> getHistory(String api_key, String company_symbol){
         Config cfg = Config.builder()
                 .key(api_key)
                 .timeOut(10)
@@ -45,11 +44,10 @@ public class RCTstockAlphaVantageDailyHistory {
                 .forSymbol(company_symbol)
                 .outputSize(OutputSize.FULL).fetchSync();
 
-
-        return time_series_response.getStockUnits();
+        return (ArrayList<StockUnit>) time_series_response.getStockUnits();
     }
 
-    public static JSONObject toJSONObject(String company_symbol, List<StockUnit> stock_units){
+    public static JSONObject toJSONObject(String company_symbol, ArrayList<StockUnit> stock_units){
 
         JSONObject json_object = new JSONObject();
 
@@ -107,8 +105,8 @@ public class RCTstockAlphaVantageDailyHistory {
         return json_object;
     }
 
-    public static List<StockUnit> toStockUnitList(JSONObject data){
-        List<StockUnit> units = new ArrayList<>();
+    public static ArrayList<StockUnit> toStockUnitList(JSONObject data){
+        ArrayList<StockUnit> units = new ArrayList<>();
         try {
             JSONArray json_array = data.getJSONArray("data");
             for(int index = 0; index< json_array.length(); index++){
@@ -135,7 +133,7 @@ public class RCTstockAlphaVantageDailyHistory {
 
 
 
-    public ArrayList<PeriodData> getPeriodsData(
+    public ArrayList<PeriodData> getPeriodData(
             ArrayList<StockUnit> units,
             int period_length
     ) {
@@ -154,7 +152,6 @@ public class RCTstockAlphaVantageDailyHistory {
 
 
     public static void firebaseStorageCaching(String root_dir, String json_object){
-
     }
 
 
