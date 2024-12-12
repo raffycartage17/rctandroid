@@ -3,12 +3,8 @@ package com.racartech.library.rctandroid.finance.stock.alphavantage;
 import android.icu.util.TimeZone;
 
 import com.crazzyghost.alphavantage.timeseries.response.StockUnit;
-import com.racartech.library.rctandroid.google.firebase.storage.FstorageFileReference;
-import com.racartech.library.rctandroid.google.firebase.storage.RCTfirebaseStorage;
 import com.racartech.library.rctandroid.time.RCTdateTime;
 import com.racartech.library.rctandroid.time.RCTdateTimeData;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -72,6 +68,26 @@ public class DailyHistory{
         this.TIMESTAMP_FROM = RCTdateTime.getTimestampYYYYMMDD_HHMMSS(this.FROM_MILLIS, TimeZone.getDefault());
         this.TIMESTAMP_TO = RCTdateTime.getTimestampYYYYMMDD_HHMMSS(this.TO_MILLIS, TimeZone.getDefault());
     }
+
+
+
+
+
+    public ArrayList<PeriodSpan> getPeriodsData(int period_span_in_days){
+        return DailyHistoryUtil.getPeriodsData(
+                this.DAILY_HISTORY,
+                period_span_in_days
+        );
+    }
+
+
+
+
+
+
+
+
+
 
 
 

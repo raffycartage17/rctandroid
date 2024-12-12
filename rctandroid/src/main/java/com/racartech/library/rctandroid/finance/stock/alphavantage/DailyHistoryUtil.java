@@ -11,6 +11,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class DailyHistoryUtil {
@@ -133,7 +135,7 @@ public class DailyHistoryUtil {
 
 
 
-    public ArrayList<PeriodData> getPeriodData(
+    public static ArrayList<PeriodSpan> getPeriodsData(
             ArrayList<StockUnit> units,
             int period_length
     ) {
@@ -141,12 +143,27 @@ public class DailyHistoryUtil {
             throw new IllegalArgumentException("Invalid period length, period lengh should be <= 0 and period_length > units.size()");
         }
         int final_index = units.size() - period_length;
-        ArrayList<PeriodData> periods = new ArrayList<>();
+        ArrayList<PeriodSpan> periods = new ArrayList<>();
         for (int index = 0; index <= final_index; index++) {
             List<StockUnit> current_period = units.subList(index, index + period_length);
-            periods.add(new PeriodData((ArrayList<StockUnit>) current_period)); // Ensure a new list is created.
+            ArrayList<StockUnit> currentPeriodArrayList = new ArrayList<>(current_period);
+            periods.add(new PeriodSpan(currentPeriodArrayList)); // Ensure a new list is created.
         }
         return periods;
+    }
+
+
+
+
+    public static void sortPeriodSpansByGrowthPercentage(ArrayList<PeriodSpan> periodSpans) {
+        if (periodSpans != null) {
+            Collections.sort(periodSpans, new Comparator<PeriodSpan>() {
+                @Override
+                public int compare(PeriodSpan p1, PeriodSpan p2) {
+                    return Double.compare(p1.GROWTH_PERCENTAGE, p2.GROWTH_PERCENTAGE);
+                }
+            });
+        }
     }
 
 

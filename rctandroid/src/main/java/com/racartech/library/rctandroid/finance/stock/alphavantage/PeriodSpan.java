@@ -1,12 +1,17 @@
 package com.racartech.library.rctandroid.finance.stock.alphavantage;
 
+import android.icu.util.TimeZone;
+
 import com.crazzyghost.alphavantage.timeseries.response.StockUnit;
+import com.racartech.library.rctandroid.math.RCTrandom;
+import com.racartech.library.rctandroid.time.RCTdateTime;
 import com.racartech.library.rctandroid.time.RCTdateTimeData;
 
 import java.util.ArrayList;
 
-public class PeriodData{
+public class PeriodSpan {
 
+    public long PERIOD_ID;
     public ArrayList<StockUnit> DATA;
     public double HIGHEST_HIGH;
     public double LOWEST_LOW;
@@ -16,8 +21,27 @@ public class PeriodData{
     public double AVERAGE_CLOSE;
     public double PERIOD_OPEN;
     public double PERIOD_CLOSE;
+    public double GROWTH_PERCENTAGE;
+    public double GROWTH;
+    public long FROM_DAY;
+    public long TO_DAY;
+    public String FROM_DAY_STRING;
+    public String TO_DAY_STRING;
 
-    public PeriodData(ArrayList<StockUnit> period_data){
+    public PeriodSpan(ArrayList<StockUnit> period_data){
+        this.PERIOD_ID = RCTrandom.fromTo(0L,9_223_372_036_854_775_800L);
+        DATA = period_data;
+        calculateHighestHigh();
+        calculateLowestLow();
+        calculateAverageHigh();
+        calculateAverageLow();
+        calculateAverageOpen();
+        calculateAverageClose();
+        processPeriodOpenAndClose();
+    }
+
+    public PeriodSpan(ArrayList<StockUnit> period_data, long period_id){
+        this.PERIOD_ID = period_id;
         DATA = period_data;
         calculateHighestHigh();
         calculateLowestLow();
@@ -97,14 +121,19 @@ public class PeriodData{
             if(stamp_millis < current_lowest_datestamp){
                 current_lowest_datestamp = stamp_millis;
                 PERIOD_OPEN = unit.getOpen();
+                this.FROM_DAY = stamp_millis;
             }
             if(stamp_millis > current_highest_datestamp){
                 current_highest_datestamp = stamp_millis;
                 PERIOD_CLOSE = unit.getClose();
+                this.TO_DAY = stamp_millis;
             }
         }
 
-
+        this.GROWTH_PERCENTAGE = (((this.PERIOD_CLOSE/this.PERIOD_OPEN)*100)-100);
+        this.GROWTH = (this.PERIOD_CLOSE-this.PERIOD_OPEN);
+        this.FROM_DAY_STRING = RCTdateTime.getTimestampYYYYMMDD(this.FROM_DAY, TimeZone.getDefault());
+        this.TO_DAY_STRING = RCTdateTime.getTimestampYYYYMMDD(this.TO_DAY, TimeZone.getDefault());
 
     }
 

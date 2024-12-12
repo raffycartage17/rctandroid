@@ -44,12 +44,15 @@ import com.racartech.app.rctandroidlts.windows.Window2;
 import com.racartech.app.rctandroidlts.windows.window3.Window3;
 import com.racartech.library.rctandroid.file.RCTdirectory;
 import com.racartech.library.rctandroid.file.RCTfile;
+import com.racartech.library.rctandroid.finance.stock.alphavantage.DailyHistory;
 import com.racartech.library.rctandroid.finance.stock.alphavantage.DailyHistoryUtil;
+import com.racartech.library.rctandroid.finance.stock.alphavantage.PeriodSpan;
 import com.racartech.library.rctandroid.google.firebase.firestore.RCTfirebaseFirestore;
 import com.racartech.library.rctandroid.google.maps.distancematrix.DistanceMatrixResult;
 import com.racartech.library.rctandroid.google.maps.distancematrix.DistanceMatrixResults;
 import com.racartech.library.rctandroid.google.maps.distancematrix.RCTgcpDistanceMatrix;
 import com.racartech.library.rctandroid.json.RCTgoogleGSON;
+import com.racartech.library.rctandroid.math.RCTrandom;
 import com.racartech.library.rctandroid.media.RCTbitmap;
 import com.racartech.library.rctandroid.media.image.RCTtranscribeImageToText;
 import com.racartech.library.rctandroid.notifications.RCTnotifications;
@@ -399,18 +402,33 @@ public class MainActivity extends AppCompatActivity {
                 new Thread(new Runnable(){
                     @Override
                     public void run(){
+                        String alpha_vantage_api_key = "F7UDEJXW4A5FIEA4";
+                        DailyHistory dailyHistory = new DailyHistory(alpha_vantage_api_key,"NVDA");
 
-                        long first_millis = System.currentTimeMillis();
-                        RCTdateTimeData time = new RCTdateTimeData(first_millis);
-                        String time_stamp = RCTdateTime.getTimestampYYYYMMDD_HHMMSS_SSS(time.UNIX_EPOCH_MILLISECOND, TimeZone.getDefault());
-                        try {
 
-                            RCTdateTimeData c_time = new RCTdateTimeData(time_stamp,TimeZone.getDefault());
-                            System.out.println("First  : ".concat(String.valueOf(first_millis)));
-                            System.out.println("Second : ".concat(String.valueOf(c_time.UNIX_EPOCH_MILLISECOND)));
-                        } catch (ParseException e) {
-                            throw new RuntimeException(e);
+                        long start_process = System.currentTimeMillis();
+                        ArrayList<PeriodSpan> periodSpans = dailyHistory.getPeriodsData(7);
+                        long end_process_span = System.currentTimeMillis();
+                        long start_sort = System.currentTimeMillis();
+                        DailyHistoryUtil.sortPeriodSpansByGrowthPercentage(periodSpans);
+                        long end_sort = System.currentTimeMillis();
+                        System.out.println("----------------------------------------------------------------");
+                        for(int index = 0; index< periodSpans.size(); index++){
+                            System.out.println("Span ID : ".concat(String.valueOf(periodSpans.get(index).PERIOD_ID)));
+                            System.out.println("From    : ".concat(periodSpans.get(index).FROM_DAY_STRING));
+                            System.out.println("To      : ".concat(periodSpans.get(index).TO_DAY_STRING));
+                            System.out.println("Growth% : ".concat(String.valueOf(periodSpans.get(index).GROWTH_PERCENTAGE)));
+                            System.out.println("Growth  : ".concat(String.valueOf(periodSpans.get(index).GROWTH)));
+                            System.out.println("List    : ".concat(String.valueOf(periodSpans.get(index).DATA.size())));
+                            System.out.println("----------------------------------------------------------------");
                         }
+                        long elapsed_time_process = end_process_span-start_process;
+                        long elapsed_time_sorting = end_sort-start_sort;
+
+                        System.out.println("Elapsed Time Process : ".concat(String.valueOf(elapsed_time_process)));
+                        System.out.println("Elapsed Time Sorting : ".concat(String.valueOf(elapsed_time_sorting)));
+                        System.out.println("ArrayList Length     : ".concat(String.valueOf(periodSpans.size())));
+                        System.out.println("----------------------------------------------------------------");
                     }
                 }).start();
             }
