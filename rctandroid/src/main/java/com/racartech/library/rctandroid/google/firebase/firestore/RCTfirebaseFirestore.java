@@ -462,6 +462,7 @@ public class RCTfirebaseFirestore {
         String document_name = getDocumentNameFromPath(document_path);
 
         renameField_WaitProgress(fs_instance, collection_path, document_name,field_name,new_field_name, thread_wait);
+
     }
 
     public static void setField_WaitProgress(

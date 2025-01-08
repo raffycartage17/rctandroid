@@ -5,6 +5,7 @@ import android.icu.util.Calendar;
 import android.icu.util.TimeZone;
 
 import java.text.ParseException;
+import java.util.Date;
 
 public class RCTdateTimeData {
 
@@ -44,6 +45,22 @@ public class RCTdateTimeData {
         this.UNIX_EPOCH_MILLISECOND = unix_epoch_ms;
     }
 
+
+    public RCTdateTimeData(Date date) {
+        Calendar current_time = Calendar.getInstance();
+        current_time.setTimeInMillis(date.getTime()); // Set time using milliseconds
+
+        this.YEAR = current_time.get(Calendar.YEAR);
+        this.MONTH = current_time.get(Calendar.MONTH) + 1; // Adding 1 as Calendar.MONTH is zero-based
+        this.DATE = current_time.get(Calendar.DATE);
+        this.HOUR = current_time.get(Calendar.HOUR_OF_DAY);
+        this.MINUTE = current_time.get(Calendar.MINUTE);
+        this.SECOND = current_time.get(Calendar.SECOND);
+        this.MILLISECOND = current_time.get(Calendar.MILLISECOND);
+        this.DAY_OF_WEEK = current_time.get(Calendar.DAY_OF_WEEK);
+        this.DAY_OF_YEAR = current_time.get(Calendar.DAY_OF_YEAR);
+        this.UNIX_EPOCH_MILLISECOND = date.getTime();
+    }
 
     public RCTdateTimeData(long unix_epoch_millis) {
         Calendar current_time = Calendar.getInstance();

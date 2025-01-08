@@ -12,8 +12,37 @@ import android.icu.util.TimeZone;
 public class RCTdateTime{
 
 
-    public static void test(){
-        RCTdateTimeData time_data = new RCTdateTimeData(System.currentTimeMillis());
+    public static boolean isWithinDateRange(
+            Date date,
+            Date from_date,
+            Date to_date
+    ) {
+        return (date.equals(from_date) || date.after(from_date)) && (date.equals(to_date) || date.before(to_date));
+    }
+
+    public static boolean isWithinDateRange(
+            RCTdateTimeData date,
+            RCTdateTimeData from_date,
+            RCTdateTimeData to_date
+    ){
+        Date d_date = new Date(date.UNIX_EPOCH_MILLISECOND);
+        Date d_from_date = new Date(from_date.UNIX_EPOCH_MILLISECOND);
+        Date d_to_date = new Date(to_date.UNIX_EPOCH_MILLISECOND);
+
+        return isWithinDateRange(d_date,d_from_date,d_to_date);
+    }
+
+
+    public static Date toDate(String date_string, String date_format) {
+        //yyyy-MM-dd HH:mm:ss.SSS
+        SimpleDateFormat format = new SimpleDateFormat(date_format, Locale.getDefault());
+        Date date = null;
+        try{
+            date = format.parse(date_string);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return date;
     }
 
     /**

@@ -27,6 +27,8 @@ public class PeriodSpan {
     public long TO_DAY;
     public String FROM_DAY_STRING;
     public String TO_DAY_STRING;
+    public String COMPANY_SYMBOL = null;
+
 
     public PeriodSpan(ArrayList<StockUnit> period_data){
         this.PERIOD_ID = RCTrandom.fromTo(0L,9_223_372_036_854_775_800L);
@@ -51,6 +53,38 @@ public class PeriodSpan {
         calculateAverageClose();
         processPeriodOpenAndClose();
     }
+
+    public PeriodSpan(ArrayList<StockUnit> period_data, String company_symbol){
+        this.PERIOD_ID = RCTrandom.fromTo(0L,9_223_372_036_854_775_800L);
+        DATA = period_data;
+        this.COMPANY_SYMBOL = company_symbol;
+        calculateHighestHigh();
+        calculateLowestLow();
+        calculateAverageHigh();
+        calculateAverageLow();
+        calculateAverageOpen();
+        calculateAverageClose();
+        processPeriodOpenAndClose();
+    }
+
+    public PeriodSpan(ArrayList<StockUnit> period_data, long period_id, String company_symbol){
+        this.PERIOD_ID = period_id;
+        DATA = period_data;
+        this.COMPANY_SYMBOL = company_symbol;
+        calculateHighestHigh();
+        calculateLowestLow();
+        calculateAverageHigh();
+        calculateAverageLow();
+        calculateAverageOpen();
+        calculateAverageClose();
+        processPeriodOpenAndClose();
+    }
+
+
+    public void setCOMPANY_SYMBOL(String company_symbol){
+        this.COMPANY_SYMBOL = company_symbol;
+    }
+
 
     private void calculateHighestHigh(){
         double current_highest_high = Double.MIN_VALUE;

@@ -47,6 +47,7 @@ import com.racartech.library.rctandroid.file.RCTfile;
 import com.racartech.library.rctandroid.finance.stock.alphavantage.DailyHistory;
 import com.racartech.library.rctandroid.finance.stock.alphavantage.DailyHistoryUtil;
 import com.racartech.library.rctandroid.finance.stock.alphavantage.PeriodSpan;
+import com.racartech.library.rctandroid.finance.stock.alphavantage.PeriodSpanUtil;
 import com.racartech.library.rctandroid.google.firebase.firestore.RCTfirebaseFirestore;
 import com.racartech.library.rctandroid.google.maps.distancematrix.DistanceMatrixResult;
 import com.racartech.library.rctandroid.google.maps.distancematrix.DistanceMatrixResults;
@@ -62,6 +63,7 @@ import com.racartech.library.rctandroid.time.RCTdateTimeData;
 
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -325,49 +327,49 @@ public class MainActivity extends AppCompatActivity {
 
                         String save_file_path = RCTfile.getDir_ExternalStorageRoot().concat("/apath/stock_data.txt");
 
-//                        String alpha_vantage_api_key = "F7UDEJXW4A5FIEA4";
-//
-//                        ArrayList<String> datas = new ArrayList<>();
-//
-//
-//
-//                        if(!RCTfile.doesFileExist(save_file_path)){
-//                            RCTfile.createFile(save_file_path);
-//                        }
-//
-//
-//
-//
-//                        String google_class_c_symbol = "GOOG";
-//                        String google_class_a_symbol = "GOOGL";
-//                        String microsoft_symbol = "MSFT";
-//                        String amazon_symbol = "AMZN";
-//                        String shopify_symbol = "SHOP";
-////                        String fedex_symbol = "FDX";
-////                        String ups_symbol = "UPS";
-////                        String netflix_symbol = "NFLX";
-////                        String tesla_symbol = "TSLA";
-//
-//                        if(RCTfile.doesFileExist(save_file_path)) {
-//                            System.out.println("0");
-//                            datas.add(DailyHistoryUtil.toJSONObject(google_class_c_symbol, DailyHistoryUtil.getHistory(alpha_vantage_api_key, google_class_c_symbol)).toString());
-//                            System.out.println("1");
-//                            datas.add(DailyHistoryUtil.toJSONObject(google_class_a_symbol, DailyHistoryUtil.getHistory(alpha_vantage_api_key, google_class_a_symbol)).toString());
-//                            System.out.println("2");
-//                            datas.add(DailyHistoryUtil.toJSONObject(microsoft_symbol, DailyHistoryUtil.getHistory(alpha_vantage_api_key, microsoft_symbol)).toString());
-//                            System.out.println("3");
-//                            datas.add(DailyHistoryUtil.toJSONObject(amazon_symbol, DailyHistoryUtil.getHistory(alpha_vantage_api_key, amazon_symbol)).toString());
-//                            System.out.println("4");
-//                            datas.add(DailyHistoryUtil.toJSONObject(shopify_symbol, DailyHistoryUtil.getHistory(alpha_vantage_api_key, shopify_symbol)).toString());
-//                            System.out.println("5");
-//                        }
-//
-//                        try {
-//                            RCTfile.overrideFile(save_file_path,datas);
-//                            System.out.println("finished");
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
+                        String alpha_vantage_api_key = "F7UDEJXW4A5FIEA4";
+
+                        ArrayList<String> datas = new ArrayList<>();
+
+
+
+                        if(!RCTfile.doesFileExist(save_file_path)){
+                            RCTfile.createFile(save_file_path);
+                        }
+
+
+
+
+                        String google_class_c_symbol = "GOOG";
+                        String google_class_a_symbol = "GOOGL";
+                        String microsoft_symbol = "MSFT";
+                        String amazon_symbol = "AMZN";
+                        String shopify_symbol = "SHOP";
+//                        String fedex_symbol = "FDX";
+//                        String ups_symbol = "UPS";
+//                        String netflix_symbol = "NFLX";
+//                        String tesla_symbol = "TSLA";
+
+                        if(RCTfile.doesFileExist(save_file_path)) {
+                            System.out.println("0");
+                            datas.add(DailyHistoryUtil.toJSONObject(google_class_c_symbol, DailyHistoryUtil.getHistory(alpha_vantage_api_key, google_class_c_symbol)).toString());
+                            System.out.println("1");
+                            datas.add(DailyHistoryUtil.toJSONObject(google_class_a_symbol, DailyHistoryUtil.getHistory(alpha_vantage_api_key, google_class_a_symbol)).toString());
+                            System.out.println("2");
+                            datas.add(DailyHistoryUtil.toJSONObject(microsoft_symbol, DailyHistoryUtil.getHistory(alpha_vantage_api_key, microsoft_symbol)).toString());
+                            System.out.println("3");
+                            datas.add(DailyHistoryUtil.toJSONObject(amazon_symbol, DailyHistoryUtil.getHistory(alpha_vantage_api_key, amazon_symbol)).toString());
+                            System.out.println("4");
+                            datas.add(DailyHistoryUtil.toJSONObject(shopify_symbol, DailyHistoryUtil.getHistory(alpha_vantage_api_key, shopify_symbol)).toString());
+                            System.out.println("5");
+                        }
+
+                        try {
+                            RCTfile.overrideFile(save_file_path,datas);
+                            System.out.println("finished");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
 
                         try{
 
@@ -403,32 +405,25 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run(){
                         String alpha_vantage_api_key = "F7UDEJXW4A5FIEA4";
-                        DailyHistory dailyHistory = new DailyHistory(alpha_vantage_api_key,"NVDA");
+                        DailyHistory daily_history = new DailyHistory(alpha_vantage_api_key,"GOOG");
 
+                        RCTdateTimeData from_date = new RCTdateTimeData(2020,1,1);
+                        RCTdateTimeData to_date = new RCTdateTimeData(2023,12,31);
 
-                        long start_process = System.currentTimeMillis();
-                        ArrayList<PeriodSpan> periodSpans = dailyHistory.getPeriodsData(7);
-                        long end_process_span = System.currentTimeMillis();
-                        long start_sort = System.currentTimeMillis();
-                        DailyHistoryUtil.sortPeriodSpansByGrowthPercentage(periodSpans);
-                        long end_sort = System.currentTimeMillis();
-                        System.out.println("----------------------------------------------------------------");
-                        for(int index = 0; index< periodSpans.size(); index++){
-                            System.out.println("Span ID : ".concat(String.valueOf(periodSpans.get(index).PERIOD_ID)));
-                            System.out.println("From    : ".concat(periodSpans.get(index).FROM_DAY_STRING));
-                            System.out.println("To      : ".concat(periodSpans.get(index).TO_DAY_STRING));
-                            System.out.println("Growth% : ".concat(String.valueOf(periodSpans.get(index).GROWTH_PERCENTAGE)));
-                            System.out.println("Growth  : ".concat(String.valueOf(periodSpans.get(index).GROWTH)));
-                            System.out.println("List    : ".concat(String.valueOf(periodSpans.get(index).DATA.size())));
-                            System.out.println("----------------------------------------------------------------");
+                        long start = System.currentTimeMillis();
+                        //
+                        ArrayList<StockUnit> stock_units = DailyHistoryUtil.filterDataBaseOnTime(daily_history.getDAILY_HISTORY(),from_date,to_date);
+
+                        System.out.println("-------------------------------------------------------");
+                        for(int index = 0; index<stock_units.size(); index++){
+                            StockUnit current = stock_units.get(index);
+                            System.out.println("Stock Data Date : ".concat(current.getDate()));
+                            System.out.println("-------------------------------------------------------");
                         }
-                        long elapsed_time_process = end_process_span-start_process;
-                        long elapsed_time_sorting = end_sort-start_sort;
+                        long end = System.currentTimeMillis();
+                        long elapsed_time = end-start;
+                        System.out.println("Elapsed Time : ".concat(String.valueOf(elapsed_time)));
 
-                        System.out.println("Elapsed Time Process : ".concat(String.valueOf(elapsed_time_process)));
-                        System.out.println("Elapsed Time Sorting : ".concat(String.valueOf(elapsed_time_sorting)));
-                        System.out.println("ArrayList Length     : ".concat(String.valueOf(periodSpans.size())));
-                        System.out.println("----------------------------------------------------------------");
                     }
                 }).start();
             }

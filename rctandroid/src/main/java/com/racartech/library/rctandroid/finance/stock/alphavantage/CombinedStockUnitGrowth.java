@@ -1,6 +1,21 @@
 package com.racartech.library.rctandroid.finance.stock.alphavantage;
 
-public class StockUnitBestPeriod {
+public class CombinedStockUnitGrowth{
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
-
-

@@ -74,7 +74,7 @@ public class DailyHistory{
 
 
     public ArrayList<PeriodSpan> getPeriodsData(int period_span_in_days){
-        return DailyHistoryUtil.getPeriodsData(
+        return PeriodSpanUtil.getPeriodsData(
                 this.DAILY_HISTORY,
                 period_span_in_days
         );
