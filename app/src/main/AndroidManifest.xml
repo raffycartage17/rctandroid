@@ -62,11 +62,11 @@
             android:exported="false"
             android:launchMode="singleTask"/>
         <activity
-            android:name=".functionbuttons.FunctionTwo"
+            android:name=".functionbuttons.Function02"
             android:exported="false"
             android:launchMode="singleTask"/>
         <activity
-            android:name=".functionbuttons.FunctionFive"
+            android:name=".functionbuttons.Function05"
             android:exported="false"
             android:launchMode="singleTask"/>
 
@@ -79,7 +79,7 @@
             android:exported="false"
             android:launchMode="singleTask"/>
         <activity
-            android:name=".functionbuttons.FunctionThree"
+            android:name=".functionbuttons.Function04"
             android:exported="false"
             android:launchMode="singleTask"/>
         <activity

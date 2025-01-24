@@ -1,22 +1,16 @@
 package com.racartech.app.rctandroidlts.functionbuttons;
 
 import androidx.appcompat.app.AppCompatActivity;
-import android.app.AlertDialog;
-import android.app.DatePickerDialog;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.storage.FirebaseStorage;
-import com.racartech.app.rctandroidlts.MainActivity;
 import com.racartech.app.rctandroidlts.R;
 import com.racartech.library.rctandroid.google.firebase.storage.RCTfirebaseStorage;
 
-import java.util.Calendar;
-
-public class FunctionThree extends AppCompatActivity
+public class Function04 extends AppCompatActivity
 {
 
 
@@ -41,7 +35,7 @@ public class FunctionThree extends AppCompatActivity
                     @Override
                     public void run() {
                         String file_path = RCTfirebaseStorage.cacheFileDefault(
-                                FunctionThree.this,
+                                Function04.this,
                                 FirebaseStorage.getInstance(),
                                 fire_storage_dir,
                                 fire_storage_filename,

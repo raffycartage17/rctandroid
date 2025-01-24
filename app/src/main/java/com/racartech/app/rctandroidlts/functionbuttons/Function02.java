@@ -15,7 +15,7 @@ import com.racartech.app.rctandroidlts.R;
 
 import java.util.Locale;
 
-public class FunctionTwo extends AppCompatActivity{
+public class Function02 extends AppCompatActivity{
     Button the_button;
     int hour, minute;
     int PICK_FILE_REQUEST_CODE = 200;

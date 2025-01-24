@@ -74,7 +74,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
 
-    Button f1,f2,f3,f4,f5,f6,f7,f8,f9;
+    Button f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13,f14,f15,f16,f17,f18,f19,f20,f21;
     Button window_1_btn,window_2_btn,window_3_btn,window_4_btn;
     Button textbox_enter;
     EditText textbox;
@@ -122,6 +122,21 @@ public class MainActivity extends AppCompatActivity {
         f7 = findViewById(R.id.mm_f7_button);
         f8 = findViewById(R.id.mm_f8_button);
         f9 = findViewById(R.id.mm_f9_button);
+        f10 = findViewById(R.id.mm_f10_button);
+        f11 = findViewById(R.id.mm_f11_button);
+        f12 = findViewById(R.id.mm_f12_button);
+        f13 = findViewById(R.id.mm_f13_button);
+        f14 = findViewById(R.id.mm_f14_button);
+        f15 = findViewById(R.id.mm_f15_button);
+        f16 = findViewById(R.id.mm_f16_button);
+        f17 = findViewById(R.id.mm_f17_button);
+        f18 = findViewById(R.id.mm_f18_button);
+        f19 = findViewById(R.id.mm_f19_button);
+        f20 = findViewById(R.id.mm_f20_button);
+        f21 = findViewById(R.id.mm_f21_button);
+
+
+
         debug_textview = findViewById(R.id.mm_debug_textview);
         textbox = findViewById(R.id.mm_textbox);
 

@@ -8,7 +8,7 @@ import android.widget.DatePicker;
 
 import com.racartech.library.rctandroid.time.RCTdateTimeData;
 
-public class FunctionOne{
+public class Function01 {
 
 
     public static void launch(Context context, Activity activity) {

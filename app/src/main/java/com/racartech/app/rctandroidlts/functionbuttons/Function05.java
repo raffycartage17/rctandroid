@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class FunctionFive extends AppCompatActivity {
+public class Function05 extends AppCompatActivity {
 
 
     RecyclerView recycler_view;
@@ -153,7 +152,7 @@ public class FunctionFive extends AppCompatActivity {
                         new RCTpreLoadingLinearLayoutManager(getApplicationContext(), preloaded_items));
                  */
                 recycler_view.setLayoutManager(new LinearLayoutManager(
-                        FunctionFive.this,
+                        Function05.this,
                         LinearLayoutManager.VERTICAL,
                         false)
                 );
@@ -161,7 +160,7 @@ public class FunctionFive extends AppCompatActivity {
                 recyclerViewState = Objects.requireNonNull(recycler_view.getLayoutManager()).onSaveInstanceState();
                 recycler_view.setItemViewCacheSize(50);
 
-                adapter = new TestRecyclerAdapter(FunctionFive.this, FunctionFive.this,dataset_clone);
+                adapter = new TestRecyclerAdapter(Function05.this, Function05.this,dataset_clone);
                 recycler_view.setAdapter(adapter);
                 recycler_view.getLayoutManager().onRestoreInstanceState(recyclerViewState);
 
