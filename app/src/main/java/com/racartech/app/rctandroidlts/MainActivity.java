@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.icu.util.TimeZone;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -36,6 +35,21 @@ import com.google.maps.model.TravelMode;
 import com.google.maps.model.Unit;
 import com.racartech.app.rctandroidlts.api.ApiKeyManager;
 import com.racartech.app.rctandroidlts.firebase.FirestoreTest;
+import com.racartech.app.rctandroidlts.functionbuttons.Function10;
+import com.racartech.app.rctandroidlts.functionbuttons.Function11;
+import com.racartech.app.rctandroidlts.functionbuttons.Function12;
+import com.racartech.app.rctandroidlts.functionbuttons.Function13;
+import com.racartech.app.rctandroidlts.functionbuttons.Function14;
+import com.racartech.app.rctandroidlts.functionbuttons.Function15;
+import com.racartech.app.rctandroidlts.functionbuttons.Function16;
+import com.racartech.app.rctandroidlts.functionbuttons.Function17;
+import com.racartech.app.rctandroidlts.functionbuttons.Function18;
+import com.racartech.app.rctandroidlts.functionbuttons.Function19;
+import com.racartech.app.rctandroidlts.functionbuttons.Function20;
+import com.racartech.app.rctandroidlts.functionbuttons.Function21;
+
+
+
 import com.racartech.app.rctandroidlts.maps.MapsTestActivity;
 import com.racartech.app.rctandroidlts.resources.BuildConfig;
 import com.racartech.app.rctandroidlts.util.MiscellaneousDataUtil;
@@ -46,25 +60,20 @@ import com.racartech.library.rctandroid.file.RCTdirectory;
 import com.racartech.library.rctandroid.file.RCTfile;
 import com.racartech.library.rctandroid.finance.stock.alphavantage.DailyHistory;
 import com.racartech.library.rctandroid.finance.stock.alphavantage.DailyHistoryUtil;
-import com.racartech.library.rctandroid.finance.stock.alphavantage.PeriodSpan;
-import com.racartech.library.rctandroid.finance.stock.alphavantage.PeriodSpanUtil;
 import com.racartech.library.rctandroid.google.firebase.firestore.RCTfirebaseFirestore;
 import com.racartech.library.rctandroid.google.maps.distancematrix.DistanceMatrixResult;
 import com.racartech.library.rctandroid.google.maps.distancematrix.DistanceMatrixResults;
 import com.racartech.library.rctandroid.google.maps.distancematrix.RCTgcpDistanceMatrix;
 import com.racartech.library.rctandroid.json.RCTgoogleGSON;
-import com.racartech.library.rctandroid.math.RCTrandom;
 import com.racartech.library.rctandroid.media.RCTbitmap;
 import com.racartech.library.rctandroid.media.image.RCTtranscribeImageToText;
 import com.racartech.library.rctandroid.notifications.RCTnotifications;
 import com.racartech.library.rctandroid.permission.RCTpermission;
-import com.racartech.library.rctandroid.time.RCTdateTime;
 import com.racartech.library.rctandroid.time.RCTdateTimeData;
 
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -582,6 +591,102 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //MapsUtilTest.multiDestinationRouteWithInterval();
                 FirestoreTest.test001();
+            }
+        });
+
+        f10.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Function10.entry(MainActivity.this, MainActivity.this);
+                RCTfile.getDir_IntAppFiles()
+            }
+        });
+
+        f11.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                            }
+                        });
+                    }
+                }).start();
+                Function11.entry();
+            }
+        });
+
+        f12.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Function12.entry();
+            }
+        });
+
+        f13.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Function13.entry();
+            }
+        });
+
+        f14.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Function14.entry();
+            }
+        });
+
+        f15.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Function15.entry();
+            }
+        });
+
+        f16.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Function16.entry();
+            }
+        });
+
+        f17.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Function17.entry();
+            }
+        });
+
+        f18.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Function18.entry();
+            }
+        });
+
+        f19.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Function19.entry();
+            }
+        });
+
+        f20.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Function20.entry();
+            }
+        });
+
+        f21.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Function21.entry();
             }
         });
 
