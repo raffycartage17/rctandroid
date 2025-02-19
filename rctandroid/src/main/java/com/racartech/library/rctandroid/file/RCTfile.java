@@ -1792,7 +1792,6 @@ public class RCTfile{
 
     public static boolean deleteFile(String directory, String file_name){
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            // Implement compatible code for Android 4.4 (API 19) to Android 6.0 (API 23)
             File td_file = new File(directory, file_name);
             if(td_file.exists()){
                 return td_file.delete();

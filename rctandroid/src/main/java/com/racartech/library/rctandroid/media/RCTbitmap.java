@@ -251,11 +251,7 @@ public class RCTbitmap{
 
 
     public static void saveBitmapAsFile(Bitmap bitmap, File bitmap_file_path) {
-        if (isExternalStorageWritable()) {
-            saveImage(bitmap,bitmap_file_path.getAbsolutePath());
-        }else{
-            //prompt the user or do something
-        }
+        saveImage(bitmap,bitmap_file_path.getAbsolutePath());
     }
 
     public static Bitmap getBitmapForFile(String file_path){

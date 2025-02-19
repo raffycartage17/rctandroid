@@ -598,6 +598,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Function10.entry(MainActivity.this, MainActivity.this);
+                RCTfile.getDir_IntAppFiles()
             }
         });
 
