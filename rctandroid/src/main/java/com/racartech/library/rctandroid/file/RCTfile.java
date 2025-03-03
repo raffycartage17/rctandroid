@@ -69,17 +69,20 @@ public class RCTfile{
     public final static int FILE_TYPE_DOCUMENT = 3;
 
 
-    public static void saveAsFile(byte[] file_data, String directory, String filename, Context context) {
+    public static String saveAsFile(byte[] file_data, String directory, String filename, Context context) {
         File dir = new File(directory, filename);
         if (!dir.getParentFile().exists()) {
             dir.getParentFile().mkdirs();
         }
         try (FileOutputStream fos = new FileOutputStream(dir)) {
             fos.write(file_data);
+            return dir.getAbsolutePath();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return null;
     }
+
 
     public static ArrayList<String> createPaths(
             String parent_dir,
@@ -178,7 +181,7 @@ public class RCTfile{
 
 
 
-    public static void saveAsFile(byte[] file_data, String file_path) {
+    public static String saveAsFile(byte[] file_data, String file_path) {
         File file = new File(file_path);
 
         File parentDir = file.getParentFile();
@@ -187,10 +190,13 @@ public class RCTfile{
         }
         try (FileOutputStream fos = new FileOutputStream(file)) {
             fos.write(file_data);
+            return file.getAbsolutePath();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return null; // Return null if saving fails
     }
+
 
 
 
@@ -253,10 +259,15 @@ public class RCTfile{
     }
 
 
-    public static void createFile(String directory, ArrayList<String> file_names){
+    public static ArrayList<String> createFile(String directory, ArrayList<String> file_names){
+        ArrayList<String> created_files = new ArrayList<>();
         for (int index = 0; index < file_names.size(); index++) {
-            createFile(directory.concat("/").concat(file_names.get(index)));
+            boolean success = createFile(directory.concat("/").concat(file_names.get(index)));
+            if(success){
+                created_files.add(directory.concat("/").concat(file_names.get(index)));
+            }
         }
+        return created_files;
     }
 
 
@@ -400,28 +411,48 @@ public class RCTfile{
 
 
 
-    public static void createFile_String(ArrayList<String> files){
+    public static ArrayList<String> createFile_String(ArrayList<String> files){
+        ArrayList<String> succesfools = new ArrayList<>();
         for(int index = 0; index<files.size(); index++){
-            RCTfile.createFile(files.get(index));
+            boolean success = RCTfile.createFile(files.get(index));
+            if(success){
+                succesfools.add(files.get(index));
+            }
         }
+        return succesfools;
     }
 
-    public static void createFile_File(ArrayList<File> files){
+    public static ArrayList<File> createFile_File(ArrayList<File> files){
+        ArrayList<File> succesfools = new ArrayList<>();
         for(int index = 0; index<files.size(); index++){
-            RCTfile.createFile(files.get(index));
+            boolean success = RCTfile.createFile(files.get(index));
+            if(success){
+                succesfools.add(files.get(index));
+            }
         }
+        return succesfools;
     }
 
-    public static void createFile_String(String[] files){
+    public static ArrayList<String> createFile_String(String[] files){
+        ArrayList<String> succesfools = new ArrayList<>();
         for(int index = 0; index<files.length; index++){
-            RCTfile.createFile(files[index]);
+            boolean success = RCTfile.createFile(files[index]);
+            if(success){
+                succesfools.add(files[index]);
+            }
         }
+        return succesfools;
     }
 
-    public static void createFile_File(File[] files){
+    public static ArrayList<File> createFile_File(File[] files){
+        ArrayList<File> succesfools = new ArrayList<>();
         for(int index = 0; index<files.length; index++){
-            RCTfile.createFile(files[index]);
+            boolean success = RCTfile.createFile(files[index]);
+            if(success){
+                succesfools.add(files[index]);
+            }
         }
+        return succesfools;
     }
 
 
@@ -654,7 +685,7 @@ public class RCTfile{
 
 
     public static ArrayList<File> getOTGDirectories(Context context){
-        String my_otg = "0D020BC30D020BC3";
+        //TODO - Make this not device specific
         String mount_dir = "/mnt/media_rw/0D020BC30D020BC3";
         File[] otgDirectories = new File(mount_dir).listFiles();
         ArrayList<File> list_files = new ArrayList<>(Arrays.asList(otgDirectories));
@@ -663,20 +694,6 @@ public class RCTfile{
         return list_files;
     }
 
-    public static ArrayList<String> getOTGDirectories_Test(Context context) {
-        File mediaStorageDir = new File("/mnt/media_rw");
-        File[] mediaDirs = mediaStorageDir.listFiles();
-        ArrayList<String> devicePaths = new ArrayList<String>();
-
-        for (File dir : mediaDirs) {
-            if (dir.isDirectory()) {
-                String path = dir.getAbsolutePath();
-                devicePaths.add(path);
-            }
-        }
-        return devicePaths;
-
-    }
 
 
 
@@ -782,27 +799,7 @@ public class RCTfile{
 
 
 
-
-    /*
-
-        try{
-            RCTfile.readLine(new RCTfile.ReadLineCallback(){
-                @Override
-                public String getFilePath(){
-                    return file_path;
-                }
-
-                @Override
-                public void getLineData(int index, String line_data){
-                }
-
-            });
-        }catch(IOException ignored){}
-
-     */
-
     public static void readLine(ReadLineCallback callback) throws IOException {
-        //This code can read 10 million lines in just 1.2 seconds
         String filePath = callback.getFilePath();
         try (BufferedReader br = Files.newBufferedReader(Paths.get(filePath), StandardCharsets.UTF_8)) {
             String lineData;
@@ -1466,54 +1463,46 @@ public class RCTfile{
 
 
 
-    public static void renameFile(String directory, String file_name, String new_name) {
+    public static String renameFile(String directory, String file_name, String new_name) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             File file = new File(directory, file_name);
             if (file.exists()) {
                 File new_file = new File(directory, new_name);
                 if (file.renameTo(new_file)) {
-                } else {
+                    return new_file.getAbsolutePath();
                 }
-            } else {
             }
         } else {
             Path source_file = Paths.get(directory, file_name);
+            Path target_file = source_file.resolveSibling(new_name);
             try {
-                Files.move(source_file, source_file.resolveSibling(new_name));
-            } catch (IOException ignored) {
-            }
+                Files.move(source_file, target_file);
+                return target_file.toAbsolutePath().toString();
+            } catch (IOException ignored) {}
         }
+        return null; // Return null if renaming fails
     }
 
-    public static void renameFile(String directory, String file_name, String new_name_without_extension, String new_extension) {
+
+    public static String renameFile(String directory, String file_name, String new_name_without_extension, String new_extension) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            // For devices running Android 4.4 (API level 19) or lower
-            // Use the File class to rename the file
             File file = new File(directory, file_name);
             if (file.exists()) {
-                String old_extension = file_name.substring(file_name.lastIndexOf(".") + 1);
                 String new_file_name = new_name_without_extension + "." + new_extension;
                 File new_file = new File(directory, new_file_name);
                 if (file.renameTo(new_file)) {
-                    // File renamed successfully
-                } else {
-                    // Failed to rename file
+                    return new_file.getAbsolutePath();
                 }
-            } else {
-                // File does not exist
             }
         } else {
-            // For devices running Android 8.0 (API level 26) or higher
-            // Use the java.nio.file package to rename the file
             Path source_file = Paths.get(directory, file_name);
-            String new_file_name = new_name_without_extension + "." + new_extension;
+            Path target_file = source_file.resolveSibling(new_name_without_extension + "." + new_extension);
             try {
-                Files.move(source_file, source_file.resolveSibling(new_file_name));
-                // File renamed successfully
-            } catch (IOException ignored) {
-                // Failed to rename file
-            }
+                Files.move(source_file, target_file);
+                return target_file.toAbsolutePath().toString();
+            } catch (IOException ignored) {}
         }
+        return null; // Return null if renaming fails
     }
 
 
@@ -1521,24 +1510,26 @@ public class RCTfile{
         return getFileNameWithoutExtension(file_path).concat(".").concat(new_extension);
     }
 
-    public static void renameDirectory(String directory, String new_name){
+    public static String renameDirectory(String directory, String new_name) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             File dir = new File(directory);
             File newDir = new File(dir.getParent(), new_name);
             if (dir.exists() && dir.isDirectory()) {
-                boolean success = dir.renameTo(newDir);
-                if (!success) {
-                    // Handle error
+                if (dir.renameTo(newDir)) {
+                    return newDir.getAbsolutePath();
                 }
             }
         } else {
             Path source_dir = Paths.get(directory);
+            Path target_dir = source_dir.resolveSibling(new_name);
             try {
-                Files.move(source_dir, source_dir.resolveSibling(new_name));
-            } catch (IOException ignored) {
-            }
+                Files.move(source_dir, target_dir);
+                return target_dir.toAbsolutePath().toString();
+            } catch (IOException ignored) {}
         }
+        return null; // Return null if renaming fails
     }
+
 
 
 
@@ -1889,7 +1880,7 @@ public class RCTfile{
 
 
 
-    public static void moveFile(String src_file_path, String dest_dir){
+    public static String moveFile(String src_file_path, String dest_dir) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             File src_file = new File(src_file_path);
             File dest_directory = new File(dest_dir);
@@ -1897,15 +1888,20 @@ public class RCTfile{
                 dest_directory.mkdirs();
             }
             File dest_file = new File(dest_directory, src_file.getName());
-            src_file.renameTo(dest_file);
+            if (src_file.renameTo(dest_file)) {
+                return dest_file.getAbsolutePath();
+            }
         } else {
             Path source_file = Paths.get(src_file_path);
-            Path dest_file_path = Paths.get(dest_dir, getFileName(src_file_path));
+            Path dest_file_path = Paths.get(dest_dir, source_file.getFileName().toString());
             try {
                 Files.move(source_file, dest_file_path);
+                return dest_file_path.toAbsolutePath().toString();
             } catch (IOException ignored) {}
         }
+        return null; // Return null if the move operation fails
     }
+
 
 
 
@@ -2266,11 +2262,6 @@ public class RCTfile{
         return new File(directory).exists();
     }
 
-
-
-    public void helloExp(){
-
-    }
 
 
     public static String[] listAllFilesAndSubDirectories_ExtStorageRelative(String directory) throws IOException{

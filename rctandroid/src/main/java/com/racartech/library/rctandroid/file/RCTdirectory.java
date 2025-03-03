@@ -1217,6 +1217,16 @@ public class RCTdirectory{
         return null;
     }
 
+    public static ArrayList<String> getAllFiles_ArrayList(String target_directory, boolean include_file_in_all_sub_directories) throws IOException {
+        ArrayList<File> fileList = listAllFilesAndSubDirectories_ArrayList(new File(target_directory));
+        ArrayList<String> converted_list = new ArrayList<>();
+        for(int index = 0; index< fileList.size(); index++){
+            converted_list.add(fileList.get(index).getAbsolutePath());
+        }
+
+        return converted_list;
+    }
+
 
 
 
