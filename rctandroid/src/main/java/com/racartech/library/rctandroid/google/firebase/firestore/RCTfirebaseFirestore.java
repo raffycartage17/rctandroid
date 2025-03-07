@@ -7,17 +7,15 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.core.utilities.Pair;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.Filter;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.firestore.Source;
 import com.racartech.library.rctandroid.json.RCTgoogleGSON;
 
 import java.util.ArrayList;
@@ -40,6 +38,17 @@ public class RCTfirebaseFirestore {
         String collection_path = getCollectionPath(document_path);
         String document_name = getDocumentNameFromPath(document_path);
         return readDocument(fs_instance, collection_path, document_name, thread_wait);
+    }
+
+    public static HashMap<String, Object> readDocument(
+            FirebaseFirestore fs_instance,
+            Source source,
+            String document_path,
+            long thread_wait
+    ){
+        String collection_path = getCollectionPath(document_path);
+        String document_name = getDocumentNameFromPath(document_path);
+        return readDocument(fs_instance,source, collection_path, document_name, thread_wait);
     }
 
     public static void createDocument(
@@ -1257,16 +1266,22 @@ public class RCTfirebaseFirestore {
 
     }
 
-
+    public static HashMap<String, Object> readDocument(
+            DocumentReference documentReference,
+            long thread_wait
+    ){
+        return readDocument(documentReference, Source.DEFAULT, thread_wait);
+    }
 
     public static HashMap<String, Object> readDocument(
             DocumentReference documentReference,
+            Source source,
             long thread_wait
     ){
         boolean return_boolean = false;
         AtomicBoolean finished_boolean = new AtomicBoolean(false);
         AtomicReference<HashMap<String,Object>> atomic_list = new AtomicReference<>(new HashMap<>());
-        FirestoreUtil.readDocument(documentReference,finished_boolean,atomic_list);
+        FirestoreUtil.readDocument(documentReference, source,finished_boolean,atomic_list);
         while(!return_boolean){
             if(!finished_boolean.get()){
                 try {
@@ -1287,10 +1302,22 @@ public class RCTfirebaseFirestore {
             String document_path,
             long thread_wait
     ){
+        return readDocument(instance,Source.DEFAULT,collection_path,document_path,thread_wait);
+    }
+
+
+
+    public static HashMap<String, Object> readDocument(
+            FirebaseFirestore instance,
+            Source source,
+            String collection_path,
+            String document_path,
+            long thread_wait
+    ){
         boolean return_boolean = false;
         AtomicBoolean finished_boolean = new AtomicBoolean(false);
         AtomicReference<HashMap<String,Object>> atomic_list = new AtomicReference<>(new HashMap<>());
-        FirestoreUtil.readDocument(instance,collection_path,document_path,finished_boolean,atomic_list);
+        FirestoreUtil.readDocument(instance,collection_path,document_path,finished_boolean,atomic_list, source);
         while(!return_boolean){
             if(!finished_boolean.get()){
                 try {
@@ -1985,7 +2012,9 @@ public class RCTfirebaseFirestore {
                 String collection_path,
                 String document_path,
                 AtomicBoolean finished_boolean,
-                AtomicReference<HashMap<String,Object>> atomic_list) {
+                AtomicReference<HashMap<String,Object>> atomic_list,
+                Source source
+        ) {
 
             new Thread(new Runnable() {
                 @Override
@@ -2036,6 +2065,7 @@ public class RCTfirebaseFirestore {
 
         public static void readDocument(
                 DocumentReference documentReference,
+                Source source,
                 AtomicBoolean finished_boolean,
                 AtomicReference<HashMap<String,Object>> atomic_list) {
 
@@ -2043,28 +2073,25 @@ public class RCTfirebaseFirestore {
                 @Override
                 public void run() {
 
-                    documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot document = task.getResult();
-                                if (document.exists()) {
-                                    try {
-                                        HashMap<String,Object> data_map = (HashMap<String, Object>) document.getData();
-                                        atomic_list.get().clear();
-                                        if(data_map != null) {
-                                            atomic_list.get().putAll(data_map);
-                                        }
-                                    }catch (Exception ex){
-                                        ex.printStackTrace();
+                    documentReference.get(source).addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                try {
+                                    HashMap<String,Object> data_map = (HashMap<String, Object>) document.getData();
+                                    atomic_list.get().clear();
+                                    if(data_map != null) {
+                                        atomic_list.get().putAll(data_map);
                                     }
-                                    finished_boolean.set(true);
-                                } else {
-                                    finished_boolean.set(true);
+                                }catch (Exception ex){
+                                    ex.printStackTrace();
                                 }
+                                finished_boolean.set(true);
                             } else {
                                 finished_boolean.set(true);
                             }
+                        } else {
+                            finished_boolean.set(true);
                         }
                     }).addOnCanceledListener(new OnCanceledListener() {
                         @Override
