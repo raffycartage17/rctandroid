@@ -15,9 +15,7 @@ import com.racartech.library.rctandroid.code.RCTcodeQR;
 import com.racartech.library.rctandroid.datatypes.RCTstring;
 import com.racartech.library.rctandroid.file.RCTfile;
 import com.racartech.library.rctandroid.media.RCTbitmap;
-import com.racartech.library.rctandroid.security.RCTuuid;
 import com.racartech.library.rctandroid.time.RCTdateTime;
-import com.racartech.library.rctandroid.time.RCTdateTimeData;
 
 
 public class TestQRCodeActivity extends AppCompatActivity {
