@@ -68,6 +68,12 @@ public class RCTfile{
     public final static int FILE_TYPE_AUDIO = 2;
     public final static int FILE_TYPE_DOCUMENT = 3;
 
+    public static void createFile(ArrayList<String> file_paths){
+        for(int index = 0; index<file_paths.size(); index++){
+            createFile(file_paths.get(index));
+        }
+    }
+
 
     public static String saveAsFile(byte[] file_data, String directory, String filename, Context context) {
         File dir = new File(directory, filename);

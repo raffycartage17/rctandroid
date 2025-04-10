@@ -7,6 +7,16 @@ import java.util.List;
 public class RCTarray{
 
 
+    public static String concatArrayListStringToString(ArrayList<String> arrayList) {
+        StringBuilder concatenatedString = new StringBuilder();
+        for (String str : arrayList) {
+            concatenatedString.append(str);
+        }
+        return concatenatedString.toString();
+    }
+
+
+
 
     public static ArrayList<String> convertStringArrayToArrayListString(String[] string_array){
         ArrayList<String> arraylist_string = new ArrayList<>();

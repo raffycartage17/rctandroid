@@ -45,6 +45,13 @@ public class RCTdirectory{
     public final static int SORT_MODE_SIZE_LARGEST_FIRST= 2;
 
 
+    public static void createDirectory(ArrayList<String> directories){
+        for(int index = 0; index<directories.size(); index++){
+            createDirectory(directories.get(index));
+        }
+    }
+
+
     public static ArrayList<String> getMountedStorageHomePath(Context app_context){
         ArrayList<String> home_paths = new ArrayList<>();
         //Main Storage
