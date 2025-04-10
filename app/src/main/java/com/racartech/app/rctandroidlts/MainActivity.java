@@ -70,6 +70,7 @@ import com.racartech.library.rctandroid.media.image.RCTtranscribeImageToText;
 import com.racartech.library.rctandroid.notifications.RCTnotifications;
 import com.racartech.library.rctandroid.permission.RCTpermission;
 import com.racartech.library.rctandroid.time.RCTdateTimeData;
+import com.racartech.library.rctandroid.time.RCTtrueTime;
 
 import org.json.JSONObject;
 
@@ -113,6 +114,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                RCTtrueTime.initialize();
+            }
+        }).start();
 
         FirebaseApp.initializeApp(MainActivity.this);
 
