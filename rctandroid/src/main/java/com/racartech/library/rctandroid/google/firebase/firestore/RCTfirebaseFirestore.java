@@ -2016,11 +2016,16 @@ public class RCTfirebaseFirestore {
                 Source source
         ) {
 
+            if(collection_path == null){
+                collection_path = "";
+            }
+
+            String finalCollection_path = collection_path;
             new Thread(new Runnable() {
                 @Override
                 public void run() {
 
-                    instance.collection(collection_path).document(document_path).get()
+                    instance.collection(finalCollection_path).document(document_path).get()
                             .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
                                 public void onComplete(Task<DocumentSnapshot> task) {
