@@ -512,6 +512,8 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
 
 
+
+
                         String sd_card_root = RCTfile.getExternalSdCardPath(MainActivity.this);
 
                         String download_url =  MiscellaneousDataUtil.
@@ -561,11 +563,9 @@ public class MainActivity extends AppCompatActivity {
         f8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-
                         try {
                             String the_path = "/first_col/first_docu/second_col/second_docu";
 

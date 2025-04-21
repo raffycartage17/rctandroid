@@ -1201,7 +1201,7 @@ public class RCTdirectory{
         }catch(IOException ignored){}
         return null;
     }
-    public static String[] getAllFiles(String target_directory,boolean include_file_in_all_sub_directories){
+    public static String[] getAllFiles(String target_directory){
         String[] all_files = new String[0];
         int file_count = 0;
         try{
