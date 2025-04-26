@@ -33,8 +33,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 }
 
@@ -116,6 +116,12 @@ afterEvaluate {
                 artifactId = "rctandroid"
                 version = "1.2.8"
                 artifact androidSourcesJar
+            }
+        }
+
+        repositories {
+            maven {
+                url = layout.buildDirectory.dir("repo")
             }
         }
 
