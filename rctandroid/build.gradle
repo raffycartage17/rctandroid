@@ -81,16 +81,37 @@ dependencies {
 }
 
 
+//task androidSourcesJar(type: Jar) {
+//    archiveClassifier.set("sources")
+//    from android.sourceSets.main.java.sourceFiles
+//}
+
 task androidSourcesJar(type: Jar) {
     archiveClassifier.set("sources")
-    from android.sourceSets.main.java.sourceFiles
+    from android.sourceSets.main.java.srcDirs
 }
+
+//afterEvaluate {
+//    publishing {
+//        publications {
+//            create("release", MavenPublication) {
+//                from components["release"]
+//                groupId = "com.racartech.library"
+//                artifactId = "rctandroid"
+//                version = "1.2.8"
+//
+//                artifact androidSourcesJar
+//            }
+//        }
+//    }
+//}
+
 
 afterEvaluate {
     publishing {
         publications {
-            maven(MavenPublication) {
-                from components.findByName("release")
+            release(MavenPublication) {
+                from components.findByName('release')
                 groupId = "com.racartech.library"
                 artifactId = "rctandroid"
                 version = "1.2.8"
@@ -98,19 +119,6 @@ afterEvaluate {
             }
         }
 
-        // Optional: publish to a remote Maven repo
-//        repositories {
-//            maven {
-//                def releasesUrl = uri("https://your-repo/releases")
-//                def snapshotsUrl = uri("https://your-repo/snapshots")
-//                url = version.endsWith("SNAPSHOT") ? snapshotsUrl : releasesUrl
-//
-//                credentials {
-//                    username = project.findProperty("mavenUsername") ?: ""
-//                    password = project.findProperty("mavenPassword") ?: ""
-//                }
-//            }
-//        }
     }
 }
 
