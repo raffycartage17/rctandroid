@@ -7,7 +7,14 @@ android {
     namespace 'com.racartech.library.rctandroid'
     compileSdk 35
     group 'com.racartech.library'
-    version '1.2.23'
+    version '1.2.24'
+
+    publishing {
+        singleVariant('release') {
+            //withSourcesJar() // Automatically adds sources JAR
+            withJavadocJar()
+        }
+    }
 
     defaultConfig {
         minSdk 30
@@ -81,13 +88,11 @@ dependencies {
 }
 
 
+
 tasks.register('androidSourcesJar', Jar) {
     archiveClassifier.set("sources")
     from android.sourceSets.main.java.srcDirs
 }
-
-
-
 afterEvaluate {
     publishing {
         publications {
@@ -95,19 +100,46 @@ afterEvaluate {
                 from components.findByName('release')
                 groupId = "com.racartech.library"
                 artifactId = "rctandroid"
-                version = "1.2.23"
-                //artifact androidSourcesJar
+                version = "1.2.24"
                 artifact tasks.named('androidSourcesJar').get()
             }
         }
+        repositories {
+            maven {
+                url = layout.buildDirectory.dir("maven-repo")
+            }
+        }
+    }
+}
 
+//
+//tasks.register('androidSourcesJar', Jar) {
+//    archiveClassifier.set("sources")
+//    from android.sourceSets.main.java.srcDirs
+//}
+//
+//
+//
+//afterEvaluate {
+//    publishing {
+//        publications {
+//            release(MavenPublication) {
+//                from components.findByName('release')
+//                groupId = "com.racartech.library"
+//                artifactId = "rctandroid"
+//                version = "1.2.23"
+//                //artifact androidSourcesJar
+//                artifact tasks.named('androidSourcesJar').get()
+//            }
+//        }
+//
 //        repositories {
 //            maven {
 //                url = layout.buildDirectory.dir("repo")
 //            }
 //        }
-
-    }
-}
+//
+//    }
+//}
 
 
