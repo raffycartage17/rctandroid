@@ -34,6 +34,7 @@ import com.google.maps.model.TrafficModel;
 import com.google.maps.model.TravelMode;
 import com.google.maps.model.Unit;
 import com.racartech.app.rctandroidlts.api.ApiKeyManager;
+import com.racartech.app.rctandroidlts.databinding.ActivityMainBinding;
 import com.racartech.app.rctandroidlts.firebase.FirestoreTest;
 import com.racartech.app.rctandroidlts.functionbuttons.Function10;
 import com.racartech.app.rctandroidlts.functionbuttons.Function11;
@@ -49,7 +50,7 @@ import com.racartech.app.rctandroidlts.functionbuttons.Function20;
 import com.racartech.app.rctandroidlts.functionbuttons.Function21;
 
 
-
+import com.racartech.app.rctandroidlts.functionbuttons.KotlinFuncion1;
 import com.racartech.app.rctandroidlts.maps.MapsTestActivity;
 import com.racartech.app.rctandroidlts.resources.BuildConfig;
 import com.racartech.app.rctandroidlts.util.MiscellaneousDataUtil;
@@ -108,12 +109,16 @@ public class MainActivity extends AppCompatActivity {
 
 
     RCTtranscribeImageToText transcriber = null;
+    private ActivityMainBinding binding;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         new Thread(new Runnable() {
             @Override
@@ -208,6 +213,15 @@ public class MainActivity extends AppCompatActivity {
 
         String debug_file = RCTfile.getDir_ExternalStorageRoot().concat("/apath/debug.txt");
         RCTfile.createFile(debug_file);
+
+
+
+        binding.mmK1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                KotlinFuncion1.Companion.entry();
+            }
+        });
 
 
 
