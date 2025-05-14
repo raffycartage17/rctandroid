@@ -4,7 +4,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.tasks.await
 
-object FirestoreSystemCreateMergeDocument {
+internal object FirestoreSystemCreateMergeDocument {
 
 
 

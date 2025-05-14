@@ -3,7 +3,7 @@ package com.racartech.library.rctandroidx.google.firebase.firestore.system.docum
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
-object FirestoreSystemReadDocument {
+internal object FirestoreSystemReadDocument {
 
 
     suspend fun readDocument(

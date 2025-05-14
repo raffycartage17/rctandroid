@@ -3,7 +3,7 @@ package com.racartech.library.rctandroidx.google.firebase.firestore.system.docum
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
-object FirebaseSystemDeleteDocument {
+internal object FirebaseSystemDeleteDocument {
 
     suspend fun deleteDocument(
         instance: FirebaseFirestore,

@@ -3,7 +3,7 @@ package com.racartech.library.rctandroidx.google.firebase.firestore.system.docum
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
-object FirebaseSystemCreateSetDocument {
+internal object FirebaseSystemCreateSetDocument {
 
     // Public method to create or set a Firestore document
     suspend fun createOrSetDocument(
