@@ -25,6 +25,19 @@ internal interface InterfaceFirestoreField {
     suspend fun readFieldAsBlob(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String): Blob?
     suspend fun readFieldAsDocumentReference(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String): DocumentReference?
 
+    suspend fun readFieldAsString(documentData : HashMap<String, Any>,fieldName: String): String?
+    suspend fun readFieldAsInt(documentData : HashMap<String, Any>, fieldName: String): Int?
+    suspend fun readFieldAsDouble(documentData : HashMap<String, Any>, fieldName: String): Double?
+    suspend fun readFieldAsFloat(documentData : HashMap<String, Any>, fieldName: String): Float?
+    suspend fun readFieldAsLong(documentData : HashMap<String, Any>, fieldName: String): Long?
+    suspend fun readFieldAsBoolean(documentData : HashMap<String, Any>, fieldName: String): Boolean?
+    suspend fun readFieldAsTimestamp(documentData : HashMap<String, Any>, fieldName: String): Timestamp?
+    suspend fun readFieldAsGeoPoint(documentData : HashMap<String, Any>, fieldName: String): GeoPoint?
+    suspend fun readFieldAsMap(documentData : HashMap<String, Any>, fieldName: String): Map<String, Any>?
+    suspend fun readFieldAsList(documentData : HashMap<String, Any>, fieldName: String): List<Any>?
+    suspend fun readFieldAsBlob(documentData : HashMap<String, Any>, fieldName: String): Blob?
+    suspend fun readFieldAsDocumentReference(documentData : HashMap<String, Any>, fieldName: String): DocumentReference?
+
     // ----------------- setField Methods -----------------
 
     suspend fun setFieldAsString(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String, value: String)
@@ -39,6 +52,19 @@ internal interface InterfaceFirestoreField {
     suspend fun setFieldAsList(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String, value: List<Any>)
     suspend fun setFieldAsBlob(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String, value: Blob)
     suspend fun setFieldAsDocumentReference(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String, value: DocumentReference)
+
+//    suspend fun setFieldAsString(documentData: HashMap<String, Any>, fieldName: String, value: String)
+//    suspend fun setFieldAsInt(documentData: HashMap<String, Any>, fieldName: String, value: Int)
+//    suspend fun setFieldAsDouble(documentData: HashMap<String, Any>, fieldName: String, value: Double)
+//    suspend fun setFieldAsFloat(documentData: HashMap<String, Any>, fieldName: String, value: Float)
+//    suspend fun setFieldAsLong(documentData: HashMap<String, Any>, fieldName: String, value: Long)
+//    suspend fun setFieldAsBoolean(documentData: HashMap<String, Any>, fieldName: String, value: Boolean)
+//    suspend fun setFieldAsTimestamp(documentData: HashMap<String, Any>, fieldName: String, value: Timestamp)
+//    suspend fun setFieldAsGeoPoint(documentData: HashMap<String, Any>, fieldName: String, value: GeoPoint)
+//    suspend fun setFieldAsMap(documentData: HashMap<String, Any>, fieldName: String, value: Map<String, Any>)
+//    suspend fun setFieldAsList(documentData: HashMap<String, Any>, fieldName: String, value: List<Any>)
+//    suspend fun setFieldAsBlob(documentData: HashMap<String, Any>, fieldName: String, value: Blob)
+//    suspend fun setFieldAsDocumentReference(documentData: HashMap<String, Any>, fieldName: String, value: DocumentReference)
 
     // ----------------- updateField Method -----------------
 

@@ -41,6 +41,26 @@ internal object FirestoreSystemReadField {
 
 
 
+    /////////////////////
+
+
+    public suspend inline fun <reified T> readField(
+        documentData: HashMap<String, Any>,
+        fieldName: String
+    ): T? {
+        return systemReadField<T>(documentData, fieldName)
+    }
+
+    private suspend inline fun <reified T> systemReadField(
+        documentData: HashMap<String, Any>,
+        fieldName: String
+    ): T? {
+        val value = documentData[fieldName] ?: return null
+        return value as? T
+    }
+
+
+
 
 
 

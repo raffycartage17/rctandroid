@@ -12,12 +12,8 @@ import com.racartech.library.rctandroidx.google.firebase.firestore.system.field.
 import com.racartech.library.rctandroidx.google.firebase.firestore.system.field.FirestoreSystemSetField
 import com.racartech.library.rctandroidx.google.firebase.firestore.`interface`.InterfaceFirestoreField
 import com.racartech.library.rctandroidx.google.firebase.firestore.model.FieldData
-import com.racartech.library.rctandroidx.google.firebase.firestore.system.document.FirebaseSystemCreateSetDocument
-import com.racartech.library.rctandroidx.google.firebase.firestore.system.document.FirebaseSystemDeleteDocument
-import com.racartech.library.rctandroidx.google.firebase.firestore.system.document.FirestoreSystemCreateMergeDocument
-import com.racartech.library.rctandroidx.google.firebase.firestore.system.document.FirestoreSystemReadDocument
 
-object FirestoreField : InterfaceFirestoreField, InterfaceFirestoreDocument {
+object FirestoreField : InterfaceFirestoreField{
 
 
 
@@ -128,6 +124,93 @@ object FirestoreField : InterfaceFirestoreField, InterfaceFirestoreDocument {
     ): DocumentReference? {
         return FirestoreSystemReadField.readField<DocumentReference>(instance, collectionPath, documentPath, fieldName)
     }
+
+
+
+    override suspend fun readFieldAsString(
+        documentData: HashMap<String, Any>,
+        fieldName: String
+    ): String? {
+        return FirestoreSystemReadField.readField<String>(documentData, fieldName)
+    }
+
+    override suspend fun readFieldAsInt(
+        documentData: HashMap<String, Any>,
+        fieldName: String
+    ): Int? {
+        return FirestoreSystemReadField.readField<Int>(documentData, fieldName)
+    }
+
+    override suspend fun readFieldAsDouble(
+        documentData: HashMap<String, Any>,
+        fieldName: String
+    ): Double? {
+        return FirestoreSystemReadField.readField<Double>(documentData, fieldName)
+    }
+
+    override suspend fun readFieldAsFloat(
+        documentData: HashMap<String, Any>,
+        fieldName: String
+    ): Float? {
+        return FirestoreSystemReadField.readField<Float>(documentData, fieldName)
+    }
+
+    override suspend fun readFieldAsLong(
+        documentData: HashMap<String, Any>,
+        fieldName: String
+    ): Long? {
+        return FirestoreSystemReadField.readField<Long>(documentData, fieldName)
+    }
+
+    override suspend fun readFieldAsBoolean(
+        documentData: HashMap<String, Any>,
+        fieldName: String
+    ): Boolean? {
+        return FirestoreSystemReadField.readField<Boolean>(documentData, fieldName)
+    }
+
+    override suspend fun readFieldAsTimestamp(
+        documentData: HashMap<String, Any>,
+        fieldName: String
+    ): Timestamp? {
+        return FirestoreSystemReadField.readField<Timestamp>(documentData, fieldName)
+    }
+
+    override suspend fun readFieldAsGeoPoint(
+        documentData: HashMap<String, Any>,
+        fieldName: String
+    ): GeoPoint? {
+        return FirestoreSystemReadField.readField<GeoPoint>(documentData, fieldName)
+    }
+
+    override suspend fun readFieldAsMap(
+        documentData: HashMap<String, Any>,
+        fieldName: String
+    ): Map<String, Any>? {
+        return FirestoreSystemReadField.readField<Map<String, Any>>(documentData, fieldName)
+    }
+
+    override suspend fun readFieldAsList(
+        documentData: HashMap<String, Any>,
+        fieldName: String
+    ): List<Any>? {
+        return FirestoreSystemReadField.readField<List<Any>>(documentData, fieldName)
+    }
+
+    override suspend fun readFieldAsBlob(
+        documentData: HashMap<String, Any>,
+        fieldName: String
+    ): Blob? {
+        return FirestoreSystemReadField.readField<Blob>(documentData, fieldName)
+    }
+
+    override suspend fun readFieldAsDocumentReference(
+        documentData: HashMap<String, Any>,
+        fieldName: String
+    ): DocumentReference? {
+        return FirestoreSystemReadField.readField<DocumentReference>(documentData, fieldName)
+    }
+
 
 
     // ----------------- setField Methods -----------------
@@ -494,36 +577,6 @@ object FirestoreField : InterfaceFirestoreField, InterfaceFirestoreDocument {
         fieldName: String
     ) {
         FirestoreSystemDeleteField.deleteField(instance, collectionPath, documentPath, fieldName)
-    }
-
-    override suspend fun readDocument(instance: FirebaseFirestore, collectionPath: String, documentPath: String): HashMap<String, Any>? {
-        return FirestoreSystemReadDocument.readDocument(instance, collectionPath, documentPath);
-    }
-
-    override suspend fun createMergeDocument(
-        instance: FirebaseFirestore,
-        collectionPath: String,
-        documentPath: String,
-        contents: HashMap<String, Any>
-    ): Boolean {
-        return FirestoreSystemCreateMergeDocument.createMergeDocument(instance, collectionPath, documentPath, contents)
-    }
-
-    override suspend fun createSetDocument(
-        instance: FirebaseFirestore,
-        collectionPath: String,
-        documentPath: String,
-        contents: HashMap<String, Any>
-    ): Boolean {
-        return FirebaseSystemCreateSetDocument.createOrSetDocument(instance,  collectionPath, documentPath, contents);
-    }
-
-    override suspend fun deleteDocument(
-        instance: FirebaseFirestore,
-        collectionPath: String,
-        documentPath: String
-    ): Boolean {
-        return FirebaseSystemDeleteDocument.deleteDocument(instance, collectionPath, documentPath)
     }
 
 
