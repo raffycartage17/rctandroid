@@ -1,7 +1,7 @@
 package com.racartech.app.rctandroidlts.functionbuttons
 
 import com.google.firebase.firestore.FirebaseFirestore
-import com.racartech.library.rctandroid.google.firebase.firestore.FirestoreField
+import com.racartech.library.rctandroidx.google.firestore.FirestoreField
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
