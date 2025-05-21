@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "com.racartech.app.rctandroidlts"
-        minSdk 30
+        minSdk 33
         targetSdk 35
         versionCode 1
         versionName "1.3.0"
@@ -48,10 +48,11 @@ android {
 dependencies {
 
 
-    implementation(platform("com.google.firebase:firebase-bom:33.13.0")) //33.11.0 causes NullPointerException
+    implementation(platform("com.google.firebase:firebase-bom:33.14.0")) //33.11.0 causes NullPointerException
     implementation 'com.google.firebase:firebase-analytics'
 
     implementation 'com.github.crazzyghost:alphavantage-java:1.7.0'
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.9.0")
 
     implementation 'com.google.firebase:firebase-auth'
     implementation 'com.google.firebase:firebase-firestore'

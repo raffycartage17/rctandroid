@@ -74,5 +74,45 @@ internal object FirestoreSystemCreateUpdateField {
         }
     }
 
+    public suspend inline fun <reified T> createUpdateField(
+        documentData: HashMap<String, Any>,
+        fieldName: String,
+        value: T
+    ) {
+        systemCreateUpdateField(documentData, fieldName, value)
+    }
+
+    private suspend inline fun <reified T> systemCreateUpdateField(
+        documentData: HashMap<String, Any>,
+        fieldName: String,
+        value: T
+    ) {
+        try {
+            documentData[fieldName] = value as Any
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    public suspend fun createUpdateFields(
+        documentData: HashMap<String, Any>,
+        fields: List<FieldData>
+    ) {
+        systemCreateFields(documentData, fields)
+    }
+
+    private suspend fun systemCreateFields(
+        documentData: HashMap<String, Any>,
+        fields: List<FieldData>
+    ) {
+        try {
+            for (field in fields) {
+                documentData[field.name] = field.value
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
 
 }

@@ -53,18 +53,18 @@ internal interface InterfaceFirestoreField {
     suspend fun setFieldAsBlob(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String, value: Blob)
     suspend fun setFieldAsDocumentReference(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String, value: DocumentReference)
 
-//    suspend fun setFieldAsString(documentData: HashMap<String, Any>, fieldName: String, value: String)
-//    suspend fun setFieldAsInt(documentData: HashMap<String, Any>, fieldName: String, value: Int)
-//    suspend fun setFieldAsDouble(documentData: HashMap<String, Any>, fieldName: String, value: Double)
-//    suspend fun setFieldAsFloat(documentData: HashMap<String, Any>, fieldName: String, value: Float)
-//    suspend fun setFieldAsLong(documentData: HashMap<String, Any>, fieldName: String, value: Long)
-//    suspend fun setFieldAsBoolean(documentData: HashMap<String, Any>, fieldName: String, value: Boolean)
-//    suspend fun setFieldAsTimestamp(documentData: HashMap<String, Any>, fieldName: String, value: Timestamp)
-//    suspend fun setFieldAsGeoPoint(documentData: HashMap<String, Any>, fieldName: String, value: GeoPoint)
-//    suspend fun setFieldAsMap(documentData: HashMap<String, Any>, fieldName: String, value: Map<String, Any>)
-//    suspend fun setFieldAsList(documentData: HashMap<String, Any>, fieldName: String, value: List<Any>)
-//    suspend fun setFieldAsBlob(documentData: HashMap<String, Any>, fieldName: String, value: Blob)
-//    suspend fun setFieldAsDocumentReference(documentData: HashMap<String, Any>, fieldName: String, value: DocumentReference)
+    suspend fun setFieldAsString(documentData: HashMap<String, Any>, fieldName: String, value: String)
+    suspend fun setFieldAsInt(documentData: HashMap<String, Any>, fieldName: String, value: Int)
+    suspend fun setFieldAsDouble(documentData: HashMap<String, Any>, fieldName: String, value: Double)
+    suspend fun setFieldAsFloat(documentData: HashMap<String, Any>, fieldName: String, value: Float)
+    suspend fun setFieldAsLong(documentData: HashMap<String, Any>, fieldName: String, value: Long)
+    suspend fun setFieldAsBoolean(documentData: HashMap<String, Any>, fieldName: String, value: Boolean)
+    suspend fun setFieldAsTimestamp(documentData: HashMap<String, Any>, fieldName: String, value: Timestamp)
+    suspend fun setFieldAsGeoPoint(documentData: HashMap<String, Any>, fieldName: String, value: GeoPoint)
+    suspend fun setFieldAsMap(documentData: HashMap<String, Any>, fieldName: String, value: Map<String, Any>)
+    suspend fun setFieldAsList(documentData: HashMap<String, Any>, fieldName: String, value: List<Any>)
+    suspend fun setFieldAsBlob(documentData: HashMap<String, Any>, fieldName: String, value: Blob)
+    suspend fun setFieldAsDocumentReference(documentData: HashMap<String, Any>, fieldName: String, value: DocumentReference)
 
     // ----------------- updateField Method -----------------
 
@@ -81,7 +81,21 @@ internal interface InterfaceFirestoreField {
     suspend fun createUpdateFieldAsBlob(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String, value: Blob)
     suspend fun createUpdateFieldAsDocumentReference(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String, value: DocumentReference)
 
+    suspend fun createUpdateFieldAsString(documentData: HashMap<String, Any>, fieldName: String, value: String)
+    suspend fun createUpdateFieldAsInt(documentData: HashMap<String, Any>, fieldName: String, value: Int)
+    suspend fun createUpdateFieldAsDouble(documentData: HashMap<String, Any>, fieldName: String, value: Double)
+    suspend fun createUpdateFieldAsFloat(documentData: HashMap<String, Any>, fieldName: String, value: Float)
+    suspend fun createUpdateFieldAsLong(documentData: HashMap<String, Any>, fieldName: String, value: Long)
+    suspend fun createUpdateFieldAsBoolean(documentData: HashMap<String, Any>, fieldName: String, value: Boolean)
+    suspend fun createUpdateFieldTimestamp(documentData: HashMap<String, Any>, fieldName: String, value: Timestamp)
+    suspend fun createUpdateFieldGeoPoint(documentData: HashMap<String, Any>, fieldName: String, value: GeoPoint)
+    suspend fun createUpdateFieldMap(documentData: HashMap<String, Any>, fieldName: String, value: Map<String, Any>)
+    suspend fun createUpdateFieldList(documentData: HashMap<String, Any>, fieldName: String, value: List<Any>)
+    suspend fun createUpdateFieldBlob(documentData: HashMap<String, Any>, fieldName: String, value: Blob)
+    suspend fun createUpdateFieldDocumentReference(documentData: HashMap<String, Any>, fieldName: String, value: DocumentReference)
+
     suspend fun createUpdateFields(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fields : List<FieldData>)
+    suspend fun createUpdateFields(documentData: HashMap<String, Any>, fields : List<FieldData>)
 
     // ----------------- deleteField Method -----------------
 

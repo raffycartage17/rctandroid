@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     Button f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13,f14,f15,f16,f17,f18,f19,f20,f21;
+    Button k1,k2,k3,k4,k5,k6,k7,k8,k9;
     Button window_1_btn,window_2_btn,window_3_btn,window_4_btn;
     Button textbox_enter;
     EditText textbox;
@@ -159,6 +160,8 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
+
         debug_textview = findViewById(R.id.mm_debug_textview);
         textbox = findViewById(R.id.mm_textbox);
 
@@ -219,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
         binding.mmK1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                KotlinFuncion1.Companion.entry();
+                KotlinFuncion1.Companion.entry(MainActivity.this, FirebaseFirestore.getInstance());
             }
         });
 

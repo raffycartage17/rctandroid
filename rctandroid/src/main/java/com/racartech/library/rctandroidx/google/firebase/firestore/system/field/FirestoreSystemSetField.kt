@@ -32,4 +32,27 @@ internal object FirestoreSystemSetField {
             e.printStackTrace()
         }
     }
+
+
+    public suspend inline fun <reified T> setField(
+        documentData: HashMap<String, Any>,
+        fieldName: String,
+        value: T
+    ) {
+        systemSetField(documentData, fieldName, value)
+    }
+
+    private suspend inline fun <reified T> systemSetField(
+        documentData: HashMap<String, Any>,
+        fieldName: String,
+        value: T
+    ) {
+        try {
+            documentData[fieldName] = value as Any
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+
 }
