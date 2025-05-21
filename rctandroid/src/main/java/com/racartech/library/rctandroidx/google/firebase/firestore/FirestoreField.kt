@@ -1,16 +1,17 @@
-package com.racartech.library.rctandroidx.google.firebase.firestore
+package com.racartech.library.rctandroidx.google.firestore
 
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.Blob
 import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.GeoPoint
-import com.racartech.library.rctandroidx.google.firebase.firestore.`interface`.InterfaceFirestoreField
-import com.racartech.library.rctandroidx.google.firebase.firestore.model.FieldData
+import com.racartech.library.rctandroidx.google.firebase.firestore.`interface`.InterfaceFirestoreDocument
 import com.racartech.library.rctandroidx.google.firebase.firestore.system.field.FirestoreSystemCreateUpdateField
 import com.racartech.library.rctandroidx.google.firebase.firestore.system.field.FirestoreSystemDeleteField
 import com.racartech.library.rctandroidx.google.firebase.firestore.system.field.FirestoreSystemReadField
 import com.racartech.library.rctandroidx.google.firebase.firestore.system.field.FirestoreSystemSetField
+import com.racartech.library.rctandroidx.google.firebase.firestore.`interface`.InterfaceFirestoreField
+import com.racartech.library.rctandroidx.google.firebase.firestore.model.FieldData
 
 object FirestoreField : InterfaceFirestoreField{
 
@@ -221,7 +222,7 @@ object FirestoreField : InterfaceFirestoreField{
         fieldName: String,
         value: String
     ) {
-        FirestoreSystemSetField.setField(instance,collectionPath,documentPath,fieldName, value)
+        FirestoreSystemSetField.setField(instance,collectionPath,documentPath,fieldName, value);
     }
 
     override suspend fun setFieldAsString(
@@ -239,7 +240,7 @@ object FirestoreField : InterfaceFirestoreField{
         fieldName: String,
         value: Int
     ) {
-        FirestoreSystemSetField.setField(instance,collectionPath,documentPath,fieldName, value)
+        FirestoreSystemSetField.setField(instance,collectionPath,documentPath,fieldName, value);
     }
 
     override suspend fun setFieldAsInt(
@@ -257,7 +258,7 @@ object FirestoreField : InterfaceFirestoreField{
         fieldName: String,
         value: Double
     ) {
-        FirestoreSystemSetField.setField(instance,collectionPath,documentPath,fieldName, value)
+        FirestoreSystemSetField.setField(instance,collectionPath,documentPath,fieldName, value);
     }
 
     override suspend fun setFieldAsDouble(
@@ -275,7 +276,7 @@ object FirestoreField : InterfaceFirestoreField{
         fieldName: String,
         value: Float
     ) {
-        FirestoreSystemSetField.setField(instance,collectionPath,documentPath,fieldName, value)
+        FirestoreSystemSetField.setField(instance,collectionPath,documentPath,fieldName, value);
     }
 
     override suspend fun setFieldAsFloat(
@@ -293,7 +294,7 @@ object FirestoreField : InterfaceFirestoreField{
         fieldName: String,
         value: Long
     ) {
-        FirestoreSystemSetField.setField(instance,collectionPath,documentPath,fieldName, value)
+        FirestoreSystemSetField.setField(instance,collectionPath,documentPath,fieldName, value);
     }
 
     override suspend fun setFieldAsLong(
@@ -311,7 +312,7 @@ object FirestoreField : InterfaceFirestoreField{
         fieldName: String,
         value: Boolean
     ) {
-        FirestoreSystemSetField.setField(instance,collectionPath,documentPath,fieldName, value)
+        FirestoreSystemSetField.setField(instance,collectionPath,documentPath,fieldName, value);
     }
 
     override suspend fun setFieldAsBoolean(
@@ -329,7 +330,7 @@ object FirestoreField : InterfaceFirestoreField{
         fieldName: String,
         value: Timestamp
     ) {
-        FirestoreSystemSetField.setField(instance,collectionPath,documentPath,fieldName, value)
+        FirestoreSystemSetField.setField(instance,collectionPath,documentPath,fieldName, value);
     }
 
     override suspend fun setFieldAsTimestamp(
@@ -347,7 +348,7 @@ object FirestoreField : InterfaceFirestoreField{
         fieldName: String,
         value: GeoPoint
     ) {
-        FirestoreSystemSetField.setField(instance,collectionPath,documentPath,fieldName, value)
+        FirestoreSystemSetField.setField(instance,collectionPath,documentPath,fieldName, value);
     }
 
     override suspend fun setFieldAsGeoPoint(
@@ -365,7 +366,7 @@ object FirestoreField : InterfaceFirestoreField{
         fieldName: String,
         value: Map<String, Any>
     ) {
-        FirestoreSystemSetField.setField(instance,collectionPath,documentPath,fieldName, value)
+        FirestoreSystemSetField.setField(instance,collectionPath,documentPath,fieldName, value);
     }
 
     override suspend fun setFieldAsMap(
@@ -383,7 +384,7 @@ object FirestoreField : InterfaceFirestoreField{
         fieldName: String,
         value: List<Any>
     ) {
-        FirestoreSystemSetField.setField(instance,collectionPath,documentPath,fieldName, value)
+        FirestoreSystemSetField.setField(instance,collectionPath,documentPath,fieldName, value);
     }
 
     override suspend fun setFieldAsList(
@@ -401,7 +402,7 @@ object FirestoreField : InterfaceFirestoreField{
         fieldName: String,
         value: Blob
     ) {
-        FirestoreSystemSetField.setField(instance,collectionPath,documentPath,fieldName, value)
+        FirestoreSystemSetField.setField(instance,collectionPath,documentPath,fieldName, value);
     }
 
     override suspend fun setFieldAsBlob(
@@ -419,7 +420,7 @@ object FirestoreField : InterfaceFirestoreField{
         fieldName: String,
         value: DocumentReference
     ) {
-        FirestoreSystemSetField.setField(instance,collectionPath,documentPath,fieldName, value)
+        FirestoreSystemSetField.setField(instance,collectionPath,documentPath,fieldName, value);
     }
 
     override suspend fun setFieldAsDocumentReference(
@@ -602,132 +603,12 @@ object FirestoreField : InterfaceFirestoreField{
         FirestoreSystemCreateUpdateField.createUpdateField(instance, collectionPath, documentPath, fieldName, value)
     }
 
-    override suspend fun createUpdateFieldAsStringAndGetDocument(
-        instance: FirebaseFirestore,
-        collectionPath: String,
-        documentPath: String,
-        fieldName: String,
-        value: String
-    ): HashMap<String, Any>? {
-        return FirestoreSystemCreateUpdateField.createUpdateFieldAndGetDocument(instance, collectionPath, documentPath, fieldName, value)
-    }
-
-    override suspend fun createUpdateFieldAsIntAndGetDocument(
-        instance: FirebaseFirestore,
-        collectionPath: String,
-        documentPath: String,
-        fieldName: String,
-        value: Int
-    ): HashMap<String, Any>? {
-        return FirestoreSystemCreateUpdateField.createUpdateFieldAndGetDocument(instance, collectionPath, documentPath, fieldName, value)
-    }
-
-    override suspend fun createUpdateFieldAsDoubleAndGetDocument(
-        instance: FirebaseFirestore,
-        collectionPath: String,
-        documentPath: String,
-        fieldName: String,
-        value: Double
-    ): HashMap<String, Any>? {
-        return FirestoreSystemCreateUpdateField.createUpdateFieldAndGetDocument(instance, collectionPath, documentPath, fieldName, value)
-    }
-
-    override suspend fun createUpdateFieldAsFloatAndGetDocument(
-        instance: FirebaseFirestore,
-        collectionPath: String,
-        documentPath: String,
-        fieldName: String,
-        value: Float
-    ): HashMap<String, Any>? {
-        return FirestoreSystemCreateUpdateField.createUpdateFieldAndGetDocument(instance, collectionPath, documentPath, fieldName, value)
-    }
-
-    override suspend fun createUpdateFieldAsLongAndGetDocument(
-        instance: FirebaseFirestore,
-        collectionPath: String,
-        documentPath: String,
-        fieldName: String,
-        value: Long
-    ): HashMap<String, Any>? {
-        return FirestoreSystemCreateUpdateField.createUpdateFieldAndGetDocument(instance, collectionPath, documentPath, fieldName, value)
-    }
-
-    override suspend fun createUpdateFieldAsBooleanAndGetDocument(
-        instance: FirebaseFirestore,
-        collectionPath: String,
-        documentPath: String,
-        fieldName: String,
-        value: Boolean
-    ): HashMap<String, Any>? {
-        return FirestoreSystemCreateUpdateField.createUpdateFieldAndGetDocument(instance, collectionPath, documentPath, fieldName, value)
-    }
-
-    override suspend fun createUpdateFieldAsTimestampAndGetDocument(
-        instance: FirebaseFirestore,
-        collectionPath: String,
-        documentPath: String,
-        fieldName: String,
-        value: Timestamp
-    ): HashMap<String, Any>? {
-        return FirestoreSystemCreateUpdateField.createUpdateFieldAndGetDocument(instance, collectionPath, documentPath, fieldName, value)
-    }
-
-    override suspend fun createUpdateFieldAsGeoPointAndGetDocument(
-        instance: FirebaseFirestore,
-        collectionPath: String,
-        documentPath: String,
-        fieldName: String,
-        value: GeoPoint
-    ): HashMap<String, Any>? {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun createUpdateFieldAsMapAndGetDocument(
-        instance: FirebaseFirestore,
-        collectionPath: String,
-        documentPath: String,
-        fieldName: String,
-        value: Map<String, Any>
-    ): HashMap<String, Any>? {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun createUpdateFieldAsListAndGetDocument(
-        instance: FirebaseFirestore,
-        collectionPath: String,
-        documentPath: String,
-        fieldName: String,
-        value: List<Any>
-    ): HashMap<String, Any>? {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun createUpdateFieldAsBlobAndGetDocument(
-        instance: FirebaseFirestore,
-        collectionPath: String,
-        documentPath: String,
-        fieldName: String,
-        value: Blob
-    ): HashMap<String, Any>? {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun createUpdateFieldAsDocumentReferenceAndGetDocument(
-        instance: FirebaseFirestore,
-        collectionPath: String,
-        documentPath: String,
-        fieldName: String,
-        value: DocumentReference
-    ): HashMap<String, Any>? {
-        TODO("Not yet implemented")
-    }
-
     override suspend fun createUpdateFieldTimestamp(
         documentData: HashMap<String, Any>,
         fieldName: String,
         value: Timestamp
     ) {
-        FirestoreSystemCreateUpdateField.createUpdateField(documentData, fieldName, value)
+        TODO("Not yet implemented")
     }
 
     override suspend fun createUpdateFieldGeoPoint(
@@ -735,7 +616,7 @@ object FirestoreField : InterfaceFirestoreField{
         fieldName: String,
         value: GeoPoint
     ) {
-        FirestoreSystemCreateUpdateField.createUpdateField(documentData, fieldName, value)
+        TODO("Not yet implemented")
     }
 
     override suspend fun createUpdateFieldMap(
@@ -743,7 +624,7 @@ object FirestoreField : InterfaceFirestoreField{
         fieldName: String,
         value: Map<String, Any>
     ) {
-        FirestoreSystemCreateUpdateField.createUpdateField(documentData, fieldName, value)
+        TODO("Not yet implemented")
     }
 
     override suspend fun createUpdateFieldList(
@@ -751,7 +632,7 @@ object FirestoreField : InterfaceFirestoreField{
         fieldName: String,
         value: List<Any>
     ) {
-        FirestoreSystemCreateUpdateField.createUpdateField(documentData, fieldName, value)
+        TODO("Not yet implemented")
     }
 
     override suspend fun createUpdateFieldBlob(
@@ -759,7 +640,7 @@ object FirestoreField : InterfaceFirestoreField{
         fieldName: String,
         value: Blob
     ) {
-        FirestoreSystemCreateUpdateField.createUpdateField(documentData, fieldName, value)
+        TODO("Not yet implemented")
     }
 
     override suspend fun createUpdateFieldDocumentReference(
@@ -767,7 +648,7 @@ object FirestoreField : InterfaceFirestoreField{
         fieldName: String,
         value: DocumentReference
     ) {
-        FirestoreSystemCreateUpdateField.createUpdateField(documentData, fieldName, value)
+        TODO("Not yet implemented")
     }
 
     override suspend fun createUpdateFields(
@@ -786,15 +667,6 @@ object FirestoreField : InterfaceFirestoreField{
         FirestoreSystemCreateUpdateField.createUpdateFields(documentData, fields)
     }
 
-    override suspend fun createUpdateFieldsAndGetDocument(
-        instance: FirebaseFirestore,
-        collectionPath: String,
-        documentPath: String,
-        fields: List<FieldData>
-    ): HashMap<String, Any>? {
-        return FirestoreSystemCreateUpdateField.createUpdateFieldsAndGetDocument(instance, collectionPath, documentPath, fields)
-    }
-
 
     // ----------------- deleteField Methods -----------------
 
@@ -807,13 +679,6 @@ object FirestoreField : InterfaceFirestoreField{
         FirestoreSystemDeleteField.deleteField(instance, collectionPath, documentPath, fieldName)
     }
 
-    override suspend fun deleteFieldAsString(
-        documentData: HashMap<String, Any>,
-        fieldName: String
-    ) {
-        FirestoreSystemDeleteField.deleteField(documentData, fieldName)
-    }
-
     override suspend fun deleteFieldAsInt(
         instance: FirebaseFirestore,
         collectionPath: String,
@@ -823,10 +688,6 @@ object FirestoreField : InterfaceFirestoreField{
         FirestoreSystemDeleteField.deleteField(instance, collectionPath, documentPath, fieldName)
     }
 
-    override suspend fun deleteFieldAsInt(documentData: HashMap<String, Any>, fieldName: String) {
-        FirestoreSystemDeleteField.deleteField(documentData, fieldName)
-    }
-
     override suspend fun deleteFieldAsDouble(
         instance: FirebaseFirestore,
         collectionPath: String,
@@ -834,13 +695,6 @@ object FirestoreField : InterfaceFirestoreField{
         fieldName: String
     ) {
         FirestoreSystemDeleteField.deleteField(instance, collectionPath, documentPath, fieldName)
-    }
-
-    override suspend fun deleteFieldAsDouble(
-        documentData: HashMap<String, Any>,
-        fieldName: String
-    ) {
-        FirestoreSystemDeleteField.deleteField(documentData, fieldName)
     }
 
     override suspend fun deleteFieldAsFloat(
@@ -852,10 +706,6 @@ object FirestoreField : InterfaceFirestoreField{
         FirestoreSystemDeleteField.deleteField(instance, collectionPath, documentPath, fieldName)
     }
 
-    override suspend fun deleteFieldAsFloat(documentData: HashMap<String, Any>, fieldName: String) {
-        FirestoreSystemDeleteField.deleteField(documentData, fieldName)
-    }
-
     override suspend fun deleteFieldAsLong(
         instance: FirebaseFirestore,
         collectionPath: String,
@@ -865,10 +715,6 @@ object FirestoreField : InterfaceFirestoreField{
         FirestoreSystemDeleteField.deleteField(instance, collectionPath, documentPath, fieldName)
     }
 
-    override suspend fun deleteFieldAsLong(documentData: HashMap<String, Any>, fieldName: String) {
-        FirestoreSystemDeleteField.deleteField(documentData, fieldName)
-    }
-
     override suspend fun deleteFieldAsBoolean(
         instance: FirebaseFirestore,
         collectionPath: String,
@@ -876,13 +722,6 @@ object FirestoreField : InterfaceFirestoreField{
         fieldName: String
     ) {
         FirestoreSystemDeleteField.deleteField(instance, collectionPath, documentPath, fieldName)
-    }
-
-    override suspend fun deleteFieldAsBoolean(
-        documentData: HashMap<String, Any>,
-        fieldName: String
-    ) {
-        FirestoreSystemDeleteField.deleteField(documentData, fieldName)
     }
 
     override suspend fun deleteFieldAsTimestamp(
@@ -894,13 +733,6 @@ object FirestoreField : InterfaceFirestoreField{
         FirestoreSystemDeleteField.deleteField(instance, collectionPath, documentPath, fieldName)
     }
 
-    override suspend fun deleteFieldAsTimestamp(
-        documentData: HashMap<String, Any>,
-        fieldName: String
-    ) {
-        FirestoreSystemDeleteField.deleteField(documentData, fieldName)
-    }
-
     override suspend fun deleteFieldAsGeoPoint(
         instance: FirebaseFirestore,
         collectionPath: String,
@@ -908,13 +740,6 @@ object FirestoreField : InterfaceFirestoreField{
         fieldName: String
     ) {
         FirestoreSystemDeleteField.deleteField(instance, collectionPath, documentPath, fieldName)
-    }
-
-    override suspend fun deleteFieldAsGeoPoint(
-        documentData: HashMap<String, Any>,
-        fieldName: String
-    ) {
-        FirestoreSystemDeleteField.deleteField(documentData, fieldName)
     }
 
     override suspend fun deleteFieldAsMap(
@@ -926,10 +751,6 @@ object FirestoreField : InterfaceFirestoreField{
         FirestoreSystemDeleteField.deleteField(instance, collectionPath, documentPath, fieldName)
     }
 
-    override suspend fun deleteFieldAsMap(documentData: HashMap<String, Any>, fieldName: String) {
-        FirestoreSystemDeleteField.deleteField(documentData, fieldName)
-    }
-
     override suspend fun deleteFieldAsList(
         instance: FirebaseFirestore,
         collectionPath: String,
@@ -937,10 +758,6 @@ object FirestoreField : InterfaceFirestoreField{
         fieldName: String
     ) {
         FirestoreSystemDeleteField.deleteField(instance, collectionPath, documentPath, fieldName)
-    }
-
-    override suspend fun deleteFieldAsList(documentData: HashMap<String, Any>, fieldName: String) {
-        FirestoreSystemDeleteField.deleteField(documentData, fieldName)
     }
 
     override suspend fun deleteFieldAsBlob(
@@ -952,10 +769,6 @@ object FirestoreField : InterfaceFirestoreField{
         FirestoreSystemDeleteField.deleteField(instance, collectionPath, documentPath, fieldName)
     }
 
-    override suspend fun deleteFieldAsBlob(documentData: HashMap<String, Any>, fieldName: String) {
-        FirestoreSystemDeleteField.deleteField(documentData, fieldName)
-    }
-
     override suspend fun deleteFieldAsDocumentReference(
         instance: FirebaseFirestore,
         collectionPath: String,
@@ -963,121 +776,6 @@ object FirestoreField : InterfaceFirestoreField{
         fieldName: String
     ) {
         FirestoreSystemDeleteField.deleteField(instance, collectionPath, documentPath, fieldName)
-    }
-
-    override suspend fun deleteFieldAsDocumentReference(
-        documentData: HashMap<String, Any>,
-        fieldName: String
-    ) {
-        FirestoreSystemDeleteField.deleteField(documentData, fieldName)
-    }
-
-    override suspend fun deleteAndGetFieldAsString(
-        instance: FirebaseFirestore,
-        collectionPath: String,
-        documentPath: String,
-        fieldName: String
-    ): HashMap<String, Any>? {
-        return FirestoreSystemDeleteField.deleteAndGetField(instance, collectionPath, documentPath, fieldName)
-    }
-
-    override suspend fun deleteAndGetFieldAsInt(
-        instance: FirebaseFirestore,
-        collectionPath: String,
-        documentPath: String,
-        fieldName: String
-    ): HashMap<String, Any>? {
-        return FirestoreSystemDeleteField.deleteAndGetField(instance, collectionPath, documentPath, fieldName)
-    }
-
-    override suspend fun deleteAndGetFieldAsDouble(
-        instance: FirebaseFirestore,
-        collectionPath: String,
-        documentPath: String,
-        fieldName: String
-    ): HashMap<String, Any>? {
-        return FirestoreSystemDeleteField.deleteAndGetField(instance, collectionPath, documentPath, fieldName)
-    }
-
-    override suspend fun deleteAndGetFieldAsFloat(
-        instance: FirebaseFirestore,
-        collectionPath: String,
-        documentPath: String,
-        fieldName: String
-    ): HashMap<String, Any>? {
-        return FirestoreSystemDeleteField.deleteAndGetField(instance, collectionPath, documentPath, fieldName)
-    }
-
-    override suspend fun deleteAndGetFieldAsLong(
-        instance: FirebaseFirestore,
-        collectionPath: String,
-        documentPath: String,
-        fieldName: String
-    ): HashMap<String, Any>? {
-        return FirestoreSystemDeleteField.deleteAndGetField(instance, collectionPath, documentPath, fieldName)
-    }
-
-    override suspend fun deleteAndGetFieldAsBoolean(
-        instance: FirebaseFirestore,
-        collectionPath: String,
-        documentPath: String,
-        fieldName: String
-    ): HashMap<String, Any>? {
-        return FirestoreSystemDeleteField.deleteAndGetField(instance, collectionPath, documentPath, fieldName)
-    }
-
-    override suspend fun deleteAndGetFieldAsTimestamp(
-        instance: FirebaseFirestore,
-        collectionPath: String,
-        documentPath: String,
-        fieldName: String
-    ): HashMap<String, Any>? {
-        return FirestoreSystemDeleteField.deleteAndGetField(instance, collectionPath, documentPath, fieldName)
-    }
-
-    override suspend fun deleteAndGetFieldAsGeoPoint(
-        instance: FirebaseFirestore,
-        collectionPath: String,
-        documentPath: String,
-        fieldName: String
-    ): HashMap<String, Any>? {
-        return FirestoreSystemDeleteField.deleteAndGetField(instance, collectionPath, documentPath, fieldName)
-    }
-
-    override suspend fun deleteAndGetFieldAsMap(
-        instance: FirebaseFirestore,
-        collectionPath: String,
-        documentPath: String,
-        fieldName: String
-    ): HashMap<String, Any>? {
-        return FirestoreSystemDeleteField.deleteAndGetField(instance, collectionPath, documentPath, fieldName)
-    }
-
-    override suspend fun deleteAndGetFieldAsList(
-        instance: FirebaseFirestore,
-        collectionPath: String,
-        documentPath: String,
-        fieldName: String
-    ): HashMap<String, Any>? {
-        return FirestoreSystemDeleteField.deleteAndGetField(instance, collectionPath, documentPath, fieldName)
-    }
-
-    override suspend fun deleteAndGetFieldAsBlob(
-        instance: FirebaseFirestore,
-        collectionPath: String,
-        documentPath: String,
-        fieldName: String
-    ): HashMap<String, Any>? {
-        return FirestoreSystemDeleteField.deleteAndGetField(instance, collectionPath, documentPath, fieldName)
-    }
-
-    override suspend fun deleteAndGetFieldAsDocumentReference(
-        instance: FirebaseFirestore,
-        collectionPath: String,
-        documentPath: String,
-        fieldName: String
-    ): HashMap<String, Any>? {
-        return FirestoreSystemDeleteField.deleteAndGetField(instance, collectionPath, documentPath, fieldName)
     }
 
 

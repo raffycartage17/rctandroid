@@ -81,20 +81,6 @@ internal interface InterfaceFirestoreField {
     suspend fun createUpdateFieldAsBlob(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String, value: Blob)
     suspend fun createUpdateFieldAsDocumentReference(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String, value: DocumentReference)
 
-    suspend fun createUpdateFieldAsStringAndGetDocument(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String, value: String): HashMap<String, Any>?
-    suspend fun createUpdateFieldAsIntAndGetDocument(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String, value: Int): HashMap<String, Any>?
-    suspend fun createUpdateFieldAsDoubleAndGetDocument(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String, value: Double): HashMap<String, Any>?
-    suspend fun createUpdateFieldAsFloatAndGetDocument(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String, value: Float): HashMap<String, Any>?
-    suspend fun createUpdateFieldAsLongAndGetDocument(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String, value: Long): HashMap<String, Any>?
-    suspend fun createUpdateFieldAsBooleanAndGetDocument(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String, value: Boolean): HashMap<String, Any>?
-    suspend fun createUpdateFieldAsTimestampAndGetDocument(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String, value: Timestamp): HashMap<String, Any>?
-    suspend fun createUpdateFieldAsGeoPointAndGetDocument(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String, value: GeoPoint): HashMap<String, Any>?
-    suspend fun createUpdateFieldAsMapAndGetDocument(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String, value: Map<String, Any>): HashMap<String, Any>?
-    suspend fun createUpdateFieldAsListAndGetDocument(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String, value: List<Any>): HashMap<String, Any>?
-    suspend fun createUpdateFieldAsBlobAndGetDocument(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String, value: Blob): HashMap<String, Any>?
-    suspend fun createUpdateFieldAsDocumentReferenceAndGetDocument(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String, value: DocumentReference): HashMap<String, Any>?
-
-
     suspend fun createUpdateFieldAsString(documentData: HashMap<String, Any>, fieldName: String, value: String)
     suspend fun createUpdateFieldAsInt(documentData: HashMap<String, Any>, fieldName: String, value: Int)
     suspend fun createUpdateFieldAsDouble(documentData: HashMap<String, Any>, fieldName: String, value: Double)
@@ -109,7 +95,6 @@ internal interface InterfaceFirestoreField {
     suspend fun createUpdateFieldDocumentReference(documentData: HashMap<String, Any>, fieldName: String, value: DocumentReference)
 
     suspend fun createUpdateFields(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fields : List<FieldData>)
-    suspend fun createUpdateFieldsAndGetDocument(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fields : List<FieldData>): HashMap<String, Any>?
     suspend fun createUpdateFields(documentData: HashMap<String, Any>, fields : List<FieldData>)
 
     // ----------------- deleteField Method -----------------
@@ -126,33 +111,6 @@ internal interface InterfaceFirestoreField {
     suspend fun deleteFieldAsList(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String)
     suspend fun deleteFieldAsBlob(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String)
     suspend fun deleteFieldAsDocumentReference(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String)
-
-    suspend fun deleteAndGetFieldAsString(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String): HashMap<String, Any>?
-    suspend fun deleteAndGetFieldAsInt(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String): HashMap<String, Any>?
-    suspend fun deleteAndGetFieldAsDouble(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String): HashMap<String, Any>?
-    suspend fun deleteAndGetFieldAsFloat(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String): HashMap<String, Any>?
-    suspend fun deleteAndGetFieldAsLong(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String): HashMap<String, Any>?
-    suspend fun deleteAndGetFieldAsBoolean(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String): HashMap<String, Any>?
-    suspend fun deleteAndGetFieldAsTimestamp(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String): HashMap<String, Any>?
-    suspend fun deleteAndGetFieldAsGeoPoint(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String): HashMap<String, Any>?
-    suspend fun deleteAndGetFieldAsMap(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String): HashMap<String, Any>?
-    suspend fun deleteAndGetFieldAsList(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String): HashMap<String, Any>?
-    suspend fun deleteAndGetFieldAsBlob(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String): HashMap<String, Any>?
-    suspend fun deleteAndGetFieldAsDocumentReference(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String): HashMap<String, Any>?
-
-    suspend fun deleteFieldAsString(documentData: HashMap<String, Any>, fieldName: String)
-    suspend fun deleteFieldAsInt(documentData: HashMap<String, Any>, fieldName: String)
-    suspend fun deleteFieldAsDouble(documentData: HashMap<String, Any>, fieldName: String)
-    suspend fun deleteFieldAsFloat(documentData: HashMap<String, Any>, fieldName: String)
-    suspend fun deleteFieldAsLong(documentData: HashMap<String, Any>, fieldName: String)
-    suspend fun deleteFieldAsBoolean(documentData: HashMap<String, Any>, fieldName: String)
-    suspend fun deleteFieldAsTimestamp(documentData: HashMap<String, Any>, fieldName: String)
-    suspend fun deleteFieldAsGeoPoint(documentData: HashMap<String, Any>, fieldName: String)
-    suspend fun deleteFieldAsMap(documentData: HashMap<String, Any>, fieldName: String)
-    suspend fun deleteFieldAsList(documentData: HashMap<String, Any>, fieldName: String)
-    suspend fun deleteFieldAsBlob(documentData: HashMap<String, Any>, fieldName: String)
-    suspend fun deleteFieldAsDocumentReference(documentData: HashMap<String, Any>, fieldName: String)
-
 
 
 }
