@@ -115,6 +115,50 @@ internal object FirestoreSystemCreateUpdateField {
         }
     }
 
+
+
+    public suspend fun createUpdateFieldsAndGetDocument(
+        instance: FirebaseFirestore,
+        collectionPath: String,
+        documentPath: String,
+        fields: List<FieldData>
+    ): HashMap<String, Any>? {
+        return systemCreateUpdateFieldsAndGetDocument(instance, collectionPath, documentPath, fields)
+    }
+
+    private suspend fun systemCreateUpdateFieldsAndGetDocument(
+        instance: FirebaseFirestore,
+        collectionPath: String,
+        documentPath: String,
+        fields: List<FieldData>
+    ): HashMap<String, Any>? {
+        return try {
+            val docRef = instance.collection(collectionPath).document(documentPath)
+
+            // Convert FieldData list to Map<String, Any>
+            val dataMap = fields.associate { it.name to it.value }
+
+            // Use set with merge to create or update fields in one call
+            docRef.set(dataMap, SetOptions.merge()).await()
+
+            // Fetch updated document data
+            val updatedSnapshot = docRef.get().await()
+            if (updatedSnapshot.exists()) {
+                updatedSnapshot.data?.let { HashMap(it) }
+            } else {
+                null
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+
+
+
+
+
     public suspend inline fun <reified T> createUpdateField(
         documentData: HashMap<String, Any>,
         fieldName: String,
