@@ -5,7 +5,7 @@ import android.util.Log
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.firestore.FirebaseFirestore
 import com.racartech.library.rctandroidx.google.firebase.firestore.FirestoreDocument
-import com.racartech.library.rctandroidx.google.firestore.FirestoreField
+//import com.racartech.library.rctandroidx.google.firestore.FirestoreField
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -28,7 +28,7 @@ class KotlinFuncion1 {
             if (activity is androidx.lifecycle.LifecycleOwner) {
                 activity.lifecycleScope.launch(Dispatchers.IO) {
 
-                    FirestoreField.setFieldAsString(firestore,collection,document,fieldName, "Hello World hehe")
+                    //FirestoreField.setFieldAsString(firestore,collection,document,fieldName, "Hello World hehe")
 
 
 
