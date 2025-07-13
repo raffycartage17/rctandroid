@@ -1461,6 +1461,8 @@ public class RCTfile{
         return Environment.getExternalStorageDirectory().getAbsolutePath();
     }
 
+
+
     public static String getDir_IntAppStorage(Context app_context){
         String to_processed_dir = getDir_IntAppFiles(app_context);
         return removeDirSection(to_processed_dir,to_processed_dir.split("/").length-1);
