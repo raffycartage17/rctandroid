@@ -30,16 +30,16 @@ internal object FirestoreSystemDeleteField {
     }
 
 
-    public suspend fun deleteAndGetField(
+    public suspend fun deleteFieldAndGetDocument(
         instance: FirebaseFirestore,
         collectionPath: String,
         documentPath: String,
         fieldName: String
     ): HashMap<String, Any>? {
-        return systemDeleteAndGetField(instance, collectionPath, documentPath, fieldName)
+        return systemDeleteFieldAndGetDocument(instance, collectionPath, documentPath, fieldName)
     }
 
-    private suspend fun systemDeleteAndGetField(
+    private suspend fun systemDeleteFieldAndGetDocument(
         instance: FirebaseFirestore,
         collectionPath: String,
         documentPath: String,

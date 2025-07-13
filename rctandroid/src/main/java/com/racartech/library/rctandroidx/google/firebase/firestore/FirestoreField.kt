@@ -811,7 +811,7 @@ object FirestoreField : InterfaceFirestoreField{
         documentData: HashMap<String, Any>,
         fieldName: String
     ) {
-        FirestoreSystemDeleteField.deleteField(documentData, fieldName)
+        return FirestoreSystemDeleteField.deleteField(documentData, fieldName)
     }
 
     override suspend fun deleteFieldAsInt(
@@ -978,7 +978,7 @@ object FirestoreField : InterfaceFirestoreField{
         documentPath: String,
         fieldName: String
     ): HashMap<String, Any>? {
-        return FirestoreSystemDeleteField.deleteAndGetField(instance, collectionPath, documentPath, fieldName)
+        return FirestoreSystemDeleteField.deleteFieldAndGetDocument(instance, collectionPath, documentPath, fieldName)
     }
 
     override suspend fun deleteAndGetFieldAsInt(
@@ -987,7 +987,7 @@ object FirestoreField : InterfaceFirestoreField{
         documentPath: String,
         fieldName: String
     ): HashMap<String, Any>? {
-        return FirestoreSystemDeleteField.deleteAndGetField(instance, collectionPath, documentPath, fieldName)
+        return FirestoreSystemDeleteField.deleteFieldAndGetDocument(instance, collectionPath, documentPath, fieldName)
     }
 
     override suspend fun deleteAndGetFieldAsDouble(
@@ -996,7 +996,7 @@ object FirestoreField : InterfaceFirestoreField{
         documentPath: String,
         fieldName: String
     ): HashMap<String, Any>? {
-        return FirestoreSystemDeleteField.deleteAndGetField(instance, collectionPath, documentPath, fieldName)
+        return FirestoreSystemDeleteField.deleteFieldAndGetDocument(instance, collectionPath, documentPath, fieldName)
     }
 
     override suspend fun deleteAndGetFieldAsFloat(
@@ -1005,7 +1005,7 @@ object FirestoreField : InterfaceFirestoreField{
         documentPath: String,
         fieldName: String
     ): HashMap<String, Any>? {
-        return FirestoreSystemDeleteField.deleteAndGetField(instance, collectionPath, documentPath, fieldName)
+        return FirestoreSystemDeleteField.deleteFieldAndGetDocument(instance, collectionPath, documentPath, fieldName)
     }
 
     override suspend fun deleteAndGetFieldAsLong(
@@ -1014,7 +1014,7 @@ object FirestoreField : InterfaceFirestoreField{
         documentPath: String,
         fieldName: String
     ): HashMap<String, Any>? {
-        return FirestoreSystemDeleteField.deleteAndGetField(instance, collectionPath, documentPath, fieldName)
+        return FirestoreSystemDeleteField.deleteFieldAndGetDocument(instance, collectionPath, documentPath, fieldName)
     }
 
     override suspend fun deleteAndGetFieldAsBoolean(
@@ -1023,7 +1023,7 @@ object FirestoreField : InterfaceFirestoreField{
         documentPath: String,
         fieldName: String
     ): HashMap<String, Any>? {
-        return FirestoreSystemDeleteField.deleteAndGetField(instance, collectionPath, documentPath, fieldName)
+        return FirestoreSystemDeleteField.deleteFieldAndGetDocument(instance, collectionPath, documentPath, fieldName)
     }
 
     override suspend fun deleteAndGetFieldAsTimestamp(
@@ -1032,7 +1032,7 @@ object FirestoreField : InterfaceFirestoreField{
         documentPath: String,
         fieldName: String
     ): HashMap<String, Any>? {
-        return FirestoreSystemDeleteField.deleteAndGetField(instance, collectionPath, documentPath, fieldName)
+        return FirestoreSystemDeleteField.deleteFieldAndGetDocument(instance, collectionPath, documentPath, fieldName)
     }
 
     override suspend fun deleteAndGetFieldAsGeoPoint(
@@ -1041,7 +1041,7 @@ object FirestoreField : InterfaceFirestoreField{
         documentPath: String,
         fieldName: String
     ): HashMap<String, Any>? {
-        return FirestoreSystemDeleteField.deleteAndGetField(instance, collectionPath, documentPath, fieldName)
+        return FirestoreSystemDeleteField.deleteFieldAndGetDocument(instance, collectionPath, documentPath, fieldName)
     }
 
     override suspend fun deleteAndGetFieldAsMap(
@@ -1050,7 +1050,7 @@ object FirestoreField : InterfaceFirestoreField{
         documentPath: String,
         fieldName: String
     ): HashMap<String, Any>? {
-        return FirestoreSystemDeleteField.deleteAndGetField(instance, collectionPath, documentPath, fieldName)
+        return FirestoreSystemDeleteField.deleteFieldAndGetDocument(instance, collectionPath, documentPath, fieldName)
     }
 
     override suspend fun deleteAndGetFieldAsList(
@@ -1059,7 +1059,7 @@ object FirestoreField : InterfaceFirestoreField{
         documentPath: String,
         fieldName: String
     ): HashMap<String, Any>? {
-        return FirestoreSystemDeleteField.deleteAndGetField(instance, collectionPath, documentPath, fieldName)
+        return FirestoreSystemDeleteField.deleteFieldAndGetDocument(instance, collectionPath, documentPath, fieldName)
     }
 
     override suspend fun deleteAndGetFieldAsBlob(
@@ -1068,7 +1068,7 @@ object FirestoreField : InterfaceFirestoreField{
         documentPath: String,
         fieldName: String
     ): HashMap<String, Any>? {
-        return FirestoreSystemDeleteField.deleteAndGetField(instance, collectionPath, documentPath, fieldName)
+        return FirestoreSystemDeleteField.deleteFieldAndGetDocument(instance, collectionPath, documentPath, fieldName)
     }
 
     override suspend fun deleteAndGetFieldAsDocumentReference(
@@ -1077,7 +1077,7 @@ object FirestoreField : InterfaceFirestoreField{
         documentPath: String,
         fieldName: String
     ): HashMap<String, Any>? {
-        return FirestoreSystemDeleteField.deleteAndGetField(instance, collectionPath, documentPath, fieldName)
+        return FirestoreSystemDeleteField.deleteFieldAndGetDocument(instance, collectionPath, documentPath, fieldName)
     }
 
 
