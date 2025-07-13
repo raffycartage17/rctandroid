@@ -5,6 +5,7 @@ import com.google.firebase.firestore.Blob
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.GeoPoint
+import com.google.firebase.firestore.Query
 import com.racartech.library.rctandroidx.google.firebase.firestore.model.FieldData
 
 internal interface InterfaceFirestoreField {
@@ -114,45 +115,22 @@ internal interface InterfaceFirestoreField {
 
     // ----------------- deleteField Method -----------------
 
-    suspend fun deleteFieldAsString(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String)
-    suspend fun deleteFieldAsInt(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String)
-    suspend fun deleteFieldAsDouble(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String)
-    suspend fun deleteFieldAsFloat(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String)
-    suspend fun deleteFieldAsLong(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String)
-    suspend fun deleteFieldAsBoolean(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String)
-    suspend fun deleteFieldAsTimestamp(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String)
-    suspend fun deleteFieldAsGeoPoint(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String)
-    suspend fun deleteFieldAsMap(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String)
-    suspend fun deleteFieldAsList(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String)
-    suspend fun deleteFieldAsBlob(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String)
-    suspend fun deleteFieldAsDocumentReference(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String)
-
-    suspend fun deleteAndGetFieldAsString(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String): HashMap<String, Any>?
-    suspend fun deleteAndGetFieldAsInt(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String): HashMap<String, Any>?
-    suspend fun deleteAndGetFieldAsDouble(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String): HashMap<String, Any>?
-    suspend fun deleteAndGetFieldAsFloat(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String): HashMap<String, Any>?
-    suspend fun deleteAndGetFieldAsLong(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String): HashMap<String, Any>?
-    suspend fun deleteAndGetFieldAsBoolean(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String): HashMap<String, Any>?
-    suspend fun deleteAndGetFieldAsTimestamp(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String): HashMap<String, Any>?
-    suspend fun deleteAndGetFieldAsGeoPoint(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String): HashMap<String, Any>?
-    suspend fun deleteAndGetFieldAsMap(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String): HashMap<String, Any>?
-    suspend fun deleteAndGetFieldAsList(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String): HashMap<String, Any>?
-    suspend fun deleteAndGetFieldAsBlob(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String): HashMap<String, Any>?
-    suspend fun deleteAndGetFieldAsDocumentReference(instance: FirebaseFirestore, collectionPath: String, documentPath: String, fieldName: String): HashMap<String, Any>?
-
-    suspend fun deleteFieldAsString(documentData: HashMap<String, Any>, fieldName: String)
-    suspend fun deleteFieldAsInt(documentData: HashMap<String, Any>, fieldName: String)
-    suspend fun deleteFieldAsDouble(documentData: HashMap<String, Any>, fieldName: String)
-    suspend fun deleteFieldAsFloat(documentData: HashMap<String, Any>, fieldName: String)
-    suspend fun deleteFieldAsLong(documentData: HashMap<String, Any>, fieldName: String)
-    suspend fun deleteFieldAsBoolean(documentData: HashMap<String, Any>, fieldName: String)
-    suspend fun deleteFieldAsTimestamp(documentData: HashMap<String, Any>, fieldName: String)
-    suspend fun deleteFieldAsGeoPoint(documentData: HashMap<String, Any>, fieldName: String)
-    suspend fun deleteFieldAsMap(documentData: HashMap<String, Any>, fieldName: String)
-    suspend fun deleteFieldAsList(documentData: HashMap<String, Any>, fieldName: String)
-    suspend fun deleteFieldAsBlob(documentData: HashMap<String, Any>, fieldName: String)
-    suspend fun deleteFieldAsDocumentReference(documentData: HashMap<String, Any>, fieldName: String)
+    suspend fun deleteField(instance: FirebaseFirestore, collectionPath : String, documentPath: String, fieldName: String)
+    suspend fun deleteFieldAndGetDocumentData(instance: FirebaseFirestore, collectionPath : String, documentPath: String, fieldName: String): HashMap<String, Any>?
+    suspend fun deleteFieldAsString(instance: FirebaseFirestore, collectionPath : String, documentPath: String, fieldName: String) : String?
+    suspend fun deleteFieldAsInt(instance: FirebaseFirestore, collectionPath : String, documentPath: String, fieldName: String) : Int?
+    suspend fun deleteFieldAsDouble(instance: FirebaseFirestore, collectionPath : String, documentPath: String, fieldName: String) : Double?
+    suspend fun deleteFieldAsFloat(instance: FirebaseFirestore, collectionPath : String, documentPath: String, fieldName: String) : Float?
+    suspend fun deleteFieldAsLong(instance: FirebaseFirestore, collectionPath : String, documentPath: String, fieldName: String) : Long?
+    suspend fun deleteFieldAsBoolean(instance: FirebaseFirestore, collectionPath : String, documentPath: String, fieldName: String) : Boolean?
+    suspend fun deleteFieldAsTimestamp(instance: FirebaseFirestore, collectionPath : String, documentPath: String, fieldName: String) : Timestamp?
+    suspend fun deleteFieldAsGeoPoint(instance: FirebaseFirestore, collectionPath : String, documentPath: String, fieldName: String) : GeoPoint?
+    suspend fun deleteFieldAsMap(instance: FirebaseFirestore, collectionPath : String, documentPath: String, fieldName: String) : Map<String, Any>?
+    suspend fun deleteFieldAsList(instance: FirebaseFirestore, collectionPath : String, documentPath: String, fieldName: String) : List<Any>?
+    suspend fun deleteFieldAsBlob(instance: FirebaseFirestore, collectionPath : String, documentPath: String, fieldName: String) : Blob?
+    suspend fun deleteFieldAsDocumentReference(instance: FirebaseFirestore, collectionPath : String, documentPath: String, fieldName: String) : DocumentReference?
 
 
-
+    ///////////////////////////////////////////
+    suspend fun query(query: Query): HashMap<String, Map<String, Any?>>
 }
