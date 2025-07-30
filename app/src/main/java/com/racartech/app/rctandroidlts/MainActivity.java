@@ -72,6 +72,7 @@ import com.racartech.library.rctandroid.notifications.RCTnotifications;
 import com.racartech.library.rctandroid.permission.RCTpermission;
 import com.racartech.library.rctandroid.time.RCTdateTimeData;
 import com.racartech.library.rctandroid.time.RCTtrueTime;
+import com.racartech.library.rctandroidx.database.offlinestore.OfflineStore;
 
 import org.json.JSONObject;
 
@@ -97,6 +98,8 @@ public class MainActivity extends AppCompatActivity {
 
     ImageView test_imageview;
 
+    OfflineStore offlineStore;
+
 
     private static final int MANAGE_EXTERNAL_STORAGE_PERMISSION_CODE = 100;
     private static final int READ_EXTERNAL_STORAGE_PERMISSION_CODE = 101;
@@ -117,6 +120,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        offlineStore = OfflineStore.Companion.getInstance(MainActivity.this);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -222,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
         binding.mmK1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                KotlinFuncion1.Companion.entry(MainActivity.this, FirebaseFirestore.getInstance());
+                KotlinFuncion1.Companion.entry(MainActivity.this,MainActivity.this, FirebaseFirestore.getInstance(), offlineStore);
             }
         });
 
