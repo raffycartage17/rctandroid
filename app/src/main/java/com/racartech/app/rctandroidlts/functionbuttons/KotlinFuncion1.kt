@@ -19,21 +19,26 @@ class KotlinFuncion1 {
 
     companion object {
 
-        fun entry(activity: Activity, context : Context, instance : FirebaseFirestore, offlineStore : OfflineStore) {
-            testing01(activity, context,instance, offlineStore)
+        fun entry(
+            activity: Activity,
+            context : Context,
+            instance : FirebaseFirestore,
+            offlineStore : OfflineStore,
+            documentPath : String,
+            fieldName : String,
+            fieldValue : String
+        ) {
+            testing01(activity, context,instance, offlineStore, documentPath, fieldName,fieldValue)
         }
 
 
-        fun testing01(activity: Activity, context : Context, instance: FirebaseFirestore, offlineStore : OfflineStore){
-            var documentPath : String = "test_collection/test_document"
+        fun testing01(activity: Activity, context : Context, instance: FirebaseFirestore, offlineStore : OfflineStore, documentPath : String, fieldName : String, fieldValue : String){
             var odb = offlineStore
             odb.createDocument(documentPath)
-            odb.putField(documentPath,"fullname", "Rafael Andaya Cartagena")
-            odb.putField(documentPath,"age", 25)
-            var fullname = odb.readField(documentPath, "fullname")
-            var age = odb.readField(documentPath, "age")
-            println("79308303 : Fullname : "+fullname)
-            println("79308303 : Age : "+age)
+            odb.putField(documentPath,fieldName, fieldValue)
+            var fieldValue = odb.readField(documentPath, fieldName)
+            println("79308303 : Field Age : "+fieldName)
+            println("79308303 : Field Value : "+fieldValue)
         }
 
 

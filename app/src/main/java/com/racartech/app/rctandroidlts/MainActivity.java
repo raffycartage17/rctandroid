@@ -96,6 +96,9 @@ public class MainActivity extends AppCompatActivity {
     TextView debug_textview;
     Switch switch_1,switch_2;
 
+    EditText input_1_edittext, input_2_edittext;
+    Button input_1_button, input_2_button;
+
     ImageView test_imageview;
 
     OfflineStore offlineStore;
@@ -163,6 +166,10 @@ public class MainActivity extends AppCompatActivity {
         f20 = findViewById(R.id.mm_f20_button);
         f21 = findViewById(R.id.mm_f21_button);
 
+        input_1_button = findViewById(R.id.mm_input_1_enter_button);
+        input_2_button = findViewById(R.id.mm_input_2_enter_button);
+        input_1_edittext = findViewById(R.id.mm_input_1_edittext);
+        input_2_edittext = findViewById(R.id.mm_input_2_edittext);
 
 
 
@@ -224,10 +231,33 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
+
+
+        binding.mmInput1EnterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String input_1 = binding.mmInput1Edittext.getText().toString();
+                String input_2 = binding.mmInput2Edittext.getText().toString();
+                KotlinFuncion1.Companion.entry(MainActivity.this,MainActivity.this, FirebaseFirestore.getInstance(), offlineStore, binding.mmInput3Edittext.getText().toString(),input_1, input_2);
+            }
+        });
+
+        binding.mmInput2EnterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //offlineStore.clearDocument(binding.mmInput3Edittext.getText().toString());
+            }
+        });
+
+
+
+
+
         binding.mmK1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                KotlinFuncion1.Companion.entry(MainActivity.this,MainActivity.this, FirebaseFirestore.getInstance(), offlineStore);
+                //
             }
         });
 
