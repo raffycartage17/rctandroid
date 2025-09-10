@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.location.Address;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -66,6 +67,7 @@ import com.racartech.library.rctandroid.google.maps.distancematrix.DistanceMatri
 import com.racartech.library.rctandroid.google.maps.distancematrix.DistanceMatrixResults;
 import com.racartech.library.rctandroid.google.maps.distancematrix.RCTgcpDistanceMatrix;
 import com.racartech.library.rctandroid.json.RCTgoogleGSON;
+import com.racartech.library.rctandroid.location.RCTlocation;
 import com.racartech.library.rctandroid.media.RCTbitmap;
 import com.racartech.library.rctandroid.media.image.RCTtranscribeImageToText;
 import com.racartech.library.rctandroid.notifications.RCTnotifications;
@@ -284,22 +286,12 @@ public class MainActivity extends AppCompatActivity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        String source_dir = RCTfile.getDir_ExternalStorageRoot().concat("/apath");
-                        ArrayList<String> the_files  = RCTdirectory.getImmediateImageFileList_ArrayList(source_dir);
-                        ArrayList<String> base64s = RCTfile.imageFileToBase64WT(the_files,true, 20);
-                        ArrayList<Bitmap> bitmaps = RCTbitmap.getBitmapWT(base64s,true);
-                        ArrayList<String> new_file_path =
-                                RCTfile.createPaths(
-                                        source_dir,
-                                        "zconverted_",
-                                        "jpg",
-                                        the_files.size(),
-                                        true
-                                );
-
-                        System.out.println("New File Path Length : ".concat(String.valueOf(new_file_path.size())));
-
-                        RCTbitmap.saveBitmapAsFile(bitmaps,new_file_path);
+                        Address address = RCTlocation.getAddress(MainActivity.this,17.2740499,121.8060792);
+                        for(int index = 0; index<10; index++){
+                            try{
+                                System.out.println("555222111555 : Address : ".concat(address.getAddressLine(index)));
+                            }catch (Exception ignored){}
+                        }
 
                     }
                 }).start();
