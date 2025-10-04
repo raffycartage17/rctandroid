@@ -32,16 +32,19 @@ internal object FirestoreSystemDeleteField {
     }
 
 
-    public suspend fun deleteAndGetField(
+
+    public suspend fun deleteFieldAndGetDocumentData(
         instance: FirebaseFirestore,
         collectionPath: String,
         documentPath: String,
         fieldName: String
     ): HashMap<String, Any>? {
-        return systemDeleteAndGetField(instance, collectionPath, documentPath, fieldName)
+
+        return systemDeleteFieldSystemAndGetDocumentData(instance, collectionPath, documentPath, fieldName)
     }
 
-    private suspend fun systemDeleteAndGetField(
+    private suspend fun systemDeleteFieldSystemAndGetDocumentData(
+
         instance: FirebaseFirestore,
         collectionPath: String,
         documentPath: String,
@@ -66,23 +69,63 @@ internal object FirestoreSystemDeleteField {
 
 
 
-    public suspend fun deleteField(
+    public suspend fun deleteFieldGetValue(
         documentData: HashMap<String, Any>,
         fieldName: String
-    ): Boolean {
-        return systemDeleteField(documentData, fieldName)
+    ): Any? {
+        return systemDeleteFieldGetValue(documentData, fieldName)
     }
 
-    private suspend fun systemDeleteField(
+    private suspend fun systemDeleteFieldGetValue(
         documentData: HashMap<String, Any>,
         fieldName: String
-    ): Boolean {
-        return if (documentData.containsKey(fieldName)) {
-            documentData.remove(fieldName)
-            true
+    ): Any? {
+        if (documentData.containsKey(fieldName)) {
+            return documentData.remove(fieldName)
         } else {
-            false
+            return null
         }
     }
+
+
+    public suspend fun deleteFieldGetValue(
+        instance: FirebaseFirestore,
+        collectionPath: String,
+        documentPath: String,
+        fieldName: String
+    ): Any? {
+        return systemDeleteFieldGetValue(instance, collectionPath, documentPath, fieldName)
+    }
+
+    private suspend fun systemDeleteFieldGetValue(
+        instance: FirebaseFirestore,
+        collectionPath: String,
+        documentPath: String,
+        fieldName: String
+    ): Any? {
+        return try {
+            val docRef = instance.collection(collectionPath).document(documentPath)
+
+            // Get the current document snapshot
+            val snapshot = docRef.get().await()
+
+            // If document exists and contains the field
+            if (snapshot.exists() && snapshot.contains(fieldName)) {
+                val valueToRemove = snapshot.get(fieldName)
+
+                // Delete the field from Firestore
+                docRef.update(fieldName, FieldValue.delete()).await()
+
+                valueToRemove
+            } else {
+                null
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+
 
 }

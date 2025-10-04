@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.location.Address;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -66,12 +67,14 @@ import com.racartech.library.rctandroid.google.maps.distancematrix.DistanceMatri
 import com.racartech.library.rctandroid.google.maps.distancematrix.DistanceMatrixResults;
 import com.racartech.library.rctandroid.google.maps.distancematrix.RCTgcpDistanceMatrix;
 import com.racartech.library.rctandroid.json.RCTgoogleGSON;
+import com.racartech.library.rctandroid.location.RCTlocation;
 import com.racartech.library.rctandroid.media.RCTbitmap;
 import com.racartech.library.rctandroid.media.image.RCTtranscribeImageToText;
 import com.racartech.library.rctandroid.notifications.RCTnotifications;
 import com.racartech.library.rctandroid.permission.RCTpermission;
 import com.racartech.library.rctandroid.time.RCTdateTimeData;
 import com.racartech.library.rctandroid.time.RCTtrueTime;
+import com.racartech.library.rctandroidx.database.offlinestore.OfflineStore;
 
 import org.json.JSONObject;
 
@@ -95,7 +98,12 @@ public class MainActivity extends AppCompatActivity {
     TextView debug_textview;
     Switch switch_1,switch_2;
 
+    EditText input_1_edittext, input_2_edittext;
+    Button input_1_button, input_2_button;
+
     ImageView test_imageview;
+
+    OfflineStore offlineStore;
 
 
     private static final int MANAGE_EXTERNAL_STORAGE_PERMISSION_CODE = 100;
@@ -117,6 +125,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        offlineStore = OfflineStore.Companion.getInstance(MainActivity.this);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -158,6 +168,10 @@ public class MainActivity extends AppCompatActivity {
         f20 = findViewById(R.id.mm_f20_button);
         f21 = findViewById(R.id.mm_f21_button);
 
+        input_1_button = findViewById(R.id.mm_input_1_enter_button);
+        input_2_button = findViewById(R.id.mm_input_2_enter_button);
+        input_1_edittext = findViewById(R.id.mm_input_1_edittext);
+        input_2_edittext = findViewById(R.id.mm_input_2_edittext);
 
 
 
@@ -219,10 +233,33 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
+
+
+        binding.mmInput1EnterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String input_1 = binding.mmInput1Edittext.getText().toString();
+                String input_2 = binding.mmInput2Edittext.getText().toString();
+                KotlinFuncion1.Companion.entry(MainActivity.this,MainActivity.this, FirebaseFirestore.getInstance(), offlineStore, binding.mmInput3Edittext.getText().toString(),input_1, input_2);
+            }
+        });
+
+        binding.mmInput2EnterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //offlineStore.clearDocument(binding.mmInput3Edittext.getText().toString());
+            }
+        });
+
+
+
+
+
         binding.mmK1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                KotlinFuncion1.Companion.entry(MainActivity.this, FirebaseFirestore.getInstance());
+                //
             }
         });
 
@@ -249,22 +286,12 @@ public class MainActivity extends AppCompatActivity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        String source_dir = RCTfile.getDir_ExternalStorageRoot().concat("/apath");
-                        ArrayList<String> the_files  = RCTdirectory.getImmediateImageFileList_ArrayList(source_dir);
-                        ArrayList<String> base64s = RCTfile.imageFileToBase64WT(the_files,true, 20);
-                        ArrayList<Bitmap> bitmaps = RCTbitmap.getBitmapWT(base64s,true);
-                        ArrayList<String> new_file_path =
-                                RCTfile.createPaths(
-                                        source_dir,
-                                        "zconverted_",
-                                        "jpg",
-                                        the_files.size(),
-                                        true
-                                );
-
-                        System.out.println("New File Path Length : ".concat(String.valueOf(new_file_path.size())));
-
-                        RCTbitmap.saveBitmapAsFile(bitmaps,new_file_path);
+                        Address address = RCTlocation.getAddress(MainActivity.this,17.2740499,121.8060792);
+                        for(int index = 0; index<10; index++){
+                            try{
+                                System.out.println("555222111555 : Address : ".concat(address.getAddressLine(index)));
+                            }catch (Exception ignored){}
+                        }
 
                     }
                 }).start();
