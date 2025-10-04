@@ -6,6 +6,8 @@ import kotlinx.coroutines.tasks.await
 
 internal object FirestoreSystemDeleteField {
 
+    
+
     public suspend fun deleteField(
         instance: FirebaseFirestore,
         collectionPath: String,
