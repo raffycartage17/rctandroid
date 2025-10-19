@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.firestore.FirebaseFirestore
 import com.racartech.library.rctandroidx.google.firebase.firestore.FirestoreDocument
+import com.racartech.library.rctandroidx.google.firebase.firestore.FirestoreField
 //import com.racartech.library.rctandroidx.google.firestore.FirestoreField
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -12,7 +13,7 @@ import kotlinx.coroutines.withContext
 
 class KotlinFuncion1 {
 
-    companion object {
+    companion  object {
 
         fun entry(activity: Activity, instance : FirebaseFirestore) {
             testing01(activity, instance)
@@ -28,8 +29,7 @@ class KotlinFuncion1 {
             if (activity is androidx.lifecycle.LifecycleOwner) {
                 activity.lifecycleScope.launch(Dispatchers.IO) {
 
-                    //FirestoreField.setFieldAsString(firestore,collection,document,fieldName, "Hello World hehe")
-
+                    FirestoreField.createUpdateFieldAsString(firestore, collection, document, fieldName, "test_value");
 
 
                     // Update UI on Main thread

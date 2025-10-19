@@ -723,7 +723,7 @@ object FirestoreField : InterfaceFirestoreField{
     }
 
 
-    
+
 
 //    override suspend fun createUpdateFieldTimestamp(
 //        documentData: HashMap<String, Any>,
@@ -797,6 +797,8 @@ object FirestoreField : InterfaceFirestoreField{
 //    ): HashMap<String, Any>? {
 //        return FirestoreSystemCreateUpdateField.createUpdateFieldsAndGetDocument(instance, collectionPath, documentPath, fields)
 //    }
+
+    
 
 
     // ----------------- deleteField Methods -----------------
