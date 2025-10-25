@@ -282,19 +282,6 @@ object RCTfileX {
     }
 
 
-    @JvmStatic
-    fun isPathAFile(path: String): Boolean {
-        val file = File(path)
-        return file.isFile
-    }
-
-    @JvmStatic
-    fun isPathADirectory(path: String): Boolean {
-        val file = File(path)
-        return file.isDirectory
-    }
-    
-
 
 
 

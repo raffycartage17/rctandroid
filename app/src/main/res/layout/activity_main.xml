@@ -222,7 +222,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:gravity="left"
                 android:maxLines="10"
@@ -390,11 +390,11 @@
                 android:id="@+id/mm_k2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="16dp"
                 android:text="K2"
                 app:layout_constraintEnd_toEndOf="@+id/mm_f2_button"
                 app:layout_constraintStart_toStartOf="@+id/mm_f2_button"
-                app:layout_constraintTop_toBottomOf="@+id/mm_input_2_edittext" />
+                app:layout_constraintTop_toBottomOf="@+id/mm_debug_textview" />
 
             <Button
                 android:id="@+id/mm_k3"
@@ -462,62 +462,6 @@
                 app:layout_constraintEnd_toEndOf="@+id/mm_k3"
                 app:layout_constraintStart_toStartOf="@+id/mm_k3"
                 app:layout_constraintTop_toTopOf="@+id/mm_k8" />
-
-            <EditText
-                android:id="@+id/mm_input_1_edittext"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="12dp"
-                android:ems="10"
-                android:hint="Field Name"
-                android:inputType="text"
-                app:layout_constraintBottom_toBottomOf="@+id/mm_input_1_enter_button"
-                app:layout_constraintEnd_toStartOf="@+id/mm_input_1_enter_button"
-                app:layout_constraintStart_toStartOf="@+id/mm_debug_textview"
-                app:layout_constraintTop_toTopOf="@+id/mm_input_1_enter_button" />
-
-            <EditText
-                android:id="@+id/mm_input_2_edittext"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Field Value"
-                android:inputType="text"
-                app:layout_constraintBottom_toBottomOf="@+id/mm_input_2_enter_button"
-                app:layout_constraintEnd_toEndOf="@+id/mm_input_1_edittext"
-                app:layout_constraintStart_toStartOf="@+id/mm_input_1_edittext"
-                app:layout_constraintTop_toTopOf="@+id/mm_input_2_enter_button" />
-
-            <Button
-                android:id="@+id/mm_input_1_enter_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="64dp"
-                android:text="Enter"
-                app:layout_constraintEnd_toEndOf="@+id/mm_debug_textview"
-                app:layout_constraintTop_toBottomOf="@+id/mm_debug_textview" />
-
-            <Button
-                android:id="@+id/mm_input_2_enter_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="Clear"
-                app:layout_constraintEnd_toEndOf="@+id/mm_input_1_enter_button"
-                app:layout_constraintStart_toStartOf="@+id/mm_input_1_enter_button"
-                app:layout_constraintTop_toBottomOf="@+id/mm_input_1_enter_button" />
-
-            <EditText
-                android:id="@+id/mm_input_3_edittext"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:ems="10"
-                android:inputType="text"
-                android:hint="Document Path"
-                app:layout_constraintEnd_toEndOf="@+id/mm_input_1_edittext"
-                app:layout_constraintStart_toStartOf="@+id/mm_debug_textview"
-                app:layout_constraintTop_toBottomOf="@+id/mm_debug_textview" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
