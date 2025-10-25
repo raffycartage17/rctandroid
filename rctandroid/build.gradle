@@ -8,7 +8,7 @@ android {
     namespace 'com.racartech.library.rctandroid'
     compileSdkVersion 36
     group 'com.racartech.library'
-    version '1.4.0'
+    version '1.5.0'
 
     publishing {
         singleVariant('release') {
@@ -107,7 +107,7 @@ afterEvaluate {
                 from components.findByName('release')
                 groupId = "com.racartech.library"
                 artifactId = "rctandroid"
-                version = "1.4.0"
+                version = "1.5.0"
                 artifact tasks.named('androidSourcesJar').get()
             }
         }
