@@ -241,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String input_1 = binding.mmInput1Edittext.getText().toString();
                 String input_2 = binding.mmInput2Edittext.getText().toString();
-                KotlinFuncion1.Companion.entry(MainActivity.this,MainActivity.this, FirebaseFirestore.getInstance(), offlineStore, binding.mmInput3Edittext.getText().toString(),input_1, input_2);
+                KotlinFuncion1.Companion.entry(MainActivity.this,FirebaseFirestore.getInstance());
             }
         });
 
