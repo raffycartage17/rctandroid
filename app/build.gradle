@@ -1,7 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-   //id("com.google.gms.google-services")
+   id("com.google.gms.google-services")
 
 }
 
@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "com.racartech.app.rctandroidlts"
-        minSdk 31
+        minSdk 30
         targetSdk 36
         versionCode 1
         versionName "1.5.0"
@@ -48,7 +48,7 @@ android {
 dependencies {
 
 
-    implementation(platform("com.google.firebase:firebase-bom:34.4.0")) //33.15.0 stable
+    implementation(platform("com.google.firebase:firebase-bom:33.15.0")) //33.11.0 causes NullPointerException
     implementation 'com.google.firebase:firebase-analytics'
 
     implementation 'com.github.crazzyghost:alphavantage-java:1.7.0'
