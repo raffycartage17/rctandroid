@@ -1,8 +1,14 @@
 package com.racartech.library.rctandroidx.file
 
+import android.os.Build
 import org.apache.commons.io.FileUtils
 import java.io.File
 import java.io.IOException
+import java.io.UncheckedIOException
+import java.nio.file.Files
+import java.nio.file.Path
+import java.util.Stack
+import java.util.stream.Collectors
 
 object RCTdirectoryX {
 
@@ -190,6 +196,59 @@ object RCTdirectoryX {
         return dir.walkTopDown()
             .filter { it.isFile }
             .sumOf { it.length() + it.lastModified() }
+    }
+
+
+    @Throws(IOException::class)
+    fun getAllFilesArrayList(
+        targetDirectory: String,
+        includeFileInAllSubDirectories: Boolean = true
+    ): ArrayList<String> {
+        val fileList = listAllFilesAndSubDirectoriesArrayList(File(targetDirectory))
+        val convertedList = ArrayList<String>()
+
+        for (file in fileList) {
+            convertedList.add(file.absolutePath)
+        }
+
+        return convertedList
+    }
+
+    @Throws(IOException::class)
+    fun listAllFilesAndSubDirectoriesArrayList(directory: File): ArrayList<File> {
+        val files = ArrayList<File>()
+
+        return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            val stack = Stack<File>()
+            stack.push(directory)
+
+            while (stack.isNotEmpty()) {
+                val dir = stack.pop()
+                val dirFiles = dir.listFiles()
+                if (dirFiles != null) {
+                    for (file in dirFiles) {
+                        if (file.isDirectory) {
+                            stack.push(file)
+                        }
+                        files.add(file)
+                    }
+                }
+            }
+
+            files
+        } else {
+            try {
+                val start: Path = directory.toPath()
+                Files.walk(start, Int.MAX_VALUE).use { stream ->
+                    stream
+                        .map(Path::toFile)
+                        .sorted()
+                        .collect(Collectors.toCollection { ArrayList() })
+                }
+            } catch (ignored: UncheckedIOException) {
+                arrayListOf()
+            }
+        }
     }
 
 

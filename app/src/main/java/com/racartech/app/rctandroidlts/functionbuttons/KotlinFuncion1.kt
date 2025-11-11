@@ -25,26 +25,26 @@ class KotlinFuncion1 {
 
         fun testing01(activity: Activity, instance: FirebaseFirestore) {
 
-            FirestoreDocument.deleteDocument()
-            CoroutineScope(Dispatchers.IO).launch {
-                try {
-                    FirestoreField.createUpdateFieldAsString(
-                        instance,
-                        "test_collection",
-                        "test_document",
-                        "test_field",
-                        "test_value"
-                    )
-
-                    withContext(Dispatchers.Main) {
-                        Log.d("KotlinFuncion1", "Firestore field updated successfully!")
-                    }
-                } catch (e: Exception) {
-                    withContext(Dispatchers.Main) {
-                        Log.e("KotlinFuncion1", "Error updating Firestore field", e)
-                    }
-                }
-            }
+//            FirestoreDocument.deleteDocument()
+//            CoroutineScope(Dispatchers.IO).launch {
+//                try {
+//                    FirestoreField.createUpdateFieldAsString(
+//                        instance,
+//                        "test_collection",
+//                        "test_document",
+//                        "test_field",
+//                        "test_value"
+//                    )
+//
+//                    withContext(Dispatchers.Main) {
+//                        Log.d("KotlinFuncion1", "Firestore field updated successfully!")
+//                    }
+//                } catch (e: Exception) {
+//                    withContext(Dispatchers.Main) {
+//                        Log.e("KotlinFuncion1", "Error updating Firestore field", e)
+//                    }
+//                }
+//            }
         }
 
 
