@@ -225,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
         binding.mmK1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                KotlinFuncion1.Companion.entry(MainActivity.this, FirebaseFirestore.getInstance());
+                KotlinFuncion1.Companion.entry(MainActivity.this,MainActivity.this, FirebaseFirestore.getInstance());
             }
         });
 
